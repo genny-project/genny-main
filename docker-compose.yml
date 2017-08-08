@@ -68,7 +68,8 @@ services:
     ports:
       - 8081:8081    
       - 8082:8082    
-  
+    command: java -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /test.jar
+   
   rulesservice:
     image: gennyproject/rulesservice:latest
     container_name:  rulesservice 
@@ -87,6 +88,7 @@ services:
     networks:
       - mainproxy
     restart: always
+    command: java -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /test.jar
 
 #  social:
 #    image: gennyproject/social:latest
@@ -102,6 +104,7 @@ services:
 #      - keycloak
 #    ports:
 #      - 8083:8083    
+#    command: java -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /test.jar
 
 #  kie-client: 
 #    image: gennyproject/kie-client:latest  
@@ -111,6 +114,7 @@ services:
 #      - keycloak
 #    networks:
 #      - mainproxy
+#    command: java -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /test.jar
 
   kie-server: 
     image: jboss/kie-server:latest  
