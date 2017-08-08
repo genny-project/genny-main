@@ -88,20 +88,20 @@ services:
       - mainproxy
     restart: always
 
-  social:
-    image: gennyproject/social:latest
-    container_name: social 
-    volumes:
-      - ./realm:/opt/realm
-    env_file:
-      - ${ENV_FILE} 
-    networks:
-      - mainproxy
-    links:
-      - qwanda-service:qwanda-service
-      - keycloak
-    ports:
-      - 8083:8083    
+#  social:
+#    image: gennyproject/social:latest
+#    container_name: social 
+#    volumes:
+#      - ./realm:/opt/realm
+#    env_file:
+#      - ${ENV_FILE} 
+#    networks:
+#      - mainproxy
+#    links:
+#      - qwanda-service:qwanda-service
+#      - keycloak
+#    ports:
+#      - 8083:8083    
 
 #  kie-client: 
 #    image: gennyproject/kie-client:latest  
