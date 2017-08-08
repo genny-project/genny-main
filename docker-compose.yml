@@ -76,7 +76,7 @@ services:
       - ./realm:/opt/realm
       - ./rules:/opt/rules
     links:
-      - bridgecmd:bridgecmd
+      - bridge:bridge
       - qwanda-service:qwanda-service
       - keycloak
     env_file:
@@ -103,14 +103,14 @@ services:
     ports:
       - 8083:8083    
 
-  kie-client: 
-    image: gennyproject/kie-client:latest  
-    container_name: kie-client
-    links:
-      - kie-server 
-      - keycloak
-    networks:
-      - mainproxy
+#  kie-client: 
+#    image: gennyproject/kie-client:latest  
+#    container_name: kie-client
+#    links:
+#      - kie-server 
+#      - keycloak
+#    networks:
+#      - mainproxy
 
   kie-server: 
     image: jboss/kie-server:latest  
