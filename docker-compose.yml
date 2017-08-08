@@ -82,7 +82,7 @@ services:
     env_file:
       - ${ENV_FILE} 
     depends_on:
-      - bridgecmd 
+      - bridge 
       - qwanda-service
     networks:
       - mainproxy
