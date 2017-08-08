@@ -1,0 +1,79 @@
+version: '2'
+ 
+services:
+  keycloak:
+    image: gennyproject/keycloak:working 
+    container_name: keycloak 
+    env_file:
+      - ${ENV_FILE} 
+#    environment:
+#      - IMPORTEXPORT=EXPORT
+#      - KEYCLOAK_USER=admin
+#      - KEYCLOAK_PASSWORD=admin
+    volumes:
+      - ./realm:/tmp/realm 
+    networks:
+      - mainproxy
+    ports:
+      - 8180:8080
+    command: -b 0.0.0.0  
+
+  bridge:
+    image: gennyproject/bridge:latest
+    container_name: bridge 
+    volumes:
+      - ./realm:/opt/realm
+    env_file:
+      - ${ENV_FILE} 
+    networks:
+      - mainproxy
+    links:
+      - keycloak
+    ports:
+      - 8081:8081    
+      - 8082:8082    
+  
+  rulesservice:
+    image: gennyproject/rulesservice:latest
+    container_name:  rulesservice 
+    volumes:
+      - ./realm:/opt/realm
+      - ./rules:/opt/rules
+    links:
+      - bridgecmd:bridgecmd
+      - keycloak
+    env_file:
+      - ${ENV_FILE} 
+    depends_on:
+      - bridgecmd 
+    networks:
+      - mainproxy
+    restart: always
+
+  social:
+    image: gennyproject/social:latest
+    container_name: social 
+    volumes:
+      - ./realm:/opt/realm
+    env_file:
+      - ${ENV_FILE} 
+    networks:
+      - mainproxy
+    links:
+      - keycloak
+    ports:
+      - 8083:8083    
+
+
+
+volumes:
+  mysql_data:
+  maildata:
+    driver: local
+  mailstate:
+    driver: local 
+networks:
+  mainproxy:
+    driver: bridge 
+
+

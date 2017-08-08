@@ -34,3 +34,10 @@ Kie-client - This Vertx service bridges the Vertx bus with the api driven kie-se
 Social - This Vertx service manages external social media data querying.
 
 RulesService - This Vertx service performs fast Esper/Drools Complex Event Processing (CEP)
+
+
+
+To run: (simple)
+
+run the docker versions on your local machine -> ./run.sh
+
