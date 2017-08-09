@@ -1,6 +1,6 @@
 {
   "realm": "wildfly-swarm-keycloak-example",
-"auth-server-url": "http://10.64.0.6:8180/auth/auth",
+"auth-server-url": "http://10.64.0.6:8180/auth",
   "ssl-required": "none",
   "resource": "curl",
   "credentials": {

@@ -68,7 +68,7 @@ services:
     ports:
       - 8081:8081    
       - 8082:8082    
-    command: java -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /test.jar
+    command: java -Dvertx.hazelcast.config=/opt/cluster.xml -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /test.jar
    
   rulesservice:
     image: gennyproject/rulesservice:latest
