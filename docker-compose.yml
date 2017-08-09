@@ -57,7 +57,7 @@ services:
     image: gennyproject/bridge:latest
     container_name: bridge 
     volumes:
-      - ./realm:/opt/realm
+      - ./realm:/realm
     env_file:
       - ${ENV_FILE} 
     networks:
@@ -68,14 +68,14 @@ services:
     ports:
       - 8081:8081    
       - 8082:8082    
-    command: java -Dvertx.hazelcast.config=/opt/cluster.xml -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /test.jar
+    command: java -Djava.net.preferIPv6Addresses=false -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true -Dvertx.hazelcast.config=/cluster.xml -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /service.jar
    
   rulesservice:
     image: gennyproject/rulesservice:latest
     container_name:  rulesservice 
     volumes:
-      - ./realm:/opt/realm
-      - ./rules:/opt/rules
+      - ./realm:/realm
+      - ./rules:/rules
     links:
       - bridge:bridge
       - qwanda-service:qwanda-service
@@ -88,23 +88,23 @@ services:
     networks:
       - mainproxy
     restart: always
-    command: java -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /test.jar
+    command: java -Djava.net.preferIPv6Addresses=false -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true -Dvertx.hazelcast.config=/cluster.xml -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /service.jar
 
-#  social:
-#    image: gennyproject/social:latest
-#    container_name: social 
-#    volumes:
-#      - ./realm:/opt/realm
-#    env_file:
-#      - ${ENV_FILE} 
-#    networks:
-#      - mainproxy
-#    links:
-#      - qwanda-service:qwanda-service
-#      - keycloak
-#    ports:
-#      - 8083:8083    
-#    command: java -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /test.jar
+  social:
+    image: gennyproject/social:latest
+    container_name: social 
+    volumes:
+      - ./realm:/realm
+    env_file:
+      - ${ENV_FILE} 
+    networks:
+      - mainproxy
+    links:
+      - qwanda-service:qwanda-service
+      - keycloak
+    ports:
+      - 8083:8083    
+    command: java -Djava.net.preferIPv6Addresses=false -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true -Dvertx.hazelcast.config=/cluster.xml -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /service.jar
 
 #  kie-client: 
 #    image: gennyproject/kie-client:latest  
@@ -114,7 +114,7 @@ services:
 #      - keycloak
 #    networks:
 #      - mainproxy
-#    command: java -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /test.jar
+    command: java -Djava.net.preferIPv6Addresses=false -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true -Dvertx.hazelcast.config=/cluster.xml -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /service.jar
 
   kie-server: 
     image: jboss/kie-server:latest  
