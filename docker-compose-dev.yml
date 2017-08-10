@@ -40,8 +40,6 @@ services:
     container_name: keycloak 
     env_file:
       - ${ENV_FILE} 
-    links:
-       - mail:mail
 #    environment:
 #      - IMPORTEXPORT=EXPORT
 #      - KEYCLOAK_USER=admin
@@ -53,6 +51,30 @@ services:
     ports:
       - 8180:8080
     command: -b 0.0.0.0  
+
+
+  kie-server: 
+    image: jboss/kie-server:latest  
+    container_name: kie-server
+    ports:
+      - 8480:8080
+    links:
+      - qwanda-service:qwanda-service
+      - keycloak
+    networks:
+      - mainproxy
+
+  kie-workbench: 
+    image: jboss/jbpm-workbench:latest  
+    container_name: kie-workbench
+    ports:
+      - 8580:8080
+    links:
+      - qwanda-service:qwanda-service
+      - keycloak
+      - kie-server
+    networks:
+      - mainproxy
 
   mail:
     image: tvial/docker-mailserver:latest
@@ -80,51 +102,13 @@ services:
     networks:
       - mainproxy
 
-#  alyson:
-#    image: gennyproject/alyson:latest
-#    container_name: alyson 
-#    volumes:
-#      - ./realm:/opt/realm
-#    ports:
-#      - "5000:80"
-#    env_file:
-#      - ${ENV_FILE}
-#    networks:
-#      - mainproxy
-#    restart: always
 
-  kie-server:
-    image: jboss/kie-server:latest
-    container_name: kie-server
-    ports:
-      - 8480:8080
-    links:
-      - qwanda-service:qwanda-service
-      - keycloak
-    networks:
-      - mainproxy
-
-  kie-workbench:
-    image: jboss/jbpm-workbench:latest
-    container_name: kie-workbench
-    ports:
-      - 8580:8080
-    links:
-      - qwanda-service:qwanda-service
-      - keycloak
-      - kie-server
-    networks:
-      - mainproxy
-
-
-  
 volumes:
   mysql_data:
   maildata:
     driver: local
   mailstate:
     driver: local 
-
 networks:
   mainproxy:
     driver: bridge 
