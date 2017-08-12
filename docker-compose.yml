@@ -105,21 +105,21 @@ services:
       - 8083:8083    
     command: java -Djava.net.preferIPv6Addresses=false -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true -Dvertx.hazelcast.config=/cluster.xml -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /service.jar
 
-  kieclient: 
-    image: gennyproject/kie-client:latest  
-    container_name: kieclient
-    links:
-      - kie-server 
-      - keycloak
-    env_file:
-      - ${ENV_FILE} 
-    volumes:
-      - ./realm:/realm
-    depends_on:
-      - kie-server 
-    networks:
-      - mainproxy
-    command: java -Djava.net.preferIPv6Addresses=false -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true -Dvertx.hazelcast.config=/cluster.xml -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /service.jar
+#  kieclient: 
+#    image: gennyproject/kie-client:latest  
+#    container_name: kieclient
+#    links:
+#      - kie-server 
+#      - keycloak
+#    env_file:
+#      - ${ENV_FILE} 
+#    volumes:
+#      - ./realm:/realm
+#    depends_on:
+#      - kie-server 
+#    networks:
+#      - mainproxy
+#    command: java -Djava.net.preferIPv6Addresses=false -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true -Dvertx.hazelcast.config=/cluster.xml -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /service.jar
 
   kie-server: 
     image: jboss/kie-server:latest  
