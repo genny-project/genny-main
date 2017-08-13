@@ -6,4 +6,6 @@ docker pull gennyproject/bridge:latest
 docker pull gennyproject/rulesservice:latest
 docker pull gennyproject/social:latest
 docker pull gennyproject/layout:latest
+docker pull gennyproject/alyson:latest
+docker pull gennyproject/scoring:latest
 
