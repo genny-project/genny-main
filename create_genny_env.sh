@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ENV_FILE=$1
-
+ENV_FILE_APP=${ENV_FILE}.json
 myip=
 while IFS=$': \t' read -a line ;do
     [ -z "${line%inet}" ] && ip=${line[${#line[1]}>4?1:2]} &&
@@ -102,4 +102,21 @@ echo "JAVA_OPTS=${JAVA_OPTS}" >> $ENV_FILE
 echo ""
 echo "###### Run Settings ######"
 cat $ENV_FILE
+
+
+echo "" > $ENV_FILE_APP
+echo "REACT_APP_PROJECT_NAME=${REACT_APP_PROJECT_NAME}" >> $ENV_FILE_APP
+echo "REACT_APP_QWANDA_API_URL=${REACT_APP_QWANDA_API_URL}" >> $ENV_FILE_APP
+echo "REACT_APP_VERSION_NUMBER=${REACT_APP_VERSION_NUMBER}" >> $ENV_FILE_APP
+echo "REACT_APP_BUILD_DATE=${REACT_APP_BUILD_DATE}" >> $ENV_FILE_APP
+echo "REACT_APP_VERTX_URL=${REACT_APP_VERTX_URL}" >> $ENV_FILE_APP
+echo "REACT_APP_VERTX_SERVICE_API=${REACT_APP_VERTX_SERVICE_API}" >> $ENV_FILE_APP
+echo "REACT_APP_VERTX_EVENTS_API=${REACT_APP_VERTX_EVENTS_API}" >> $ENV_FILE_APP
+echo "" >> $ENV_FILE_APP
+cat $ENV_FILE_APP
+
+
+
+
+
 
