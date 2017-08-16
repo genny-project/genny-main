@@ -141,7 +141,7 @@ services:
 #    command: java -Djava.net.preferIPv6Addresses=false -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true -Dvertx.hazelcast.config=/cluster.xml -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /service.jar
 #   
   kieclient: 
-    image: gennyproject/kie-client:latest  
+    image: gennyproject/kieclient:latest  
     container_name: kieclient
     links:
       - kie-server 
@@ -162,7 +162,7 @@ services:
     ports:
       - 8480:8080
     links:
-      - qwanda-service:qwanda-service
+      - qwanda-service
       - keycloak
     networks:
       - mainproxy
