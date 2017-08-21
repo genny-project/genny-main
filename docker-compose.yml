@@ -59,7 +59,7 @@ services:
     container_name: keycloak 
     env_file:
       - ${ENV_FILE} 
-    environment:
+#    environment:
 #      - IMPORTEXPORT=EXPORT
 #      - KEYCLOAK_USER=admin
 #      - KEYCLOAK_PASSWORD=admin
