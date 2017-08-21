@@ -46,7 +46,7 @@ MYSQL_ALLOW_EMPTY_PASSWORD=no
 MYSQL_RANDOM_ROOT_PASSWORD=no
 MYSQL_ROOT_HOST=${HOSTIP}
 
-KIE_SERVER_URL="http://${HOSTIP}:8480/kie-server/services/rest/server"
+KIE_SERVER_URL="http://${myip}:8230/kie-server/services/rest/server"
 KIE_USERNAME="kieserver"
 KIE_PASSWORD="kieserver1!"
 
