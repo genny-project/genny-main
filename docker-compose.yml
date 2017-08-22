@@ -36,6 +36,7 @@ services:
     depends_on:
       - mysql
       - keycloak
+    command: ["./wait-for-it.sh"]
     image: gennyproject/qwanda-service:latest 
     container_name: qwanda-service 
     volumes:
