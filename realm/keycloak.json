@@ -1,6 +1,6 @@
 {
   "realm": "wildfly-swarm-keycloak-example",
-  "auth-server-url": "https://bouncer.outcome-hub.com/auth",
+  "auth-server-url": "http://localhost:8180/auth",
   "ssl-required": "none",
   "resource": "curl",
   "credentials": {
