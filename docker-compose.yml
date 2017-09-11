@@ -80,13 +80,17 @@ services:
       - ./realm:/opt/realm
     env_file:
       - ${ENV_FILE} 
+    depends_on:
+      - rulesservice
     networks:
       - mainproxy
     links:
       - qwanda-service:qwanda-service
       - keycloak
     ports:
-      - 8081:8081    
+      - 8081:8081  
+      - 5701:5701
+      - 4001:15701  
     command: java -Djava.net.preferIPv6Addresses=false -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true -Dvertx.hazelcast.config=/cluster.xml -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /service.jar
    
   rulesservice:
@@ -96,14 +100,17 @@ services:
       - ./realm:/opt/realm
       - ./rules:/rules
     links:
-      - bridge:bridge
+      # - bridge:bridge
       - qwanda-service:qwanda-service
       - keycloak
     env_file:
       - ${ENV_FILE} 
-    depends_on:
-      - bridge 
-      - qwanda-service
+    ports:
+      - 5702:5702
+      - 4002:15702  
+    # depends_on:
+      # - bridge 
+      # - qwanda-service
     networks:
       - mainproxy
     restart: always
