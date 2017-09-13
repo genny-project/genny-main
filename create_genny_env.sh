@@ -29,7 +29,7 @@ KEYCLOAK_PROTO="http://"
 KEYCLOAK_USERNAME=user1
 KEYCLOAK_SERVICE_ID=3f0c17d2-36f4-4b0d-8204-effadaedf4f2
 KEYCLOAK_PASSWORD=password1
-CORS_ALLOWED_ORIGINS="http://localhost:3000,http://localhost:5000"
+CORS_ALLOWED_ORIGINS="http://localhost:5000,http://localhost:3000,http://localhost:5000"
 KEYCLOAK_SECRET=6c61c6c3-aa68-419a-86e0-750a2517a3b0
 
 FACEBOOK_CALLBACK_URL=https://social.outcome-hub.com
