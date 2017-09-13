@@ -160,6 +160,9 @@ services:
       - ./realm:/opt/realm
     depends_on:
       - kie-server 
+    ports:
+      - 5703:5703
+      - 4003:15703 
     networks:
       - mainproxy
     command: java -Djava.net.preferIPv6Addresses=false -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true -Dvertx.hazelcast.config=/cluster.xml -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /service.jar
