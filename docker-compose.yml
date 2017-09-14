@@ -3,11 +3,8 @@ version: '2'
 services:
 
   alyson:
-    image: gennyproject/alyson:latest
-    container_name: alyson 
-    volumes:
-      - ./realm:/opt/realm
-      - ./genny.env.json:/usr/share/nginx/html/genny.env.json
+    image: gennyproject/alyson-v2:latest
+    container_name: alyson2 
     depends_on:
       - bridge
     ports:
