@@ -1,13 +1,9 @@
 version: '2'
  
 services:
-
   alyson:
-    image: gennyproject/alyson:latest
-    container_name: alyson 
-    volumes:
-      - ./realm:/opt/realm
-      - ./genny.env.json:/usr/share/nginx/html/genny.env.json
+    image: gennyproject/alyson2:latest
+    container_name: alyson2
     ports:
       - "5000:80"
     env_file:
@@ -15,6 +11,8 @@ services:
     networks:
       - mainproxy
     restart: always
+
+
 
   mysql:
     image: mysql:latest 
