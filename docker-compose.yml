@@ -3,8 +3,8 @@ version: '2'
 services:
 
   alyson:
-    image: gennyproject/alyson2:latest
-    container_name: alyson2 
+    image: gennyproject/alyson:latest
+    container_name: alyson 
     depends_on:
       - bridge
     ports:
