@@ -165,7 +165,7 @@ services:
     command: java -Djava.net.preferIPv6Addresses=false -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true -Dvertx.hazelcast.config=/cluster.xml -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /service.jar
 
   kie-server: 
-    image: jboss/kie-server:latest  
+    image: gennyproject/kie-server:latest  
     container_name: kie-server
     ports:
       - 8480:8080
@@ -187,31 +187,31 @@ services:
     networks:
       - mainproxy
 
-  mail:
-    image: tvial/docker-mailserver:latest
-    hostname: mail
-    domainname: domain.com
-    container_name: mail
-    ports:
-    - "25:25"
-    - "143:143"
-    - "587:587"
-    - "993:993"
-    volumes:
-    - maildata:/var/mail
-    - mailstate:/var/mail-state
-    - ./config/:/tmp/docker-mailserver/
-    environment:
-    - ENABLE_SPAMASSASSIN=1
-    - ENABLE_CLAMAV=1
-    - ENABLE_FAIL2BAN=1
-    - ENABLE_POSTGREY=1
-    - ONE_DIR=1
-    - DMS_DEBUG=0
-    cap_add:
-    - NET_ADMIN
-    networks:
-      - mainproxy
+#  mail:
+#    image: tvial/docker-mailserver:latest
+#    hostname: mail
+#    domainname: domain.com
+#    container_name: mail
+#    ports:
+#    - "25:25"
+#    - "143:143"
+#    - "587:587"
+#    - "993:993"
+#    volumes:
+#    - maildata:/var/mail
+#    - mailstate:/var/mail-state
+#    - ./config/:/tmp/docker-mailserver/
+#    environment:
+#    - ENABLE_SPAMASSASSIN=1
+#    - ENABLE_CLAMAV=1
+#    - ENABLE_FAIL2BAN=1
+#    - ENABLE_POSTGREY=1
+#    - ONE_DIR=1
+#    - DMS_DEBUG=0
+#    cap_add:
+#    - NET_ADMIN
+#    networks:
+#      - mainproxy
 
 
 volumes:
