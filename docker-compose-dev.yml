@@ -14,23 +14,19 @@ services:
 
   kieserverdb:
     image: mysql:latest 
-    container_name: mysql2
-    volumes:
-      - mysql_data:/var/lib/mysql
+    container_name: kieserverdb 
+#    volumes:
+#      - mysql_data:/var/lib/mysql
     networks:
       - mainproxy
     ports:
       - 3311:3306 
     restart: unless-stopped
     environment: 
-      - MYSQL_DB=kieserverdb
-      - MYSQL_DATABASE=kieserverdb
-      - MYSQL_PORT=3306
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=kieserverdb 
       - MYSQL_USER=genny
       - MYSQL_PASSWORD=password
-      - MYSQL_ROOT_PASSWORD=password
-      - MYSQL_ALLOW_EMPTY=
-      - MYSQL_RANDOM_ROOT_PASSWORD=no
 
   mysql:
     image: mysql:latest 
@@ -97,8 +93,9 @@ services:
       - MYSQL_USER=genny
       - MYSQL_PASSWORD=password
     ports:
-      - 8480:8080
+      - 8230:8230
     links:
+      - kieserverdb
       - mysql
 #      - qwanda-service
       - keycloak
