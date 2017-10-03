@@ -13,20 +13,20 @@ services:
     restart: always
 
   kieserverdb:
-    image: mysql:latest 
-    container_name: kieserverdb 
-#    volumes:
-#      - mysql_data:/var/lib/mysql
+    image: mysql:latest
+    container_name: kieserverdb
     networks:
       - mainproxy
     ports:
-      - 3311:3306 
-    restart: unless-stopped
-    environment: 
+      - 3320:3306
+    environment:
       - MYSQL_ROOT_PASSWORD=password
-      - MYSQL_DATABASE=kieserverdb 
+      - MYSQL_DATABASE=kieserverdb
       - MYSQL_USER=genny
       - MYSQL_PASSWORD=password
+
+
+
 
   mysql:
     image: mysql:latest 
