@@ -2,6 +2,15 @@ version: '2'
  
 services:
 
+  cassandra:
+    image: tobert/cassandra
+    container_name: cassandra
+    ports:
+      - "9160:9160"
+    networks:
+      - mainproxy
+    
+
   alyson:
     image: gennyproject/alyson:latest
     container_name: alyson 
@@ -27,6 +36,20 @@ services:
     ports:
       - 3310:3306 
     restart: unless-stopped
+
+  kieserverdb:
+    image: mysql:latest
+    container_name: kieserverdb 
+    networks:
+      - mainproxy
+    ports:
+      - 3320:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=kieserverdb
+      - MYSQL_USER=genny
+      - MYSQL_PASSWORD=password
+
  
  
   qwanda-service:
@@ -186,10 +209,11 @@ services:
     image: gennyproject/kie-server:latest  
     container_name: kie-server
     ports:
-      - 8480:8080
+      - 8230:8230
     links:
       - qwanda-service
       - keycloak
+      - kieserverdb
     networks:
       - mainproxy
 
