@@ -2,13 +2,13 @@ version: '2'
  
 services:
 
-  cassandra:
-    image: tobert/cassandra
-    container_name: cassandra
-    ports:
-      - "9160:9160"
-    networks:
-      - mainproxy
+#  cassandra:
+#    image: tobert/cassandra
+#    container_name: cassandra
+#    ports:
+#      - "9160:9160"
+#    networks:
+#      - mainproxy
     
 
   alyson:
@@ -37,18 +37,18 @@ services:
       - 3310:3306 
     restart: unless-stopped
 
-  kieserverdb:
-    image: mysql:latest
-    container_name: kieserverdb 
-    networks:
-      - mainproxy
-    ports:
-      - 3320:3306
-    environment:
-      - MYSQL_ROOT_PASSWORD=password
-      - MYSQL_DATABASE=kieserverdb
-      - MYSQL_USER=genny
-      - MYSQL_PASSWORD=password
+#  kieserverdb:
+#    image: mysql:latest
+#    container_name: kieserverdb 
+#    networks:
+#      - mainproxy
+#    ports:
+#      - 3320:3306
+#    environment:
+#      - MYSQL_ROOT_PASSWORD=password
+#      - MYSQL_DATABASE=kieserverdb
+#      - MYSQL_USER=genny
+#      - MYSQL_PASSWORD=password
 
  
  
@@ -92,23 +92,23 @@ services:
       - 8180:8080
     command: -b 0.0.0.0  
 
-  gennyql:
-    image: gennyproject/gennyql:latest
-    container_name:  gennyql 
-    volumes:
-      - ./realm:/opt/realm
-    env_file:
-      - ${ENV_FILE} 
-    depends_on:
-      - bridge 
-    networks:
-      - mainproxy
-    links:
-      - keycloak
-    ports:
-      - 5704:5704
-      - 15704:15704
-    command: java -Djava.net.preferIPv6Addresses=false -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true -Dvertx.hazelcast.config=/cluster.xml -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /service.jar
+#  gennyql:
+#    image: gennyproject/gennyql:latest
+#    container_name:  gennyql 
+#    volumes:
+#      - ./realm:/opt/realm
+#    env_file:
+#      - ${ENV_FILE} 
+#    depends_on:
+#      - bridge 
+#    networks:
+#      - mainproxy
+#    links:
+#      - keycloak
+#    ports:
+#      - 5704:5704
+#      - 15704:15704
+#    command: java -Djava.net.preferIPv6Addresses=false -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true -Dvertx.hazelcast.config=/cluster.xml -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /service.jar
    
 
   bridge:
@@ -186,48 +186,48 @@ services:
 #      - 8085:8085    
 #    command: java -Djava.net.preferIPv6Addresses=false -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true -Dvertx.hazelcast.config=/cluster.xml -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /service.jar
 #   
-  kieclient: 
-    image: gennyproject/kieclient:latest  
-    container_name: kieclient
-    links:
-      - kie-server 
-      - keycloak
-    env_file:
-      - ${ENV_FILE} 
-    volumes:
-      - ./realm:/opt/realm
-    depends_on:
-      - kie-server 
-    ports:
-      - 5703:5703
-      - 4003:15703 
-    networks:
-      - mainproxy
-    command: java -Djava.net.preferIPv6Addresses=false -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true -Dvertx.hazelcast.config=/cluster.xml -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /service.jar
+#  kieclient: 
+#    image: gennyproject/kieclient:latest  
+#    container_name: kieclient
+#    links:
+#      - kie-server 
+#      - keycloak
+#    env_file:
+#      - ${ENV_FILE} 
+#    volumes:
+#      - ./realm:/opt/realm
+#    depends_on:
+#      - kie-server 
+#    ports:
+#      - 5703:5703
+#      - 4003:15703 
+#    networks:
+#      - mainproxy
+#    command: java -Djava.net.preferIPv6Addresses=false -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true -Dvertx.hazelcast.config=/cluster.xml -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /service.jar
 
-  kie-server: 
-    image: gennyproject/kie-server:latest  
-    container_name: kie-server
-    ports:
-      - 8230:8230
-    links:
-      - qwanda-service
-      - keycloak
-      - kieserverdb
-    networks:
-      - mainproxy
-
-  kie-workbench: 
-    image: gennyproject/kie-wb:latest  
-    container_name: kie-workbench
-    ports:
-      - 8580:8080
-    links:
-      - qwanda-service:qwanda-service
-      - keycloak
-      - kie-server
-    networks:
-      - mainproxy
+#  kie-server: 
+#    image: gennyproject/kie-server:latest  
+#    container_name: kie-server
+#    ports:
+#      - 8230:8230
+#    links:
+#      - qwanda-service
+#      - keycloak
+#      - kieserverdb
+#    networks:
+#      - mainproxy
+#
+#  kie-workbench: 
+#    image: gennyproject/kie-wb:latest  
+#    container_name: kie-workbench
+#    ports:
+#      - 8580:8080
+#    links:
+#      - qwanda-service:qwanda-service
+#      - keycloak
+#      - kie-server
+#    networks:
+#      - mainproxy
 
 #  mail:
 #    image: tvial/docker-mailserver:latest
