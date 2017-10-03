@@ -126,7 +126,7 @@ services:
       - qwanda-service:qwanda-service
       - keycloak
     ports:
-      - 8081:8081  
+      - 8088:8088  
       - 5701:5701
       - 4001:15701  
     command: java -Djava.net.preferIPv6Addresses=false -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true -Dvertx.hazelcast.config=/cluster.xml -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /service.jar

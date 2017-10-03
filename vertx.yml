@@ -30,7 +30,7 @@ services:
     links:
       - keycloak
     ports:
-      - 8081:8081    
+      - 8088:8088    
       - 8082:8082    
   
   rulesservice:
