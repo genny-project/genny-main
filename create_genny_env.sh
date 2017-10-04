@@ -2,6 +2,10 @@
 
 ENV_FILE=$1
 ENV_FILE_APP=${ENV_FILE}.json
+
+
+if [ -z "${2}" ];then
+echo "No ip supplied, determining local host ip ...."
 myip=
 while IFS=$': \t' read -a line ;do
     [ -z "${line%inet}" ] && ip=${line[${#line[1]}>4?1:2]} &&
@@ -10,10 +14,18 @@ while IFS=$': \t' read -a line ;do
 
 
 if [ -z "${myip}" ]; then
-   myip=127.0.0.1 
+   myip=127.0.0.1
 fi
 
-#myip=192.168.64.6
+else
+echo "ip supplied... $2"
+myip=$2
+
+fi
+echo $myip
+
+docker volume create cassandra_data
+docker volume create mysql_data
 
 #create env file
 REACT_APP_PROJECT_NAME="Docker Genny"
