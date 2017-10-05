@@ -1,0 +1,93 @@
+version: '2'
+ 
+services:
+
+  cassandra:
+    image: tobert/cassandra
+    container_name: cassandra
+    volumes:
+      - cassandra_data:/data
+    ports:
+      - "9042:9042"
+    networks:
+      - mainproxy
+
+  keycloak:
+    image: gennyproject/keycloak:working
+    container_name: keycloak
+    env_file:
+      - ${ENV_FILE}
+    volumes:
+       - ./realm:/tmp/realm
+    networks:
+       - mainproxy
+    ports:
+       - 8180:8080
+    command: -b 0.0.0.0 
+
+  mysql:
+    image: mysql:latest 
+    container_name: mysql
+    env_file:
+      - ${ENV_FILE} 
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - mainproxy
+    ports:
+      - 3310:3306 
+    restart: unless-stopped
+ 
+  qwanda-service:
+    depends_on:
+      - mysql
+      - keycloak
+    command: ["./wait-for-it.sh"]
+    image: gennyproject/qwanda-service:latest 
+    container_name: qwanda-service 
+    volumes:
+      - ./realm:/opt/realm
+    env_file:
+      - ${ENV_FILE} 
+    environment:
+      - JAVA_OPT_KEYCLOAK_PATH=-Dswarm.keycloak.json.path=/realm/keycloak.json
+    ports:
+      - 8887:8787
+      - 8280:8080
+    links:
+      - mysql:mysql
+      - keycloak:keycloak
+    restart: unless-stopped
+    networks:
+      - mainproxy
+
+#  gennyql:
+#    image: gennyproject/gennyql:latest
+#    container_name:  gennyql 
+#    volumes:
+#      - ./realm:/opt/realm
+#    env_file:
+#      - ${ENV_FILE} 
+#    depends_on:
+#      - bridge 
+#    networks:
+#      - mainproxy
+#    links:
+#      - keycloak
+#    ports:
+#      - 5704:5704
+#      - 15704:15704
+#    command: java -Djava.net.preferIPv6Addresses=false -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true -Dvertx.hazelcast.config=/cluster.xml -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /service.jar
+
+volumes:
+  mysql_data:
+  cassandra_data:
+  maildata:
+    driver: local
+  mailstate:
+    driver: local 
+networks:
+  mainproxy:
+    driver: bridge 
+
+
