@@ -102,17 +102,17 @@ services:
     networks:
       - mainproxy
 
-  kie-workbench: 
-    image: jboss/jbpm-workbench:latest  
-    container_name: kie-workbench
-    ports:
-      - 8580:8080
-    links:
+#  kie-workbench: 
+#    image: jboss/jbpm-workbench:latest  
+#    container_name: kie-workbench
+#    ports:
+#      - 8580:8080
+#    links:
 #      - qwanda-service:qwanda-service
-      - keycloak
-      - kie-server
-    networks:
-      - mainproxy
+#      - keycloak
+#      - kie-server
+#    networks:
+#      - mainproxy
 
 #  mail:
 #    image: tvial/docker-mailserver:latest
