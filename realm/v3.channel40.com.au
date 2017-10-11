@@ -1,0 +1,10 @@
+{
+  "realm": "channel40",
+  "auth-server-url": "https://bouncer.channel40.com.au/auth",
+  "ssl-required": "external",
+  "resource": "channel40",
+  "credentials": {
+    "secret": "f12793be-4e8e-4cf6-8aba-9843a8a80e78"
+  },
+  "policy-enforcer": {}
+}
