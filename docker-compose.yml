@@ -95,7 +95,7 @@ services:
 #    command: ["./wait-for-it.sh"]
     container_name: qwanda-service 
     volumes:
-      - ./realm:/realm
+      - ./realm:/opt/jboss/wildfly/realm
     env_file:
       - ${ENV_FILE} 
 #    environment:
