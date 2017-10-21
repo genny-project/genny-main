@@ -1,5 +1,5 @@
 {
-  "realm": "genny",
+  "realm": "wildfly-swarm-keycloak-example",
 "auth-server-url": "http://localhost:8180/auth",
   "ssl-required": "none",
   "resource": "curl",
