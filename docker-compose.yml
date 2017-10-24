@@ -95,7 +95,7 @@ services:
 #    command: ["./wait-for-it.sh"]
     container_name: qwanda-service 
     volumes:
-      - ./realm:/opt/jboss/wildfly/realm
+      - ./realm:/opt/realm
     env_file:
       - ${ENV_FILE} 
 #    environment:
@@ -108,11 +108,8 @@ services:
 #      - ADMIN_PASSWORD=password
 #      - CORS_ALLOWED_ORIGINS="https://genny.outcome-hub.com,http://qwanda-service.outcome-hub.com,https://qwanda-service.outcome-hub.com,http://localhost:58080,http://localhost:3000,http://localhost:5000,http://localhost:8998"
     ports:
-      - "8998:8998"
-      - "50293:50293"
       - "8280:8080"
       - "8887:8787"
-      - "59990:9990"
     links:
       - mysql:mysql
       - keycloak:keycloak

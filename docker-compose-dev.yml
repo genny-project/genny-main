@@ -1,9 +1,11 @@
 version: '2'
  
 services:
+
+
   alyson:
     image: gennyproject/alyson:latest
-    container_name: alyson
+    container_name: alyson 
     ports:
       - "5000:80"
     env_file:
@@ -12,25 +14,21 @@ services:
       - mainproxy
     restart: always
 
-  kieserverdb:
-    image: mysql:latest
-    container_name: kieserverdb
-    networks:
-      - mainproxy
-    ports:
-      - 3320:3306
+  mysql:
+    image: mariadb
     environment:
-      - MYSQL_ROOT_PASSWORD=password
-      - MYSQL_DATABASE=kieserverdb
+      - MYSQL_URL=mysql
+      - MYSQL_DB=gennydb
+      - MYSQL_PORT=3306
+      - MYSQL_ALLOW_EMPTY=
+      - MYSQL_RANDOM_ROOT_PASSWORD=no
+      - MYSQL_DATABASE=gennydb
       - MYSQL_USER=genny
       - MYSQL_PASSWORD=password
-
-
-
-
-  mysql:
-    image: mysql:latest 
-    container_name: mysql
+      - MYSQL_ROOT_PASSWORD=password
+      - ADMIN_USERNAME=admin
+      - ADMIN_PASSWORD=password
+    container_name: mysql 
     env_file:
       - ${ENV_FILE} 
     volumes:
@@ -40,30 +38,7 @@ services:
     ports:
       - 3310:3306 
     restart: unless-stopped
- 
- 
-#  qwanda-service:
-#    depends_on:
-#      - mysql
-#      - keycloak
-#    command: ["./wait-for-it.sh"]
-#    image: gennyproject/qwanda-service:latest 
-#    container_name: qwanda-service 
-#    volumes:
-#      - ./realm:/opt/realm
-#    env_file:
-#      - ${ENV_FILE} 
-#    environment:
-#      - JAVA_OPT_KEYCLOAK_PATH=-Dswarm.keycloak.json.path=/realm/keycloak.json
-#    ports:
-#      - 8887:8787
-#      - 8280:8080
-#    links:
-#      - mysql:mysql
-#      - keycloak:keycloak
-#    restart: unless-stopped
-#    networks:
-#      - mainproxy
+
 
   keycloak:
     image: gennyproject/keycloak:working 
@@ -82,63 +57,34 @@ services:
       - 8180:8080
     command: -b 0.0.0.0  
 
-
-  kie-server: 
-    image: gennyproject/kie-server:latest  
-    container_name: kie-server
-    environment:
-      - MYSQL_DATABASE=kieserverdb
-      - MYSQL_PORT_3306_TCP_ADDR=kieserverdb
-      - MYSQL_PORT_3306_TCP_PORT=3306
-      - MYSQL_USER=genny
-      - MYSQL_PASSWORD=password
-    ports:
-      - 8230:8230
-    links:
-      - kieserverdb
+  qwanda-service:
+    depends_on:
       - mysql
-#      - qwanda-service
       - keycloak
+    image: gennyproject/wildfly-qwanda-service:jrebel
+    container_name: qwanda-service
+    volumes:
+      - ./realm:/opt/realm
+    env_file:
+      - ${ENV_FILE}
+#    environment:
+#      - MYSQL_PORT_3306_TCP_ADDR=gennydb
+#      - MYSQL_PORT_3306_TCP_PORT=3306
+#      - MYSQL_DATABASE=gennydb
+#      - MYSQL_USER=genny
+#      - MYSQL_PASSWORD=password
+#      - ADMIN_USERNAME=admin
+#      - ADMIN_PASSWORD=password
+#      - CORS_ALLOWED_ORIGINS="https://genny.outcome-hub.com,http://qwanda-service.outcome-hub.com,https://qwanda-service.outcome-hub.com,http://localhost:58080,http://localhost:3000,http://localhost:5000,http://localhost:8998"
+    ports:
+      - "8280:8080"
+      - "8887:8787"
+    links:
+      - mysql:mysql
+      - keycloak:keycloak
+    restart: unless-stopped
     networks:
       - mainproxy
-
-#  kie-workbench: 
-#    image: jboss/jbpm-workbench:latest  
-#    container_name: kie-workbench
-#    ports:
-#      - 8580:8080
-#    links:
-#      - qwanda-service:qwanda-service
-#      - keycloak
-#      - kie-server
-#    networks:
-#      - mainproxy
-
-#  mail:
-#    image: tvial/docker-mailserver:latest
-#    hostname: mail
-#    domainname: domain.com
-#    container_name: mail
-#    ports:
-#    - "25:25"
-#    - "143:143"
-#    - "587:587"
-#    - "993:993"
-#    volumes:
-#    - maildata:/var/mail
-#    - mailstate:/var/mail-state
-#    - ./config/:/tmp/docker-mailserver/
-#    environment:
-#    - ENABLE_SPAMASSASSIN=1
-#    - ENABLE_CLAMAV=1
-#    - ENABLE_FAIL2BAN=1
-#    - ENABLE_POSTGREY=1
-#    - ONE_DIR=1
-#    - DMS_DEBUG=0
-#    cap_add:
-#    - NET_ADMIN
-#    networks:
-#      - mainproxy
 
 
 volumes:
