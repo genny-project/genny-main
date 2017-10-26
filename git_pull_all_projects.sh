@@ -18,8 +18,9 @@ git_project social
 git_project kie-client 
 git_project qwanda 
 git_project qwanda-service 
+git_project wildfly-qwanda-service 
 git_project qwanda-utils 
-git_project alyson 
+git_project alyson-v2
 
 
 
