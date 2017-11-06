@@ -3,7 +3,7 @@
 function java_project {
  project=$1
  pushd .
- cd ..
+ cd ../$project 
  echo "Synching in project ${project}"
  if cd ${project}; then git pull; else git clone https://github.com/genny-project/${project} ${project}; fi
  mvn clean package -DskipTests=true
@@ -14,7 +14,7 @@ function java_project {
 function lib_project {
  project=$1
  pushd .
- cd ..
+ cd ../$project 
  echo "Synching in project ${project}"
  if cd ${project}; then git pull; else git clone https://github.com/genny-project/${project} ${project}; fi
  mvn clean install -DskipTests=true 
@@ -24,7 +24,7 @@ function lib_project {
 function react_project {
  project=$1
  pushd .
- cd ..
+ cd ../$project 
  echo "Synching in project ${project}"
  if cd ${project}; then git pull; else git clone https://github.com/genny-project/${project} ${project}; fi
  ./build-docker.sh 
@@ -32,15 +32,14 @@ function react_project {
 }
 echo "Git pull all Genny projects!"
 
+lib_project qwanda
+lib_project qwanda-utils
 java_project scoring
 java_project bridge
 java_project rulesservice
 java_project social
 java_project kie-client
-lib_project qwanda
-java_project qwanda-service
 java_project wildfly-qwanda-service
-lib_project qwanda-utils
 react_project alyson-v2
 
 
