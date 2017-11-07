@@ -165,6 +165,7 @@ services:
     env_file:
       - ${ENV_FILE} 
     ports:
+      - 8880:8080
       - 5702:5702
       - 4002:15702  
     # depends_on:
@@ -276,7 +277,51 @@ services:
 #    networks:
 #      - mainproxy
 
+  messages:
+    image: gennyproject/messages:latest
+    container_name:  messages 
+    volumes:
+      - ./realm:/opt/realm
+    links:
+      - qwanda-service:qwanda-service
+      - keycloak
+    env_file:
+      - ${ENV_FILE} 
+    ports:
+      - 8885:8080
+      - 5705:5705
+      - 4005:15705  
+    # depends_on:
+      # - bridge 
+      # - qwanda-service
+    networks:
+      - mainproxy
+    restart: always
+    command: java -Djava.net.preferIPv6Addresses=false -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true -Dvertx.hazelcast.config=/cluster.xml -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /service.jar
 
+  payments:
+    image: gennyproject/payments:latest
+    container_name:  payments 
+    volumes:
+      - ./realm:/opt/realm
+    links:
+      - qwanda-service:qwanda-service
+      - keycloak
+    env_file:
+      - ${ENV_FILE} 
+    ports:
+      - 8884:8080
+      - 5704:5704
+      - 4004:15704  
+    # depends_on:
+      # - bridge 
+      # - qwanda-service
+    networks:
+      - mainproxy
+    restart: always
+    command: java -Djava.net.preferIPv6Addresses=false -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true -Dvertx.hazelcast.config=/cluster.xml -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /service.jar
+
+volumes:
 volumes:
   mysql_data:
   maildata:
