@@ -168,7 +168,8 @@ services:
       - 8880:8080
       - 5702:5702
       - 4002:15702  
-    # depends_on:
+    depends_on:
+      - messages
       # - bridge 
       # - qwanda-service
     networks:
@@ -288,9 +289,11 @@ services:
     env_file:
       - ${ENV_FILE} 
     ports:
-      - 8885:8080
-      - 5705:5705
-      - 4005:15705  
+      - 5709:5709
+      - 4003:15709
+      #- 8885:8080
+      #- 5705:5705
+      #- 4005:15705  
     # depends_on:
       # - bridge 
       # - qwanda-service

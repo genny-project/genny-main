@@ -65,10 +65,30 @@ KIE_PASSWORD="kieserver1!"
 
 GOOGLE_CLIENT_SECRET="{\"installed\":{\"client_id\":\"260075856207-9d7a02ekmujr2bh7i53dro28n132iqhe.apps.googleusercontent.com\",\"project_id\":\"genny-sheets-181905\",\"auth_uri\":\"https:\/\/accounts.google.com\/o\/oauth2\/auth\",\"token_uri\":\"https:\/\/accounts.google.com\/o\/oauth2\/token\",\"auth_provider_x509_cert_url\":\"https:\/\/www.googleapis.com\/oauth2\/v1\/certs\",\"client_secret\":\"vgXEFRgQvh3_t_e5Hj-eb6IX\",\"redirect_uris\":[\"urn:ietf:wg:oauth:2.0:oob\",\"http:\/\/localhost\"]}}"
 
-GOOGLE_HOSTING_SHEET_ID="1HAppJufvePWSiSyvPkxNfZp6NHdB8PANeH1IJopdEsE"
+GOOGLE_SHEETID="1VSXJUn8_BHG1aW0DQrFDnvLjx_jxcNiD33QzqO5D-jc"
 
 DEVUSER=${USER}
 RULES_DIR=/opt/rules
+
+# Twilio test account credentials
+
+TWILIO_ACCOUNT_SID=AC6bd0bd2ecad9cc99d01a14942e0095a4
+TWILIO_AUTH_TOKEN=f5d7bc286e850b927876fa288a0b7be1
+
+TWILIO_SOURCE_PHONE=+61488807705
+
+# Email credentials
+
+EMAIL_USERNAME=
+EMAIL_PASSWORD=
+
+# Mail Transfer Protocol variables
+
+MAIL_SMTP_AUTH=true
+MAIL_SMTP_STARTTLS_ENABLE=true
+MAIL_SMTP_HOST=smtp.gmail.com
+MAIL_SMTP_PORT=587
+
 
 JAVA_OPTS="-Xms256m -Xmx512m -Djava.net.preferIPv4Stack=true"
 
@@ -76,7 +96,7 @@ JAVA_OPTS="-Xms256m -Xmx512m -Djava.net.preferIPv4Stack=true"
 echo "HOSTIP=${myip}" > $ENV_FILE
 echo "DEVUSER=${DEVUSER}" >> $ENV_FILE
 echo "" >> $ENV_FILE
-echo "GOOGLE_HOSTING_SHEET_ID=${GOOGLE_HOSTING_SHEET_ID}" >> $ENV_FILE
+echo "GOOGLE_SHEETID=${GOOGLE_SHEETID}" >> $ENV_FILE
 echo "GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}" >> $ENV_FILE
 echo "REACT_APP_PROJECT_NAME=${REACT_APP_PROJECT_NAME}" >> $ENV_FILE
 echo "REACT_APP_QWANDA_API_URL=${REACT_APP_QWANDA_API_URL}" >> $ENV_FILE
@@ -88,6 +108,19 @@ echo "REACT_APP_VERTX_SERVICE_API=${REACT_APP_VERTX_SERVICE_API}" >> $ENV_FILE
 echo "REACT_APP_VERTX_EVENTS_API=${REACT_APP_VERTX_EVENTS_API}" >> $ENV_FILE
 echo "REACT_APP_VERTX_CMDS_API=${REACT_APP_VERTX_CMDS_API}" >> $ENV_FILE
 echo "REACT_APP_VERTX_DATA_API=${REACT_APP_VERTX_DATA_API}" >> $ENV_FILE
+
+# Credentials for message
+echo "TWILIO_ACCOUNT_SID=${TWILIO_ACCOUNT_SID}" >> $ENV_FILE
+echo "TWILIO_AUTH_TOKEN=${TWILIO_AUTH_TOKEN}" >> $ENV_FILE
+echo "TWILIO_SOURCE_PHONE=${TWILIO_SOURCE_PHONE}" >> $ENV_FILE
+echo "EMAIL_USERNAME=${EMAIL_USERNAME}" >> $ENV_FILE
+echo "EMAIL_PASSWORD=${EMAIL_PASSWORD}" >> $ENV_FILE
+echo "MAIL_SMTP_AUTH=${MAIL_SMTP_AUTH}" >> $ENV_FILE
+echo "MAIL_SMTP_STARTTLS_ENABLE=${MAIL_SMTP_STARTTLS_ENABLE}" >> $ENV_FILE
+echo "MAIL_SMTP_HOST=${MAIL_SMTP_HOST}" >> $ENV_FILE
+echo "MAIL_SMTP_PORT=${MAIL_SMTP_PORT}" >> $ENV_FILE
+
+
 
 echo "" >> $ENV_FILE
 echo "KEYCLOAKPORT=${KEYCLOAK_PORT}" >> $ENV_FILE
