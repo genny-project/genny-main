@@ -57,35 +57,26 @@ services:
       - 8180:8080
     command: -b 0.0.0.0  
 
-#  qwanda-service:
-#    depends_on:
-#      - mysql
-#      - keycloak
-#    image: gennyproject/wildfly-qwanda-service:jrebel
-#    container_name: qwanda-service
-#    volumes:
-#      - ./realm:/opt/realm
-#    env_file:
-#      - ${ENV_FILE}
-##    environment:
-##      - MYSQL_PORT_3306_TCP_ADDR=gennydb
-##      - MYSQL_PORT_3306_TCP_PORT=3306
-##      - MYSQL_DATABASE=gennydb
-##      - MYSQL_USER=genny
-##      - MYSQL_PASSWORD=password
-##      - ADMIN_USERNAME=admin
-##      - ADMIN_PASSWORD=password
-##      - CORS_ALLOWED_ORIGINS="https://genny.outcome-hub.com,http://qwanda-service.outcome-hub.com,https://qwanda-service.outcome-hub.com,http://localhost:58080,http://localhost:3000,http://localhost:5000,http://localhost:8998"
-#    ports:
-#      - "8280:8080"
-#      - "8787:8787"
-#    links:
-#      - mysql:mysql
-#      - keycloak:keycloak
-#    restart: unless-stopped
-#    networks:
-#      - mainproxy
-#
+  qwanda-service:
+    depends_on:
+      - mysql
+      - keycloak
+    image: gennyproject/wildfly-qwanda-service:latest
+    container_name: qwanda-service
+    volumes:
+      - ./realm:/opt/realm
+    env_file:
+      - ${ENV_FILE}
+    ports:
+      - "8280:8080"
+      - "8887:8787"
+    links:
+      - mysql:mysql
+      - keycloak:keycloak
+    restart: unless-stopped
+    networks:
+      - mainproxy
+
 
 volumes:
   mysql_data:

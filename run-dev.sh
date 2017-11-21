@@ -16,3 +16,4 @@ fi
 
 
 ENV_FILE=$ENV_FILE docker-compose -f docker-compose-dev.yml up -d
+ENV_FILE=$ENV_FILE docker-compose -f docker-compose-dev.yml logs -f qwanda-service 
