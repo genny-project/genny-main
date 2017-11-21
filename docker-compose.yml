@@ -150,7 +150,8 @@ services:
       - 8880:8080
       - 5702:5702
       - 4002:15702  
-    # depends_on:
+    depends_on:
+      - messages
       # - bridge 
       # - qwanda-service
     networks:
@@ -174,6 +175,22 @@ services:
       - 8083:8083    
     command: java -Djava.net.preferIPv6Addresses=false -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true -Dvertx.hazelcast.config=/cluster.xml -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /service.jar
 
+  social:
+    image: gennyproject/social:latest
+    container_name: social 
+    volumes:
+      - ./realm:/opt/realm
+    env_file:
+      - ${ENV_FILE} 
+    networks:
+      - mainproxy
+    links:
+     - qwanda-service:qwanda-service
+      - keycloak
+    ports:
+      - 8083:8083    
+    command: java -Djava.net.preferIPv6Addresses=false -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true -Dvertx.hazelcast.config=/cluster.xml -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /service.jar
+#
 #  scoring:
 #    image: gennyproject/scoring:latest
 #    container_name: scoring 
@@ -270,12 +287,34 @@ services:
     env_file:
       - ${ENV_FILE} 
     ports:
-      - 8885:8080
-      - 5705:5705
-      - 4005:15705  
+      - 5709:5709 
+      - 4003:15709 
     depends_on:
       - bridge 
       - qwanda-service
+    networks:
+      - mainproxy
+    restart: always
+    command: java -Djava.net.preferIPv6Addresses=false -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true -Dvertx.hazelcast.config=/cluster.xml -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /service.jar
+
+  payments:
+    image: gennyproject/payments:latest
+    container_name:  payments 
+    volumes:
+      - ./realm:/opt/realm
+    links:
+      - qwanda-service:qwanda-service
+      - keycloak
+    env_file:
+      - ${ENV_FILE} 
+    ports:
+      - 8884:8080
+      - 5704:5704
+      - 4004:15704  
+    # depends_on:
+      # - bridge 
+      # - qwanda-service
+>>>>>>> 7faf414de6f09c96d172c01d4fe561630014b5b0
     networks:
       - mainproxy
     restart: always
