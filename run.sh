@@ -10,6 +10,8 @@ if [ $LOCAL_REALM_NAME ]; then
     echo  $LOCAL_REALM_NAME  >> $ENV_FILE
 fi
 
+./fetch_github_env.sh ${ENV_FILE}
+
 echo "HAZELCAST_XML=-Dvertx.hazelcast.config=./cluster.xml" >> ${ENV_FILE}
 
 ENV_FILE=$ENV_FILE docker-compose up -d
