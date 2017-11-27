@@ -13,11 +13,14 @@ echo "Git pull all Genny projects!"
 
 git_project scoring
 git_project bridge 
+git_project messages 
+git_project payments 
 git_project rulesservice 
 git_project social 
+git_project keycloak 
 git_project kie-client 
 git_project qwanda 
-git_project qwanda-service 
+git_project qwanda-services 
 git_project wildfly-qwanda-service 
 git_project qwanda-utils 
 git_project alyson-v2
