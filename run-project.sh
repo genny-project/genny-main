@@ -11,10 +11,14 @@ CREDENTIALS_GENNY="  ../credentials/credentials-genny"
 CREDENTIALS_OUTCOME="../credentials/credentials-outcome"
 
 CREDENTIALS="credentials"
-
+#GOOGLE_CREDENTIALS="google_credentials"
 if [ ! -d "$CREDENTIALS" ]; then
    mkdir ../$CREDENTIALS
 fi
+
+#if [ ! -d "$GOOGLE_CREDENTIALS" ]; then
+#   mkdir ../$GOOGLE_CREDENTIALS
+#fi
 
 if [ "$1" == "${OUTCOME}" ]; then
    if [ ! -d "$CREDENTIALS_OUTCOME" ]; then

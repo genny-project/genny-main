@@ -1,4 +1,4 @@
 genny.env
 genny.env.json
 env-conf
-google_credentials/*
+google_credentials/StoredCredential
