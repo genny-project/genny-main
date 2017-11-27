@@ -18,6 +18,7 @@ git_project payments
 git_project rulesservice 
 git_project social 
 git_project keycloak 
+git_project keycloak-themes
 git_project kie-client 
 git_project qwanda 
 git_project qwanda-services 

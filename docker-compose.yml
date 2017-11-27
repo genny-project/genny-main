@@ -111,8 +111,8 @@ services:
       - MYSQL_USERNAME=keycloak
       - MYSQL_PASSWORD=Outcome2016KeycloakAdmin
     volumes:
-      - /opt/jboss/backup:/opt/jboss/backup
-      - /opt/keycloak-themes/themes:/opt/jboss/keycloak/themes
+#      - /opt/jboss/backup:/opt/jboss/backup
+      - ../keycloak-themes/themes:/opt/jboss/keycloak/themes
       - ./realm:/tmp/realm
       #- ./realm:/tmp/realm
       #- ./keycloak-themes/themes:/opt/jboss/keycloak/themes
