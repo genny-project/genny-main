@@ -1,0 +1,7 @@
+version: '2'
+
+services:
+
+  qwanda-service:
+    volumes:
+      - ./google_credentials:/root/.credentials/sheets.googleapis.com-java-quickstart
