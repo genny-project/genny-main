@@ -2,3 +2,8 @@ genny.env
 genny.env.json
 env-conf
 google_credentials/StoredCredential
+realm/*.json
++realm/genny.json
++realm/curl.json
++realm/localhost
++realm/localhost.json
