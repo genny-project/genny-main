@@ -97,7 +97,7 @@ services:
       - mainproxy
 
   keycloak:
-    image: gennyproject/keycloak:latest
+    image: gennyproject/keycloak:working
     container_name: keycloak
     env_file:
       - ${ENV_FILE}

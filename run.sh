@@ -4,6 +4,13 @@ ENV_FILE=genny.env
 LOCAL_REALM_NAME="PROJECT_REALM=$2"
 
 ./create_genny_env.sh ${ENV_FILE} $1
+CREDENTIALS_GENNY="  ../credentials/credentials-genny"
+
+CREDENTIALS="credentials"
+
+if [ ! -d "$CREDENTIALS" ]; then
+   mkdir ../$CREDENTIALS
+fi
 
 #Add any dev env file if exists
 if [ $LOCAL_REALM_NAME ]; then
@@ -11,6 +18,13 @@ if [ $LOCAL_REALM_NAME ]; then
 fi
 
 ./fetch_github_env.sh ${ENV_FILE}
+
+if [ ! -d "$CREDENTIALS_GENNY" ]; then
+        cd ../$CREDENTIALS
+        git clone https://github.com/OutcomeLife/credentials-genny.git
+        cd -
+   cat "../credentials/credentials-genny/genny_conf.env" >> $ENV_FILE
+fi
 
 echo "HAZELCAST_XML=-Dvertx.hazelcast.config=./cluster.xml" >> ${ENV_FILE}
 
