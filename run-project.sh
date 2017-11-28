@@ -4,6 +4,10 @@ ENV_FILE=genny.env
 
 ./create_genny_env.sh ${ENV_FILE} 
 
+LOCAL_REALM_NAME="PROJECT_REALM=$1"
+echo  $LOCAL_REALM_NAME  >> $ENV_FILE
+
+
 OUTCOME="outcome"
 GENNY="genny"
 
