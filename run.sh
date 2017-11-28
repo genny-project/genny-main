@@ -21,7 +21,7 @@ fi
 
 if [ ! -d "$CREDENTIALS_GENNY" ]; then
         cd ../$CREDENTIALS
-        git clone https://github.com/OutcomeLife/credentials-genny.git
+        git clone https://github.com/genny-project/credentials-genny.git
         cd -
    cat "../credentials/credentials-genny/genny_conf.env" >> $ENV_FILE
 fi
