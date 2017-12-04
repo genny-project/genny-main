@@ -136,8 +136,8 @@ services:
       - keycloak
     ports:
       - 8088:8088  
-      - 5701:5701
-      - 4001:15701  
+#      - 5701:5701
+#      - 4001:15701  
     command: java -Dvertx.options.blockedThreadCheckInterval=2147483647 -Djava.net.preferIPv6Addresses=false -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true -Dvertx.hazelcast.config=/cluster.xml -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /service.jar
    
   rulesservice:
