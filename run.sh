@@ -4,13 +4,12 @@ ENV_FILE=genny.env
 LOCAL_REALM_NAME="PROJECT_REALM=$2"
 
 ./create_genny_env.sh ${ENV_FILE} $1
-#CREDENTIALS_GENNY="  ../credentials/credentials-genny"
 
-#CREDENTIALS="credentials"
-
-#if [ ! -d "$CREDENTIALS" ]; then
-#   mkdir ../$CREDENTIALS
-#fi
+CREDENTIALS="$HOME/.genny/credentials"
+CREDENTIALS_GENNY="$CREDENTIALS/credentials-genny"
+if [ ! -d "$CREDENTIALS" ]; then
+   mkdir -p $CREDENTIALS 
+fi
 
 #Add any dev env file if exists
 #if [ $LOCAL_REALM_NAME ]; then
@@ -19,12 +18,16 @@ LOCAL_REALM_NAME="PROJECT_REALM=$2"
 
 #./fetch_github_env.sh ${ENV_FILE}
 
-#if [ ! -d "$CREDENTIALS_GENNY" ]; then
-#        cd ../$CREDENTIALS
-#        git clone https://github.com/genny-project/credentials-genny.git
-#        cd -
-#   cat "../credentials/credentials-genny/genny_conf.env" >> $ENV_FILE
-#fi
+if [ ! -d "$CREDENTIALS_GENNY" ]; then
+        cd $CREDENTIALS
+        git clone https://github.com/genny-project/credentials-genny.git
+        cd -
+        cat "$CREDENTIALS_GENNY/genny_conf.env" >> $ENV_FILE
+        cat "$CREDENTIALS_GENNY/StoredCredential" > google_credentials/StoredCredential
+else
+   cat "$CREDENTIALS_GENNY/genny_conf.env" >> $ENV_FILE
+   cat "$CREDENTIALS_GENNY/StoredCredential" > google_credentials/StoredCredential
+fi
 
 echo "HAZELCAST_XML=-Dvertx.hazelcast.config=./cluster.xml" >> ${ENV_FILE}
 
