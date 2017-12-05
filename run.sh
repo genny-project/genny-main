@@ -12,9 +12,9 @@ if [ ! -d "$CREDENTIALS" ]; then
 fi
 
 #Add any dev env file if exists
-#if [ $LOCAL_REALM_NAME ]; then
-#    echo  $LOCAL_REALM_NAME  >> $ENV_FILE
-#fi
+if [ $LOCAL_REALM_NAME ]; then
+    echo  $LOCAL_REALM_NAME  >> $ENV_FILE
+fi
 
 #./fetch_github_env.sh ${ENV_FILE}
 
