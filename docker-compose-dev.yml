@@ -65,6 +65,7 @@ services:
     container_name: qwanda-service
     volumes:
       - ./realm:/opt/realm
+      - ./google_credentials:/root/.genny/sheets.googleapis.com-java-quickstart/
     env_file:
       - ${ENV_FILE}
     ports:
