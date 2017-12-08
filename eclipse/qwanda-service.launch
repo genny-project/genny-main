@@ -14,5 +14,5 @@
 <mapEntry key="port" value="8887"/>
 </mapAttribute>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="wildfly-qwanda-service"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_CONNECTOR_ID" value="org.eclipse.jdt.launching.socketAttachConnector"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_CONNECTOR_ID" value="org.drools.eclipse.launching.droolsVMConnector"/>
 </launchConfiguration>

@@ -274,6 +274,7 @@ services:
     container_name:  messages 
     volumes:
       - ./realm:/opt/realm
+      - ./google_credentials:/root/.genny/sheets.googleapis.com-java-quickstart/
     links:
       - qwanda-service:qwanda-service
       - keycloak

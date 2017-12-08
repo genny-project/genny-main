@@ -64,6 +64,8 @@ KIE_SERVER_URL="http://${myip}:8230/kie-server/services/rest/server"
 KIE_USERNAME="kieserver"
 KIE_PASSWORD="kieserver1!"
 
+MESSAGES_SHEETID=1zm0DbjYhZJm-An3C10vY_c4N6jeSgEhXNLrUtxBx5lE
+
 #GOOGLE_CLIENT_SECRET="{\"installed\":{\"client_id\":\"260075856207-9d7a02ekmujr2bh7i53dro28n132iqhe.apps.googleusercontent.com\",\"project_id\":\"genny-sheets-181905\",\"auth_uri\":\"https:\/\/accounts.google.com\/o\/oauth2\/auth\",\"token_uri\":\"https:\/\/accounts.google.com\/o\/oauth2\/token\",\"auth_provider_x509_cert_url\":\"https:\/\/www.googleapis.com\/oauth2\/v1\/certs\",\"client_secret\":\"vgXEFRgQvh3_t_e5Hj-eb6IX\",\"redirect_uris\":[\"urn:ietf:wg:oauth:2.0:oob\",\"http:\/\/localhost\"]}}"
 
 #GOOGLE_HOSTING_SHEET_ID="1HAppJufvePWSiSyvPkxNfZp6NHdB8PANeH1IJopdEsE"
@@ -124,8 +126,7 @@ echo "MAIL_SMTP_HOST=${MAIL_SMTP_HOST}" >> $ENV_FILE
 echo "MAIL_SMTP_PORT=${MAIL_SMTP_PORT}" >> $ENV_FILE
 echo "EMAIL_TARGET=${EMAIL_TARGET}" >> $ENV_FILE
 echo "TWILIO_TARGET_PHONE=${TWILIO_TARGET_PHONE}" >> $ENV_FILE
-
-
+echo "MESSAGES_SHEETID=${MESSAGES_SHEETID}" >> $ENV_FILE
 
 
 echo "" >> $ENV_FILE
