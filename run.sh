@@ -27,7 +27,10 @@ if [ ! -d "$CREDENTIALS_GENNY" ]; then
 else
    cat "$CREDENTIALS_GENNY/genny_conf.env" >> $ENV_FILE
    cat "$CREDENTIALS_GENNY/StoredCredential" > google_credentials/StoredCredential
+   cat "$CREDENTIALS_GENNY/drive/StoredCredential" > google_credentials/drive/StoredCredential
 fi
+
+
 
 echo "HAZELCAST_XML=-Dvertx.hazelcast.config=./cluster.xml" >> ${ENV_FILE}
 
