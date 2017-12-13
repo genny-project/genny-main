@@ -29,6 +29,14 @@ else
    cat "$CREDENTIALS_GENNY/StoredCredential" > google_credentials/StoredCredential
 fi
 
+echo "DEBUG=TRUE" >> ${ENV_FILE}
+echo "DEBUG_SUSPEND=y" >> ${ENV_FILE}
+echo "GENNYDEV=TRUE" >> ${ENV_FILE}
+
+#Add any dev env file if exists
+if [ $LOCAL_REALM_NAME ]; then
+    echo  $LOCAL_REALM_NAME  >> $ENV_FILE
+fi
 echo "HAZELCAST_XML=-Dvertx.hazelcast.config=./cluster.xml" >> ${ENV_FILE}
 
 ENV_FILE=$ENV_FILE docker-compose up -d
