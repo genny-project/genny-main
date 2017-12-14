@@ -145,11 +145,13 @@ services:
     container_name:  rulesservice 
     volumes:
       - ./realm:/opt/realm
-      - ./rules:/rules
+      - ./rules:/rules2
     links:
       - bridge:bridge
       - qwanda-service:qwanda-service
       - keycloak
+    environment:
+      -  RULES_DIR=/rules
     env_file:
       - ${ENV_FILE} 
 #    ports:
