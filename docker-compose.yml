@@ -300,18 +300,8 @@ services:
      container_name: payments
      ports:
        - "3456:3456"
-     links:
-       - mongo:mongo
      networks:
        - mainproxy
-    
-  mongo:
-    image: mongo:3.0-wheezy
-    container_name: payments_mongo
-    ports:
-      - "27017:27017"
-    networks:
-      - mainproxy
 
 
 volumes:
