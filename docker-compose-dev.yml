@@ -104,6 +104,13 @@ services:
     networks:
       - mainproxy
 
+  payments:
+     image: gennyproject/payments:latest
+     container_name: payments
+     ports:
+       - "3456:3456"
+     networks:
+       - mainproxy
 
 volumes:
   mysql_data:

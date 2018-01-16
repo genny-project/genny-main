@@ -8,5 +8,5 @@ docker pull gennyproject/social:latest
 docker pull gennyproject/alyson:latest
 docker pull gennyproject/scoring:latest
 docker pull gennyproject/messages:latest
-
+docker pull gennyproject/payments:latest
 
