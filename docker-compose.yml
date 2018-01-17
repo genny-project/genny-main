@@ -11,6 +11,19 @@ services:
 #      - mainproxy
     
 
+  alyson-dev:
+    image: gennyproject/alyson:dev
+    container_name: alyson-dev 
+    depends_on:
+      - bridge
+    ports:
+      - "15000:80"
+    env_file:
+      - ${ENV_FILE}
+    networks:
+      - mainproxy
+    restart: always
+
   alyson:
     image: gennyproject/alyson:latest
     container_name: alyson 
