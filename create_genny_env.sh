@@ -80,15 +80,15 @@ RULES_DIR=/opt/rules
 
 # Twilio test account credentials
 
-TWILIO_ACCOUNT_SID=
-TWILIO_AUTH_TOKEN=
+TWILIO_ACCOUNT_SID=ACce3f27260613a28b147ba62619bde66b
+TWILIO_AUTH_TOKEN=653ce7a458bbb0e2dbf82b4adecb0dbe
 
-TWILIO_SOURCE_PHONE=
+TWILIO_SOURCE_PHONE=+61400019407
 
 # Email credentials
 
-EMAIL_USERNAME=
-EMAIL_PASSWORD=
+EMAIL_USERNAME=genny.life.user@gmail.com
+EMAIL_PASSWORD=WelcomeToTheGenny121!!
 
 # Mail Transfer Protocol variables
 
