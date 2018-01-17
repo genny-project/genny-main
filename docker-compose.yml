@@ -311,6 +311,8 @@ services:
   payments:
      image: gennyproject/payments:latest
      container_name: payments
+     env_file:
+      - ${ENV_FILE}
      ports:
        - "3456:3456"
      networks:
