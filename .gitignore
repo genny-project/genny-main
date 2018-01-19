@@ -2,6 +2,7 @@ genny.env
 genny.env.json
 env-conf
 google_credentials/StoredCredential
+google_credentials/drive/StoredCredential
 realm/*.json
 .project
 +realm/genny.json

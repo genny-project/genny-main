@@ -1,5 +1,5 @@
 version: '2'
- 
+
 services:
 
 #  cassandra:
@@ -9,11 +9,11 @@ services:
 #      - "9160:9160"
 #    networks:
 #      - mainproxy
-    
+
 
   alyson-dev:
     image: gennyproject/alyson:dev
-    container_name: alyson-dev 
+    container_name: alyson-dev
     depends_on:
       - bridge
     ports:
@@ -26,7 +26,7 @@ services:
 
   alyson:
     image: gennyproject/alyson:latest
-    container_name: alyson 
+    container_name: alyson
     depends_on:
       - bridge
     ports:
@@ -51,20 +51,20 @@ services:
       - MYSQL_ROOT_PASSWORD=password
       - ADMIN_USERNAME=admin
       - ADMIN_PASSWORD=password
-    container_name: mysql 
+    container_name: mysql
     env_file:
-      - ${ENV_FILE} 
+      - ${ENV_FILE}
     volumes:
       - mysql_data:/var/lib/mysql
     networks:
       - mainproxy
     ports:
-      - 3310:3306 
+      - 3310:3306
     restart: unless-stopped
 
 #  kieserverdb:
 #    image: mysql:latest
-#    container_name: kieserverdb 
+#    container_name: kieserverdb
 #    networks:
 #      - mainproxy
 #    ports:
@@ -75,21 +75,21 @@ services:
 #      - MYSQL_USER=genny
 #      - MYSQL_PASSWORD=password
 
- 
- 
+
+
 
   qwanda-service:
     depends_on:
-      - mysql 
+      - mysql
       - keycloak
     #image: gennyproject/qwanda-service:latest
     image: gennyproject/wildfly-qwanda-service:latest
-    container_name: qwanda-service 
+    container_name: qwanda-service
     volumes:
       - ./realm:/opt/realm
       - ./google_credentials:/root/.genny/sheets.googleapis.com-java-quickstart/
     env_file:
-      - ${ENV_FILE} 
+      - ${ENV_FILE}
 #    environment:
 #      - MYSQL_PORT_3306_TCP_ADDR=gennydb
 #      - MYSQL_PORT_3306_TCP_PORT=3306
@@ -137,25 +137,25 @@ services:
 
   bridge:
     image: gennyproject/bridge:latest
-    container_name: bridge 
+    container_name: bridge
     volumes:
       - ./realm:/opt/realm
     env_file:
-      - ${ENV_FILE} 
+      - ${ENV_FILE}
     networks:
       - mainproxy
     links:
       - qwanda-service:qwanda-service
       - keycloak
     ports:
-      - 8088:8088  
+      - 8088:8088
 #      - 5701:5701
-#      - 4001:15701  
+#      - 4001:15701
     command: java -Dvertx.options.blockedThreadCheckInterval=2147483647 -Djava.net.preferIPv6Addresses=false -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true -Dvertx.hazelcast.config=/cluster.xml -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /service.jar
-   
+
   rulesservice:
     image: gennyproject/rulesservice:latest
-    container_name:  rulesservice 
+    container_name:  rulesservice
     volumes:
       - ./realm:/opt/realm
 #      - ./rules:/rules
@@ -167,14 +167,14 @@ services:
     environment:
       -  RULES_DIR=/rules
     env_file:
-      - ${ENV_FILE} 
+      - ${ENV_FILE}
 #    ports:
 #      - 8880:8080
 #      - 5702:5702
-#      - 4002:15702  
+#      - 4002:15702
     depends_on:
       - messages
-      - bridge 
+      - bridge
       - qwanda-service
     networks:
       - mainproxy
@@ -183,11 +183,11 @@ services:
 
   social:
     image: gennyproject/social:latest
-    container_name: social 
+    container_name: social
     volumes:
       - ./realm:/opt/realm
     env_file:
-      - ${ENV_FILE} 
+      - ${ENV_FILE}
     networks:
       - mainproxy
     links:
@@ -196,47 +196,47 @@ services:
     depends_on:
       - qwanda-service
     ports:
-      - 8083:8083    
+      - 8083:8083
     command: java -Djava.net.preferIPv6Addresses=false -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true -Dvertx.hazelcast.config=/cluster.xml -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /service.jar
 
 #
 #  scoring:
 #    image: gennyproject/scoring:latest
-#    container_name: scoring 
+#    container_name: scoring
 #    volumes:
 #      - ./realm:/opt/realm
 #    env_file:
-#      - ${ENV_FILE} 
+#      - ${ENV_FILE}
 #    networks:
 #      - mainproxy
 #    links:
 #      - qwanda-service:qwanda-service
 #      - keycloak
 #    ports:
-#      - 8085:8085    
+#      - 8085:8085
 #    command: java -Djava.net.preferIPv6Addresses=false -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true -Dvertx.hazelcast.config=/cluster.xml -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /service.jar
-#   
-#  kieclient: 
-#    image: gennyproject/kieclient:latest  
+#
+#  kieclient:
+#    image: gennyproject/kieclient:latest
 #    container_name: kieclient
 #    links:
-#      - kie-server 
+#      - kie-server
 #      - keycloak
 #    env_file:
-#      - ${ENV_FILE} 
+#      - ${ENV_FILE}
 #    volumes:
 #      - ./realm:/opt/realm
 #    depends_on:
-#      - kie-server 
+#      - kie-server
 #    ports:
 #      - 5703:5703
-#      - 4003:15703 
+#      - 4003:15703
 #    networks:
 #      - mainproxy
 #    command: java -Djava.net.preferIPv6Addresses=false -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true -Dvertx.hazelcast.config=/cluster.xml -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /service.jar
 
-#  kie-server: 
-#    image: gennyproject/kie-server:latest  
+#  kie-server:
+#    image: gennyproject/kie-server:latest
 #    container_name: kie-server
 #    ports:
 #      - 8230:8230
@@ -247,8 +247,8 @@ services:
 #    networks:
 #      - mainproxy
 #
-#  kie-workbench: 
-#    image: gennyproject/kie-wb:latest  
+#  kie-workbench:
+#    image: gennyproject/kie-wb:latest
 #    container_name: kie-workbench
 #    ports:
 #      - 8580:8080
@@ -287,7 +287,7 @@ services:
 
   messages:
     image: gennyproject/messages:latest
-    container_name:  messages 
+    container_name:  messages
     volumes:
       - ./realm:/opt/realm
       - ./google_credentials:/root/.genny/sheets.googleapis.com-java-quickstart/
@@ -296,12 +296,12 @@ services:
       - qwanda-service:qwanda-service
       - keycloak
     env_file:
-      - ${ENV_FILE} 
+      - ${ENV_FILE}
     ports:
-      - 5709:5709 
-      - 4003:15709 
+      - 5709:5709
+      - 4003:15709
     depends_on:
-      - bridge 
+      - bridge
       - qwanda-service
     networks:
       - mainproxy
@@ -318,15 +318,25 @@ services:
      networks:
        - mainproxy
 
+  uppy:
+     image: gennyproject/uppy:latest
+     container_name: uppy
+     env_file:
+       - ${ENV_FILE}
+     ports:
+       - "3020:3020"
+     networks:
+       - mainproxy
+
 
 volumes:
   mysql_data:
   maildata:
     driver: local
   mailstate:
-    driver: local 
+    driver: local
 networks:
   mainproxy:
-    driver: bridge 
+    driver: bridge
 
 #
