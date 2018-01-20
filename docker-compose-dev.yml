@@ -1,11 +1,11 @@
 version: '2'
- 
+
 services:
 
 
   alyson:
     image: gennyproject/alyson:latest
-    container_name: alyson 
+    container_name: alyson
     ports:
       - "5000:80"
     env_file:
@@ -28,15 +28,15 @@ services:
       - MYSQL_ROOT_PASSWORD=password
       - ADMIN_USERNAME=admin
       - ADMIN_PASSWORD=password
-    container_name: mysql 
+    container_name: mysql
     env_file:
-      - ${ENV_FILE} 
+      - ${ENV_FILE}
     volumes:
       - mysql_data:/var/lib/mysql
     networks:
       - mainproxy
     ports:
-      - 3310:3306 
+      - 3310:3306
     restart: unless-stopped
 
   keycloak:
@@ -67,21 +67,21 @@ services:
 
 
 #  keycloak:
-#    image: gennyproject/keycloak:latest 
-#    container_name: keycloak 
+#    image: gennyproject/keycloak:latest
+#    container_name: keycloak
 #    env_file:
-#      - ${ENV_FILE} 
+#      - ${ENV_FILE}
 #    environment:
 #      - IMPORTEXPORT=EXPORT
 #      - KEYCLOAK_USER=admin
 #      - KEYCLOAK_PASSWORD=admin
 #    volumes:
-#      - ./realm:/tmp/realm 
+#      - ./realm:/tmp/realm
 #    networks:
 #      - mainproxy
 #    ports:
 #      - 8180:8080
-#    command: -b 0.0.0.0  
+#    command: -b 0.0.0.0
 
   qwanda-service:
     depends_on:
@@ -114,14 +114,22 @@ services:
      networks:
        - mainproxy
 
+  layout-cache:
+    image: gennyproject/layout-cache:latest
+    container_name: layout-cache
+    environment:
+      - LAYOUT_REPO=https://github.com/genny-project/layouts.git
+    ports:
+      - "2223:2223"
+    networks:
+      - mainproxy
+
 volumes:
   mysql_data:
   maildata:
     driver: local
   mailstate:
-    driver: local 
+    driver: local
 networks:
   mainproxy:
-    driver: bridge 
-
-
+    driver: bridge

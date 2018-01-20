@@ -328,6 +328,16 @@ services:
      networks:
        - mainproxy
 
+  layout-cache:
+    image: gennyproject/layout-cache:latest
+    container_name: layout-cache
+    environment:
+      - LAYOUT_REPO=https://github.com/genny-project/layouts.git
+    ports:
+      - "2223:2223"
+    networks:
+      - mainproxy
+
 
 volumes:
   mysql_data:
