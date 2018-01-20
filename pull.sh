@@ -9,4 +9,4 @@ docker pull gennyproject/alyson:latest
 docker pull gennyproject/scoring:latest
 docker pull gennyproject/messages:latest
 docker pull gennyproject/payments:latest
-
+docker pull gennyproject/uppy:latest
