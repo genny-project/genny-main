@@ -10,6 +10,14 @@ services:
 #    networks:
 #      - mainproxy
 
+  bsb-lookup:
+    image: gennyproject/bsb-lookup:latest
+    container_name: bsb-lookup
+    ports:
+      - 3333:3333
+    networks:
+      - mainproxy
+    restart: always
 
   alyson-dev:
     image: gennyproject/alyson:dev
