@@ -101,6 +101,40 @@ while [ "$1" != "" ]; do
          ls | sed 's/credentials-/''/g'
          cd - &> /dev/null
          ;;
+      dev )
+         echo "started"
+         if [ -z "$project" ]; then 
+            echo "Running genny as default"
+            project="genny"
+         fi 
+
+         if [ $project == "genny" ] && [ ! -d "$CREDENTIALS_PROJECT-${project}" ]; then 
+            cd $CREDENTIALS_DIR
+            genny_repo_url="https://github.com/genny-project/credentials-genny.git"
+            git_output=$(git clone $genny_repo_url 2>&1)
+            repo_name_quotes=$(echo $git_output | sed 's/.*\('\''.*'\''\).*/\1/')            
+            repo_name_no_quotes=$(echo "$repo_name_quotes" | tr -d "'")
+            echo "Stored repo path $CREDENTIALS_PROJECT/$repo_name_no_quotes"
+            if [ $repo_name_no_quotes != "$CREDENTIALS-$project" ]; then 
+               mv "$repo_name_no_quotes" $CREDENTIALS-${project}
+               echo "Changing project name to $CREDENTIALS-$project"
+            fi  
+            cd - &> /dev/null
+	 fi 
+         ./create_genny_env.sh ${ENV_FILE} $ip >& /dev/null
+         
+         if [ -n $project_realm ]; then 
+            echo  "PROJECT_REALM=$project_realm" >> $ENV_FILE
+         fi
+         cat "$CREDENTIALS_PROJECT-$project/conf.env" >> $ENV_FILE
+         cat "$CREDENTIALS_PROJECT-$project/StoredCredential" > google_credentials/StoredCredential
+         echo "DEBUG=TRUE" >> ${ENV_FILE}
+         echo "DEBUG_SUSPEND=y" >> ${ENV_FILE}
+         echo "GENNYDEV=TRUE" >> ${ENV_FILE}
+         
+ENV_FILE=$ENV_FILE docker-compose -f docker-compose-dev.yml up -d
+ENV_FILE=$ENV_FILE docker-compose -f docker-compose-dev.yml logs -f qwanda-service 
+         ;;
       del | delete ) PROJECT="${2}"
          if [ ! -d "$CREDENTIALS_PROJECT-${PROJECT}" ]; then 
             echo "Project $PROJECT does not exist"
