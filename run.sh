@@ -1,1 +1,2 @@
-./run-setup.sh -p $0 -r $0 up
+echo $1
+./run-setup.sh -p $1 -r $1 up
