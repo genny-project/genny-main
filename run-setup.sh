@@ -12,6 +12,7 @@ DOCUMENTATION=\
 "\t-l, --list \tList projects that have been set up\n"\
 "\t-r, --realm \tSet project's realm\n"\
 "\t-d, --doc \tSheet id of hosting doc\n"\
+"\t-m, --minimal \tMinimal set of services\n"\
 "\t-n, --net \tSet Docker host ip address to set up env end points\n"\
 "\t-p, --project \t Project to run\n"\
 "\t-g, --github \tGithub repo URL\n"\
@@ -146,6 +147,40 @@ ENV_FILE=$ENV_FILE docker-compose -f docker-compose-dev.yml logs -f qwanda-servi
          cd - &> /dev/null
          shift
          ;;
+      min | minimal )
+         echo "started minimal"
+         if [ -z "$project" ]; then 
+            echo "Running genny as default"
+            project="genny"
+         fi 
+
+         if [ $project == "genny" ] && [ ! -d "$CREDENTIALS_PROJECT-${project}" ]; then 
+            cd $CREDENTIALS_DIR
+            genny_repo_url="https://github.com/genny-project/credentials-genny.git"
+            git_output=$(git clone $genny_repo_url 2>&1)
+            repo_name_quotes=$(echo $git_output | sed 's/.*\('\''.*'\''\).*/\1/')            
+            repo_name_no_quotes=$(echo "$repo_name_quotes" | tr -d "'")
+            echo "Stored repo path $CREDENTIALS_PROJECT/$repo_name_no_quotes"
+            if [ $repo_name_no_quotes != "$CREDENTIALS-$project" ]; then 
+               mv "$repo_name_no_quotes" $CREDENTIALS-${project}
+               echo "Changing project name to $CREDENTIALS-$project"
+            fi  
+            cd - &> /dev/null
+	 fi 
+         ./create_genny_env.sh ${ENV_FILE} $ip >& /dev/null
+         
+         if [ -n $project_realm ]; then 
+            echo  "PROJECT_REALM=$project_realm" >> $ENV_FILE
+         fi
+         cat "$CREDENTIALS_PROJECT-$project/conf.env" >> $ENV_FILE
+         cat "$CREDENTIALS_PROJECT-$project/StoredCredential" > google_credentials/StoredCredential
+        
+         
+ 
+         ENV_FILE=$ENV_FILE docker-compose -f docker-compose-min.yml up -d
+         ENV_FILE=$ENV_FILE docker-compose -f docker-compose-min.yml logs -f bridge rulesservice qwanda-service messages
+#         ENV_FILE=$ENV_FILE docker-compose logs -f bridge rulesservice social kie-client
+         ;;
       up | start )
          echo "started"
          if [ -z "$project" ]; then 
@@ -173,10 +208,12 @@ ENV_FILE=$ENV_FILE docker-compose -f docker-compose-dev.yml logs -f qwanda-servi
          fi
          cat "$CREDENTIALS_PROJECT-$project/conf.env" >> $ENV_FILE
          cat "$CREDENTIALS_PROJECT-$project/StoredCredential" > google_credentials/StoredCredential
+        
          
+ 
          ENV_FILE=$ENV_FILE docker-compose up -d
          ENV_FILE=$ENV_FILE docker-compose logs -f bridge rulesservice qwanda-service messages
-         ENV_FILE=$ENV_FILE docker-compose logs -f bridge rulesservice social kie-client
+#         ENV_FILE=$ENV_FILE docker-compose logs -f bridge rulesservice social kie-client
          ;;
       -h | --help )
          #printf "\t 
