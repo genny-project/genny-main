@@ -1,32 +1,6 @@
 version: '2'
 
 services:
-  bsb-lookup:
-    image: gennyproject/bsb-lookup:latest
-    container_name: bsb-lookup
-    ports:
-      - 3333:3333
-    networks:
-      - mainproxy
-    restart: always
-
-  redis:
-    image: redis:alpine
-    container_name: redis
-    networks:
-      - mainproxy
-    restart: always
-
-  alyson:
-    image: gennyproject/alyson:latest
-    container_name: alyson
-    ports:
-      - "5000:80"
-    env_file:
-      - ${ENV_FILE}
-    networks:
-      - mainproxy
-    restart: always
 
   mysql:
     image: mariadb
@@ -80,22 +54,6 @@ services:
     command: -b 0.0.0.0
 
 
-#  keycloak:
-#    image: gennyproject/keycloak:latest
-#    container_name: keycloak
-#    env_file:
-#      - ${ENV_FILE}
-#    environment:
-#      - IMPORTEXPORT=EXPORT
-#      - KEYCLOAK_USER=admin
-#      - KEYCLOAK_PASSWORD=admin
-#    volumes:
-#      - ./realm:/tmp/realm
-#    networks:
-#      - mainproxy
-#    ports:
-#      - 8180:8080
-#    command: -b 0.0.0.0
 
   qwanda-service:
     depends_on:
