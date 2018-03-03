@@ -16,6 +16,16 @@ services:
     networks:
       - mainproxy
     restart: always
+  
+  gennyql:
+    image: gennyproject/gennyql
+    container_name: gennyql
+    networks:
+      - mainproxy
+    ports:
+      - "8083:8084"
+    restart: always
+    command: java -jar /service.jar
 
   alyson:
     image: gennyproject/alyson:latest
