@@ -25,6 +25,7 @@ git_project qwanda-services
 git_project wildfly-qwanda-service
 git_project qwanda-utils
 git_project alyson-v2
+git_project qwanda-ql
 git_project uppy
 
 
