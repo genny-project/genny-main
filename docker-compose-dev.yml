@@ -10,12 +10,6 @@ services:
       - mainproxy
     restart: always
 
-  redis:
-    image: redis:alpine
-    container_name: redis
-    networks:
-      - mainproxy
-    restart: always
   
   gennyql:
     image: gennyproject/gennyql

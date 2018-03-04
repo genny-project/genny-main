@@ -10,6 +10,17 @@ services:
 #    networks:
 #      - mainproxy
 
+  gennyql:
+    image: gennyproject/gennyql
+    container_name: gennyql
+    networks:
+      - mainproxy
+    ports:
+      - "8083:8084"
+    restart: always
+    command: java -jar /service.jar
+
+
   bsb-lookup:
     image: gennyproject/bsb-lookup:latest
     container_name: bsb-lookup
