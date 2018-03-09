@@ -11,15 +11,15 @@ services:
     restart: always
 
   
-  gennyql:
-    image: gennyproject/gennyql
-    container_name: gennyql
-    networks:
-      - mainproxy
-    ports:
-      - "8083:8084"
-    restart: always
-    command: java -jar /service.jar
+#  gennyql:
+#    image: gennyproject/gennyql
+#    container_name: gennyql
+#    networks:
+#      - mainproxy
+#    ports:
+#      - "8083:8084"
+#    restart: always
+#    command: java -jar /service.jar
 
   alyson:
     image: gennyproject/alyson:latest
@@ -115,6 +115,7 @@ services:
     ports:
       - "8280:8080"
       - "8887:8787"
+#      - "5701:5701"
     links:
       - mysql:mysql
       - keycloak:keycloak
