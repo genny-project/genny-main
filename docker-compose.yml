@@ -16,7 +16,7 @@ services:
     networks:
       - mainproxy
     ports:
-      - "8083:8084"
+      - "8084:8084"
     restart: always
     command: java -jar /service.jar
 
