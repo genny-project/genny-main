@@ -102,7 +102,7 @@ services:
       - mysql
       - keycloak
     #image: gennyproject/qwanda-service:latest
-    image: gennyproject/wildfly-qwanda-service:latest
+    image: gennyproject/wildfly-qwanda-service:byron
     container_name: qwanda-service
     volumes:
       - ./realm:/opt/realm
@@ -155,7 +155,7 @@ services:
     command: -b 0.0.0.0
 
   bridge:
-    image: gennyproject/bridge:latest
+    image: gennyproject/bridge:byron
     container_name: bridge
     volumes:
       - ./realm:/opt/realm
@@ -173,7 +173,7 @@ services:
     command: java -Dvertx.options.blockedThreadCheckInterval=2147483647 -jar /service.jar -cluster
 
   rulesservice:
-    image: gennyproject/rulesservice:latest
+    image: gennyproject/rulesservice:byron
     container_name:  rulesservice
     volumes:
       - ./realm:/opt/realm
