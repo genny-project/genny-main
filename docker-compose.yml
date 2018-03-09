@@ -170,7 +170,7 @@ services:
       - 8088:8088
 #      - 5701:5701
 #      - 4001:15701
-    command: java -Dvertx.options.blockedThreadCheckInterval=2147483647 -Djava.net.preferIPv6Addresses=false -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true -Dvertx.hazelcast.config=/cluster.xml -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /service.jar -cluster
+    command: java -Dvertx.options.blockedThreadCheckInterval=2147483647 -jar /service.jar -cluster
 
   rulesservice:
     image: gennyproject/rulesservice:latest
@@ -198,7 +198,7 @@ services:
     networks:
       - mainproxy
     restart: always
-    command: java  -Dvertx.options.blockedThreadCheckInterval=2147483647 -Djava.net.preferIPv6Addresses=false -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true -Dvertx.hazelcast.config=/cluster.xml -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /service.jar -cluster
+    command: java  -Dvertx.options.blockedThreadCheckInterval=2147483647 -jar /service.jar -cluster
 
   social:
     image: gennyproject/social:latest
