@@ -101,7 +101,7 @@ services:
     depends_on:
       - mysql
       - keycloak
-    image: gennyproject/qwanda-service:latest
+    image: gennyproject/wildfly-qwanda-service:latest
     container_name: qwanda-service
     volumes:
       - ./realm:/opt/realm
