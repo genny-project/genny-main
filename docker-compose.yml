@@ -1,6 +1,11 @@
 version: '2'
 
 services:
+  imageproxy:
+    image: willnorris/imageproxy:v0.7.0
+    ports:
+      - "46243:8080"
+    command: -cache /tmp/imageproxy -addr 0.0.0.0:8080 -scaleUp true
 
 #  cassandra:
 #    image: tobert/cassandra
@@ -10,38 +15,38 @@ services:
 #    networks:
 #      - mainproxy
 
-  gennyql:
-    image: gennyproject/gennyql
-    container_name: gennyql
-    networks:
-      - mainproxy
-    ports:
-      - "8084:8084"
-    restart: always
-    command: java -jar /service.jar
+#  gennyql:
+#    image: gennyproject/gennyql
+#    container_name: gennyql
+#    networks:
+#      - mainproxy
+#    ports:
+#      - "8084:8084"
+#    restart: always
+#    command: java -jar /service.jar
 
 
-  bsb-lookup:
-    image: gennyproject/bsb-lookup:latest
-    container_name: bsb-lookup
-    ports:
-      - 3333:3333
-    networks:
-      - mainproxy
-    restart: always
+#  bsb-lookup:
+#    image: gennyproject/bsb-lookup:latest
+#    container_name: bsb-lookup
+#    ports:
+#      - 3333:3333
+#    networks:
+#      - mainproxy
+#    restart: always
 
-  alyson-dev:
-    image: gennyproject/alyson:dev
-    container_name: alyson-dev
-    depends_on:
-      - bridge
-    ports:
-      - "15000:80"
-    env_file:
-      - ${ENV_FILE}
-    networks:
-      - mainproxy
-    restart: always
+#  alyson-dev:
+#    image: gennyproject/alyson:dev
+#    container_name: alyson-dev
+#    depends_on:
+#      - bridge
+#    ports:
+#      - "15000:80"
+#    env_file:
+#      - ${ENV_FILE}
+#    networks:
+#      - mainproxy
+#    restart: always
 
   alyson:
     image: gennyproject/alyson:latest
@@ -73,7 +78,7 @@ services:
     container_name: mysql
     env_file:
       - ${ENV_FILE}
-    volumes:
+`    volumes:
       - mysql_data:/var/lib/mysql
     networks:
       - mainproxy
@@ -186,7 +191,8 @@ services:
       -  RULES_DIR=/rules
     env_file:
       - ${ENV_FILE}
-#    ports:
+    ports:
+       - 8089:8089
 #      - 8880:8080
 #      - 5702:5702
 #      - 4002:15702
@@ -217,41 +223,6 @@ services:
       - 8083:8083
     command: java -Djava.net.preferIPv6Addresses=false -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true -Dvertx.hazelcast.config=/cluster.xml -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /service.jar
 
-#
-#  scoring:
-#    image: gennyproject/scoring:latest
-#    container_name: scoring
-#    volumes:
-#      - ./realm:/opt/realm
-#    env_file:
-#      - ${ENV_FILE}
-#    networks:
-#      - mainproxy
-#    links:
-#      - qwanda-service:qwanda-service
-#      - keycloak
-#    ports:
-#      - 8085:8085
-#    command: java -Djava.net.preferIPv6Addresses=false -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true -Dvertx.hazelcast.config=/cluster.xml -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /service.jar
-#
-#  kieclient:
-#    image: gennyproject/kieclient:latest
-#    container_name: kieclient
-#    links:
-#      - kie-server
-#      - keycloak
-#    env_file:
-#      - ${ENV_FILE}
-#    volumes:
-#      - ./realm:/opt/realm
-#    depends_on:
-#      - kie-server
-#    ports:
-#      - 5703:5703
-#      - 4003:15703
-#    networks:
-#      - mainproxy
-#    command: java -Djava.net.preferIPv6Addresses=false -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true -Dvertx.hazelcast.config=/cluster.xml -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /service.jar
 
 #  kie-server:
 #    image: gennyproject/kie-server:latest
