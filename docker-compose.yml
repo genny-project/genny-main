@@ -160,7 +160,7 @@ services:
 
   bridge:
     image: gennyproject/bridge:latest
-    container_name: bridge
+#    container_name: bridge
     volumes:
       - ./realm:/opt/realm
     env_file:
@@ -178,7 +178,7 @@ services:
 
   rulesservice:
     image: gennyproject/rulesservice:latest
-    container_name:  rulesservice
+#    container_name:  rulesservice
     volumes:
       - ./realm:/opt/realm
 #      - ./rules:/rules
@@ -191,8 +191,8 @@ services:
       -  RULES_DIR=/rules
     env_file:
       - ${ENV_FILE}
-    ports:
-       - 8089:8089
+#    ports:
+#       - 8089:8089
 #      - 8880:8080
 #      - 5702:5702
 #      - 4002:15702
