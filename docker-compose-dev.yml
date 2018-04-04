@@ -1,25 +1,25 @@
 version: '2'
 
 services:
-  bsb-lookup:
-    image: gennyproject/bsb-lookup:latest
-    container_name: bsb-lookup
-    ports:
-      - 3333:3333
-    networks:
-      - mainproxy
-    restart: always
+#  bsb-lookup:
+#    image: gennyproject/bsb-lookup:latest
+#    container_name: bsb-lookup
+#    ports:
+#      - 3333:3333
+#    networks:
+#      - mainproxy
+#    restart: always
 
   
-  gennyql:
-    image: gennyproject/gennyql
-    container_name: gennyql
-    networks:
-      - mainproxy
-    ports:
-      - "8083:8084"
-    restart: always
-    command: java -jar /service.jar
+#  gennyql:
+#    image: gennyproject/gennyql
+#    container_name: gennyql
+#    networks:
+#      - mainproxy
+#    ports:
+#      - "8083:8084"
+#    restart: always
+#    command: java -jar /service.jar
 
   alyson:
     image: gennyproject/alyson:latest
@@ -33,7 +33,8 @@ services:
     restart: always
 
   mysql:
-    image: mariadb
+    image: channel40/mysql:latest 
+    #image: mariadb
     environment:
       - MYSQL_URL=mysql
       - MYSQL_DB=gennydb
@@ -72,11 +73,8 @@ services:
       - MYSQL_USERNAME=keycloak
       - MYSQL_PASSWORD=Outcome2016KeycloakAdmin
     volumes:
-#      - /opt/jboss/backup:/opt/jboss/backup
       - ../keycloak-themes/themes:/opt/jboss/keycloak/themes
       - ./realm:/tmp/realm
-      #- ./realm:/tmp/realm
-      #- ./keycloak-themes/themes:/opt/jboss/keycloak/themes
     networks:
       - mainproxy
     ports:
@@ -84,22 +82,6 @@ services:
     command: -b 0.0.0.0
 
 
-#  keycloak:
-#    image: gennyproject/keycloak:latest
-#    container_name: keycloak
-#    env_file:
-#      - ${ENV_FILE}
-#    environment:
-#      - IMPORTEXPORT=EXPORT
-#      - KEYCLOAK_USER=admin
-#      - KEYCLOAK_PASSWORD=admin
-#    volumes:
-#      - ./realm:/tmp/realm
-#    networks:
-#      - mainproxy
-#    ports:
-#      - 8180:8080
-#    command: -b 0.0.0.0
 
   qwanda-service:
     depends_on:
@@ -115,6 +97,7 @@ services:
     ports:
       - "8280:8080"
       - "8887:8787"
+  #    - "5706:5701"
     links:
       - mysql:mysql
       - keycloak:keycloak

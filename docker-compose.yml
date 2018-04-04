@@ -1,6 +1,11 @@
 version: '2'
 
 services:
+  imageproxy:
+    image: willnorris/imageproxy:v0.7.0
+    ports:
+      - "46243:8080"
+    command: -cache /tmp/imageproxy -addr 0.0.0.0:8080 -scaleUp true
 
 #  cassandra:
 #    image: tobert/cassandra
@@ -10,38 +15,38 @@ services:
 #    networks:
 #      - mainproxy
 
-  gennyql:
-    image: gennyproject/gennyql
-    container_name: gennyql
-    networks:
-      - mainproxy
-    ports:
-      - "8083:8084"
-    restart: always
-    command: java -jar /service.jar
+#  gennyql:
+#    image: gennyproject/gennyql
+#    container_name: gennyql
+#    networks:
+#      - mainproxy
+#    ports:
+#      - "8084:8084"
+#    restart: always
+#    command: java -jar /service.jar
 
 
-  bsb-lookup:
-    image: gennyproject/bsb-lookup:latest
-    container_name: bsb-lookup
-    ports:
-      - 3333:3333
-    networks:
-      - mainproxy
-    restart: always
+#  bsb-lookup:
+#    image: gennyproject/bsb-lookup:latest
+#    container_name: bsb-lookup
+#    ports:
+#      - 3333:3333
+#    networks:
+#      - mainproxy
+#    restart: always
 
-  alyson-dev:
-    image: gennyproject/alyson:dev
-    container_name: alyson-dev
-    depends_on:
-      - bridge
-    ports:
-      - "15000:80"
-    env_file:
-      - ${ENV_FILE}
-    networks:
-      - mainproxy
-    restart: always
+#  alyson-dev:
+#    image: gennyproject/alyson:dev
+#    container_name: alyson-dev
+#    depends_on:
+#      - bridge
+#    ports:
+#      - "15000:80"
+#    env_file:
+#      - ${ENV_FILE}
+#    networks:
+#      - mainproxy
+#    restart: always
 
   alyson:
     image: gennyproject/alyson:latest
@@ -101,7 +106,6 @@ services:
     depends_on:
       - mysql
       - keycloak
-    #image: gennyproject/qwanda-service:latest
     image: gennyproject/wildfly-qwanda-service:latest
     container_name: qwanda-service
     volumes:
@@ -156,7 +160,7 @@ services:
 
   bridge:
     image: gennyproject/bridge:latest
-    container_name: bridge
+#    container_name: bridge
     volumes:
       - ./realm:/opt/realm
     env_file:
@@ -170,11 +174,11 @@ services:
       - 8088:8088
 #      - 5701:5701
 #      - 4001:15701
-    command: java -Dvertx.options.blockedThreadCheckInterval=2147483647 -Djava.net.preferIPv6Addresses=false -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true -Dvertx.hazelcast.config=/cluster.xml -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /service.jar -cluster
+    command: java -Dvertx.options.blockedThreadCheckInterval=2147483647 -jar /service.jar -cluster
 
   rulesservice:
     image: gennyproject/rulesservice:latest
-    container_name:  rulesservice
+#    container_name:  rulesservice
     volumes:
       - ./realm:/opt/realm
 #      - ./rules:/rules
@@ -188,6 +192,7 @@ services:
     env_file:
       - ${ENV_FILE}
 #    ports:
+#       - 8089:8089
 #      - 8880:8080
 #      - 5702:5702
 #      - 4002:15702
@@ -198,7 +203,7 @@ services:
     networks:
       - mainproxy
     restart: always
-    command: java  -Dvertx.options.blockedThreadCheckInterval=2147483647 -Djava.net.preferIPv6Addresses=false -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true -Dvertx.hazelcast.config=/cluster.xml -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /service.jar -cluster
+    command: java  -Dvertx.options.blockedThreadCheckInterval=2147483647 -jar /service.jar -cluster
 
   social:
     image: gennyproject/social:latest
@@ -218,41 +223,6 @@ services:
       - 8083:8083
     command: java -Djava.net.preferIPv6Addresses=false -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true -Dvertx.hazelcast.config=/cluster.xml -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /service.jar
 
-#
-#  scoring:
-#    image: gennyproject/scoring:latest
-#    container_name: scoring
-#    volumes:
-#      - ./realm:/opt/realm
-#    env_file:
-#      - ${ENV_FILE}
-#    networks:
-#      - mainproxy
-#    links:
-#      - qwanda-service:qwanda-service
-#      - keycloak
-#    ports:
-#      - 8085:8085
-#    command: java -Djava.net.preferIPv6Addresses=false -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true -Dvertx.hazelcast.config=/cluster.xml -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /service.jar
-#
-#  kieclient:
-#    image: gennyproject/kieclient:latest
-#    container_name: kieclient
-#    links:
-#      - kie-server
-#      - keycloak
-#    env_file:
-#      - ${ENV_FILE}
-#    volumes:
-#      - ./realm:/opt/realm
-#    depends_on:
-#      - kie-server
-#    ports:
-#      - 5703:5703
-#      - 4003:15703
-#    networks:
-#      - mainproxy
-#    command: java -Djava.net.preferIPv6Addresses=false -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true -Dvertx.hazelcast.config=/cluster.xml -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /service.jar
 
 #  kie-server:
 #    image: gennyproject/kie-server:latest
