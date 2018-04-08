@@ -148,7 +148,7 @@ services:
     volumes:
       - realm:/opt/realm
       - google_credentials:/root/.genny/sheets.googleapis.com-java-quickstart/
-      - google_credentials/drive:/root/.genny/credentials/credentials-genny/drive/
+      - google_credentials:/root/.genny/credentials/credentials-genny/
     links:
       - qwanda-service:qwanda-service
       - keycloak
