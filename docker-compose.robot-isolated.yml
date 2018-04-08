@@ -194,6 +194,15 @@ services:
     networks:
       - mainproxy
 
+volumes:
+  realm:
+    driver: local
+  google_credentials:
+    driver: local
+  maildata:
+    driver: local
+  mailstate:
+    driver: local
 networks:
   mainproxy:
     driver: bridge
