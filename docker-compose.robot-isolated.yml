@@ -51,8 +51,6 @@ services:
       - ADMIN_PASSWORD=password
     env_file:
       - ${ENV_FILE}
-    volumes:
-      - /var/lib/mysql:/var/lib/mysql
     networks:
       - mainproxy
     restart: unless-stopped
@@ -64,8 +62,8 @@ services:
     #image: gennyproject/qwanda-service:latest
     image: gennyproject/wildfly-qwanda-service:latest
     volumes:
-      - ./realm:/opt/realm
-      - ./google_credentials:/root/.genny/sheets.googleapis.com-java-quickstart/
+      - realm:/opt/realm
+      - google_credentials:/root/.genny/sheets.googleapis.com-java-quickstart/
     env_file:
       - ${ENV_FILE}
     links:
@@ -89,11 +87,8 @@ services:
       - MYSQL_USERNAME=keycloak
       - MYSQL_PASSWORD=Outcome2016KeycloakAdmin
     volumes:
-#      - /opt/jboss/backup:/opt/jboss/backup
       - ../keycloak-themes/themes:/opt/jboss/keycloak/themes
-      - ./realm:/tmp/realm
-      #- ./realm:/tmp/realm
-      #- ./keycloak-themes/themes:/opt/jboss/keycloak/themes
+      - realm:/tmp/realm
     networks:
       - mainproxy
     command: -b 0.0.0.0
@@ -101,7 +96,7 @@ services:
   bridge:
     image: gennyproject/bridge:534
     volumes:
-      - ./realm:/opt/realm
+      - realm:/opt/realm
     env_file:
       - ${ENV_FILE}
     networks:
@@ -114,9 +109,7 @@ services:
   rulesservice:
     image: gennyproject/rulesservice:latest
     volumes:
-      - ./realm:/opt/realm
-#      - ./rules:/rules
-      - ./rules:/rules2
+      - realm:/opt/realm
     links:
       - bridge:bridge
       - qwanda-service:qwanda-service
@@ -137,7 +130,7 @@ services:
   social:
     image: gennyproject/social:latest
     volumes:
-      - ./realm:/opt/realm
+      - realm:/opt/realm
     env_file:
       - ${ENV_FILE}
     networks:
@@ -153,9 +146,9 @@ services:
   messages:
     image: gennyproject/messages:latest
     volumes:
-      - ./realm:/opt/realm
-      - ./google_credentials:/root/.genny/sheets.googleapis.com-java-quickstart/
-      - ./google_credentials/drive:/root/.genny/credentials/credentials-genny/drive/
+      - realm:/opt/realm
+      - google_credentials:/root/.genny/sheets.googleapis.com-java-quickstart/
+      - google_credentials/drive:/root/.genny/credentials/credentials-genny/drive/
     links:
       - qwanda-service:qwanda-service
       - keycloak
@@ -201,14 +194,6 @@ services:
     networks:
       - mainproxy
 
-
-
-volumes:
-  mysql_data:
-  maildata:
-    driver: local
-  mailstate:
-    driver: local
 networks:
   mainproxy:
     driver: bridge
