@@ -1,4 +1,4 @@
-version: '2'
+version: '2.0'
 
 services:
 #  bsb-lookup:
@@ -126,6 +126,13 @@ services:
       - mainproxy
 
 
+  camelot-pdfgenerator:
+    image: matthayward1997/camelot:latest
+    container_name: camelot-pdfgenerator
+    ports:
+      - "7331:7331"
+    networks:
+      - mainproxy
 
 volumes:
   mysql_data:
