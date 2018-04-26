@@ -7,8 +7,9 @@
 <listEntry value="4"/>
 </listAttribute>
 <mapAttribute key="org.eclipse.debug.core.environmentVariables">
+<mapEntry key="DEVUSER" value="acrow"/>
 <mapEntry key="GENNYDEV" value="true"/>
-<mapEntry key="HOSTIP" value="10.1.121.57"/>
+<mapEntry key="HOSTIP" value="10.1.120.104"/>
 <mapEntry key="REACT_APP_QWANDA_API_URL" value="http://localhost:8280"/>
 <mapEntry key="REACT_APP_VERTX_URL" value="http://localhost:8088/frontend"/>
 </mapAttribute>
@@ -24,5 +25,5 @@
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="run life.genny.social.ServiceVerticle —redeploy=**/*.java —launcher-class=io.vertx.core.Launcher"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="social"/>
 <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.m2e.launchconfig.sourcepathProvider"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="${jrebel_args}  -Dvertx.options.blockedThreadCheckInterval=2147483647"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="${jrebel_args:org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.launching.macosx.MacOSXType/Java SE 8 [1.8.0_152]}  -Dvertx.options.blockedThreadCheckInterval=2147483647"/>
 </launchConfiguration>

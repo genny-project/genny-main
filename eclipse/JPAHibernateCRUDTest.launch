@@ -27,5 +27,5 @@
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="life.genny.JPAHibernateCRUDTest"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="qwanda-services"/>
 <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.m2e.launchconfig.sourcepathProvider"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="${jrebel_args} -ea"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="${jrebel_args:org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.launching.macosx.MacOSXType/Java SE 8 [1.8.0_152]} -ea"/>
 </launchConfiguration>

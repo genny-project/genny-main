@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="org.eclipse.jdt.junit.launchconfig">
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
-<listEntry value="/qwanda-services/src/test/java/life/genny/JPAHibernateCRUDTest.java"/>
+<listEntry value="/qwanda-services/src/test/java/life/genny/SearchTest.java"/>
 </listAttribute>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
 <listEntry value="1"/>
 </listAttribute>
 <mapAttribute key="org.eclipse.debug.core.environmentVariables">
-<mapEntry key="GOOGLE_CLIENT_SECRET" value="{&quot;installed&quot;:{&quot;client_id&quot;:&quot;260075856207-9d7a02ekmujr2bh7i53dro28n132iqhe.apps.googleusercontent.com&quot;,&quot;project_id&quot;:&quot;genny-sheets-181905&quot;,&quot;auth_uri&quot;:&quot;https://accounts.google.com/o/oauth2/auth&quot;,&quot;token_uri&quot;:&quot;https://accounts.google.com/o/oauth2/token&quot;,&quot;auth_provider_x509_cert_url&quot;:&quot;https://www.googleapis.com/oauth2/v1/certs&quot;,&quot;client_secret&quot;:&quot;vgXEFRgQvh3_t_e5Hj-eb6IX&quot;,&quot;redirect_uris&quot;:[&quot;urn:ietf:wg:oauth:2.0:oob&quot;,&quot;http://localhost&quot;]}}"/>
+<mapEntry key="CREDENTIALS" value="$HOME/.genny/sheets.googleapis.com-java-quickstart"/>
+<mapEntry key="GOOGLE_CLIENT_SECRET" value="{&quot;installed&quot;:{&quot;client_id&quot;:&quot;260075856207-9d7a02ekmujr2bh7i53dro28n132iqhe.apps.googleusercontent.com&quot;,&quot;project_id&quot;:&quot;genny-sheets-181905&quot;,&quot;auth_uri&quot;:&quot;https:\/\/accounts.google.com\/o\/oauth2\/auth&quot;,&quot;token_uri&quot;:&quot;https:\/\/accounts.google.com\/o\/oauth2\/token&quot;,&quot;auth_provider_x509_cert_url&quot;:&quot;https:\/\/www.googleapis.com\/oauth2\/v1\/certs&quot;,&quot;client_secret&quot;:&quot;vgXEFRgQvh3_t_e5Hj-eb6IX&quot;,&quot;redirect_uris&quot;:[&quot;urn:ietf:wg:oauth:2.0:oob&quot;,&quot;http:\/\/localhost&quot;]}}"/>
 <mapEntry key="GOOGLE_HOSTING_SHEET_ID" value="1OQ3IUdKTCCN-qgMahaNfc3KFOc_iN8l2BAVx7-KdA0A"/>
 </mapAttribute>
 <listAttribute key="org.eclipse.debug.ui.favoriteGroups">
@@ -16,17 +17,18 @@
 </listAttribute>
 <stringAttribute key="org.eclipse.jdt.junit.CONTAINER" value=""/>
 <booleanAttribute key="org.eclipse.jdt.junit.KEEPRUNNING_ATTR" value="false"/>
-<stringAttribute key="org.eclipse.jdt.junit.TESTNAME" value=""/>
+<stringAttribute key="org.eclipse.jdt.junit.TESTNAME" value="searchBETest"/>
 <stringAttribute key="org.eclipse.jdt.junit.TEST_KIND" value="org.eclipse.jdt.junit.loader.junit4"/>
 <booleanAttribute key="org.eclipse.jdt.launching.ATTR_USE_START_ON_FIRST_THREAD" value="true"/>
 <listAttribute key="org.eclipse.jdt.launching.CLASSPATH">
 <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;runtimeClasspathEntry containerPath=&quot;org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8&quot; path=&quot;1&quot; type=&quot;4&quot;/&gt;&#10;"/>
 <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;runtimeClasspathEntry path=&quot;3&quot; projectName=&quot;qwanda-services&quot; type=&quot;1&quot;/&gt;&#10;"/>
 <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;runtimeClasspathEntry containerPath=&quot;org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER&quot; path=&quot;3&quot; type=&quot;4&quot;/&gt;&#10;"/>
+<listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#10;&lt;runtimeClasspathEntry internalArchive=&quot;/qwanda-services/src/test/resources&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;&#10;"/>
 </listAttribute>
 <stringAttribute key="org.eclipse.jdt.launching.CLASSPATH_PROVIDER" value="org.eclipse.m2e.launchconfig.classpathProvider"/>
-<booleanAttribute key="org.eclipse.jdt.launching.DEFAULT_CLASSPATH" value="true"/>
-<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="life.genny.JPAHibernateCRUDTest"/>
+<booleanAttribute key="org.eclipse.jdt.launching.DEFAULT_CLASSPATH" value="false"/>
+<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="life.genny.SearchTest"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="qwanda-services"/>
 <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.m2e.launchconfig.sourcepathProvider"/>
 <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-ea"/>

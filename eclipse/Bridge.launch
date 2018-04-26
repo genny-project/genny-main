@@ -7,9 +7,13 @@
 <listEntry value="4"/>
 </listAttribute>
 <mapAttribute key="org.eclipse.debug.core.environmentVariables">
-<mapEntry key="GENNYDEV" value="true"/>
-<mapEntry key="HOSTIP" value="10.1.120.57"/>
+<mapEntry key="API_PORT" value="8088"/>
+<mapEntry key="DEVUSER" value="acrow"/>
+<mapEntry key="DEV_MODE" value="TRUE"/>
+<mapEntry key="HOSTIP" value="10.1.120.104"/>
+<mapEntry key="PROJECT_REALM" value="channel40"/>
 <mapEntry key="REACT_APP_VERTX_URL" value="http://localhost:8088/frontend"/>
+<mapEntry key="USER" value="acrow"/>
 </mapAttribute>
 <booleanAttribute key="org.eclipse.jdt.launching.ATTR_USE_START_ON_FIRST_THREAD" value="true"/>
 <listAttribute key="org.eclipse.jdt.launching.CLASSPATH">
@@ -20,8 +24,9 @@
 <stringAttribute key="org.eclipse.jdt.launching.CLASSPATH_PROVIDER" value="org.eclipse.m2e.launchconfig.classpathProvider"/>
 <booleanAttribute key="org.eclipse.jdt.launching.DEFAULT_CLASSPATH" value="true"/>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="io.vertx.core.Launcher"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="run life.genny.bridgecmd.ServiceVerticle —redeploy=**/*.java —launcher-class=io.vertx.core.Launcher"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="run life.genny.bridge.ServiceVerticle —redeploy=**/*.java —launcher-class=io.vertx.core.Launcher -cluster"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="bridge"/>
 <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.m2e.launchconfig.sourcepathProvider"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="${jrebel_args} -Dvertx.options.blockedThreadCheckInterval=2147483647"/>
+<booleanAttribute key="org.eclipse.jdt.launching.STOP_IN_MAIN" value="true"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="${jrebel_args:org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.launching.macosx.MacOSXType/Java SE 8 [1.8.0_152]} -Dvertx.options.blockedThreadCheckInterval=2147483647"/>
 </launchConfiguration>
