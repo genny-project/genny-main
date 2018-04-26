@@ -1,0 +1,208 @@
+version: '2'
+
+services:
+  gennyql:
+    image: gennyproject/gennyql
+    networks:
+      - mainproxy
+    restart: always
+    command: java -jar /service.jar
+
+
+  bsb-lookup:
+    image: gennyproject/bsb-lookup:latest
+    networks:
+      - mainproxy
+    restart: always
+
+  alyson-dev:
+    image: gennyproject/alyson:dev
+    depends_on:
+      - bridge
+    env_file:
+      - ${ENV_FILE}
+    networks:
+      - mainproxy
+    restart: always
+
+  alyson:
+    image: gennyproject/alyson:latest
+    depends_on:
+      - bridge
+    env_file:
+      - ${ENV_FILE}
+    networks:
+      - mainproxy
+    restart: always
+
+  mysql:
+    image: mariadb
+    environment:
+      - MYSQL_URL=mysql
+      - MYSQL_DB=gennydb
+      - MYSQL_PORT=3306
+      - MYSQL_ALLOW_EMPTY=
+      - MYSQL_RANDOM_ROOT_PASSWORD=no
+      - MYSQL_DATABASE=gennydb
+      - MYSQL_USER=genny
+      - MYSQL_PASSWORD=password
+      - MYSQL_ROOT_PASSWORD=password
+      - ADMIN_USERNAME=admin
+      - ADMIN_PASSWORD=password
+    env_file:
+      - ${ENV_FILE}
+    networks:
+      - mainproxy
+    restart: unless-stopped
+
+  qwanda-service:
+    depends_on:
+      - mysql
+      - keycloak
+    #image: gennyproject/qwanda-service:latest
+    image: gennyproject/wildfly-qwanda-service:latest
+    volumes:
+      - realm:/opt/realm
+      - google_credentials:/root/.genny/sheets.googleapis.com-java-quickstart/
+    env_file:
+      - ${ENV_FILE}
+    links:
+      - mysql:mysql
+      - keycloak:keycloak
+    restart: unless-stopped
+    networks:
+      - mainproxy
+
+  keycloak:
+    image: gennyproject/keycloak:latest
+    env_file:
+      - ${ENV_FILE}
+    environment:
+#      - IMPORTEXPORT=EXPORT
+      - KEYCLOAK_USER=admin
+      - KEYCLOAK_PASSWORD=Outcome2016KeycloakAdmin
+      - MYSQL_URL=mysql
+      - MYSQL_PORT=3306
+      - MYSQL_DB=keycloakdb
+      - MYSQL_USERNAME=keycloak
+      - MYSQL_PASSWORD=Outcome2016KeycloakAdmin
+    volumes:
+      - ../keycloak-themes/themes:/opt/jboss/keycloak/themes
+      - realm:/tmp/realm
+    networks:
+      - mainproxy
+    command: -b 0.0.0.0
+
+  bridge:
+    image: gennyproject/bridge:534
+    volumes:
+      - realm:/opt/realm
+    env_file:
+      - ${ENV_FILE}
+    networks:
+      - mainproxy
+    links:
+      - qwanda-service:qwanda-service
+      - keycloak
+    command: java -Dvertx.options.blockedThreadCheckInterval=2147483647 -Djava.net.preferIPv6Addresses=false -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true -Dvertx.hazelcast.config=/cluster.xml -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /service.jar -cluster
+
+  rulesservice:
+    image: gennyproject/rulesservice:latest
+    volumes:
+      - realm:/opt/realm
+    links:
+      - bridge:bridge
+      - qwanda-service:qwanda-service
+      - keycloak
+    environment:
+      -  RULES_DIR=/rules
+    env_file:
+      - ${ENV_FILE}
+    depends_on:
+      - messages
+      - bridge
+      - qwanda-service
+    networks:
+      - mainproxy
+    restart: always
+    command: java  -Dvertx.options.blockedThreadCheckInterval=2147483647 -Djava.net.preferIPv6Addresses=false -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true -Dvertx.hazelcast.config=/cluster.xml -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /service.jar -cluster
+
+  social:
+    image: gennyproject/social:latest
+    volumes:
+      - realm:/opt/realm
+    env_file:
+      - ${ENV_FILE}
+    networks:
+      - mainproxy
+    links:
+      - qwanda-service:qwanda-service
+      - keycloak
+    depends_on:
+      - qwanda-service
+    command: java -Djava.net.preferIPv6Addresses=false -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true -Dvertx.hazelcast.config=/cluster.xml -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /service.jar
+
+
+  messages:
+    image: gennyproject/messages:latest
+    volumes:
+      - realm:/opt/realm
+      - google_credentials:/root/.genny/sheets.googleapis.com-java-quickstart/
+      - google_credentials:/root/.genny/credentials/credentials-genny/
+    links:
+      - qwanda-service:qwanda-service
+      - keycloak
+    env_file:
+      - ${ENV_FILE}
+    depends_on:
+      - bridge
+      - qwanda-service
+    networks:
+      - mainproxy
+    restart: always
+    command: java -Djava.net.preferIPv6Addresses=false -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true -Dvertx.hazelcast.config=/cluster.xml -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /service.jar
+
+  payments:
+     image: gennyproject/payments:latest
+     env_file:
+      - ${ENV_FILE}
+     networks:
+       - mainproxy
+
+  uppy:
+     image: gennyproject/uppy:latest
+     env_file:
+       - ${ENV_FILE}
+     networks:
+       - mainproxy
+
+  layout-cache:
+    image: gennyproject/layout-cache:latest
+    environment:
+      - LAYOUT_REPO=https://github.com/genny-project/layouts.git
+      - NODE_ENV=development
+    networks:
+      - mainproxy
+
+  robot:
+    image: gennyproject/robot
+    environment:
+      - WEB_URL=http://alyson/
+      - BROWSER=chrome
+    ports:
+      - 4500:4500
+    networks:
+      - mainproxy
+
+volumes:
+  realm:
+    driver: local
+  google_credentials:
+    driver: local
+  maildata:
+    driver: local
+  mailstate:
+    driver: local
+networks:
+  mainproxy:
+    driver: bridge
