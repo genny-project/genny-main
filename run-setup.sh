@@ -82,7 +82,11 @@ while [ "$1" != "" ]; do
          ;;
       -p | --project ) PROJECT="${2}"
          project=$PROJECT
-	 shift
+         shift
+         ;;
+      -chom | --chown-mode ) 
+         chown root:admin ~/.secrets/passwords/passwords.txt && chmod 700 ~/.secrets/passwords/passwords.txt
+         shift
          ;;
       -n | --net ) IP="${2}"
          ip=$IP
