@@ -20,6 +20,7 @@ DOCUMENTATION=\
 "\t-u, --update \tUpdate project\n"
 
 
+chown root:admin ~/.genny/.secrets/passwords/passwords.txt && chmod 700 ~/.genny/.secrets/passwords/passwords.txt
 
 CREDENTIALS_DIR="$HOME/.genny/credentials"
 CREDENTIALS="credentials"
@@ -82,7 +83,7 @@ while [ "$1" != "" ]; do
          ;;
       -p | --project ) PROJECT="${2}"
          project=$PROJECT
-	 shift
+         shift
          ;;
       -n | --net ) IP="${2}"
          ip=$IP

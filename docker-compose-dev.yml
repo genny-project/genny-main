@@ -162,6 +162,7 @@ services:
     container_name: layout-cache
     environment:
       - LAYOUT_REPO=https://github.com/genny-project/layouts.git
+      - NODE_ENV=dev
     ports:
       - "2223:2223"
     networks:
