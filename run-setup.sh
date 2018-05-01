@@ -20,7 +20,7 @@ DOCUMENTATION=\
 "\t-u, --update \tUpdate project\n"
 
 
-chown root:admin ~/.genny/secrets/passwords/passwords.txt && chmod 700 ~/.genny/secrets/passwords/passwords.txt
+chown root:admin ~/.genny/.secrets/passwords/passwords.txt && chmod 700 ~/.genny/.secrets/passwords/passwords.txt
 
 CREDENTIALS_DIR="$HOME/.genny/credentials"
 CREDENTIALS="credentials"
