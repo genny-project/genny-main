@@ -1,5 +1,5 @@
 #!/bin/bash
-sudo ifconfig lo0 alias 127.0.0.2
+#sudo ifconfig lo0 alias 127.0.0.2
 
 DOCUMENTATION=\
 "\nFor running a custom genny project please follow the commands below otherwise type './run-setup.sh up' for running the default configuration\n"\
