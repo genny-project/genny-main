@@ -18,76 +18,15 @@ services:
       - ./nginx/certs:/etc/nginx/certs:ro
       - /var/run/docker.sock:/tmp/docker.sock:ro
 
-
-
   imageproxy:
     image: willnorris/imageproxy:v0.7.0
     ports:
       - "46243:8080"
     command: -cache /tmp/imageproxy -addr 0.0.0.0:8080 -scaleUp true
 
-#  cassandra:
-#    image: tobert/cassandra
-#    container_name: cassandra
-#    ports:
-#      - "9160:9160"
-#    networks:
-#      - mainproxy
-
-#  gennyql:
-#    image: gennyproject/gennyql
-#    container_name: gennyql
-#    networks:
-#      - mainproxy
-#    ports:
-#      - "8084:8084"
-#    restart: always
-#    command: java -jar /service.jar
-
-
-#  bsb-lookup:
-#    image: gennyproject/bsb-lookup:latest
-#    container_name: bsb-lookup
-#    ports:
-#      - 3333:3333
-#    networks:
-#      - mainproxy
-#    restart: always
-
-#  alyson-dev:
-#    image: gennyproject/alyson:dev
-#    container_name: alyson-dev
-#    depends_on:
-#      - bridge
-#    ports:
-#      - "15000:80"
-#    env_file:
-#      - ${ENV_FILE}
-#    networks:
-#      - mainproxy
-#    restart: always
-
-  alyson:
-    image: gennyproject/alyson:latest
-    container_name: alyson
-    depends_on:
-      - bridge
-    ports:
-      - "5000:80"
-    environment:
-      - REACT_BRIDGE_HOST=http://bridge.genny.live
-      - VIRTUAL_PORT=80
-      - VIRTUAL_HOST=local.*,alyson.*,v2.*
-      - VIRTUAL_PROTO=http
-      - CERT_NAME=genny.live
-    env_file:
-      - ${ENV_FILE}
-    networks:
-      - mainproxy
-    restart: always
 
   mysql:
-    image: mariadb
+    image: channel40/mysql:latest2 
     environment:
       - MYSQL_URL=mysql
       - MYSQL_DB=gennydb
@@ -110,21 +49,6 @@ services:
     ports:
       - 3310:3306
     restart: unless-stopped
-
-#  kieserverdb:
-#    image: mysql:latest
-#    container_name: kieserverdb
-#    networks:
-#      - mainproxy
-#    ports:
-#      - 3320:3306
-#    environment:
-#      - MYSQL_ROOT_PASSWORD=password
-#      - MYSQL_DATABASE=kieserverdb
-#      - MYSQL_USER=genny
-#      - MYSQL_PASSWORD=password
-
-
 
 
   qwanda-service:
@@ -185,7 +109,7 @@ services:
 
   bridge:
     image: gennyproject/bridge:latest
-#    container_name: bridge
+    container_name: bridge
     volumes:
       - ./realm:/opt/realm
     env_file:
@@ -200,15 +124,15 @@ services:
     links:
       - qwanda-service:qwanda-service
       - keycloak
-#    ports:
-#      - 8088:8088
-#      - 5701:5701
-#      - 4001:15701
+    ports:
+      - 8088:8088
+      - 5701:5701
+      - 4001:15701
     command: java -Dvertx.metrics.options.enabled=true -Dvertx.options.blockedThreadCheckInterval=2147483647 -jar /service.jar -cluster
 
   rulesservice:
     image: gennyproject/rulesservice:latest
-#    container_name:  rulesservice
+    container_name:  rulesservice
     volumes:
       - ./realm:/opt/realm
 #      - ./rules:/rules
@@ -225,11 +149,11 @@ services:
       - CERT_NAME=genny.live
     env_file:
       - ${ENV_FILE}
-#    ports:
-#       - 8089:8089
+    ports:
+       - 8089:8089
 #      - 8880:8080
-#      - 5702:5702
-#      - 4002:15702
+      - 5702:5702
+      - 4002:15702
     depends_on:
       - messages
       - bridge
@@ -263,55 +187,6 @@ services:
     command: java -Djava.net.preferIPv6Addresses=false -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true -Dvertx.hazelcast.config=/cluster.xml -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /service.jar
 
 
-#  kie-server:
-#    image: gennyproject/kie-server:latest
-#    container_name: kie-server
-#    ports:
-#      - 8230:8230
-#    links:
-#      - qwanda-service
-#      - keycloak
-#      - kieserverdb
-#    networks:
-#      - mainproxy
-#
-#  kie-workbench:
-#    image: gennyproject/kie-wb:latest
-#    container_name: kie-workbench
-#    ports:
-#      - 8580:8080
-#    links:
-#      - qwanda-service:qwanda-service
-#      - keycloak
-#      - kie-server
-#    networks:
-#      - mainproxy
-
-#  mail:
-#    image: tvial/docker-mailserver:latest
-#    hostname: mail
-#    domainname: domain.com
-#    container_name: mail
-#    ports:
-#    - "25:25"
-#    - "143:143"
-#    - "587:587"
-#    - "993:993"
-#    volumes:
-#    - maildata:/var/mail
-#    - mailstate:/var/mail-state
-#    - ./config/:/tmp/docker-mailserver/
-#    environment:
-#    - ENABLE_SPAMASSASSIN=1
-#    - ENABLE_CLAMAV=1
-#    - ENABLE_FAIL2BAN=1
-#    - ENABLE_POSTGREY=1
-#    - ONE_DIR=1
-#    - DMS_DEBUG=0
-#    cap_add:
-#    - NET_ADMIN
-#    networks:
-#      - mainproxy
 
   messages:
     image: gennyproject/messages:latest
@@ -361,7 +236,7 @@ services:
     container_name: layout-cache
     environment:
       - LAYOUT_REPO=https://github.com/genny-project/layouts.git
-      - NODE_ENV=production
+      - NODE_ENV=staging
     ports:
       - "2223:2223"
     networks:
