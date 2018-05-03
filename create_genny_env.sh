@@ -24,6 +24,7 @@ myip=$2
 fi
 echo $myip
 
+myip=127.0.0.2
 docker volume create cassandra_data
 docker volume create mysql_data
 
@@ -33,10 +34,10 @@ PDF_GEN_SERVICE_API_URL=http://camelot-pdfgenerator:7331
 
 
 REACT_APP_PROJECT_NAME="Docker Genny"
-REACT_APP_QWANDA_API_URL=http://${myip}:8280
+REACT_APP_QWANDA_API_URL=http://api.genny.life
 REACT_APP_VERSION_NUMBER=0.5
 REACT_APP_BUILD_DATE=2017-07-12
-REACT_BRIDGE_HOST=http://bridge.genny.life:8088
+REACT_BRIDGE_HOST=http://bridge.genny.life
 #REACT_BRIDGE_HOST=http://${myip}:8088
 REACT_UPPY_HOST=http://uppy.genny.life
 REACT_APP_VERTX_URL=${REACT_BRIDGE_HOST}/frontend
@@ -48,7 +49,7 @@ REACT_APP_VERTX_DATA_API=${REACT_BRIDGE_HOST}/api/data
 PAYMENT_SERVICE_API_URL=http://payments.genny.life
 #PAYMENT_PROVIDER=assembly
 
-UPPYSERVER_DOMAIN=${myip}
+UPPYSERVER_DOMAIN=uppy.genny.life
 UPPYSERVER_SECRET="6X9zUJY825bn"
 UPPYSERVER_DATADIR="app/uppy"
 
@@ -56,12 +57,12 @@ KEYCLOAK_PORT=8180
 KEYCLOAK_PROTO="http://"
 KEYCLOAK_USERNAME=admin
 KEYCLOAK_PASSWORD=admin
-CORS_ALLOWED_ORIGINS="http://localhost:3000,http://localhost:5000,http://alyson.genny.life,http://qwanda-service.genny.life,http://qwanda-service"
+CORS_ALLOWED_ORIGINS="http://localhost:3000,http://localhost:5000,http://alyson.genny.life,http://api.genny.life,http://qwanda-service.genny.life,http://qwanda-service,http://keycloak.genny.life"
 
 FACEBOOK_CALLBACK_URL=http://social.genny.life
 FACEBOOK_CLIENTID=423902461306952
 FACEBOOK_SECRET=a7bd50640f9914b95756ae8f5680751b
-SOCIAL_CALLBACK_URL=http://alyson.genny.life/
+SOCIAL_CALLBACK_URL=http://social.genny.life/
 
 MYSQL_PORT=3306
 MYSQL_DB=gennydb
@@ -76,7 +77,7 @@ MYSQL_ALLOW_EMPTY_PASSWORD=no
 MYSQL_RANDOM_ROOT_PASSWORD=no
 MYSQL_ROOT_HOST=${HOSTIP}
 
-LAYOUT_CACHE_HOST="http://keycloak.genny.life:2223"
+LAYOUT_CACHE_HOST="http://layout-cache.genny.life"
 KIE_SERVER_URL="http://${myip}:8230/kie-server/services/rest/server"
 KIE_USERNAME="kieserver"
 KIE_PASSWORD="kieserver1!"
@@ -142,7 +143,7 @@ echo "MAIL_SMTP_PORT=${MAIL_SMTP_PORT}" >> $ENV_FILE
 echo "" >> $ENV_FILE
 echo "KEYCLOAKPORT=${KEYCLOAK_PORT}" >> $ENV_FILE
 echo "KEYCLOAKPROTO=${KEYCLOAK_PROTO}" >> $ENV_FILE
-echo "KEYCLOAKURL=http://${myip}:8180" >> $ENV_FILE
+echo "KEYCLOAKURL=http://keycloak.genny.life" >> $ENV_FILE
 #echo "KEYCLOAKURL=${KEYCLOAK_PROTO}${myip}:${KEYCLOAK_PORT}" >> $ENV_FILE
 echo "KEYCLOAK_USERNAME=${KEYCLOAK_USERNAME}" >> $ENV_FILE
 echo "KEYCLOAK_SERVICE_ID=${KEYCLOAK_SERVICE_ID}" >> $ENV_FILE
