@@ -23,6 +23,7 @@ services:
 
   nginx:
     image: jwilder/nginx-proxy:latest
+    container_name: nginx 
   #  image: nginx:alpine
   #  labels:
   #      com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy: "true"
@@ -43,6 +44,7 @@ services:
 
   imageproxy:
     image: willnorris/imageproxy:v0.7.0
+    container_name: image_proxy
     ports:
       - "46243:8080"
     command: -cache /tmp/imageproxy -addr 0.0.0.0:8080 -scaleUp true

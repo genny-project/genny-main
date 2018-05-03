@@ -24,7 +24,7 @@ myip=$2
 fi
 echo $myip
 
-myip=127.0.0.2
+#myip=127.0.0.2
 docker volume create cassandra_data
 docker volume create mysql_data
 
@@ -34,7 +34,7 @@ PDF_GEN_SERVICE_API_URL=http://camelot-pdfgenerator:7331
 
 
 REACT_APP_PROJECT_NAME="Docker Genny"
-REACT_APP_QWANDA_API_URL=http://api.genny.life
+REACT_APP_QWANDA_API_URL=http://qwanda-service.genny.life
 REACT_APP_VERSION_NUMBER=0.5
 REACT_APP_BUILD_DATE=2017-07-12
 REACT_BRIDGE_HOST=http://bridge.genny.life
@@ -45,6 +45,8 @@ REACT_APP_VERTX_SERVICE_API=${REACT_BRIDGE_HOST}/api/service
 REACT_APP_VERTX_EVENTS_API=${REACT_BRIDGE_HOST}/api/events
 REACT_APP_VERTX_CMDS_API=${REACT_BRIDGE_HOST}/api/cmds
 REACT_APP_VERTX_DATA_API=${REACT_BRIDGE_HOST}/api/data
+
+DDT_URL=http://bridge.genny.life
 
 PAYMENT_SERVICE_API_URL=http://payments.genny.life
 #PAYMENT_PROVIDER=assembly
@@ -121,6 +123,8 @@ echo "REACT_APP_VERTX_EVENTS_API=${REACT_APP_VERTX_EVENTS_API}" >> $ENV_FILE
 echo "REACT_APP_VERTX_CMDS_API=${REACT_APP_VERTX_CMDS_API}" >> $ENV_FILE
 echo "REACT_APP_VERTX_DATA_API=${REACT_APP_VERTX_DATA_API}" >> $ENV_FILE
 
+echo "DDT_URL=${DDT_URL}" >> $ENV_FILE
+
 echo "LAYOUT_CACHE_HOST=${LAYOUT_CACHE_HOST}" >> $ENV_FILE
 
 echo "PDF_GEN_SERVICE_API_URL=${PDF_GEN_SERVICE_API_URL}" >> $ENV_FILE
@@ -143,7 +147,7 @@ echo "MAIL_SMTP_PORT=${MAIL_SMTP_PORT}" >> $ENV_FILE
 echo "" >> $ENV_FILE
 echo "KEYCLOAKPORT=${KEYCLOAK_PORT}" >> $ENV_FILE
 echo "KEYCLOAKPROTO=${KEYCLOAK_PROTO}" >> $ENV_FILE
-echo "KEYCLOAKURL=http://keycloak.genny.life" >> $ENV_FILE
+echo "KEYCLOAKURL=http://keycloak.genny.life:8180" >> $ENV_FILE
 #echo "KEYCLOAKURL=${KEYCLOAK_PROTO}${myip}:${KEYCLOAK_PORT}" >> $ENV_FILE
 echo "KEYCLOAK_USERNAME=${KEYCLOAK_USERNAME}" >> $ENV_FILE
 echo "KEYCLOAK_SERVICE_ID=${KEYCLOAK_SERVICE_ID}" >> $ENV_FILE
