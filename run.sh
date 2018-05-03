@@ -1,2 +1,5 @@
-echo $1
-./run-setup.sh -p $1 -r $1 $2
+#!/bin/bash
+
+project=$1
+
+./run-setup.sh -p ${project} -r ${project} -n 127.0.0.2 up
