@@ -56,11 +56,11 @@ services:
     env_file:
       - ${ENV_FILE}
     environment:
-      - REACT_BRIDGE_HOST=http://bridge.genny.live:8088
+      - REACT_BRIDGE_HOST=http://bridge.genny.life:8088
 #      - VIRTUAL_PORT=80
 #      - VIRTUAL_HOST=local.*,alyson.*,v2.*
 #      - VIRTUAL_PROTO=http
-#      - CERT_NAME=genny.live
+#      - CERT_NAME=genny.life
     networks:
       - mainproxy
     restart: always
@@ -100,7 +100,7 @@ services:
 #      - VIRTUAL_HOST=keycloak.*,bouncer.*
 #      - VIRTUAL_PORT=8080
 #      - VIRTUAL_PROTO=http
-#      - CERT_NAME=genny.live
+#      - CERT_NAME=genny.life
 #      - IMPORTEXPORT=EXPORT
       - KEYCLOAK_USER=admin
       - KEYCLOAK_PASSWORD=Outcome2016KeycloakAdmin
@@ -135,7 +135,7 @@ services:
 #      - VIRTUAL_HOST=qwanda-service.*
 #      - VIRTUAL_PORT=8080
 #      - VIRTUAL_PROTO=http
-#      - CERT_NAME=genny.live
+#      - CERT_NAME=genny.life
     ports:
       - "8280:8080"
       - "8887:8787"
