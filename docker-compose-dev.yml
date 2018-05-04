@@ -36,7 +36,7 @@ services:
     environment:
       - SKIP_HTTPS_REDIRECT=false
     volumes:
-      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/conf.d-dev:/etc/nginx/conf.d
       - ./nginx/vhost.d:/etc/nginx/vhost.d
       - ./nginx/html:/usr/share/nginx/html
       - ./nginx/certs:/etc/nginx/certs:ro

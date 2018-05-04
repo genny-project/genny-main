@@ -69,11 +69,11 @@ services:
 
   alyson:
     image: gennyproject/alyson:latest
-    container_name: alyson
+#    container_name: alyson
     depends_on:
       - bridge
-    ports:
-      - "5000:80"
+#    ports:
+#      - "5000:80"
     environment:
       - REACT_BRIDGE_HOST=http://bridge.genny.life
       - VIRTUAL_PORT=80
@@ -139,7 +139,7 @@ services:
     env_file:
       - ${ENV_FILE}
     environment:
-      - VIRTUAL_HOST=qwanda-service.*
+      - VIRTUAL_HOST=qwanda-service.*,api.*
       - VIRTUAL_PORT=8080
       - VIRTUAL_PROTO=http
       - CERT_NAME=genny.life
@@ -341,8 +341,13 @@ services:
      container_name: payments
      env_file:
       - ${ENV_FILE}
-     ports:
-       - "3456:3456"
+     environment:
+      - VIRTUAL_HOST=payments.genny.life
+      - VIRTUAL_PORT=3456
+      - VIRTUAL_PROTO=http
+      - CERT_NAME=genny.life
+#     ports:
+#       - "3456:3456"
      networks:
        - mainproxy
 
@@ -350,9 +355,14 @@ services:
      image: gennyproject/uppy:latest
      container_name: uppy
      env_file:
-       - ${ENV_FILE}
-     ports:
-       - "3020:3020"
+      - ${ENV_FILE}
+     environment:
+      - VIRTUAL_HOST=uppy.genny.life
+      - VIRTUAL_PORT=3020
+      - VIRTUAL_PROTO=http
+      - CERT_NAME=genny.life
+#     ports:
+#       - "3020:3020"
      networks:
        - mainproxy
 
@@ -361,9 +371,13 @@ services:
     container_name: layout-cache
     environment:
       - LAYOUT_REPO=https://github.com/genny-project/layouts.git
-      - NODE_ENV=production
-    ports:
-      - "2223:2223"
+      - NODE_ENV=dev
+      - VIRTUAL_HOST=layout-cache.genny.life
+      - VIRTUAL_PORT=2223
+      - VIRTUAL_PROTO=http
+      - CERT_NAME=genny.life
+#    ports:
+#      - "2223:2223"
     networks:
       - mainproxy
 
