@@ -9,3 +9,5 @@ realm/*.json
 +realm/curl.json
 +realm/localhost
 +realm/localhost.json
+nginx/conf.d/default.conf
+nginx/conf.d2/default.conf
