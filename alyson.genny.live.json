@@ -1,6 +1,6 @@
 {
   "realm": "genny",
-  "auth-server-url": "http://keycloak.genny.live/auth",
+  "auth-server-url": "http://localhost/auth",
   "ssl-required": "none",
   "resource": "genny",
   "credentials": {
