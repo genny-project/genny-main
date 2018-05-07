@@ -68,8 +68,8 @@ services:
     restart: always
 
   mysql:
-    image: channel40/mysql:latest2 
-    #image: mariadb
+    #image: channel40/mysql:latest2 
+    image: mariadb
     environment:
       - MYSQL_URL=mysql
       - MYSQL_DB=gennydb
@@ -85,8 +85,8 @@ services:
     container_name: mysql
     env_file:
       - ${ENV_FILE}
-#    volumes:
-#      - mysql_data:/var/lib/mysql
+    volumes:
+      - mysql_data:/var/lib/mysql
     networks:
       - mainproxy
     ports:
