@@ -163,7 +163,7 @@ services:
       - CERT_NAME=genny.life
      ports:
 #       - "3456:3456"
-      - "6543 :6543"
+      - "6543:6543"
      networks:
        - mainproxy
 
