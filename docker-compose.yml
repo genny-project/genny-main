@@ -18,7 +18,17 @@ services:
       - ./nginx/certs:/etc/nginx/certs:ro
       - /var/run/docker.sock:/tmp/docker.sock:ro
 
-
+  in-app-call-server:
+    image: gennyproject/in-app-call-server
+    container_name: in-app-call-server
+    ports:
+      - "2255:2255"
+    environment:
+        - TWILIO_APPLICATION_NAME = "Channel 40"
+	- TWILIO_ACCOUNT_SID = "ACce3f27260613a28b147ba62619bde66b"
+	- TWILIO_AUTH_TOKEN = "653ce7a458bbb0e2dbf82b4adecb0dbe"
+	- TWILIO_APP_ID = "AP9ea2723b94171b4ae06537c3a659ccff"
+	- TWILIO_CALLER_ID = "+61390699412"
 
   imageproxy:
     image: willnorris/imageproxy:v0.7.0
