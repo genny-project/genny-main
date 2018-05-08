@@ -356,8 +356,10 @@ services:
       - VIRTUAL_PORT=3456
       - VIRTUAL_PROTO=http
       - CERT_NAME=genny.life
-#     ports:
-#       - "3456:3456"
+     ports:
+      - "3456:3456"
+      - "6543:6543"
+ 
      networks:
        - mainproxy
 
