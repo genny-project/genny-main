@@ -29,6 +29,6 @@ git_project genny-verticle
 git_project alyson-v2
 git_project qwanda-ql
 git_project uppy
-
+git_project in-app-calling
 
 echo "Finished loading in all the projects"

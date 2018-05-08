@@ -1,5 +1,6 @@
 #!/bin/bash
 
 project=$1
+mode=$2
 
-./run-setup.sh -p ${project} -r ${project} -n 127.0.0.2 up
+./run-setup.sh -p ${project} -r ${project} ${mode}
