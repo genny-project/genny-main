@@ -352,7 +352,7 @@ services:
      env_file:
       - ${ENV_FILE}
      environment:
-      - VIRTUAL_HOST=payments.genny.life
+      - VIRTUAL_HOST=payments2.genny.life
       - VIRTUAL_PORT=3456
       - VIRTUAL_PROTO=http
       - CERT_NAME=genny.life

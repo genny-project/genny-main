@@ -126,7 +126,8 @@ services:
     depends_on:
       - mysql
       - keycloak
-    image: gennyproject/wildfly-qwanda-service:jrebel
+    image: gennyproject/wildfly-qwanda-service:latest
+    #image: gennyproject/wildfly-qwanda-service:jrebel
     container_name: qwanda-service
     volumes:
       - ./realm:/opt/realm
@@ -138,6 +139,7 @@ services:
       - VIRTUAL_PORT=8080
       - VIRTUAL_PROTO=http
       - CERT_NAME=genny.life
+      - SKIP_GOOGLE_DOC_IN_STARTUP=TRUE
     ports:
       - "8280:8080"
       - "8887:8787"
@@ -155,7 +157,7 @@ services:
      env_file:
       - ${ENV_FILE}
      environment:
-      - VIRTUAL_HOST=payments.genny.life
+      - VIRTUAL_HOST=payments2.genny.life
       - VIRTUAL_PORT=3456
       - VIRTUAL_PROTO=http
       - CERT_NAME=genny.life
