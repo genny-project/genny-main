@@ -237,11 +237,13 @@ services:
       - CERT_NAME=genny.life
     env_file:
       - ${ENV_FILE}
-#    ports:
+    ports:
+      - 8997:8787
 #       - 8089:8089
 #      - 8880:8080
 #      - 5702:5702
 #      - 4002:15702
+
     depends_on:
       - messages
       - bridge
@@ -249,7 +251,7 @@ services:
     networks:
       - mainproxy
     restart: always
-    command: java  -Dvertx.options.blockedThreadCheckInterval=2147483647 -jar /service.jar -cluster
+    command: java   -Dagentlib:jdwp=transport=dt_socket,address=8787,server=y,suspend=y  -Dvertx.options.blockedThreadCheckInterval=2147483647 -jar /service.jar -cluster
 
   social:
     image: gennyproject/social:latest
