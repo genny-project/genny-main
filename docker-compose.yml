@@ -153,6 +153,8 @@ services:
       - VIRTUAL_PORT=8080
       - VIRTUAL_PROTO=http
       - CERT_NAME=genny.life
+      - LOAD_DDT_IN_STARTUP=TRUE
+      - SKIP_GOOGLE_DOC_IN_STARTUP=FALSE
     ports:
       - "8280:8080"
       - "8887:8787"
