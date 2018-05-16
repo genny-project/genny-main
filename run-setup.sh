@@ -1,5 +1,10 @@
 #!/bin/bash
+if ping -c 1 10.123.123.123 &> /dev/null
+then
+  echo "10.123.123.123 exists" 
+else
 sudo ifconfig lo0 alias 10.123.123.123 
+fi
 
 DOCUMENTATION=\
 "\nFor running a custom genny project please follow the commands below otherwise type './run-setup.sh up' for running the default configuration\n"\
