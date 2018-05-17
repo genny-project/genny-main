@@ -1,6 +1,6 @@
-#------------
-#BUTTON CODES
-#------------
+# ------------
+# BUTTON CODES
+# ------------
 
 Any button codes related to the PRODUCT | BEG , use the following codes :
 
@@ -19,9 +19,9 @@ BTN_SUBMIT_APPLY_PRODUCT
 
 ```
 
-#------------
-#QUESTION CODES
-#------------
+# ------------
+# QUESTION CODES
+# ------------
 
 Any question codes related to the PRODUCT | BEG , use the following codes :
 
