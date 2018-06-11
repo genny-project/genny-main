@@ -88,6 +88,9 @@ while [ "$1" != "" ]; do
          ;;
       -p | --project ) PROJECT="${2}"
          project=$PROJECT
+         rm -rf rules
+         mkdir -p rules/prj_$project
+         cp -a ../rules/prj_$project rules/prj_$project/
          shift
          ;;
       -n | --net ) IP="${2}"
