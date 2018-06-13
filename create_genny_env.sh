@@ -47,7 +47,7 @@ REACT_APP_VERTX_EVENTS_API=${REACT_BRIDGE_HOST}/api/events
 REACT_APP_VERTX_CMDS_API=${REACT_BRIDGE_HOST}/api/cmds
 REACT_APP_VERTX_DATA_API=${REACT_BRIDGE_HOST}/api/data
 
-DDT_URL=http://bridge.genny.life
+DDT_URL=http://bridge.genny.life:8088
 
 PAYMENT_SERVICE_API_URL=http://payments.genny.life
 #PAYMENT_PROVIDER=assembly
