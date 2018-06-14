@@ -18,6 +18,7 @@ git_project payments
 git_project rulesservice
 git_project social
 git_project gennyql 
+git_project genny-verticle
 git_project keycloak
 git_project keycloak-themes
 git_project kie-client
