@@ -110,7 +110,7 @@ while [ "$1" != "" ]; do
          project=$PROJECT
          rm -rf rules/prj_$project
           if [ ! -d "$GENNY_RULES/prj_$project" ]; then
-             git -C $GENNY_RULES/ clone $(cat ~/.genny/credentials/credentials-channel40/conf.env |  awk -F"=" '/RULES_REPO_URL=/ { print $2}' | sed -e 's/"/\\"/g' | sed -e 's/\\\//\\\\\//g')
+             git -C $GENNY_RULES/ clone $(cat ~/.genny/credentials/credentials-$project/conf.env |  awk -F"=" '/RULES_REPO_URL=/ { print $2}' | sed -e 's/"/\\"/g' | sed -e 's/\\\//\\\\\//g')
            else 
              echo "project rules already in file system"
           fi
