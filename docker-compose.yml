@@ -176,8 +176,8 @@ services:
 #    container_name:  rulesservice
     volumes:
       - ./realm:/opt/realm
-#      - ./rules:/rules
-      - ./rules:/rules/rulesCurrent
+#      - ./rules:/rules2
+#      - ./rules:/rules/rulesCurrent
     links:
       - bridge:bridge
       - qwanda-service:qwanda-service
