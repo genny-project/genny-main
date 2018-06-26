@@ -6,7 +6,7 @@ services:
     hostname: nginx
     ports:
       - 80:80
-  #    - 443:443
+      - 443:443
     networks:
       - mainproxy
     environment:
@@ -23,36 +23,14 @@ services:
     container_name: in-app-call-server
     ports:
       - "2255:2255"
-    environment:
-      - TWILIO_APPLICATION_NAME="Channel 40"
-      - TWILIO_ACCOUNT_SID=ACce3f27260613a28b147ba62619bde66b
-      - TWILIO_AUTH_TOKEN=653ce7a458bbb0e2dbf82b4adecb0dbe
-      - TWILIO_APP_ID=AP9ea2723b94171b4ae06537c3a659ccff
-      - TWILIO_CALLER_ID=+61390699412
+    env_file:
+      - ${ENV_FILE}
 
   imageproxy:
     image: willnorris/imageproxy:v0.7.0
     ports:
       - "46243:8080"
     command: -cache /tmp/imageproxy -addr 0.0.0.0:8080 -scaleUp true
-
-#  cassandra:
-#    image: tobert/cassandra
-#    container_name: cassandra
-#    ports:
-#      - "9160:9160"
-#    networks:
-#      - mainproxy
-
-#  gennyql:
-#    image: gennyproject/gennyql
-#    container_name: gennyql
-#    networks:
-#      - mainproxy
-#    ports:
-#      - "8084:8084"
-#    restart: always
-#    command: java -jar /service.jar
 
 
   bsb-lookup:
@@ -64,18 +42,6 @@ services:
       - mainproxy
     restart: always
 
-#  alyson-dev:
-#    image: gennyproject/alyson:dev
-#    container_name: alyson-dev
-#    depends_on:
-#      - bridge
-#    ports:
-#      - "15000:80"
-#    env_file:
-#      - ${ENV_FILE}
-#    networks:
-#      - mainproxy
-#    restart: always
 
   alyson:
     image: gennyproject/alyson:latest
@@ -120,20 +86,6 @@ services:
     ports:
       - 3310:3306
     restart: unless-stopped
-
-#  kieserverdb:
-#    image: mysql:latest
-#    container_name: kieserverdb
-#    networks:
-#      - mainproxy
-#    ports:
-#      - 3320:3306
-#    environment:
-#      - MYSQL_ROOT_PASSWORD=password
-#      - MYSQL_DATABASE=kieserverdb
-#      - MYSQL_USER=genny
-#      - MYSQL_PASSWORD=password
-
 
 
 
@@ -225,7 +177,7 @@ services:
     volumes:
       - ./realm:/opt/realm
 #      - ./rules:/rules
-      - ./rules:/rules/rulesCurrent/customer_project/
+      - ./rules:/rules/rulesCurrent
     links:
       - bridge:bridge
       - qwanda-service:qwanda-service
@@ -278,56 +230,6 @@ services:
       - 8788:8787
     command: java -Djava.net.preferIPv6Addresses=false -Djava.net.preferIPv4Stack=true  -Xdebug -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n -Djava.net.preferIPv4Addresses=true -Dvertx.hazelcast.config=/cluster.xml -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /service.jar
 
-
-#  kie-server:
-#    image: gennyproject/kie-server:latest
-#    container_name: kie-server
-#    ports:
-#      - 8230:8230
-#    links:
-#      - qwanda-service
-#      - keycloak
-#      - kieserverdb
-#    networks:
-#      - mainproxy
-#
-#  kie-workbench:
-#    image: gennyproject/kie-wb:latest
-#    container_name: kie-workbench
-#    ports:
-#      - 8580:8080
-#    links:
-#      - qwanda-service:qwanda-service
-#      - keycloak
-#      - kie-server
-#    networks:
-#      - mainproxy
-
-#  mail:
-#    image: tvial/docker-mailserver:latest
-#    hostname: mail
-#    domainname: domain.com
-#    container_name: mail
-#    ports:
-#    - "25:25"
-#    - "143:143"
-#    - "587:587"
-#    - "993:993"
-#    volumes:
-#    - maildata:/var/mail
-#    - mailstate:/var/mail-state
-#    - ./config/:/tmp/docker-mailserver/
-#    environment:
-#    - ENABLE_SPAMASSASSIN=1
-#    - ENABLE_CLAMAV=1
-#    - ENABLE_FAIL2BAN=1
-#    - ENABLE_POSTGREY=1
-#    - ONE_DIR=1
-#    - DMS_DEBUG=0
-#    cap_add:
-#    - NET_ADMIN
-#    networks:
-#      - mainproxy
 
   messages:
     image: gennyproject/messages:latest
