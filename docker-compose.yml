@@ -172,12 +172,12 @@ services:
     command: java  -Xdebug -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n  -Dvertx.metrics.options.enabled=true -Dvertx.options.blockedThreadCheckInterval=2147483647 -jar /service.jar -cluster
 
   rulesservice:
-    image: gennyproject/rulesservice:latest
+    image: gennyproject/rulesservice:pcss-conor
 #    container_name:  rulesservice
     volumes:
       - ./realm:/opt/realm
 #      - ./rules:/rules2
-#      - ./rules:/rules/rulesCurrent
+      - ./rules:/rules/rulesCurrent/project
     links:
       - bridge:bridge
       - qwanda-service:qwanda-service

@@ -108,7 +108,7 @@ while [ "$1" != "" ]; do
          ;;
       -p | --project ) PROJECT="${2}"
          project=$PROJECT
-         rm -rf rules/prj_$project
+         rm -rf rules/*
           if [ ! -d "$GENNY_RULES/prj_$project" ]; then
              git -C $GENNY_RULES/ clone $(cat ~/.genny/credentials/credentials-$project/conf.env |  awk -F"=" '/RULES_REPO_URL=/ { print $2}' | sed -e 's/"/\\"/g' | sed -e 's/\\\//\\\\\//g')
            else 
