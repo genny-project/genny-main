@@ -108,6 +108,10 @@ while [ "$1" != "" ]; do
          ;;
       -p | --project ) PROJECT="${2}"
          project=$PROJECT
+
+         export AWS_ACCESS_KEY_ID=$(cat ~/.genny/credentials/credentials-$project/conf.env |  awk -F"=" '/AWS_ACCESS_KEY_ID=/ { print $2}' | sed -e 's/"/\\"/g' | sed -e 's/\\\//\\\\\//g')
+         export AWS_SECRET_ACCESS_KEY=$(cat ~/.genny/credentials/credentials-$project/conf.env |  awk -F"=" '/AWS_SECRET_ACCESS_KEY=/ { print $2}' | sed -e 's/"/\\"/g' | sed -e 's/\\\//\\\\\//g')
+         export S3_BUCKET=$(cat ~/.genny/credentials/credentials-$project/conf.env |  awk -F"=" '/S3_BUCKET=/ { print $2}' | sed -e 's/"/\\"/g' | sed -e 's/\\\//\\\\\//g')
          rm -rf rules/*
           if [ ! -d "$GENNY_RULES/prj_$project" ]; then
              git -C $GENNY_RULES/ clone $(cat ~/.genny/credentials/credentials-$project/conf.env |  awk -F"=" '/RULES_REPO_URL=/ { print $2}' | sed -e 's/"/\\"/g' | sed -e 's/\\\//\\\\\//g')

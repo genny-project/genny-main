@@ -88,6 +88,14 @@ services:
     restart: unless-stopped
 
 
+  signatures:
+    image: genny-project/signatures:latest
+    environment:
+      - S3_BUCKET=${S3_BUCKET}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    ports:
+      - "7446:7446"
 
   qwanda-service:
     depends_on:
