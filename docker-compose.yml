@@ -185,7 +185,7 @@ services:
     volumes:
       - ./realm:/opt/realm
 #      - ./rules:/rules2
-      - ./rules:/rules/rulesCurrent/project
+#      - ./rules:/rules/rulesCurrent
     links:
       - bridge:bridge
       - qwanda-service:qwanda-service
