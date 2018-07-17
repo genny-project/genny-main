@@ -116,6 +116,8 @@ services:
       - CERT_NAME=genny.life
       - LOAD_DDT_IN_STARTUP=TRUE
       - SKIP_GOOGLE_DOC_IN_STARTUP=FALSE
+      - DEV_MODE=TRUE
+      - DDTHOST=TRUE
     ports:
       - "8280:8080"
       - "8887:8787"
@@ -208,7 +210,7 @@ services:
       - ${ENV_FILE}
     ports:
       - 8997:8787
-#       - 8089:8089
+      - 8089:8089
 #      - 8880:8080
 #      - 5702:5702
 #      - 4002:15702
