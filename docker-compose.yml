@@ -173,6 +173,7 @@ services:
       - DEV_MODE=TRUE
   #    - GENNYDEV=TRUE
       - DDTHOST=TRUE
+      - API_HOST=8088
     networks:
       - mainproxy
     links:
@@ -200,6 +201,7 @@ services:
       - RULES_DIR=/rules
       - VIRTUAL_HOST=rulesservice.genny.life
       - VIRTUAL_PORT=8089
+      - API_PORT=8089
       - VIRTUAL_PROTO=http
       - CERT_NAME=genny.life
       - DEV_MODE=TRUE
