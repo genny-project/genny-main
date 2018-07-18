@@ -116,7 +116,7 @@ services:
       - CERT_NAME=genny.life
       - LOAD_DDT_IN_STARTUP=TRUE
       - SKIP_GOOGLE_DOC_IN_STARTUP=FALSE
-      - DEV_MODE=TRUE
+  #    - DEV_MODE=TRUE
       - DDTHOST=TRUE
     ports:
       - "8280:8080"
@@ -160,7 +160,7 @@ services:
 
   bridge:
     image: gennyproject/bridge:latest
-#    container_name: bridge
+    container_name: bridge
     volumes:
       - ./realm:/opt/realm
     env_file:
@@ -170,10 +170,11 @@ services:
       - VIRTUAL_PORT=8088
       - VIRTUAL_PROTO=http
       - CERT_NAME=genny.life
-      - DEV_MODE=TRUE
-  #    - GENNYDEV=TRUE
       - DDTHOST=TRUE
-      - API_HOST=8088
+      - API_PORT=8088
+  #    - DEV_MODE=TRUE
+  #    - GENNYDEV=TRUE
+  #    - GENNY_DEV=TRUE
     networks:
       - mainproxy
     links:
@@ -184,6 +185,7 @@ services:
       - 8790:8787
 #      - 5701:5701
 #      - 4001:15701
+  #  command: java  -Dvertx.metrics.options.enabled=true -Dhazelcast.diagnostics.enabled=true  -Dvertx.options.blockedThreadCheckInterval=2147483647 -jar /service.jar  -cluster
     command: java  -Xdebug -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n  -Dvertx.metrics.options.enabled=true -Dvertx.options.blockedThreadCheckInterval=2147483647 -jar /service.jar -cluster
 
   rulesservice:
@@ -204,7 +206,7 @@ services:
       - API_PORT=8089
       - VIRTUAL_PROTO=http
       - CERT_NAME=genny.life
-      - DEV_MODE=TRUE
+  #    - DEV_MODE=TRUE
       - RULESMANAGER=TRUE
       - DDTHOST=TRUE
   #    - GENNYDEV=TRUE
