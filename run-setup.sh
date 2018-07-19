@@ -25,10 +25,13 @@ DOCUMENTATION=\
 "\t-u, --update \tUpdate project\n"
 
 
-chown root:admin ~/.genny/.secrets/passwords/passwords.txt && chmod 700 ~/.genny/.secrets/passwords/passwords.txt
+#chown root:admin ~/.genny/.secrets/passwords/passwords.txt && chmod 700 ~/.genny/.secrets/passwords/passwords.txt
 
 GENNY_ENV_DIR="$HOME/.genny"
-GENNY_DIR="~/projects/genny"
+cd ..
+GENNY_DIR=$PWD
+cd genny-main
+#GENNY_DIR="~/projects/genny"
 CREDENTIALS_DIR="$HOME/.genny/credentials"
 CREDENTIALS="credentials"
 CREDENTIALS_PROJECT="$CREDENTIALS_DIR/$CREDENTIALS"
@@ -96,7 +99,7 @@ while [ "$1" != "" ]; do
          export S3_BUCKET=$(cat ~/.genny/credentials/credentials-$project/conf.env |  awk -F"=" '/S3_BUCKET=/ { print $2}' | sed -e 's/"/\\"/g' | sed -e 's/\\\//\\\\\//g')
          rm -rf rules/*
           if [ ! -d "$GENNY_DIR/prj_$project" ]; then
-             git -C $GENNY_DIR/ clone $(cat ~/.genny/credentials/credentials-$project/conf.env |  awk -F"=" '/RULES_REPO_URL=/ { print $2}' | sed -e 's/"/\\"/g' | sed -e 's/\\\//\\\\\//g')
+             git -C "$GENNY_DIR" clone $(cat ~/.genny/credentials/credentials-$project/conf.env |  awk -F"=" '/RULES_REPO_URL=/ { print $2}' | sed -e 's/"/\\"/g' | sed -e 's/\\\//\\\\\//g')
            else 
              echo "project rules already in file system"
           fi
