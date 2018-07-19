@@ -27,8 +27,8 @@ DOCUMENTATION=\
 
 chown root:admin ~/.genny/.secrets/passwords/passwords.txt && chmod 700 ~/.genny/.secrets/passwords/passwords.txt
 
-GENNY_DIR="$HOME/.genny"
-GENNY_RULES="$GENNY_DIR/rules"
+GENNY_ENV_DIR="$HOME/.genny"
+GENNY_DIR="~/projects/genny"
 CREDENTIALS_DIR="$HOME/.genny/credentials"
 CREDENTIALS="credentials"
 CREDENTIALS_PROJECT="$CREDENTIALS_DIR/$CREDENTIALS"
@@ -40,10 +40,6 @@ $project_realm
 
 if [ ! -d "$CREDENTIALS_DIR" ]; then
    mkdir -p $CREDENTIALS_DIR
-fi
-
-if [ ! -d "$GENNY_RULES" ]; then
-   mkdir -p $GENNY_RULES
 fi
 
 while [ "$1" != "" ]; do
@@ -58,20 +54,6 @@ while [ "$1" != "" ]; do
          REMOTE_URL=$(git remote -v)
          REPO_TO_UPDATE=$(echo $REMOTE_URL | sed 's/.*\(htt.*\.git\).*/\1/')
          git pull $REPO_TO_UPDATE
-         cd - &> /dev/null
-         shift 
-	 ;;
-      -ru | --ru ) rules="${2}"
-         if [ ! -d "$GENNY_RULES/prj_$rules" ]; then 
-            echo "project $rules does not exist"
-            exit 1
-         fi 
-         echo "updating project"
-         cd "$GENNY_RULES/prj_$rules"
-         remote_url=$(git remote -v)
-         repo_to_update=$(echo $remote_url | sed 's/.*\(htt.*\.git\).*/\1/')
-         echo $repo_to_update
-         git pull
          cd - &> /dev/null
          shift 
 	 ;;
@@ -113,12 +95,11 @@ while [ "$1" != "" ]; do
          export AWS_SECRET_ACCESS_KEY=$(cat ~/.genny/credentials/credentials-$project/conf.env |  awk -F"=" '/AWS_SECRET_ACCESS_KEY=/ { print $2}' | sed -e 's/"/\\"/g' | sed -e 's/\\\//\\\\\//g')
          export S3_BUCKET=$(cat ~/.genny/credentials/credentials-$project/conf.env |  awk -F"=" '/S3_BUCKET=/ { print $2}' | sed -e 's/"/\\"/g' | sed -e 's/\\\//\\\\\//g')
          rm -rf rules/*
-          if [ ! -d "$GENNY_RULES/prj_$project" ]; then
-             git -C $GENNY_RULES/ clone $(cat ~/.genny/credentials/credentials-$project/conf.env |  awk -F"=" '/RULES_REPO_URL=/ { print $2}' | sed -e 's/"/\\"/g' | sed -e 's/\\\//\\\\\//g')
+          if [ ! -d "$GENNY_DIR/prj_$project" ]; then
+             git -C $GENNY_DIR/ clone $(cat ~/.genny/credentials/credentials-$project/conf.env |  awk -F"=" '/RULES_REPO_URL=/ { print $2}' | sed -e 's/"/\\"/g' | sed -e 's/\\\//\\\\\//g')
            else 
              echo "project rules already in file system"
           fi
-         cp -a $GENNY_RULES/prj_$project ./rules/
          shift
          ;;
       -n | --net ) IP="${2}"
