@@ -151,6 +151,7 @@ services:
       - SKIP_GOOGLE_DOC_IN_STARTUP=FALSE
       - LOAD_DDT_IN_STARTUP=TRUE
       - DEV_MODE=TRUE
+      - CACHE_API_PORT=8089
   #    - GENNYDEV=TRUE
       - DDTHOST=TRUE
     ports:
