@@ -191,6 +191,8 @@ services:
       - VIRTUAL_PORT=2223
       - VIRTUAL_PROTO=http
       - CERT_NAME=genny.life
+      - GIT_SSH=${GIT_SSH}
+      - SSH_PRIVATE_KEY=${SSH_PRIVATE_KEY}
 #    ports:
 #      - "2223:2223"
     networks:
