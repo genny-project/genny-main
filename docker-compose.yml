@@ -118,6 +118,7 @@ services:
       - SKIP_GOOGLE_DOC_IN_STARTUP=FALSE
   #    - DEV_MODE=TRUE
       - DDTHOST=TRUE
+      - DDT_URL=http://bridge:8089 
     ports:
       - "8280:8080"
       - "8887:8787"
@@ -172,6 +173,8 @@ services:
       - CERT_NAME=genny.life
       - DDTHOST=TRUE
       - API_PORT=8088
+      - CACHE_API_PORT=8089
+      - DDT_URL=http://bridge:8089
   #    - DEV_MODE=TRUE
   #    - GENNYDEV=TRUE
   #    - GENNY_DEV=TRUE
@@ -201,14 +204,14 @@ services:
       - keycloak
     environment:
       - RULES_DIR=/rules
-      - VIRTUAL_HOST=rulesservice.genny.life
       - VIRTUAL_PORT=8089
-      - API_PORT=8089
+      - CACHE_API_PORT=8089
       - VIRTUAL_PROTO=http
       - CERT_NAME=genny.life
   #    - DEV_MODE=TRUE
       - RULESMANAGER=TRUE
       - DDTHOST=TRUE
+      - DDT_URL=http://bridge:8089
   #    - GENNYDEV=TRUE
     env_file:
       - ${ENV_FILE}
@@ -240,6 +243,7 @@ services:
       - VIRTUAL_PORT=8083
       - VIRTUAL_PROTO=http
       - CERT_NAME=genny.life
+      - DDT_URL=http://bridge:8089
     networks:
       - mainproxy
     links:
@@ -265,6 +269,8 @@ services:
       - keycloak
     env_file:
       - ${ENV_FILE}
+    environment:
+      - DDT_URL=http://bridge:8089
     ports:
       - 5709:5709
       - 4003:15709
