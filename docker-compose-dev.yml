@@ -76,7 +76,6 @@ services:
     restart: always
 
   mysql:
-    #image: channel40/mysql:latest2 
     image: mysql:5.6
     #image: mariadb
     environment:
