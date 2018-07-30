@@ -56,7 +56,7 @@ services:
       - VIRTUAL_HOST=local.*,alyson.*,v2.*
       - VIRTUAL_PROTO=http
       - CERT_NAME=genny.life
-      - NODE_ENV=staging
+      - NODE_ENV=production
     env_file:
       - ${ENV_FILE}
     networks:
@@ -186,6 +186,7 @@ services:
     ports:
       - 8088:8088
       - 8790:8787
+      - 8089:8089
 #      - 5701:5701
 #      - 4001:15701
   #  command: java  -Dvertx.metrics.options.enabled=true -Dhazelcast.diagnostics.enabled=true  -Dvertx.options.blockedThreadCheckInterval=2147483647 -jar /service.jar  -cluster
@@ -204,8 +205,8 @@ services:
       - keycloak
     environment:
       - RULES_DIR=/rules
-      - VIRTUAL_PORT=8089
-      - CACHE_API_PORT=8089
+      - VIRTUAL_PORT=8889
+      - CACHE_API_PORT=8889
       - VIRTUAL_PROTO=http
       - CERT_NAME=genny.life
   #    - DEV_MODE=TRUE
@@ -217,7 +218,7 @@ services:
       - ${ENV_FILE}
     ports:
       - 8997:8787
-      - 8089:8089
+      - 8889:8889
 #      - 8880:8080
 #      - 5702:5702
 #      - 4002:15702
@@ -320,7 +321,7 @@ services:
     container_name: layout-cache
     environment:
       - LAYOUT_REPO=https://github.com/genny-project/layouts.git
-      - NODE_ENV=dev
+      - NODE_ENV=production
       - VIRTUAL_HOST=layout-cache.genny.life
       - VIRTUAL_PORT=2223
       - VIRTUAL_PROTO=http

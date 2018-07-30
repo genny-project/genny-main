@@ -1,0 +1,158 @@
+version: '2'
+
+services:
+  nginx:
+    image: jwilder/nginx-proxy:latest
+    hostname: nginx
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - mainproxy
+    environment:
+      - SKIP_HTTPS_REDIRECT=true
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/vhost.d:/etc/nginx/vhost.d
+      - ./nginx/html:/usr/share/nginx/html
+      - ./nginx/certs:/etc/nginx/certs:ro
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+
+
+  mysql:
+    image: mysql:5.6 
+    environment:
+      - MYSQL_URL=mysql
+      - MYSQL_DB=gennydb
+      - MYSQL_PORT=3306
+      - MYSQL_ALLOW_EMPTY=
+      - MYSQL_RANDOM_ROOT_PASSWORD=no
+      - MYSQL_DATABASE=gennydb
+      - MYSQL_USER=genny
+      - MYSQL_PASSWORD=password
+      - MYSQL_ROOT_PASSWORD=password
+      - ADMIN_USERNAME=admin
+      - ADMIN_PASSWORD=password
+    container_name: mysql
+    env_file:
+      - ${ENV_FILE}
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - mainproxy
+    ports:
+      - 3310:3306
+    restart: unless-stopped
+
+
+  keycloak:
+    image: gennyproject/keycloak:latest
+    container_name: keycloak
+    env_file:
+      - ${ENV_FILE}
+    environment:
+      - VIRTUAL_HOST=keycloak.*,bouncer.*
+      - VIRTUAL_PORT=8080
+      - VIRTUAL_PROTO=http
+      - CERT_NAME=genny.life
+#      - IMPORTEXPORT=EXPORT
+      - KEYCLOAK_USER=admin
+      - KEYCLOAK_PASSWORD=Outcome2016KeycloakAdmin
+      - MYSQL_URL=mysql
+      - MYSQL_PORT=3306
+      - MYSQL_DB=keycloakdb
+      - MYSQL_USERNAME=keycloak
+      - MYSQL_PASSWORD=Outcome2016KeycloakAdmin
+    volumes:
+#      - /opt/jboss/backup:/opt/jboss/backup
+      - ../keycloak-themes/themes:/opt/jboss/keycloak/themes
+      - ./realm:/tmp/realm
+      #- ./realm:/tmp/realm
+      #- ./keycloak-themes/themes:/opt/jboss/keycloak/themes
+    networks:
+      - mainproxy
+    ports:
+      - 8180:8080
+    command: -b 0.0.0.0
+
+  bridge:
+    image: gennyproject/bridge:latest
+    container_name: bridge
+    volumes:
+      - ./realm:/opt/realm
+    env_file:
+      - ${ENV_FILE}
+    environment:
+      - VIRTUAL_HOST=bridge.genny.life
+      - VIRTUAL_PORT=8088
+      - VIRTUAL_PROTO=http
+      - CERT_NAME=genny.life
+      - DDTHOST=TRUE
+      - API_PORT=8088
+      - CACHE_API_PORT=8089
+      - DDT_URL=http://bridge:8089
+  #    - DEV_MODE=TRUE
+  #    - GENNYDEV=TRUE
+  #    - GENNY_DEV=TRUE
+    networks:
+      - mainproxy
+    links:
+      - keycloak
+    ports:
+      - 8088:8088
+      - 8790:8787
+      - 8089:8089
+#      - 5701:5701
+#      - 4001:15701
+  #  command: java  -Dvertx.metrics.options.enabled=true -Dhazelcast.diagnostics.enabled=true  -Dvertx.options.blockedThreadCheckInterval=2147483647 -jar /service.jar  -cluster
+    command: java  -Xdebug -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n  -Dvertx.metrics.options.enabled=true -Dvertx.options.blockedThreadCheckInterval=2147483647 -jar /service.jar -cluster
+
+  rulesservice:
+    image: gennyproject/rulesservice:latest
+    container_name:  rulesservice
+    volumes:
+      - ./realm:/opt/realm
+#      - ./rules:/rules2
+#      - ./rules:/rules/rulesCurrent
+    links:
+      - bridge:bridge
+      - keycloak
+    environment:
+      - RULES_DIR=/rules
+      - VIRTUAL_PORT=8889
+      - CACHE_API_PORT=8889
+      - VIRTUAL_PROTO=http
+      - CERT_NAME=genny.life
+  #    - DEV_MODE=TRUE
+      - RULESMANAGER=TRUE
+      - DDTHOST=TRUE
+      - DDT_URL=http://bridge:8089
+  #    - GENNYDEV=TRUE
+    env_file:
+      - ${ENV_FILE}
+    ports:
+      - 8997:8787
+      - 8889:8889
+#      - 8880:8080
+#      - 5702:5702
+#      - 4002:15702
+
+    depends_on:
+      - bridge
+    networks:
+      - mainproxy
+    restart: always
+    command: java  -Xdebug -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n  -Dvertx.options.blockedThreadCheckInterval=2147483647 -jar /service.jar -cluster
+
+
+volumes:
+  mysql_data:
+  maildata:
+    driver: local
+  mailstate:
+    driver: local
+networks:
+  mainproxy:
+    driver: bridge
+
+#
