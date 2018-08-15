@@ -120,7 +120,7 @@ services:
       - MYSQL_USERNAME=keycloak
       - MYSQL_PASSWORD=Outcome2016KeycloakAdmin
     volumes:
-      - ../keycloak-themes/themes:/opt/jboss/keycloak/themes
+  #    - ../keycloak-themes/themes:/opt/jboss/keycloak/themes
       - ./realm:/tmp/realm
     networks:
       - mainproxy

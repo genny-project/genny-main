@@ -41,6 +41,7 @@ git_project prj_channel40
 git_project prj_fourdegrees
 git_project prj_internmatch
 git_project prj_butler
+git_project prj_pcss
 
 
 echo "Finished loading in all the projects"
