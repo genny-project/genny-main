@@ -17,8 +17,36 @@ fi
  popd
 }
 
+function git_docker {
+ project=$1
+ github=$2
+if [ -z ${github+x} ]; then
+  github=genny-project;
+fi
+ pushd .
+ cd ..
+echo "Synching in project ${project}"
+if cd ${project}; then 
+    git stash;
+    git checkout ${version} 
+    git pull; 
+    ./build-docker.sh ${version}
+    docker push gennyproject/${project}:${version} 
+else 
+    git clone https://github.com/${github}/${project} ${project}; 
+    ./build-docker.sh ${version}
+    
+    docker push gennyproject/${project}:${version} 
+fi
+ popd
+}
+
 function git_project_docker {
  project=$1
+ github=$2
+if [ -z ${github+x} ]; then
+  github=genny-project;
+fi
  pushd .
  cd ..
 echo "Synching in project ${project}"
@@ -30,9 +58,10 @@ if cd ${project}; then
     ./build-docker.sh ${version}
     docker push gennyproject/${project}:${version} 
 else 
-    git clone https://github.com/genny-project/${project} ${project}; 
+    git clone https://github.com/${github}/${project} ${project}; 
     ./build.sh
     ./build-docker.sh ${version}
+    
     docker push gennyproject/${project}:${version} 
 fi
  popd
@@ -44,26 +73,26 @@ git_project qwanda
 git_project qwanda-utils
 git_project genny-verticle
 git_project qwanda-services
-git_project_docker bridge
-git_project_docker messages
-git_project_docker rulesservice
-git_project_docker pontoon 
-git_project_docker wildfly-qwanda-service
-git_project social_docker
-git_project payments
-git_project gennyql 
-git_project keycloak
-git_project keycloak-themes
-git_project kie-client
-git_project alyson-v2
-git_project qwanda-ql
-git_project uppy
-git_project in-app-calling
-git_project_docker prj_channel40
-git_project_docker prj_fourdegrees
-git_project_docker prj_internmatch
-git_project_docker prj_butler
-git_project_docker prj_pcss
+git_project_docker bridge &
+git_project_docker messages &
+git_project_docker rulesservice &
+git_project_docker pontoon  &
+git_project_docker wildfly-qwanda-service &
+git_project_docker social
+git_docker payments &
+git_project gennyql  &
+git_project keycloak &
+git_project keycloak-themes &
+#git_project kie-client
+git_docker alyson-v2 &
+#git_project qwanda-ql
+git_docker uppy &
+git_docker in-app-calling &
+git_docker prj_channel40 channel40 
+git_docker prj_fourdegrees OutcomeLife
+git_docker prj_internmatch OutcomeLife
+git_docker prj_butler OutcomeLife
+git_docker prj_pcss OutcomeLife
 
 
 echo "Finished loading in all the projects"
