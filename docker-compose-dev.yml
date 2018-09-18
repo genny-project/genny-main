@@ -146,36 +146,36 @@ services:
     command: -b 0.0.0.0
 
 
-  wildfly-rulesservice:
-    depends_on:
-      - mysql
-      - keycloak
-    image: gennyproject/wildfly-rulesservice:latest
-    container_name: wildfly-rulesservice 
-    volumes:
-      - ./realm:/opt/realm
-      - ./google_credentials:/root/.genny/sheets.googleapis.com-java-quickstart/
-    env_file:
-      - ${ENV_FILE}
-    environment:
-      - VIRTUAL_HOST=rules.*
-      - VIRTUAL_PORT=8080
-      - VIRTUAL_PROTO=http
-      - CERT_NAME=genny.life
-      - SKIP_GOOGLE_DOC_IN_STARTUP=TRUE
-      - LOAD_DDT_IN_STARTUP=FALSE
-      - DEV_MODE=TRUE
-      - CACHE_API_PORT=8989
-      - DDTHOST=TRUE
-    ports:
-      - "8380:8080"
-      - "8987:8787"
-    links:
-      - mysql:mysql
-      - keycloak:keycloak
-    restart: unless-stopped
-    networks:
-      - mainproxy
+ # wildfly-rulesservice:
+ #   depends_on:
+ #     - mysql
+ #     - keycloak
+ #   image: gennyproject/wildfly-rulesservice:latest
+ #   container_name: wildfly-rulesservice 
+ #   volumes:
+ #     - ./realm:/opt/realm
+ #     - ./google_credentials:/root/.genny/sheets.googleapis.com-java-quickstart/
+ #   env_file:
+ #     - ${ENV_FILE}
+ #   environment:
+ #     - VIRTUAL_HOST=rules.*
+ #     - VIRTUAL_PORT=8080
+ #     - VIRTUAL_PROTO=http
+ #     - CERT_NAME=genny.life
+ #     - SKIP_GOOGLE_DOC_IN_STARTUP=TRUE
+ #     - LOAD_DDT_IN_STARTUP=FALSE
+ #     - DEV_MODE=TRUE
+ #     - CACHE_API_PORT=8989
+#      - DDTHOST=TRUE
+#    ports:
+#      - "8380:8080"
+ #     - "8987:8787"
+ #   links:
+ #     - mysql:mysql
+ #     - keycloak:keycloak
+ #   restart: unless-stopped
+ #   networks:
+ #     - mainproxy
 
 
   qwanda-service:
