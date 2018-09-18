@@ -10,7 +10,8 @@ if cd ${project}; then
     git stash;
     git checkout ${version} 
     git pull; 
-    ./build.sh
+    mvn install -DskipTests=true
+#    ./build.sh
 else 
     git clone https://github.com/genny-project/${project} ${project}; 
 fi
@@ -54,15 +55,17 @@ if cd ${project}; then
     git stash;
     git checkout ${version} 
     git pull; 
-    ./build.sh
+    mvn package -DskipTests=true
+#    ./build.sh
     ./build-docker.sh ${version}
-    docker push gennyproject/${project}:${version} 
+#    docker push gennyproject/${project}:${version} 
 else 
     git clone https://github.com/${github}/${project} ${project}; 
-    ./build.sh
+    mvn package -DskipTests=true
+#    ./build.sh
     ./build-docker.sh ${version}
     
-    docker push gennyproject/${project}:${version} 
+#    docker push gennyproject/${project}:${version} 
 fi
  popd
 }
@@ -84,7 +87,8 @@ git_project gennyql  &
 git_project keycloak &
 git_project keycloak-themes &
 #git_project kie-client
-git_docker alyson-v2 &
+git_docker alyson &
+git_docker alyson-v3 &
 #git_project qwanda-ql
 git_docker uppy &
 git_docker in-app-calling &

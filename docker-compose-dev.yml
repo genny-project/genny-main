@@ -58,11 +58,28 @@ services:
     ports:
       - "7446:7446"
 
+  alyson-v3:
+    image: gennyproject/alyson-v3:latest
+    container_name: alyson-v3
+    ports:
+      - "6000:80"
+    environment:
+      - REACT_BRIDGE_HOST=http://bridge.genny.life
+      - VIRTUAL_PORT=80
+      - VIRTUAL_HOST=alyson-v3.*,v3.*
+      - VIRTUAL_PROTO=http
+      - CERT_NAME=genny.life
+    env_file:
+      - ${ENV_FILE}
+    networks:
+      - mainproxy
+    restart: always
+
   alyson:
     image: gennyproject/alyson:latest
-#    container_name: alyson
-#    ports:
-#      - "5000:80"
+    container_name: alyson
+    ports:
+      - "5000:80"
     environment:
       - REACT_BRIDGE_HOST=http://bridge.genny.life
       - VIRTUAL_PORT=80
@@ -76,7 +93,7 @@ services:
     restart: always
 
   mysql:
-    image: mysql:5.6
+    image: mysql:5.7
     #image: mariadb
     environment:
       - MYSQL_URL=mysql
@@ -128,6 +145,37 @@ services:
       - 8180:8080
     command: -b 0.0.0.0
 
+
+  wildfly-rulesservice:
+    depends_on:
+      - mysql
+      - keycloak
+    image: gennyproject/wildfly-rulesservice:latest
+    container_name: wildfly-rulesservice 
+    volumes:
+      - ./realm:/opt/realm
+      - ./google_credentials:/root/.genny/sheets.googleapis.com-java-quickstart/
+    env_file:
+      - ${ENV_FILE}
+    environment:
+      - VIRTUAL_HOST=rules.*
+      - VIRTUAL_PORT=8080
+      - VIRTUAL_PROTO=http
+      - CERT_NAME=genny.life
+      - SKIP_GOOGLE_DOC_IN_STARTUP=TRUE
+      - LOAD_DDT_IN_STARTUP=FALSE
+      - DEV_MODE=TRUE
+      - CACHE_API_PORT=8989
+      - DDTHOST=TRUE
+    ports:
+      - "8380:8080"
+      - "8987:8787"
+    links:
+      - mysql:mysql
+      - keycloak:keycloak
+    restart: unless-stopped
+    networks:
+      - mainproxy
 
 
   qwanda-service:
@@ -184,7 +232,7 @@ services:
     container_name: layout-cache
     environment:
       - LAYOUT_REPO=https://github.com/genny-project/layouts.git
-      - NODE_ENV=production
+      - NODE_ENV=dev
       - VIRTUAL_HOST=layout-cache.genny.life
       - VIRTUAL_PORT=2223
       - VIRTUAL_PROTO=http

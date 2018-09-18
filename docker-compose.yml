@@ -76,7 +76,8 @@ services:
     restart: always
 
   mysql:
-    image: mysql:5.6 
+    image: mysql:5.7 
+    container_name: mysql
     environment:
       - MYSQL_URL=mysql
       - MYSQL_DB=gennydb
@@ -89,7 +90,6 @@ services:
       - MYSQL_ROOT_PASSWORD=password
       - ADMIN_USERNAME=admin
       - ADMIN_PASSWORD=password
-    container_name: mysql
     env_file:
       - ${ENV_FILE}
     volumes:
@@ -100,7 +100,6 @@ services:
       - 3310:3306
     restart: unless-stopped
 
-
   signatures:
     image: gennyproject/signatures:latest
     environment:
@@ -109,6 +108,39 @@ services:
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
     ports:
       - "7446:7446"
+
+  wildfly-rulesservice:
+    depends_on:
+      - mysql
+      - keycloak
+    image: gennyproject/wildfly-rulesservice:latest
+    container_name: rules 
+    volumes:
+      - ./realm:/opt/realm
+      - ./google_credentials:/root/.genny/sheets.googleapis.com-java-quickstart/
+    env_file:
+      - ${ENV_FILE}
+    environment:
+      - VIRTUAL_HOST=rules.*
+      - ADMIN_USERNAME=GENNY 
+      - ADMIN_PASSWORD=GENNY
+      - VIRTUAL_PORT=8080
+      - VIRTUAL_PROTO=http
+      - CERT_NAME=genny.life
+      - LOAD_DDT_IN_STARTUP=TRUE
+      - SKIP_GOOGLE_DOC_IN_STARTUP=FALSE
+  #    - DEV_MODE=TRUE
+      - DDTHOST=TRUE
+  #    - DDT_URL=http://bridge:8089 
+    ports:
+      - "8380:8080"
+      - "8987:8787"
+    links:
+      - mysql:mysql
+      - keycloak:keycloak
+    restart: unless-stopped
+    networks:
+      - mainproxy
 
   qwanda-service:
     depends_on:
