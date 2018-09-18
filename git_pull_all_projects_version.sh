@@ -87,7 +87,7 @@ git_project gennyql  &
 git_project keycloak &
 git_project keycloak-themes &
 #git_project kie-client
-git_docker alyson &
+git_docker alyson-v2 &
 git_docker alyson-v3 &
 #git_project qwanda-ql
 git_docker uppy &
