@@ -5,12 +5,10 @@ function git_project {
  pushd .
  cd ..
 echo "Synching in project ${project}"
-if cd ${project}; then 
-    git stash;
-    git checkout master
-    git pull; 
-else 
-    git clone https://github.com/genny-project/${project} ${project}; 
+if cd ${project}; then
+    git pull;
+else
+    git clone https://github.com/genny-project/${project} ${project};
 fi
  popd
 }
@@ -18,19 +16,20 @@ fi
 echo "Git pull all Genny projects!"
 
 #git_project scoring
+git_project keisha
 git_project bridge
 git_project messages
 git_project payments
 git_project rulesservice
 git_project social
-git_project gennyql 
+git_project gennyql
 git_project genny-verticle
 git_project keycloak
 git_project keycloak-themes
 git_project kie-client
 git_project qwanda
 git_project qwanda-utils
-git_project genny-verticle 
+git_project genny-verticle
 git_project qwanda-services
 git_project wildfly-qwanda-service
 git_project alyson-v2
