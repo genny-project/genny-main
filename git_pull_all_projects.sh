@@ -7,8 +7,6 @@ function git_project {
 echo "Synching in project ${project}"
 if cd ${project}; then 
     git stash;
-    git checkout master
-    git pull; 
 else 
     git clone https://github.com/genny-project/${project} ${project}; 
 fi
