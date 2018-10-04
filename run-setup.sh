@@ -24,7 +24,12 @@ DOCUMENTATION=\
 "\t-s, --setup \tSet project up from Github repo URL\n"\
 "\t-u, --update \tUpdate project\n"
 
-
+os_type=""
+if [[ "$OSTYPE" == "linux-gnu" ]]; then
+    os_type="ubuntu"
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+    os_type="mac"
+fi
 #chown root:admin ~/.genny/.secrets/passwords/passwords.txt && chmod 700 ~/.genny/.secrets/passwords/passwords.txt
 
 GENNY_ENV_DIR="$HOME/.genny"
@@ -163,6 +168,18 @@ ENV_FILE=$ENV_FILE docker-compose -f docker-compose-hazelcast.yml logs -f qwanda
          ;;
       dev )
          echo "started"
+         echo "starting keisha"
+         current_dir=$(pwd)
+         echo $current_dir
+         echo "$(pwd)/keisha.command $current_dir"> /tmp/tmp.sh ;
+         chmod +x /tmp/tmp.sh
+
+         if [ $os_type == "mac" ]; then
+             open -a Terminal /tmp/tmp.sh;
+         elif [ $os_type == "ubuntu" ]; then
+             x-terminal-emulator /tmp/tmp.sh
+         fi
+
          if [ -z "$project" ]; then
             echo "Running genny as default"
             project="genny"
@@ -192,8 +209,9 @@ ENV_FILE=$ENV_FILE docker-compose -f docker-compose-hazelcast.yml logs -f qwanda
          echo "DEBUG_SUSPEND=y" >> ${ENV_FILE}
          echo "GENNYDEV=TRUE" >> ${ENV_FILE}
 
-ENV_FILE=$ENV_FILE docker-compose -f docker-compose-dev.yml up -d
-ENV_FILE=$ENV_FILE docker-compose -f docker-compose-dev.yml logs -f qwanda-service
+         ENV_FILE=$ENV_FILE docker-compose -f docker-compose-dev.yml up -d
+         ENV_FILE=$ENV_FILE docker-compose -f docker-compose-dev.yml logs -f qwanda-service
+
          ;;
       staging )
          echo "started"
@@ -305,7 +323,7 @@ ENV_FILE=$ENV_FILE docker-compose -f docker-compose-staging.yml logs -f  rulesse
 
 
          ENV_FILE=$ENV_FILE docker-compose -f docker-compose-hazelcast.yml up -d
-         ENV_FILE=$ENV_FILE docker-compose -f docker-compose-hazelcast.yml logs -f bridge rulesservice 
+         ENV_FILE=$ENV_FILE docker-compose -f docker-compose-hazelcast.yml logs -f bridge rulesservice
          ;;
       up | start )
          echo "started"
