@@ -140,7 +140,6 @@ services:
       - keycloak:keycloak
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/version"]
-      start_period: 2m
       interval: 10s
       timeout: 10s
       retries: 30    
@@ -252,8 +251,7 @@ services:
       - mainproxy
     restart: always
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8889/version"]
-      start_period: 2m
+      test: ["CMD", "curl", "-f", "http://localhost:80/version"]
       interval: 10s
       timeout: 10s
       retries: 30
