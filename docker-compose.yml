@@ -1,4 +1,4 @@
-version: '2'
+version: '2.3'
 
 services:
   nginx:
@@ -138,6 +138,11 @@ services:
     links:
       - mysql:mysql
       - keycloak:keycloak
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/version"]
+      interval: 10s
+      timeout: 10s
+      retries: 30    
     restart: unless-stopped
     networks:
       - mainproxy
@@ -238,12 +243,18 @@ services:
 #      - 4002:15702
 
     depends_on:
-      - messages
-      - bridge
-      - qwanda-service
+      qwanda-service:
+        condition: service_healthy
+      bridge:
+        condition: service_healthy
     networks:
       - mainproxy
     restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80/version"]
+      interval: 10s
+      timeout: 10s
+      retries: 30
     command: java  -Xdebug -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n  -Dvertx.options.blockedThreadCheckInterval=2147483647 -jar /service.jar -cluster
 
   #social:
@@ -291,8 +302,10 @@ services:
       - 4003:15709
       - 8789:8787
     depends_on:
-      - bridge
-      - qwanda-service
+      qwanda-service:
+        condition: service_healthy
+      bridge:
+        condition: service_healthy
     networks:
       - mainproxy
     restart: always
