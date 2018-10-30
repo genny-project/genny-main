@@ -50,6 +50,8 @@ if [ ! -d "$CREDENTIALS_DIR" ]; then
    mkdir -p $CREDENTIALS_DIR
 fi
 
+ echo "PROJECT_REALM=${2}" > ./.env
+
 while [ "$1" != "" ]; do
    case $1 in
       -u | --update ) PROJECT="${2}"
@@ -356,8 +358,7 @@ ENV_FILE=$ENV_FILE docker-compose -f docker-compose-staging.yml logs -f  rulesse
 
 
          ENV_FILE=$ENV_FILE docker-compose up -d
-         ENV_FILE=$ENV_FILE docker-compose logs -f bridge rulesservice qwanda-service messages
-#         ENV_FILE=$ENV_FILE docker-compose logs -f bridge rulesservice social kie-client
+         ENV_FILE=$ENV_FILE docker-compose logs -f bridge  qwanda-service
          ;;
       -h | --help )
          #printf "\t
