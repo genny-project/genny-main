@@ -4,6 +4,7 @@ services:
   nginx:
     image: jwilder/nginx-proxy:latest
     hostname: nginx
+    container_name: nginx
     ports:
       - 80:80
       - 443:443
@@ -98,6 +99,11 @@ services:
       - mainproxy
     ports:
       - 3310:3306
+    command: --sql_mode=""
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
     restart: unless-stopped
 
   signatures:
@@ -210,38 +216,61 @@ services:
   #  command: java  -Dvertx.metrics.options.enabled=true -Dhazelcast.diagnostics.enabled=true  -Dvertx.options.blockedThreadCheckInterval=2147483647 -jar /service.jar  -cluster
     command: java  -Xdebug -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n  -Dvertx.metrics.options.enabled=true -Dvertx.options.blockedThreadCheckInterval=2147483647 -jar /service.jar -cluster
 
+#  wildfly-rulesservice:
+#    depends_on:
+#      qwanda-service:
+#        condition: service_healthy
+#    image: gennyproject/wildfly-rulesservice:latest
+#    container_name: wildfly-rulesservice
+#    env_file:
+#      - ${ENV_FILE}
+#    volumes:
+#      - ./realm:/opt/realm
+#      - ./google_credentials:/root/.genny/sheets.googleapis.com-java-quickstart/
+#      - ../rulesservice/src/main/resources/rules/rulesCurrent:/rules/rulesCurrent
+#      - ../prj_${PROJECT_REALM}/rules:/rules/prj_${PROJECT_REALM}
+#    environment:
+#      - VIRTUAL_HOST=rules.*
+#      - VIRTUAL_PORT=8080
+#      - VIRTUAL_PROTO=http
+#      - CERT_NAME=genny.life
+#      - DEV_MODE=TRUE
+#      - CACHE_API_PORT=8989
+#      - DDTHOST=TRUE
+#    ports:
+#      - "8380:8080"
+#      - "8987:8787"
+#    healthcheck:
+#      test: ["CMD", "curl", "-f", "http://localhost:8080/version"]
+#      interval: 10s
+#      timeout: 10s
+#      retries: 30    
+#   # restart: unless-stopped
+#    networks:
+#      - mainproxy
+
+
   rulesservice:
     image: gennyproject/rulesservice:latest
     container_name:  rulesservice
     volumes:
       - ./realm:/opt/realm
-#      - ./rules:/rules2
-#      - ./rules:/rules/rulesCurrent
-    links:
-      - bridge:bridge
-      - qwanda-service:qwanda-service
-      - keycloak
+      - ../rulesservice/src/main/resources/rules/rulesCurrent:/rules/rulesCurrent
+      - ../prj_${PROJECT_REALM}/rules:/rules/prj_${PROJECT_REALM}
     environment:
       - RULES_DIR=/rules
       - VIRTUAL_PORT=80
       - CACHE_API_PORT=80
       - VIRTUAL_PROTO=http
       - CERT_NAME=genny.life
-  #    - DEV_MODE=TRUE
       - RULESMANAGER=TRUE
       - DDTHOST=TRUE
       - API_PORT=8889
-  #    - DDT_URL=http://bridge:8089
-  #    - GENNYDEV=TRUE
     env_file:
       - ${ENV_FILE}
     ports:
       - 8997:8787
       - 8889:8889
-#      - 8880:8080
-#      - 5702:5702
-#      - 4002:15702
-
     depends_on:
       qwanda-service:
         condition: service_healthy
@@ -264,7 +293,7 @@ services:
   #    - ./realm:/opt/realm
   #  env_file:
   #    - ${ENV_FILE}
-  #  environment:
+# #  environment:
   #    - VIRTUAL_HOST=social.genny.life
   #    - VIRTUAL_PORT=8083
   #    - VIRTUAL_PROTO=http
