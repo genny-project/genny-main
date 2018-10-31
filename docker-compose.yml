@@ -99,6 +99,7 @@ services:
       - mainproxy
     ports:
       - 3310:3306
+    command: --sql_mode=""
     healthcheck:
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
       timeout: 20s
