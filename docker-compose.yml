@@ -232,6 +232,7 @@ services:
     environment:
       - ADMIN_USERNAME=GENNY 
       - ADMIN_PASSWORD=GENNY
+      - RULES_DIR=/rules
       - VIRTUAL_HOST=rules.*
       - VIRTUAL_PORT=8080
       - VIRTUAL_PROTO=http
