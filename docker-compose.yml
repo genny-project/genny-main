@@ -18,6 +18,11 @@ services:
       - ./nginx/html:/usr/share/nginx/html
       - ./nginx/certs:/etc/nginx/certs:ro
       - /var/run/docker.sock:/tmp/docker.sock:ro
+#    healthcheck:
+#      test: ["CMD", "curl", "--fail", "http://nginx.host.com"]
+#      interval: 1m30s
+#      timeout: 10s
+#      retries: 3
 
   in-app-call-server:
     image: gennyproject/in-app-call-server
@@ -117,8 +122,10 @@ services:
 
   qwanda-service:
     depends_on:
-      - mysql
-      - keycloak
+      mysql:
+        condition: service_healthy
+      keycloak:
+        condition: service_healthy
     image: gennyproject/wildfly-qwanda-service:latest
     container_name: qwanda-service
     volumes:
@@ -148,7 +155,7 @@ services:
       test: ["CMD", "curl", "-f", "http://localhost:8080/version"]
       interval: 10s
       timeout: 10s
-      retries: 30    
+      retries: 50    
     restart: unless-stopped
     networks:
       - mainproxy
@@ -182,6 +189,11 @@ services:
     ports:
       - 8180:8080
     command: -b 0.0.0.0
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/auth"]
+      interval: 10s
+      timeout: 10s
+      retries: 30
 
   bridge:
     image: gennyproject/bridge:latest
@@ -226,14 +238,14 @@ services:
       - ${ENV_FILE}
     volumes:
       - ./realm:/opt/realm
-      - ./google_credentials:/root/.genny/sheets.googleapis.com-java-quickstart/
-      - ../rulesservice/src/main/resources/rules/rulesCurrent:/rules/rulesCurrent
+#      - ../rulesservice/src/main/resources/rules/rulesCurrent:/rules/rulesCurrent
+      - ../prj_genny/rules:/rules/rulesCurrent
       - ../prj_${PROJECT_REALM}/rules:/rules/prj_${PROJECT_REALM}
     environment:
       - ADMIN_USERNAME=GENNY 
       - ADMIN_PASSWORD=GENNY
       - RULES_DIR=/rules
-      - VIRTUAL_HOST=rules.*
+      - VIRTUAL_HOST=rulesservice.*
       - VIRTUAL_PORT=8080
       - VIRTUAL_PROTO=http
       - CERT_NAME=genny.life
@@ -248,7 +260,7 @@ services:
       interval: 10s
       timeout: 10s
       retries: 30    
-   # restart: unless-stopped
+    restart: unless-stopped
     networks:
       - mainproxy
 
@@ -258,7 +270,7 @@ services:
 #    container_name:  rulesservice
 #    volumes:
 #      - ./realm:/opt/realm
-#      - ../rulesservice/src/main/resources/rules/rulesCurrent:/rules/rulesCurrent
+##      - ../rulesservice/src/main/resources/rules/rulesCurrent:/rules/rulesCurrent
 #      - ../prj_${PROJECT_REALM}/rules:/rules/prj_${PROJECT_REALM}
 #    environment:
 #      - RULES_DIR=/rules
