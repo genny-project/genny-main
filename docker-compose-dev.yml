@@ -116,6 +116,7 @@ services:
       - mainproxy
     ports:
       - 3310:3306
+    command: --sql_mode=""
     restart: unless-stopped
 
   keycloak:
