@@ -202,6 +202,9 @@ services:
       - ./realm:/opt/realm
     env_file:
       - ${ENV_FILE}
+    depends_on:
+      qwanda-service:
+        condition: service_healthy
     environment:
       - VIRTUAL_HOST=bridge.genny.life
       - VIRTUAL_PORT=8088
@@ -267,6 +270,7 @@ services:
     container_name:  rulesservice
     volumes:
       - ./realm:/opt/realm
+      - ../prj_genny/rules:/rules/rulesCurrent
 #      - ../rulesservice/src/main/resources/rules/rulesCurrent:/rules/rulesCurrent
       - ../prj_${PROJECT_REALM}/rules:/rules/prj_${PROJECT_REALM}
     environment:
@@ -408,6 +412,22 @@ services:
       - "7331:7331"
     networks:
       - mainproxy
+
+  keisha:
+    image: gennyproject/keisha:latest
+    container_name: keisha-service
+    networks:
+      - mainproxy
+    env_file:
+      - ${ENV_FILE}
+    depends_on:
+      mysql:
+        condition: service_healthy
+#    healthcheck:
+#      test: ["CMD", "curl", "-f", "http://localhost:80/version"]
+#      interval: 10s
+#      timeout: 10s
+#      retries: 30
 
 volumes:
   mysql_data:
