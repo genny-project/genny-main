@@ -30,8 +30,8 @@ docker volume create mysql_data
 
 #create env file
 
-IS_CACHE_SERVER=FALSE
-CACHE_SERVER_NAME=
+IS_CACHE_SERVER=TRUE
+CACHE_SERVER_NAME=$myip
 
 PDF_GEN_SERVICE_API_URL=http://camelot-pdfgenerator:7331
 ENV_SECURITY_KEY=WubbaLubbaDubDub
