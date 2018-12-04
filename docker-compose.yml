@@ -271,7 +271,6 @@ services:
     volumes:
       - ./realm:/opt/realm
       - ../prj_genny/rules:/rules/rulesCurrent
-#      - ../rulesservice/src/main/resources/rules/rulesCurrent:/rules/rulesCurrent
       - ../prj_${PROJECT_REALM}/rules:/rules/prj_${PROJECT_REALM}
     environment:
       - RULES_DIR=/rules
