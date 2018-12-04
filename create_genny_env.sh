@@ -30,8 +30,8 @@ docker volume create mysql_data
 
 #create env file
 
-IS_CACHE_SERVER=TRUE
-CACHE_SERVER_NAME=$myip
+IS_CACHE_SERVER=true
+CACHE_SERVER_NAME=keisha-service
 
 PDF_GEN_SERVICE_API_URL=http://camelot-pdfgenerator:7331
 ENV_SECURITY_KEY=WubbaLubbaDubDub
@@ -181,6 +181,9 @@ echo "FACEBOOK_CLIENTID=${FACEBOOK_CLIENTID}" >> $ENV_FILE
 echo "FACEBOOK_SECRET=${FACEBOOK_SECRET}" >> $ENV_FILE
 echo "SOCIAL_CALLBACK_URL=${SOCIAL_CALLBACK_URL}" >> $ENV_FILE
 echo "JAVA_OPTS=${JAVA_OPTS}" >> $ENV_FILE
+
+echo "IS_CACHE_SERVER=${IS_CACHE_SERVER}" >> $ENV_FILE
+echo "CACHE_SERVER_NAME=${CACHE_SERVER_NAME}" >> $ENV_FILE
 
 echo ""
 echo "###### Run Settings ######"
