@@ -63,7 +63,7 @@ KEYCLOAK_PORT=8180
 KEYCLOAK_PROTO="http://"
 KEYCLOAK_USERNAME=admin
 KEYCLOAK_PASSWORD=admin
-CORS_ALLOWED_ORIGINS="http://localhost:3000,http://localhost:5000,http://alyson.genny.life,http://api.genny.life,http://qwanda-service.genny.life,http://qwanda-service,http://keycloak.genny.life"
+CORS_ALLOWED_ORIGINS="http://localhost:3000,http://localhost:5000,http://alyson.genny.life,http://alyson3.genny.life,http://api.genny.life,http://qwanda-service.genny.life,http://qwanda-service,http://keycloak.genny.life"
 
 FACEBOOK_CALLBACK_URL=http://social.genny.life
 FACEBOOK_CLIENTID=423902461306952
@@ -190,6 +190,7 @@ echo "###### Run Settings ######"
 cat $ENV_FILE
 
 echo "FULL_MYSQL_URL=${FULL_MYSQL_URL}" >> $ENV_FILE
+
 
 echo "{" > $ENV_FILE_APP
 echo "\"REACT_APP_PROJECT_NAME\":\"${REACT_APP_PROJECT_NAME}\"," >> $ENV_FILE_APP

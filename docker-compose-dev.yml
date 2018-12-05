@@ -1,4 +1,4 @@
-version: '2.0'
+version: '2.4'
 
 services:
 
@@ -33,13 +33,14 @@ services:
     image: gennyproject/alyson-v3:latest
     container_name: alyson-v3
     ports:
-      - "6000:80"
+      - "6000:8080"
     environment:
       - REACT_BRIDGE_HOST=http://bridge.genny.life
       - VIRTUAL_PORT=80
       - VIRTUAL_HOST=alyson-v3.*,v3.*
       - VIRTUAL_PROTO=http
       - CERT_NAME=genny.life
+      - NODE_ENV=production
     env_file:
       - ${ENV_FILE}
     networks:
@@ -123,47 +124,47 @@ services:
       retries: 30
 
 
-  wildfly-rulesservice:
-    depends_on:
-      - mysql
-      - keycloak
-    image: gennyproject/wildfly-rulesservice:latest
-    container_name: wildfly-rulesservice 
-    volumes:
-      - ./realm:/opt/realm
-      - ./google_credentials:/root/.genny/sheets.googleapis.com-java-quickstart/
-    env_file:
-      - ${ENV_FILE}
-    volumes:
-      - ./realm:/opt/realm
-      - ./google_credentials:/root/.genny/sheets.googleapis.com-java-quickstart/
-      - ../rulesservice/src/main/resources/rules/rulesCurrent:/rules/rulesCurrent
-      - ../prj_${PROJECT_REALM}/rules:/rules/prj_${PROJECT_REALM}
-    environment:
-      - ADMIN_USERNAME=GENNY
-      - ADMIN_PASSWORD=GENNY
-      - RULES_DIR=/rules
-      - VIRTUAL_HOST=rulesservice.*
-      - VIRTUAL_PORT=8080
-      - VIRTUAL_PROTO=http
-      - CERT_NAME=genny.life
-      - DEV_MODE=TRUE
-      - CACHE_API_PORT=8989
-      - DDTHOST=TRUE
-    ports:
-      - "8380:8080"
-      - "8987:8787"
-    links:
-      - mysql:mysql
-      - keycloak:keycloak
-    restart: unless-stopped
-    networks:
-      - mainproxy
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/version"]
-      interval: 10s
-      timeout: 10s
-      retries: 30
+#  wildfly-rulesservice:
+#    depends_on:
+#      - mysql
+#      - keycloak
+#    image: gennyproject/wildfly-rulesservice:latest
+#    container_name: wildfly-rulesservice 
+#    volumes:
+#      - ./realm:/opt/realm
+#      - ./google_credentials:/root/.genny/sheets.googleapis.com-java-quickstart/
+#    env_file:
+#      - ${ENV_FILE}
+#    volumes:
+#      - ./realm:/opt/realm
+#      - ./google_credentials:/root/.genny/sheets.googleapis.com-java-quickstart/
+#      - ../rulesservice/src/main/resources/rules/rulesCurrent:/rules/rulesCurrent
+#      - ../prj_${PROJECT_REALM}/rules:/rules/prj_${PROJECT_REALM}
+#    environment:
+#      - ADMIN_USERNAME=GENNY
+ #     - ADMIN_PASSWORD=GENNY
+ #     - RULES_DIR=/rules
+ #     - VIRTUAL_HOST=rulesservice.*
+ #     - VIRTUAL_PORT=8080
+ #     - VIRTUAL_PROTO=http
+ #     - CERT_NAME=genny.life
+ #     - DEV_MODE=TRUE
+ #     - CACHE_API_PORT=8989
+ #     - DDTHOST=TRUE
+ #   ports:
+ #     - "8380:8080"
+ #     - "8987:8787"
+ #   links:
+ #     - mysql:mysql
+ #     - keycloak:keycloak
+ #   restart: unless-stopped
+ #   networks:
+ #     - mainproxy
+ #   healthcheck:
+ #     test: ["CMD", "curl", "-f", "http://localhost:8080/version"]
+ #     interval: 10s
+ #     timeout: 10s
+ #     retries: 30
 
   qwanda-service:
     depends_on:
@@ -231,8 +232,9 @@ services:
       - CERT_NAME=genny.life
       - GIT_SSH=${GIT_SSH}
       - SSH_PRIVATE_KEY=${SSH_PRIVATE_KEY}
-#    ports:
-#      - "2223:2223"
+    ports:
+      - "2223:2223"
+      - "2224:2224"
     networks:
       - mainproxy
 
