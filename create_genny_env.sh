@@ -31,7 +31,7 @@ docker volume create mysql_data
 #create env file
 
 IS_CACHE_SERVER=true
-CACHE_SERVER_NAME=keisha-service
+CACHE_SERVER_NAME=keisha
 
 PDF_GEN_SERVICE_API_URL=http://camelot-pdfgenerator:7331
 ENV_SECURITY_KEY=WubbaLubbaDubDub
