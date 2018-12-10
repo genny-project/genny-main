@@ -416,9 +416,9 @@ services:
     networks:
       - mainproxy
 
-  keisha:
+  keisha-server:
     image: gennyproject/keisha:latest
-    container_name: keisha
+    container_name: keisha-server
     networks:
       - mainproxy
     env_file:
