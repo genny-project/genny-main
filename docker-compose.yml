@@ -416,16 +416,16 @@ services:
     networks:
       - mainproxy
 
-  keisha-server:
-    image: gennyproject/keisha:latest
-    container_name: keisha-server
-    networks:
-      - mainproxy
-    env_file:
-      - ${ENV_FILE}
-    depends_on:
-      mysql:
-        condition: service_healthy
+#  keisha-server:
+#    image: gennyproject/keisha:latest
+#    container_name: keisha-server
+#    networks:
+#      - mainproxy
+#    env_file:
+#      - ${ENV_FILE}
+#    depends_on:
+#      mysql:
+#        condition: service_healthy
 #    healthcheck:
 #      test: ["CMD", "curl", "-f", "http://localhost:80/version"]
 #      interval: 10s
