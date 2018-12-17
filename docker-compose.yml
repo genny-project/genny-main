@@ -24,13 +24,13 @@ services:
 #      timeout: 10s
 #      retries: 3
 
-  in-app-call-server:
-    image: gennyproject/in-app-call-server
-    container_name: in-app-call-server
-    ports:
-      - "2255:2255"
-    env_file:
-      - ${ENV_FILE}
+#  in-app-call-server:
+#    image: gennyproject/in-app-call-server
+#    container_name: in-app-call-server
+#    ports:
+#      - "2255:2255"
+#    env_file:
+#      - ${ENV_FILE}
 
   imageproxy:
     image: willnorris/imageproxy:v0.7.0
@@ -202,9 +202,6 @@ services:
       - ./realm:/opt/realm
     env_file:
       - ${ENV_FILE}
-    depends_on:
-      qwanda-service:
-        condition: service_healthy
     environment:
       - VIRTUAL_HOST=bridge.genny.life
       - VIRTUAL_PORT=8088
@@ -213,6 +210,7 @@ services:
       - DDTHOST=TRUE
       - API_PORT=8088
       - CACHE_API_PORT=8089
+      - IS_CACHE_SERVER=true
   #    - DDT_URL=http://bridge:8089
   #    - DEV_MODE=TRUE
   #    - GENNYDEV=TRUE
@@ -265,43 +263,43 @@ services:
       - mainproxy
 
 
-  rulesservice:
-    image: gennyproject/rulesservice:latest
-    container_name:  rulesservice
-    volumes:
-      - ./realm:/opt/realm
-      - ../prj_genny/rules:/rules/rulesCurrent
-      - ../prj_${PROJECT_REALM}/rules:/rules/prj_${PROJECT_REALM}
-    environment:
-      - RULES_DIR=/rules
-      - VIRTUAL_PORT=80
-      - CACHE_API_PORT=80
-      - VIRTUAL_PROTO=http
-      - CERT_NAME=genny.life
-      - RULESMANAGER=TRUE
-      - DDTHOST=TRUE
-      - API_PORT=8889
-    env_file:
-      - ${ENV_FILE}
-    ports:
-      - 8997:8787
-      - 8889:8889
-    depends_on:
-      qwanda-service:
-        condition: service_healthy
-      bridge:
-        condition: service_healthy
-      layout-cache:
-        condition: service_healthy
-    networks:
-      - mainproxy
-    restart: always
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:80/version"]
-      interval: 10s
-      timeout: 10s
-      retries: 30
-    command: java  -Xdebug -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n  -Dvertx.options.blockedThreadCheckInterval=2147483647 -jar /service.jar -cluster
+#  rulesservice:
+#    image: gennyproject/rulesservice:latest
+#    container_name:  rulesservice
+#    volumes:
+#      - ./realm:/opt/realm
+#      - ../prj_genny/rules:/rules/rulesCurrent
+#      - ../prj_${PROJECT_REALM}/rules:/rules/prj_${PROJECT_REALM}
+#    environment:
+#      - RULES_DIR=/rules
+#      - VIRTUAL_PORT=80
+#      - CACHE_API_PORT=80
+#      - VIRTUAL_PROTO=http
+#      - CERT_NAME=genny.life
+#      - RULESMANAGER=TRUE
+#      - DDTHOST=TRUE
+#      - API_PORT=8889
+#    env_file:
+#      - ${ENV_FILE}
+#    ports:
+#      - 8997:8787
+#      - 8889:8889
+#    depends_on:
+#      qwanda-service:
+#        condition: service_healthy
+#      bridge:
+#        condition: service_healthy
+#      layout-cache:
+#        condition: service_healthy
+#    networks:
+#      - mainproxy
+#    restart: always
+#    healthcheck:
+#      test: ["CMD", "curl", "-f", "http://localhost:80/version"]
+#      interval: 10s
+#      timeout: 10s
+#      retries: 30
+#    command: java  -Xdebug -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n  -Dvertx.options.blockedThreadCheckInterval=2147483647 -jar /service.jar -cluster
 
   #social:
   #  image: gennyproject/social:latest
@@ -342,7 +340,7 @@ services:
     env_file:
       - ${ENV_FILE}
     #environment:
-    #  - DDT_URL=http://bridge:8089
+  # #  - DDT_URL=http://bridge:8089
     ports:
       - 5709:5709
       - 4003:15709
@@ -416,21 +414,18 @@ services:
     networks:
       - mainproxy
 
-#  keisha-server:
-#    image: gennyproject/keisha:latest
-#    container_name: keisha-server
-#    networks:
-#      - mainproxy
-#    env_file:
-#      - ${ENV_FILE}
-#    depends_on:
-#      mysql:
-#        condition: service_healthy
-#    healthcheck:
-#      test: ["CMD", "curl", "-f", "http://localhost:80/version"]
-#      interval: 10s
-#      timeout: 10s
-#      retries: 30
+  keisha-server:
+    image: gennyproject/keisha:latest
+    container_name: keisha-server
+    networks:
+      - mainproxy
+    env_file:
+      - ${ENV_FILE}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80/version"]
+      interval: 10s
+      timeout: 10s
+      retries: 30
 
 volumes:
   mysql_data:
