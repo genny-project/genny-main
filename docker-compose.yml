@@ -236,7 +236,6 @@ services:
       - ${ENV_FILE}
     volumes:
       - ./realm:/opt/realm
-#      - ../rulesservice/src/main/resources/rules/rulesCurrent:/rules/rulesCurrent
       - ../prj_genny/rules:/rules/rulesCurrent
       - ../prj_${PROJECT_REALM}/rules:/rules/prj_${PROJECT_REALM}
     environment:

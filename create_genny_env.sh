@@ -23,7 +23,7 @@ myip=$2
 
 fi
 echo $myip
-CLUSTER_IP=$myip
+CLUSTER_IP=127.0.0.1
 
 #myip=127.0.0.2
 docker volume create cassandra_data
