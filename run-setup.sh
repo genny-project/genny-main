@@ -267,6 +267,9 @@ ENV_FILE=$ENV_FILE docker-compose -f docker-compose-staging.yml logs -f  rulesse
             project="genny"
          fi
 
+         if [ -n $project_realm ]; then
+            echo  "PROJECT_REALM=$project_realm" >> $ENV_FILE
+         fi
          if [ $project == "genny" ] && [ ! -d "$CREDENTIALS_PROJECT-${project}" ]; then
             cd $CREDENTIALS_DIR
             genny_repo_url="https://github.com/genny-project/credentials-genny.git"
@@ -291,7 +294,7 @@ ENV_FILE=$ENV_FILE docker-compose -f docker-compose-staging.yml logs -f  rulesse
 
 
          ENV_FILE=$ENV_FILE docker-compose -f docker-compose-min.yml up -d
-         ENV_FILE=$ENV_FILE docker-compose -f docker-compose-min.yml logs -f bridge rulesservice qwanda-service messages
+         ENV_FILE=$ENV_FILE docker-compose -f docker-compose-min.yml logs -f bridge  qwanda-service messages
 #         ENV_FILE=$ENV_FILE docker-compose logs -f bridge rulesservice social kie-client
          ;;
       haz )
@@ -359,6 +362,70 @@ ENV_FILE=$ENV_FILE docker-compose -f docker-compose-staging.yml logs -f  rulesse
 
          ENV_FILE=$ENV_FILE docker-compose up -d
          ENV_FILE=$ENV_FILE docker-compose logs -f bridge  qwanda-service
+         ;;
+      local )
+         echo "local started"
+         if [ -z "$project" ]; then
+            echo "Running genny as default"
+            project="genny"
+         fi
+
+         if [ $project == "genny" ] && [ ! -d "$CREDENTIALS_PROJECT-${project}" ]; then
+            cd $CREDENTIALS_DIR
+            genny_repo_url="https://github.com/genny-project/credentials-genny.git"
+            git_output=$(git clone $genny_repo_url 2>&1)
+            repo_name_quotes=$(echo $git_output | sed 's/.*\('\''.*'\''\).*/\1/')
+            repo_name_no_quotes=$(echo "$repo_name_quotes" | tr -d "'")
+            echo "Stored repo path $CREDENTIALS_PROJECT/$repo_name_no_quotes"
+            if [ $repo_name_no_quotes != "$CREDENTIALS-$project" ]; then
+               mv "$repo_name_no_quotes" $CREDENTIALS-${project}
+               echo "Changing project name to $CREDENTIALS-$project"
+            fi
+            cd - &> /dev/null
+	 fi
+         ./create_genny_env.sh ${ENV_FILE} $ip >& /dev/null
+
+         if [ -n $project_realm ]; then
+            echo  "PROJECT_REALM=$project_realm" >> $ENV_FILE
+         fi
+         cat "$CREDENTIALS_PROJECT-$project/conf.env" >> $ENV_FILE
+         cat "$CREDENTIALS_PROJECT-$project/StoredCredential" > google_credentials/StoredCredential
+
+
+
+         ENV_FILE=$ENV_FILE docker-compose -f local.yml up -d
+         ;;
+      mysql )
+         echo "mysql  started"
+         if [ -z "$project" ]; then
+            echo "Running genny as default"
+            project="genny"
+         fi
+
+         if [ $project == "genny" ] && [ ! -d "$CREDENTIALS_PROJECT-${project}" ]; then
+            cd $CREDENTIALS_DIR
+            genny_repo_url="https://github.com/genny-project/credentials-genny.git"
+            git_output=$(git clone $genny_repo_url 2>&1)
+            repo_name_quotes=$(echo $git_output | sed 's/.*\('\''.*'\''\).*/\1/')
+            repo_name_no_quotes=$(echo "$repo_name_quotes" | tr -d "'")
+            echo "Stored repo path $CREDENTIALS_PROJECT/$repo_name_no_quotes"
+            if [ $repo_name_no_quotes != "$CREDENTIALS-$project" ]; then
+               mv "$repo_name_no_quotes" $CREDENTIALS-${project}
+               echo "Changing project name to $CREDENTIALS-$project"
+            fi
+            cd - &> /dev/null
+	 fi
+         ./create_genny_env.sh ${ENV_FILE} $ip >& /dev/null
+
+         if [ -n $project_realm ]; then
+            echo  "PROJECT_REALM=$project_realm" >> $ENV_FILE
+         fi
+         cat "$CREDENTIALS_PROJECT-$project/conf.env" >> $ENV_FILE
+         cat "$CREDENTIALS_PROJECT-$project/StoredCredential" > google_credentials/StoredCredential
+
+
+
+         ENV_FILE=$ENV_FILE docker-compose -f docker-compose-mysql.yml up -d
          ;;
       -h | --help )
          #printf "\t

@@ -15,7 +15,6 @@ fi
 
 echo "Git pull all Genny projects!"
 
-#git_project scoring
 git_project keisha
 git_project bridge
 git_project messages
@@ -29,14 +28,17 @@ git_project keycloak-themes
 git_project kie-client
 git_project qwanda
 git_project qwanda-utils
-git_project genny-verticle
+git_project genny-verticle-rules
+git_project genny-rules
 git_project qwanda-services
 git_project wildfly-qwanda-service
+git_project wildfly-rulesservice
 git_project alyson-v2
+git_project alyson-v3
 git_project qwanda-ql
 git_project uppy
 git_project in-app-calling
-git_project prj_channel40
+git_project prj_genny
 git_project prj_fourdegrees
 git_project prj_internmatch
 git_project prj_butler

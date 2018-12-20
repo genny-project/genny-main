@@ -1,0 +1,180 @@
+version: '2.3'
+
+services:
+  nginx:
+    image: jwilder/nginx-proxy:latest
+    hostname: nginx
+    container_name: nginx
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - mainproxy
+    environment:
+      - SKIP_HTTPS_REDIRECT=true
+    volumes:
+      - ./nginx/conf3.d:/etc/nginx/conf.d
+      - ./nginx/vhost.d:/etc/nginx/vhost.d
+      - ./nginx/html:/usr/share/nginx/html
+      - ./nginx/certs:/etc/nginx/certs:ro
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+#    healthcheck:
+#      test: ["CMD", "curl", "--fail", "http://localhost:80"]
+#      interval: 1m30s
+#      timeout: 10s
+#      retries: 3
+
+  imageproxy:
+    image: willnorris/imageproxy:v0.7.0
+    ports:
+      - "46243:8080"
+    command: -cache /tmp/imageproxy -addr 0.0.0.0:8080 -scaleUp true
+
+
+  alyson-v3:
+    image: gennyproject/alyson-v3:latest
+    container_name: alyson-v3
+    ports:
+      - "6000:8080"
+    environment:
+      - REACT_BRIDGE_HOST=http://bridge.genny.life
+      - NODE_ENV=production
+    env_file:
+      - ${ENV_FILE}
+    networks:
+      - mainproxy
+    restart: always
+
+
+  alyson:
+    image: gennyproject/alyson:latest
+    container_name: alyson
+    ports:
+      - "5000:80"
+    environment:
+      - REACT_BRIDGE_HOST=http://bridge.genny.life
+      - NODE_ENV=production
+    env_file:
+      - ${ENV_FILE}
+    networks:
+      - mainproxy
+    restart: always
+
+  mysql:
+    image: mysql:5.7 
+    container_name: mysql
+    environment:
+      - MYSQL_URL=mysql
+      - MYSQL_DB=gennydb
+      - MYSQL_PORT=3306
+      - MYSQL_ALLOW_EMPTY=
+      - MYSQL_RANDOM_ROOT_PASSWORD=no
+      - MYSQL_DATABASE=gennydb
+      - MYSQL_USER=genny
+      - MYSQL_PASSWORD=password
+      - MYSQL_ROOT_PASSWORD=password
+      - ADMIN_USERNAME=admin
+      - ADMIN_PASSWORD=password
+    env_file:
+      - ${ENV_FILE}
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - mainproxy
+    ports:
+      - 3310:3306
+    command: --sql_mode=""
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+    restart: unless-stopped
+
+
+  keycloak:
+    image: gennyproject/keycloak:latest
+    container_name: keycloak
+    env_file:
+      - ${ENV_FILE}
+    environment:
+      - VIRTUAL_HOST=keycloak.*,bouncer.*
+      - VIRTUAL_PORT=8080
+      - VIRTUAL_PROTO=http
+      - CERT_NAME=genny.life
+#      - IMPORTEXPORT=EXPORT
+      - KEYCLOAK_USER=admin
+      - KEYCLOAK_PASSWORD=Outcome2016KeycloakAdmin
+      - MYSQL_URL=mysql
+      - MYSQL_PORT=3306
+      - MYSQL_DB=keycloakdb
+      - MYSQL_USERNAME=keycloak
+      - MYSQL_PASSWORD=Outcome2016KeycloakAdmin
+    volumes:
+#      - /opt/jboss/backup:/opt/jboss/backup
+#      - ../keycloak-themes/themes:/opt/jboss/keycloak/themes
+      - ./realm:/tmp/realm
+      #- ./realm:/tmp/realm
+      #- ./keycloak-themes/themes:/opt/jboss/keycloak/themes
+    networks:
+      - mainproxy
+    ports:
+      - 8180:8080
+    command: -b 0.0.0.0
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/auth"]
+      interval: 10s
+      timeout: 10s
+      retries: 30
+
+
+  uppy:
+     image: gennyproject/uppy:latest
+     container_name: uppy
+     env_file:
+      - ${ENV_FILE}
+     environment:
+      - VIRTUAL_HOST=uppy.genny.life
+      - VIRTUAL_PORT=3020
+      - VIRTUAL_PROTO=http
+      - CERT_NAME=genny.life
+#     ports:
+#       - "3020:3020"
+     networks:
+       - mainproxy
+
+  layout-cache:
+    image: gennyproject/layout-cache:latest
+    container_name: layout-cache
+    environment:
+      - LAYOUT_REPO=https://github.com/genny-project/layouts.git
+      - NODE_ENV=production
+      - VIRTUAL_HOST=layout-cache.genny.life
+      - VIRTUAL_PORT=2223
+      - VIRTUAL_PROTO=http
+      - CERT_NAME=genny.life
+      - GIT_SSH=${GIT_SSH}
+      - SSH_PRIVATE_KEY=${SSH_PRIVATE_KEY}
+    ports:
+      - "2223:2223"
+    networks:
+      - mainproxy
+
+  camelot-pdfgenerator:
+    image: matthayward1997/camelot:latest
+    container_name: camelot-pdfgenerator
+    ports:
+      - "7331:7331"
+    networks:
+      - mainproxy
+
+volumes:
+  mysql_data:
+  maildata:
+    driver: local
+  mailstate:
+    driver: local
+networks:
+  mainproxy:
+    driver: bridge
+
+#
