@@ -23,12 +23,16 @@ myip=$2
 
 fi
 echo $myip
+CLUSTER_IP=127.0.0.1
 
 #myip=127.0.0.2
 docker volume create cassandra_data
 docker volume create mysql_data
 
 #create env file
+
+IS_CACHE_SERVER=false
+CACHE_SERVER_NAME=bridge
 
 PDF_GEN_SERVICE_API_URL=http://camelot-pdfgenerator:7331
 ENV_SECURITY_KEY=WubbaLubbaDubDub
@@ -60,7 +64,7 @@ KEYCLOAK_PORT=8180
 KEYCLOAK_PROTO="http://"
 KEYCLOAK_USERNAME=admin
 KEYCLOAK_PASSWORD=admin
-CORS_ALLOWED_ORIGINS="http://localhost:3000,http://localhost:5000,http://alyson.genny.life,http://api.genny.life,http://qwanda-service.genny.life,http://qwanda-service,http://keycloak.genny.life"
+CORS_ALLOWED_ORIGINS="http://localhost:3000,http://localhost:5000,http://alyson.genny.life,http://alyson3.genny.life,http://api.genny.life,http://qwanda-service.genny.life,http://qwanda-service,http://keycloak.genny.life"
 
 FACEBOOK_CALLBACK_URL=http://social.genny.life
 FACEBOOK_CLIENTID=423902461306952
@@ -179,11 +183,16 @@ echo "FACEBOOK_SECRET=${FACEBOOK_SECRET}" >> $ENV_FILE
 echo "SOCIAL_CALLBACK_URL=${SOCIAL_CALLBACK_URL}" >> $ENV_FILE
 echo "JAVA_OPTS=${JAVA_OPTS}" >> $ENV_FILE
 
+echo "CLUSTER_IP=${CLUSTER_IP}" >> $ENV_FILE
+echo "IS_CACHE_SERVER=${IS_CACHE_SERVER}" >> $ENV_FILE
+echo "CACHE_SERVER_NAME=${CACHE_SERVER_NAME}" >> $ENV_FILE
+
 echo ""
 echo "###### Run Settings ######"
 cat $ENV_FILE
 
 echo "FULL_MYSQL_URL=${FULL_MYSQL_URL}" >> $ENV_FILE
+
 
 echo "{" > $ENV_FILE_APP
 echo "\"REACT_APP_PROJECT_NAME\":\"${REACT_APP_PROJECT_NAME}\"," >> $ENV_FILE_APP
