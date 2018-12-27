@@ -231,7 +231,7 @@ services:
       qwanda-service:
         condition: service_healthy
     image: gennyproject/wildfly-rulesservice:latest
-  #  container_name: wildfly-rulesservice
+    container_name: wildfly-rulesservice
     env_file:
       - ${ENV_FILE}
     volumes:
