@@ -111,7 +111,8 @@ services:
       - MYSQL_PASSWORD=Outcome2016KeycloakAdmin
     volumes:
   #    - ../keycloak-themes/themes:/opt/jboss/keycloak/themes
-      - ./realm:/tmp/realm
+       - ./realm:/tmp/realm
+       - ./data:/opt/jboss/keycloak/standalone/data
     networks:
       - mainproxy
     ports:

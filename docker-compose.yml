@@ -181,7 +181,8 @@ services:
     volumes:
 #      - /opt/jboss/backup:/opt/jboss/backup
 #      - ../keycloak-themes/themes:/opt/jboss/keycloak/themes
-      - ./realm:/tmp/realm
+       - ./realm:/tmp/realm
+       - ./data:/opt/jboss/keycloak/standalone/data
       #- ./realm:/tmp/realm
       #- ./keycloak-themes/themes:/opt/jboss/keycloak/themes
     networks:
@@ -231,7 +232,7 @@ services:
       qwanda-service:
         condition: service_healthy
     image: gennyproject/wildfly-rulesservice:latest
-  #  container_name: wildfly-rulesservice
+    container_name: wildfly-rulesservice
     env_file:
       - ${ENV_FILE}
     volumes:
