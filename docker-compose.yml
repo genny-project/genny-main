@@ -183,7 +183,7 @@ services:
 #      - /opt/jboss/backup:/opt/jboss/backup
 #      - ../keycloak-themes/themes:/opt/jboss/keycloak/themes
        - ./realm:/tmp/realm
-      # - ./data:/opt/jboss/keycloak/standalone/data
+       - ./data:/opt/jboss/keycloak/standalone/data
       #- ./realm:/tmp/realm
       #- ./keycloak-themes/themes:/opt/jboss/keycloak/themes
     networks:
