@@ -17,3 +17,4 @@ nginx/conf.d/default.conf
 nginx/conf.d2/default.conf
 rules/
 eclipse/
+data/
