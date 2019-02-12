@@ -293,8 +293,6 @@ services:
         condition: service_healthy
       bridge:
         condition: service_healthy
-      layout-cache:
-        condition: service_healthy
     networks:
       - mainproxy
     restart: always
