@@ -179,9 +179,16 @@ services:
     env_file:
       - ${ENV_FILE}
     environment:
+      - USE_VERTX_UTILS=true
+      - FORCE_EVENTBUS_USE_API=TRUE
+      - FORCE_CACHE_USE_API=FALSE
+      - IS_CACHE_SERVER=TRUE
+      - BRIDGE_SERVICE_API=http://bridge.genny.life:8088/api/service
+      - CACHE_SERVER_NAME= bridge.genny.life
       - VIRTUAL_HOST=qwanda-service.*,api.*
       - VIRTUAL_PORT=8080
       - VIRTUAL_PROTO=http
+      - DDT_URL= http://bridge.genny.life:8089
       - CERT_NAME=genny.life
       - SKIP_GOOGLE_DOC_IN_STARTUP=FALSE
       - LOAD_DDT_IN_STARTUP=TRUE
@@ -189,6 +196,7 @@ services:
       - CACHE_API_PORT=8089
   #    - GENNYDEV=TRUE
       - DDTHOST=TRUE
+      - XMX=1024m
     ports:
       - "8280:8080"
       - "8887:8787"
