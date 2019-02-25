@@ -136,6 +136,7 @@ services:
     environment:
       - USE_VERTX_UTILS=true
       - FORCE_EVENTBUS_USE_API=TRUE
+      - FORCE_CACHE_USE_API=TRUE
       - VIRTUAL_HOST=qwanda-service.*,api.*
       - ADMIN_USERNAME=GENNY 
       - ADMIN_PASSWORD=GENNY
