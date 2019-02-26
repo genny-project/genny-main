@@ -3,7 +3,7 @@ version: '2.4'
 services:
 
   nginx:
-    image: jwilder/nginx-proxy:latest
+    image: jwilder/nginx-proxy:alpine
     container_name: nginx 
   #  image: nginx:alpine
   #  labels:
