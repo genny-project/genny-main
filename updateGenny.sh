@@ -107,6 +107,7 @@ function build_project {
     mvn install -DskipTests=true
    # $(cd ./${project} > /dev/null 2>&1 && mvn install -DskipTests=true > /dev/null 2>&1 )
   fi
+  cd ..
 }
 
 # function help to build all the required projects 
