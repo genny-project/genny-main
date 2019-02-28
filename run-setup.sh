@@ -354,6 +354,11 @@ ENV_FILE=$ENV_FILE docker-compose -f docker-compose-staging.yml logs -f  rulesse
 
          if [ -n $project_realm ]; then
             echo  "PROJECT_REALM=$project_realm" >> $ENV_FILE
+            UPPER_REALM=`echo $project_realm | tr '[:lower:]' '[:upper:]'`
+            echo  "UPPER_REALM=$UPPER_REALM"
+         #   echo  "$UPPER_REALM""_ENV_SIGNATURE_URL=http://signature.genny.life" >> $ENV_FILE
+         #   echo  "$UPPER_REALM""_ENV_UPPY_URL=http://uppy.genny.life" >> $ENV_FILE
+          #  echo  "$UPPER_REALM""_ENV_LAYOUT_PUBLICURL=http://layout-cache.genny.life" >> $ENV_FILE
          fi
          cat "$CREDENTIALS_PROJECT-$project/conf.env" >> $ENV_FILE
          cat "$CREDENTIALS_PROJECT-$project/StoredCredential" > google_credentials/StoredCredential

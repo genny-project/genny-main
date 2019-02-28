@@ -82,6 +82,8 @@ function git_projects {
   echo -ne '############              (50%)\r'
   git_project   keycloak-themes 
   echo -ne '############              (50%)\r'
+  git_project   camelot 
+  echo -ne '############              (50%)\r'
 }
 
 # function help to build a project

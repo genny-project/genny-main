@@ -145,6 +145,8 @@ services:
       - CERT_NAME=genny.life
       - LOAD_DDT_IN_STARTUP=TRUE
       - SKIP_GOOGLE_DOC_IN_STARTUP=FALSE
+      - DEBUG=TRUE
+      - DEBUG_SUSPEND=n
   #    - DEV_MODE=TRUE
       - DDTHOST=TRUE
   #    - DDT_URL=http://bridge:8089 
@@ -207,6 +209,9 @@ services:
     env_file:
       - ${ENV_FILE}
     environment:
+      - ${PROJECT_REALM_UPPER}_ENV_LAYOUT_PUBLICURL=http://layout-cache.genny.life
+      - ${PROJECT_REALM_UPPER}_ENV_SIGNATURE_URL=http://signature.genny.life
+      - ${PROJECT_REALM_UPPER}_ENV_UPPY_URL=http://uppy.genny.life
       - VIRTUAL_HOST=bridge.genny.life
       - VIRTUAL_PORT=8088
       - VIRTUAL_PROTO=http
