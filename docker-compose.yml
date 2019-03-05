@@ -185,11 +185,10 @@ services:
       - MYSQL_PASSWORD=Outcome2016KeycloakAdmin
     volumes:
 #      - /opt/jboss/backup:/opt/jboss/backup
-#      - ../keycloak-themes/themes:/opt/jboss/keycloak/themes
        - ./realm:/tmp/realm
        - ./data:/opt/jboss/keycloak/standalone/data
       #- ./realm:/tmp/realm
-      #- ./keycloak-themes/themes:/opt/jboss/keycloak/themes
+       - ../keycloak-themes/themes:/opt/jboss/keycloak/themes
     networks:
       - mainproxy
     ports:
@@ -259,6 +258,9 @@ services:
 ##      - CACHE_API_PORT=8989
 #      - DDTHOST=TRUE
 #      - LAYOUT_CACHE_HOST=http://layout-cache:2223
+#      - FORCE_EVENTBUS_USE_API=FALSE
+#      - FORCE_CACHE_USE_API=FALSE
+
 #    ports:
 #      - "8380:8080"
 #      - "8987:8787"
@@ -348,7 +350,8 @@ services:
       - keycloak
     env_file:
       - ${ENV_FILE}
-    #environment:
+    environment:
+      - GENNYSTAGING=true
   # #  - DDT_URL=http://bridge:8089
     ports:
       - 5709:5709
