@@ -124,10 +124,10 @@ services:
     depends_on:
       - mysql
       - keycloak
-    #  mysql:
-    #    condition: service_healthy
-    #  keycloak:
-    #    condition: service_healthy
+      mysql:
+        condition: service_healthy
+      keycloak:
+        condition: service_healthy
     image: gennyproject/wildfly-qwanda-service:latest
     container_name: qwanda-service
     volumes:
@@ -149,7 +149,7 @@ services:
       - SKIP_GOOGLE_DOC_IN_STARTUP=TRUE
       - DEBUG=TRUE
       - DEBUG_SUSPEND=n
-      - XMX=2048m
+      - XMX=1024m
   #    - DEV_MODE=TRUE
       - DDTHOST=TRUE
   #    - DDT_URL=http://bridge:8089 
