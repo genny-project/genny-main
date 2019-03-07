@@ -283,7 +283,7 @@ services:
       - ../prj_${PROJECT_REALM}/rules:/rules/prj_${PROJECT_REALM}
     environment:
       - RULES_DIR=/rules
-      - DISABLE_LAYOUT_LOADING=TRUE
+      - DISABLE_LAYOUT_LOADING=FALSE
       - VIRTUAL_PORT=80
       - CACHE_API_PORT=80
       - VIRTUAL_PROTO=http
