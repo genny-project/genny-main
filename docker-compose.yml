@@ -147,6 +147,7 @@ services:
       - SKIP_GOOGLE_DOC_IN_STARTUP=TRUE
       - DEBUG=TRUE
       - DEBUG_SUSPEND=n
+      - XMX=2048m
   #    - DEV_MODE=TRUE
       - DDTHOST=TRUE
   #    - DDT_URL=http://bridge:8089 
@@ -398,24 +399,24 @@ services:
      networks:
        - mainproxy
 
-  layout-cache:
-    image: gennyproject/layout-cache:latest
-    container_name: layout-cache
-    environment:
-      - LAYOUT_REPO=https://github.com/genny-project/layouts.git
-      #- NODE_ENV=dev
-      - NODE_ENV=production
-      - VIRTUAL_HOST=layout-cache.genny.life
-      - VIRTUAL_PORT=2224
-      - VIRTUAL_PROTO=http
-      - CERT_NAME=genny.life
-      - GIT_SSH=${GIT_SSH}
-      - SSH_PRIVATE_KEY=${SSH_PRIVATE_KEY}
-    ports:
-      - "2223:2223"
-      - "2224:2224"
-    networks:
-      - mainproxy
+#  layout-cache:
+#    image: gennyproject/layout-cache:latest
+#    container_name: layout-cache
+#    environment:
+#      - LAYOUT_REPO=https://github.com/genny-project/layouts.git
+#      #- NODE_ENV=dev
+#      - NODE_ENV=production
+#      - VIRTUAL_HOST=layout-cache.genny.life
+#      - VIRTUAL_PORT=2224
+#      - VIRTUAL_PROTO=http
+#      - CERT_NAME=genny.life
+#      - GIT_SSH=${GIT_SSH}
+#      - SSH_PRIVATE_KEY=${SSH_PRIVATE_KEY}
+#    ports:
+#      - "2223:2223"
+#      - "2224:2224"
+#    networks:
+#      - mainproxy
 
   camelot-pdfgenerator:
     image: matthayward1997/camelot:latest
