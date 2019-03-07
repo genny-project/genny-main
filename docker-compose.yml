@@ -122,8 +122,6 @@ services:
 
   qwanda-service:
     depends_on:
-      - mysql
-      - keycloak
       mysql:
         condition: service_healthy
       keycloak:
