@@ -144,7 +144,7 @@ services:
       - VIRTUAL_PROTO=http
       - CERT_NAME=genny.life
       - LOAD_DDT_IN_STARTUP=TRUE
-      - SKIP_GOOGLE_DOC_IN_STARTUP=TRUE
+      - SKIP_GOOGLE_DOC_IN_STARTUP=FALSE
       - DEBUG=TRUE
       - DEBUG_SUSPEND=n
       - XMX=1024m
