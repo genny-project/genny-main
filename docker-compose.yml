@@ -32,6 +32,19 @@ services:
 #    env_file:
 #      - ${ENV_FILE}
 
+#docker run -p 8080:8080 -p 8001:8001 -d --name jbpm-server-full -e JBPM_DB_DRIVER=mysql -e JBPM_DB_HOST=172.17.0.1 jboss/jbpm-server-full:latest
+
+
+#  workbench:
+#    image: jboss/jbpm-server-full:latest
+#    ports:
+#      - "8580:8080"
+#      - "8001:8001"
+#    environment:
+#      - JBPM_DB_DRIVER=mysql
+#      - JBPM_DB_HOST=10.123.123.123
+#      - JBPM_DB_PORT=3310
+ 
   imageproxy:
     image: willnorris/imageproxy:v0.7.0
     ports:
@@ -57,7 +70,7 @@ services:
       - "6000:8080"
     environment:
       - REACT_BRIDGE_HOST=http://bridge.genny.life
-      - NODE_ENV=dev
+      - NODE_ENV=production
     env_file:
       - ${ENV_FILE}
     networks:
@@ -236,6 +249,8 @@ services:
 
 #  wildfly-rulesservice:
 #    depends_on:
+#      mysql:
+#        condition: service_healthy
 #      qwanda-service:
 #        condition: service_healthy
 #    image: gennyproject/wildfly-rulesservice:latest
@@ -254,13 +269,14 @@ services:
 #      - VIRTUAL_PORT=8080
 #      - VIRTUAL_PROTO=http
 #      - CERT_NAME=genny.life
+#      - HIDE_RULE_STATES=TRUE
 ##      - DEV_MODE=TRUE
 ##      - CACHE_API_PORT=8989
 #      - DDTHOST=TRUE
 #      - LAYOUT_CACHE_HOST=http://layout-cache:2223
+#      - DISABLE_LAYOUT_LOADING=TRUE
 #      - FORCE_EVENTBUS_USE_API=FALSE
 #      - FORCE_CACHE_USE_API=FALSE
-
 #    ports:
 #      - "8380:8080"
 #      - "8987:8787"
@@ -272,7 +288,7 @@ services:
 #    restart: unless-stopped
 #    networks:
 #      - mainproxy
-
+#
 
   rulesservice:
     image: gennyproject/rulesservice:latest
@@ -283,9 +299,10 @@ services:
       - ../prj_${PROJECT_REALM}/rules:/rules/prj_${PROJECT_REALM}
     environment:
       - RULES_DIR=/rules
-      - DISABLE_LAYOUT_LOADING=FALSE
       - VIRTUAL_PORT=80
       - CACHE_API_PORT=80
+      - HIDE_RULE_STATES=TRUE
+      - DISABLE_LAYOUT_LOADING=TRUE
       - VIRTUAL_PROTO=http
       - CERT_NAME=genny.life
       - RULESMANAGER=TRUE
