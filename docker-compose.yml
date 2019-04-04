@@ -157,6 +157,7 @@ services:
       - VIRTUAL_PROTO=http
       - CERT_NAME=genny.life
       - LOAD_DDT_IN_STARTUP=TRUE
+      - SKIP_GITHUB_IN_STARTUP=FALSE
       - SKIP_GOOGLE_DOC_IN_STARTUP=FALSE
       - DEBUG=TRUE
       - DEBUG_SUSPEND=n
@@ -233,6 +234,8 @@ services:
       - API_PORT=8088
       - CACHE_API_PORT=8089
       - IS_CACHE_SERVER=true
+      - ZIP_MODE=TRUE
+      - MODE_GZIP=TRUE
   #    - DDT_URL=http://bridge:8089
   #    - DEV_MODE=TRUE
   #    - GENNYDEV=TRUE
