@@ -160,7 +160,7 @@ services:
       - SKIP_GITHUB_IN_STARTUP=FALSE
       - SKIP_GOOGLE_DOC_IN_STARTUP=FALSE
       - DEBUG=TRUE
-      - DEBUG_SUSPEND=n
+      - DEBUG_SUSPEND=y
       - XMX=1024m
   #    - DEV_MODE=TRUE
       - DDTHOST=TRUE
