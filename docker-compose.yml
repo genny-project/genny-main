@@ -235,7 +235,8 @@ services:
       - CACHE_API_PORT=8089
       - IS_CACHE_SERVER=true
   #   - ZIP_MODE=TRUE
-  #   - MODE_GZIP=TRUE
+      - MODE_GZIP=TRUE
+      - ZIP_MIN_THRESHOLD_BYTES=8000000
   #    - DDT_URL=http://bridge:8089
   #    - DEV_MODE=TRUE
   #    - GENNYDEV=TRUE
