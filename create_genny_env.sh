@@ -154,7 +154,7 @@ echo "MAIL_SMTP_PORT=${MAIL_SMTP_PORT}" >> $ENV_FILE
 echo "" >> $ENV_FILE
 echo "KEYCLOAKPORT=${KEYCLOAK_PORT}" >> $ENV_FILE
 echo "KEYCLOAKPROTO=${KEYCLOAK_PROTO}" >> $ENV_FILE
-echo "KEYCLOAKURL=http://keycloak.genny.life:8180" >> $ENV_FILE
+echo "KEYCLOAKURL=https://bouncer.outcome-hub.com" >> $ENV_FILE
 #echo "KEYCLOAKURL=${KEYCLOAK_PROTO}${myip}:${KEYCLOAK_PORT}" >> $ENV_FILE
 echo "KEYCLOAK_USERNAME=${KEYCLOAK_USERNAME}" >> $ENV_FILE
 echo "KEYCLOAK_SERVICE_ID=${KEYCLOAK_SERVICE_ID}" >> $ENV_FILE
@@ -208,3 +208,9 @@ echo "\"REACT_APP_VERTX_CMDS_API\":\"${REACT_APP_VERTX_CMDS_API}\"" >> $ENV_FILE
 echo "\"REACT_APP_VERTX_DATA_API\":\"${REACT_APP_VERTX_DATA_API}\"" >> $ENV_FILE_APP
 echo "}" >> $ENV_FILE_APP
 cat $ENV_FILE_APP
+
+
+#find all the projects
+for i in ` ind .. -mindepth 1 -maxdepth 1 -type d | grep prj  | awk -F "/" '{ print $2 }'`do
+   echo $i
+end
