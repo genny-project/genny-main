@@ -78,21 +78,6 @@ services:
     restart: always
 
 
-  alyson:
-    image: gennyproject/alyson:latest
-    container_name: alyson
-    depends_on:
-      - bridge
-    ports:
-      - "5000:80"
-    environment:
-      - REACT_BRIDGE_HOST=http://bridge.genny.life
-      - NODE_ENV=production
-    env_file:
-      - ${ENV_FILE}
-    networks:
-      - mainproxy
-    restart: always
 
   mysql:
     image: mysql:5.7 
@@ -235,7 +220,8 @@ services:
       - CACHE_API_PORT=8089
       - IS_CACHE_SERVER=true
   #   - ZIP_MODE=TRUE
-  #   - MODE_GZIP=TRUE
+      - MODE_GZIP=TRUE
+      - ZIP_MIN_THRESHOLD_BYTES=8000000
   #    - DDT_URL=http://bridge:8089
   #    - DEV_MODE=TRUE
   #    - GENNYDEV=TRUE
@@ -264,6 +250,7 @@ services:
 #      - ./realm:/opt/realm
 #      - ../prj_genny/rules:/rules/rulesCurrent
 #      - ../prj_${PROJECT_REALM}/rules:/rules/prj_${PROJECT_REALM}
+#      - ../rules:/rules
 #    environment:
 #      - ADMIN_USERNAME=GENNY 
 #      - ADMIN_PASSWORD=GENNY
@@ -298,8 +285,9 @@ services:
     container_name:  rulesservice
     volumes:
       - ./realm:/opt/realm
-      - ../prj_genny/rules:/rules/rulesCurrent
-      - ../prj_${PROJECT_REALM}/rules:/rules/prj_${PROJECT_REALM}
+  #    - ../prj_genny/rules:/rules/rulesCurrent
+  #    - ../prj_${PROJECT_REALM}/rules:/rules/prj_${PROJECT_REALM}
+      - ./rules:/rules
     environment:
       - RULES_DIR=/rules
       - VIRTUAL_PORT=80
