@@ -61,6 +61,22 @@ services:
 #      - mainproxy
 #    restart: always
 
+  alyson-v7:
+    image: gennyproject/alyson-v7:latest
+    container_name: alyson-v7
+    depends_on:
+      - bridge
+    ports:
+      - "7000:8080"
+    environment:
+      - REACT_BRIDGE_HOST=http://bridge.genny.life
+      - NODE_ENV=production
+    env_file:
+      - ${ENV_FILE}
+    networks:
+      - mainproxy
+    restart: always
+
   alyson-v3:
     image: gennyproject/alyson-v3:latest
     container_name: alyson-v3
@@ -142,10 +158,10 @@ services:
       - VIRTUAL_PROTO=http
       - CERT_NAME=genny.life
       - LOAD_DDT_IN_STARTUP=TRUE
-      - SKIP_GITHUB_IN_STARTUP=FALSE
-      - SKIP_GOOGLE_DOC_IN_STARTUP=FALSE
+      - SKIP_GITHUB_IN_STARTUP=TRUE
+      - SKIP_GOOGLE_DOC_IN_STARTUP=TRUE
       - DEBUG=TRUE
-      - DEBUG_SUSPEND=n
+      - DEBUG_SUSPEND=y
       - XMX=1024m
   #    - DEV_MODE=TRUE
       - DDTHOST=TRUE
@@ -318,7 +334,7 @@ services:
       interval: 10s
       timeout: 10s
       retries: 30
-    command: java  -Xdebug -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n  -Dvertx.options.blockedThreadCheckInterval=2147483647 -jar /service.jar 
+    command: java  -Xdebug -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=y  -Dvertx.options.blockedThreadCheckInterval=2147483647 -jar /service.jar 
 
   #social:
   #  image: gennyproject/social:latest
