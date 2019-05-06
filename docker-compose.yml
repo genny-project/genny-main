@@ -161,7 +161,7 @@ services:
       - SKIP_GITHUB_IN_STARTUP=TRUE
       - SKIP_GOOGLE_DOC_IN_STARTUP=TRUE
       - DEBUG=TRUE
-      - DEBUG_SUSPEND=y
+      - DEBUG_SUSPEND=n
       - XMX=1024m
   #    - DEV_MODE=TRUE
       - DDTHOST=TRUE
@@ -334,7 +334,7 @@ services:
       interval: 10s
       timeout: 10s
       retries: 30
-    command: java  -Xdebug -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=y  -Dvertx.options.blockedThreadCheckInterval=2147483647 -jar /service.jar 
+    command: java  -Xdebug -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n  -Dvertx.options.blockedThreadCheckInterval=2147483647 -jar /service.jar 
 
   #social:
   #  image: gennyproject/social:latest
