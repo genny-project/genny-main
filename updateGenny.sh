@@ -64,6 +64,8 @@ function git_projects {
   echo -ne '#####                     (30%)\r'
   git_project qwanda-services 
   echo -ne '#####                     (34%)\r'
+  git_project wildfly 
+  echo -ne '#####                     (36%)\r'
   git_project wildfly-qwanda-service 
   echo -ne '#####                     (36%)\r'
   git_project wildfly-rulesservice 
@@ -139,11 +141,14 @@ function build_genny {
   build_project rulesservice true
   echo -ne '##########################(100%)\r'
   
+  build_project wildfly true
+  echo -ne '####################      (75%)\r'
+
   build_project wildfly-qwanda-service true
   echo -ne '####################      (75%)\r'
   
-  build_project wildfly-rulesservice true
-  echo -ne '####################      (75%)\r'
+#  build_project wildfly-rulesservice true
+#  echo -ne '####################      (75%)\r'
 
   build_project checkrules true
   echo -ne '##########################(100%)\r'
