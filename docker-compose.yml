@@ -45,11 +45,11 @@ services:
 #      - JBPM_DB_HOST=10.123.123.123
 #      - JBPM_DB_PORT=3310
  
-  imageproxy:
-    image: willnorris/imageproxy:v0.7.0
-    ports:
-      - "46243:8080"
-    command: -cache /tmp/imageproxy -addr 0.0.0.0:8080 -scaleUp true
+#  imageproxy:
+#    image: willnorris/imageproxy:v0.7.0
+#    ports:
+#      - "46243:8080"
+#    command: -cache /tmp/imageproxy -addr 0.0.0.0:8080 -scaleUp true
 
 
 #  bsb-lookup:
@@ -77,21 +77,21 @@ services:
       - mainproxy
     restart: always
 
-  alyson-v3:
-    image: gennyproject/alyson-v3:latest
-    container_name: alyson-v3
-    depends_on:
-      - bridge
-    ports:
-      - "6000:8080"
-    environment:
-      - REACT_BRIDGE_HOST=http://bridge.genny.life
-      - NODE_ENV=production
-    env_file:
-      - ${ENV_FILE}
-    networks:
-      - mainproxy
-    restart: always
+#  alyson-v3:
+#    image: gennyproject/alyson-v3:latest
+#    container_name: alyson-v3
+#    depends_on:
+#      - bridge
+#    ports:
+#      - "6000:8080"
+#    environment:
+#      - REACT_BRIDGE_HOST=http://bridge.genny.life
+#      - NODE_ENV=production
+#    env_file:
+#      - ${ENV_FILE}
+#    networks:
+#      - mainproxy
+#    restart: always
 
 
 
@@ -125,21 +125,21 @@ services:
       retries: 10
     restart: unless-stopped
 
-  signatures:
-    image: gennyproject/signatures:latest
-    environment:
-      - S3_BUCKET=${S3_BUCKET}
-      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
-      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
-    ports:
-      - "7446:7446"
+#  signatures:
+#    image: gennyproject/signatures:latest
+#    environment:
+#      - S3_BUCKET=${S3_BUCKET}
+#      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+#      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+#    ports:
+#      - "7446:7446"
 
   qwanda-service:
     depends_on:
       mysql:
         condition: service_healthy
-      keycloak:
-        condition: service_healthy
+      #keycloak:
+      #  condition: service_healthy
     image: gennyproject/wildfly-qwanda-service:latest
     container_name: qwanda-service
     volumes:
@@ -158,8 +158,8 @@ services:
       - VIRTUAL_PROTO=http
       - CERT_NAME=genny.life
       - LOAD_DDT_IN_STARTUP=TRUE
-      - SKIP_GITHUB_IN_STARTUP=FALSE
-      - SKIP_GOOGLE_DOC_IN_STARTUP=FALSE
+      - SKIP_GITHUB_IN_STARTUP=TRUE
+      - SKIP_GOOGLE_DOC_IN_STARTUP=TRUE
       - DEBUG=TRUE
       - DEBUG_SUSPEND=n
       - XMX=1024m
@@ -171,7 +171,7 @@ services:
       - "8887:8787"
     links:
       - mysql:mysql
-      - keycloak:keycloak
+      #- keycloak:keycloak
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/version"]
       interval: 10s
@@ -181,40 +181,40 @@ services:
     networks:
       - mainproxy
 
-  keycloak:
-    image: gennyproject/keycloak:latest
-    container_name: keycloak
-    env_file:
-      - ${ENV_FILE}
-    environment:
-      - VIRTUAL_HOST=keycloak.*,bouncer.*
-      - VIRTUAL_PORT=8080
-      - VIRTUAL_PROTO=http
-      - CERT_NAME=genny.life
-#      - IMPORTEXPORT=EXPORT
-      - KEYCLOAK_USER=admin
-      - KEYCLOAK_PASSWORD=Outcome2016KeycloakAdmin
-      - MYSQL_URL=mysql
-      - MYSQL_PORT=3306
-      - MYSQL_DB=keycloakdb
-      - MYSQL_USERNAME=keycloak
-      - MYSQL_PASSWORD=Outcome2016KeycloakAdmin
-    volumes:
+ # keycloak:
+ #   image: gennyproject/keycloak:latest
+ #   container_name: keycloak
+ #   env_file:
+ #     - ${ENV_FILE}
+ #   environment:
+ #     - VIRTUAL_HOST=keycloak.*,bouncer.*
+ #     - VIRTUAL_PORT=8080
+ #     - VIRTUAL_PROTO=http
+ #     - CERT_NAME=genny.life
+##      - IMPORTEXPORT=EXPORT
+ #     - KEYCLOAK_USER=admin
+ #     - KEYCLOAK_PASSWORD=Outcome2016KeycloakAdmin
+ #     - MYSQL_URL=mysql
+ #     - MYSQL_PORT=3306
+ #     - MYSQL_DB=keycloakdb
+ #     - MYSQL_USERNAME=keycloak
+ #     - MYSQL_PASSWORD=Outcome2016KeycloakAdmin
+ #   volumes:
 #      - /opt/jboss/backup:/opt/jboss/backup
-       - ./realm:/tmp/realm
-       - ./data:/opt/jboss/keycloak/standalone/data
-      #- ./realm:/tmp/realm
-       - ../keycloak-themes/themes:/opt/jboss/keycloak/themes
-    networks:
-      - mainproxy
-    ports:
-      - 8180:8080
-    command: -b 0.0.0.0
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/auth"]
-      interval: 10s
-      timeout: 10s
-      retries: 30
+ #      - ./realm:/tmp/realm
+ #     # - ./data:/opt/jboss/keycloak/standalone/data
+ #     #- ./realm:/tmp/realm
+ #      - ../keycloak-themes/themes:/opt/jboss/keycloak/themes
+ #   networks:
+ #     - mainproxy
+ #   ports:
+ #     - 8180:8080
+ #   command: -b 0.0.0.0
+ #   healthcheck:
+ #     test: ["CMD", "curl", "-f", "http://localhost:8080/auth"]
+ #     interval: 10s
+ #     timeout: 10s
+ #     retries: 30
 
   bridge:
     image: gennyproject/bridge:latest
@@ -254,9 +254,11 @@ services:
 
 #  wildfly-rulesservice:
 #    depends_on:
-#      mysql:
-#        condition: service_healthy
 #      qwanda-service:
+#        condition: service_healthy
+#      bridge:
+#        condition: service_healthy
+#      mysql:
 #        condition: service_healthy
 #    image: gennyproject/wildfly-rulesservice:latest
 #    container_name: wildfly-rulesservice
@@ -264,9 +266,7 @@ services:
 #      - ${ENV_FILE}
 #    volumes:
 #      - ./realm:/opt/realm
-#      - ../prj_genny/rules:/rules/rulesCurrent
-#      - ../prj_${PROJECT_REALM}/rules:/rules/prj_${PROJECT_REALM}
-#      - ../rules:/rules
+#      - ./rules:/rules
 #    environment:
 #      - ADMIN_USERNAME=GENNY 
 #      - ADMIN_PASSWORD=GENNY
@@ -276,21 +276,19 @@ services:
 #      - VIRTUAL_PROTO=http
 #      - CERT_NAME=genny.life
 #      - HIDE_RULE_STATES=TRUE
-##      - DEV_MODE=TRUE
-##      - CACHE_API_PORT=8989
+#      - DISABLE_LAYOUT_LOADING=TRUE
 #      - DDTHOST=TRUE
 #      - LAYOUT_CACHE_HOST=http://layout-cache:2223
-#      - DISABLE_LAYOUT_LOADING=TRUE
 #      - FORCE_EVENTBUS_USE_API=FALSE
 #      - FORCE_CACHE_USE_API=FALSE
 #    ports:
 #      - "8380:8080"
 #      - "8987:8787"
-#    healthcheck:
-#      test: ["CMD", "curl", "-f", "http://localhost:8080/version"]
-#      interval: 10s
-#      timeout: 10s
-#      retries: 30    
+#  #  healthcheck:
+#  #    test: ["CMD", "curl", "-f", "http://localhost:8080/version"]
+#  #    interval: 10s
+#  #    timeout: 10s
+#  #    retries: 30    
 #    restart: unless-stopped
 #    networks:
 #      - mainproxy
@@ -301,8 +299,6 @@ services:
     container_name:  rulesservice
     volumes:
       - ./realm:/opt/realm
-  #    - ../prj_genny/rules:/rules/rulesCurrent
-  #    - ../prj_${PROJECT_REALM}/rules:/rules/prj_${PROJECT_REALM}
       - ./rules:/rules
     environment:
       - RULES_DIR=/rules
@@ -322,9 +318,9 @@ services:
       - 8997:8787
       - 8889:8889
     depends_on:
-      qwanda-service:
-        condition: service_healthy
-      bridge:
+     qwanda-service:
+       condition: service_healthy
+     bridge:
         condition: service_healthy
     networks:
       - mainproxy
@@ -336,15 +332,15 @@ services:
       retries: 30
     command: java  -Xdebug -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n  -Dvertx.options.blockedThreadCheckInterval=2147483647 -jar /service.jar 
 
-  #social:
-  #  image: gennyproject/social:latest
+#social:
+ #  image: gennyproject/social:latest
   #  container_name: social
   #  volumes:
   #    - ./realm:/opt/realm
   #  env_file:
   #    - ${ENV_FILE}
 # #  environment:
-  #    - VIRTUAL_HOST=social.genny.life
+ # #    - VIRTUAL_HOST=social.genny.life
   #    - VIRTUAL_PORT=8083
   #    - VIRTUAL_PROTO=http
   #    - CERT_NAME=genny.life
@@ -362,34 +358,34 @@ services:
   #  command: java -Djava.net.preferIPv6Addresses=false -Djava.net.preferIPv4Stack=true  -Xdebug -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n -Djava.net.preferIPv4Addresses=true -Dvertx.hazelcast.config=/cluster.xml -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /service.jar
 
 
-  messages:
-    image: gennyproject/messages:latest
-    container_name:  messages
-    volumes:
-      - ./realm:/opt/realm
-      - ./google_credentials:/root/.genny/sheets.googleapis.com-java-quickstart/
-      - ./google_credentials/drive:/root/.genny/credentials/credentials-genny/drive/
-    links:
-      - qwanda-service:qwanda-service
-      - keycloak
-    env_file:
-      - ${ENV_FILE}
-    environment:
-      - GENNYSTAGING=true
-  # #  - DDT_URL=http://bridge:8089
-    ports:
-      - 5709:5709
-      - 4003:15709
-      - 8789:8787
-    depends_on:
-      qwanda-service:
-        condition: service_healthy
-      bridge:
-        condition: service_healthy
-    networks:
-      - mainproxy
-    restart: always
-    command: java  -Xdebug -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n -Djava.net.preferIPv6Addresses=false -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true -Dvertx.hazelcast.config=/cluster.xml -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /service.jar
+ # messages:
+ #   image: gennyproject/messages:latest
+ #   container_name:  messages
+ #   volumes:
+ #     - ./realm:/opt/realm
+ #     - ./google_credentials:/root/.genny/sheets.googleapis.com-java-quickstart/
+ #     - ./google_credentials/drive:/root/.genny/credentials/credentials-genny/drive/
+ #   links:
+ #     - qwanda-service:qwanda-service
+ #     - keycloak
+ #   env_file:
+ #     - ${ENV_FILE}
+ #   environment:
+ #     - GENNYSTAGING=true
+ # # #  - DDT_URL=http://bridge:8089
+ #   ports:
+ #     - 5709:5709
+ #    # - 4003:15709
+ #    # - 8789:8787
+ #   depends_on:
+ #     qwanda-service:
+ #       condition: service_healthy
+ #     bridge:
+ #       condition: service_healthy
+ #   networks:
+ #     - mainproxy
+ #   restart: always
+ #   command: java  -Xdebug -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n -Djava.net.preferIPv6Addresses=false -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true -Dvertx.hazelcast.config=/cluster.xml -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /service.jar
 
 #  payments:
 #     image: gennyproject/payments:latest
@@ -423,32 +419,32 @@ services:
      networks:
        - mainproxy
 
-  layout-cache:
-    image: gennyproject/layout-cache:latest
-    container_name: layout-cache
-    environment:
-      - LAYOUT_REPO=https://github.com/genny-project/layouts.git
-      #- NODE_ENV=dev
-      - NODE_ENV=production
-      - VIRTUAL_HOST=layout-cache.genny.life
-      - VIRTUAL_PORT=2224
-      - VIRTUAL_PROTO=http
-      - CERT_NAME=genny.life
-      - GIT_SSH=${GIT_SSH}
-      - SSH_PRIVATE_KEY=${SSH_PRIVATE_KEY}
-    ports:
-      - "2223:2223"
-      - "2224:2224"
-    networks:
-      - mainproxy
-
-  camelot-pdfgenerator:
-    image: matthayward1997/camelot:latest
-    container_name: camelot-pdfgenerator
-    ports:
-      - "7331:7331"
-    networks:
-      - mainproxy
+#  layout-cache:
+#    image: gennyproject/layout-cache:latest
+#    container_name: layout-cache
+#    environment:
+#      - LAYOUT_REPO=https://github.com/genny-project/layouts.git
+#      #- NODE_ENV=dev
+#      - NODE_ENV=production
+#      - VIRTUAL_HOST=layout-cache.genny.life
+#      - VIRTUAL_PORT=2224
+#      - VIRTUAL_PROTO=http
+#      - CERT_NAME=genny.life
+#      - GIT_SSH=${GIT_SSH}
+#      - SSH_PRIVATE_KEY=${SSH_PRIVATE_KEY}
+#    ports:
+#      - "2223:2223"
+#      - "2224:2224"
+#    networks:
+#      - mainproxy
+#
+#  camelot-pdfgenerator:
+#    image: matthayward1997/camelot:latest
+#    container_name: camelot-pdfgenerator
+#    ports:
+#      - "7331:7331"
+#    networks:
+#      - mainproxy
 
 #  keisha-server:
 #    image: gennyproject/keisha:latest
