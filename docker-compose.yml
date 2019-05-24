@@ -140,7 +140,7 @@ services:
         condition: service_healthy
       #keycloak:
       #  condition: service_healthy
-    image: gennyproject/wildfly-qwanda-service:v2.3.0
+    image: gennyproject/wildfly-qwanda-service:latest
     container_name: qwanda-service
     volumes:
       - ./realm:/opt/realm
@@ -295,7 +295,7 @@ services:
 #
 
   rulesservice:
-    image: gennyproject/rulesservice:v2.3.0
+    image: gennyproject/rulesservice:latest
     container_name:  rulesservice
     volumes:
       - ./realm:/opt/realm
