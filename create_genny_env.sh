@@ -187,6 +187,9 @@ echo "CLUSTER_IP=${CLUSTER_IP}" >> $ENV_FILE
 echo "IS_CACHE_SERVER=${IS_CACHE_SERVER}" >> $ENV_FILE
 echo "CACHE_SERVER_NAME=${CACHE_SERVER_NAME}" >> $ENV_FILE
 
+GOOGLE_SVC_ACC_PATH=/root/.genny/sheets.googleapis.com-java-quickstart/token-secret-service-account.json
+echo "GOOGLE_SVC_ACC_PATH=${GOOGLE_SVC_ACC_PATH}" >> $ENV_FILE
+
 echo ""
 echo "###### Run Settings ######"
 cat $ENV_FILE
@@ -206,6 +209,7 @@ echo "\"REACT_APP_VERTX_SERVICE_API\":\"${REACT_APP_VERTX_SERVICE_API}\"," >> $E
 echo "\"REACT_APP_VERTX_EVENTS_API\":\"${REACT_APP_VERTX_EVENTS_API}\"" >> $ENV_FILE_APP
 echo "\"REACT_APP_VERTX_CMDS_API\":\"${REACT_APP_VERTX_CMDS_API}\"" >> $ENV_FILE_APP
 echo "\"REACT_APP_VERTX_DATA_API\":\"${REACT_APP_VERTX_DATA_API}\"" >> $ENV_FILE_APP
+echo "GOOGLE_SVC_ACC_PATH=${GOOGLE_SVC_ACC_PATH}" >> $ENV_FILE
 echo "}" >> $ENV_FILE_APP
 cat $ENV_FILE_APP
 

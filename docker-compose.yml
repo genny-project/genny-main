@@ -159,9 +159,9 @@ services:
       - CERT_NAME=genny.life
       - LOAD_DDT_IN_STARTUP=TRUE
       - SKIP_GITHUB_IN_STARTUP=TRUE
-      - SKIP_GOOGLE_DOC_IN_STARTUP=TRUE
+      - SKIP_GOOGLE_DOC_IN_STARTUP=FALSE
       - DEBUG=TRUE
-      - DEBUG_SUSPEND=n
+      - DEBUG_SUSPEND=y
       - XMX=1024m
   #    - DEV_MODE=TRUE
       - DDTHOST=TRUE
@@ -217,7 +217,7 @@ services:
  #     retries: 30
 
   bridge:
-    image: gennyproject/bridge:v2.3.0
+    image: gennyproject/bridge:latest
     container_name: bridge
     volumes:
       - ./realm:/opt/realm
