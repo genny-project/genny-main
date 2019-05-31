@@ -39,7 +39,7 @@ ENV_SECURITY_KEY=WubbaLubbaDubDub
 ENV_SERVICE_PASSWORD=vRO+tCumKcZ9XbPWDcAXpU7tcSltpNpktHcgzRkxj8o=
 
 REACT_APP_PROJECT_NAME="Docker Genny"
-REACT_APP_QWANDA_API_URL=http://qwanda-service.genny.life
+REACT_APP_QWANDA_API_URL=http://alyson7.genny.life
 REACT_APP_VERSION_NUMBER=0.5
 REACT_APP_BUILD_DATE=2017-07-12
 REACT_BRIDGE_HOST=http://bridge.genny.life
