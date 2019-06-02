@@ -265,7 +265,7 @@ services:
 #    env_file:
 #      - ${ENV_FILE}
 #    volumes:
-#      - ./realm:/opt/realm
+##      - ./realm:/opt/realm
 #      - ./rules:/rules
 #    environment:
 #      - ADMIN_USERNAME=GENNY 
