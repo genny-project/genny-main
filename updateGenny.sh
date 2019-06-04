@@ -72,7 +72,7 @@ function git_projects {
   echo -ne '######                    (38%)\r'
   git_project alyson-v3 
   echo -ne '########                  (42%)\r'
-  git_project alyson-7
+  git_project alyson-v7
   echo -ne '########                  (42%)\r'
   git_project uppy 
   echo -ne '##########                (46%)\r'
@@ -165,7 +165,7 @@ git_projects
 build_genny
 
 # TODO: define the success event 
-echo "Success."
+echo "Success. but check you may need to ./build-docker.sh alyson-v7"
 
 #exit
 say "finished on ${USER} mac"
