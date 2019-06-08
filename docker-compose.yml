@@ -159,7 +159,7 @@ services:
       - CERT_NAME=genny.life
       - LOAD_DDT_IN_STARTUP=TRUE
       - SKIP_GITHUB_IN_STARTUP=TRUE
-      - SKIP_GOOGLE_DOC_IN_STARTUP=FALSE
+      - SKIP_GOOGLE_DOC_IN_STARTUP=TRUE
       - DEBUG=TRUE
       - DEBUG_SUSPEND=n
       - XMX=2048m
@@ -248,89 +248,89 @@ services:
       - 8088:8088
       - 8790:8787
       - 8089:8089
-#      - 5701:5701
+      - 5701:5701
 #      - 4001:15701
     command: java  -Xdebug -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n  -Dvertx.metrics.options.enabled=true -Dvertx.options.blockedThreadCheckInterval=2147483647 -jar /service.jar 
 
-#  wildfly-rulesservice:
-#    depends_on:
-#      qwanda-service:
-#        condition: service_healthy
-#      bridge:
-#        condition: service_healthy
-#      mysql:
-#        condition: service_healthy
-#    image: gennyproject/wildfly-rulesservice:latest
-#    container_name: wildfly-rulesservice
-#    env_file:
-#      - ${ENV_FILE}
-#    volumes:
-##      - ./realm:/opt/realm
-#      - ./rules:/rules
-#    environment:
-#      - ADMIN_USERNAME=GENNY 
-#      - ADMIN_PASSWORD=GENNY
-#      - RULES_DIR=/rules
-#      - VIRTUAL_HOST=rulesservice.*
-#      - VIRTUAL_PORT=8080
-#      - VIRTUAL_PROTO=http
-#      - CERT_NAME=genny.life
-#      - HIDE_RULE_STATES=TRUE
-#      - DISABLE_LAYOUT_LOADING=TRUE
-#      - DDTHOST=TRUE
-#      - LAYOUT_CACHE_HOST=http://layout-cache:2223
-#      - FORCE_EVENTBUS_USE_API=FALSE
-#      - FORCE_CACHE_USE_API=FALSE
-#    ports:
-#      - "8380:8080"
-#      - "8987:8787"
-#  #  healthcheck:
-#  #    test: ["CMD", "curl", "-f", "http://localhost:8080/version"]
-#  #    interval: 10s
-#  #    timeout: 10s
-#  #    retries: 30    
-#    restart: unless-stopped
-#    networks:
-#      - mainproxy
-#
-
-  rulesservice:
-    image: gennyproject/rulesservice:latest
-    container_name:  rulesservice
-    volumes:
-      - ./realm:/opt/realm
-      - ./rules:/rules
-    environment:
-      - RULES_DIR=/rules
-      - VIRTUAL_PORT=80
-      - CACHE_API_PORT=80
-      - HIDE_RULE_STATES=TRUE
-      - DISABLE_LAYOUT_LOADING=TRUE
-      - VIRTUAL_PROTO=http
-      - CERT_NAME=genny.life
-      - RULESMANAGER=TRUE
-      - DDTHOST=TRUE
-      - API_PORT=8889
-      - LAYOUT_CACHE_HOST=http://layout-cache:2223
+  wildfly-rulesservice:
+    depends_on:
+      qwanda-service:
+        condition: service_healthy
+      bridge:
+        condition: service_healthy
+      mysql:
+        condition: service_healthy
+    image: gennyproject/wildfly-rulesservice:latest
+    container_name: wildfly-rulesservice
     env_file:
       - ${ENV_FILE}
+    volumes:
+#      - ./realm:/opt/realm
+      - ./rules:/rules
+    environment:
+      - ADMIN_USERNAME=GENNY 
+      - ADMIN_PASSWORD=GENNY
+      - RULES_DIR=/rules
+      - VIRTUAL_HOST=rulesservice.*
+      - VIRTUAL_PORT=8080
+      - VIRTUAL_PROTO=http
+      - CERT_NAME=genny.life
+      - HIDE_RULE_STATES=TRUE
+      - DISABLE_LAYOUT_LOADING=TRUE
+      - DDTHOST=TRUE
+      - LAYOUT_CACHE_HOST=http://layout-cache:2223
+      - FORCE_EVENTBUS_USE_API=FALSE
+      - FORCE_CACHE_USE_API=FALSE
     ports:
-      - 8997:8787
-      - 8889:8889
-    depends_on:
-     qwanda-service:
-       condition: service_healthy
-     bridge:
-        condition: service_healthy
+      - "8380:8080"
+      - "8987:8787"
+  #  healthcheck:
+  #    test: ["CMD", "curl", "-f", "http://localhost:8080/version"]
+  #    interval: 10s
+  #    timeout: 10s
+  #    retries: 30    
+    restart: unless-stopped
     networks:
       - mainproxy
-    restart: always
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:80/version"]
-      interval: 10s
-      timeout: 10s
-      retries: 30
-    command: java  -Xdebug -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n  -Dvertx.options.blockedThreadCheckInterval=2147483647 -jar /service.jar 
+
+
+#  rulesservice:
+#    image: gennyproject/rulesservice:latest
+#    container_name:  rulesservice
+#    volumes:
+#      - ./realm:/opt/realm
+#      - ./rules:/rules
+#    environment:
+#      - RULES_DIR=/rules
+#      - VIRTUAL_PORT=80
+#      - CACHE_API_PORT=80
+#      - HIDE_RULE_STATES=TRUE
+#      - DISABLE_LAYOUT_LOADING=TRUE
+#      - VIRTUAL_PROTO=http
+#      - CERT_NAME=genny.life
+#      - RULESMANAGER=TRUE
+#      - DDTHOST=TRUE
+#      - API_PORT=8889
+#      - LAYOUT_CACHE_HOST=http://layout-cache:2223
+#    env_file:
+#      - ${ENV_FILE}
+#    ports:
+#      - 8997:8787
+#      - 8889:8889
+#    depends_on:
+#     qwanda-service:
+#       condition: service_healthy
+#     bridge:
+#        condition: service_healthy
+#    networks:
+#      - mainproxy
+#    restart: always
+#    healthcheck:
+#      test: ["CMD", "curl", "-f", "http://localhost:80/version"]
+#      interval: 10s
+#      timeout: 10s
+#      retries: 30
+#    command: java  -Xdebug -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n  -Dvertx.options.blockedThreadCheckInterval=2147483647 -jar /service.jar 
 
 #social:
  #  image: gennyproject/social:latest
