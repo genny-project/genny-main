@@ -276,6 +276,9 @@ services:
       - VIRTUAL_PROTO=http
       - CERT_NAME=genny.life
       - HIDE_RULE_STATES=TRUE
+      - DEBUG=TRUE
+      - DEBUG_SUSPEND=n
+      - XMX=2048m
       - DISABLE_LAYOUT_LOADING=TRUE
       - DDTHOST=TRUE
       - LAYOUT_CACHE_HOST=http://layout-cache:2223
