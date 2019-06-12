@@ -108,7 +108,7 @@ while [ "$1" != "" ]; do
          export $(cat ~/.genny/credentials/credentials-$project/conf.env |  awk -F"=" '/GIT_SSH=/')
          echo $SSH_PRIVATE_KEY
          echo $GIT_SSH
-         rm -rf rules/*
+         #rm -rf rules/*
           if [ ! -d "$GENNY_DIR/prj_$project" ]; then
              git -C "$GENNY_DIR" clone $(cat ~/.genny/credentials/credentials-$project/conf.env |  awk -F"=" '/RULES_REPO_URL=/ { print $2}' | sed -e 's/"/\\"/g' | sed -e 's/\\\//\\\\\//g')
            else

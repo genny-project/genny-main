@@ -64,13 +64,15 @@ function git_projects {
   echo -ne '#####                     (30%)\r'
   git_project qwanda-services 
   echo -ne '#####                     (34%)\r'
+  git_project wildfly 
+  echo -ne '#####                     (36%)\r'
   git_project wildfly-qwanda-service 
   echo -ne '#####                     (36%)\r'
   git_project wildfly-rulesservice 
   echo -ne '######                    (38%)\r'
   git_project alyson-v3 
   echo -ne '########                  (42%)\r'
-  git_project alyson-7
+  git_project alyson-v7
   echo -ne '########                  (42%)\r'
   git_project uppy 
   echo -ne '##########                (46%)\r'
@@ -139,11 +141,14 @@ function build_genny {
   build_project rulesservice true
   echo -ne '##########################(100%)\r'
   
+  build_project wildfly true
+  echo -ne '####################      (75%)\r'
+
   build_project wildfly-qwanda-service true
   echo -ne '####################      (75%)\r'
   
-  build_project wildfly-rulesservice true
-  echo -ne '####################      (75%)\r'
+#  build_project wildfly-rulesservice true
+#  echo -ne '####################      (75%)\r'
 
   build_project checkrules true
   echo -ne '##########################(100%)\r'
@@ -160,7 +165,7 @@ git_projects
 build_genny
 
 # TODO: define the success event 
-echo "Success."
+echo "Success. but check you may need to ./build-docker.sh alyson-v7"
 
 #exit
 say "finished on ${USER} mac"
