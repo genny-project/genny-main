@@ -218,7 +218,7 @@ services:
 
   bridge:
     image: gennyproject/bridge:latest
-#    container_name: bridge
+    container_name: bridge
     volumes:
       - ./realm:/opt/realm
     env_file:
@@ -241,12 +241,12 @@ services:
   #    - GENNY_DEV=TRUE
     networks:
       - mainproxy
-#    ports:
-#      - 8088:8088
-#      - 8790:8787
-#      - 8089:8089
-#      - 5701:5701
-##      - 4001:15701
+    ports:
+      - 8088:8088
+      - 8790:8787
+      - 8089:8089
+      - 5701:5701
+#      - 4001:15701
     command: java  -Xdebug -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n  -Dvertx.metrics.options.enabled=true -Dvertx.options.blockedThreadCheckInterval=2147483647 -jar /service.jar 
 
   wildfly-rulesservice:
