@@ -25,4 +25,7 @@ mvn package -DskipTests=true
 cd ../bridge
 git pull;mvn package -DskipTests=true
 ./build-docker.sh
+cd ../prj_genny
+git pull
+cd ../genny-main
 
