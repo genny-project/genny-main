@@ -23,6 +23,7 @@ git clone -b ${ver} https://github.com/genny-project/rulesservice
 git clone -b ${ver} https://github.com/genny-project/bridge
 git clone -b ${ver} https://github.com/genny-project/messages
 git clone -b ${ver} https://github.com/genny-project/alyson-v7
+git clone -b ${ver} https://github.com/genny-project/gennyteer
  
 cd genny-main
 
