@@ -29,15 +29,33 @@ Bridge - This Vertx service acts as a message bridge between the Vertx Event Bus
 
 Alyson - This is a React based generic frontend that processes cmds and data sent from the backend and displays the requested display and data. It has integrated Keycloak security and Vertx integration for messaging. 
 
-Kie-client - This Vertx service bridges the Vertx bus with the api driven kie-services.
-
 Social - This Vertx service manages external social media data querying.
 
+Wildfly-RulesService - This Wildfly Rules engine service performs fast Esper/Drools Complex Event Processing (CEP)
 RulesService - This Vertx service performs fast Esper/Drools Complex Event Processing (CEP)
+
+to install:
+
+(1) create a project folder called 'genny'
+
+mkdir genny
+
+(2) enter the genny folder and pull the genny-main project from git
+
+cd genny
+git clone -b v2.4.0 https://github.com/genny-project/genny-main
+
+(3) Now fetch all the other projects
+
+cd genny-main
+./cyrusClone.sh
+
+(4) Now build them all
+./cyrusBuild.sh
 
 
 
 To run: (simple)
 
-run the docker versions on your local machine -> ./run.sh
+run the docker versions on your local machine -> ./run.sh <project> up
 
