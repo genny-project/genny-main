@@ -1,73 +1,51 @@
-version: '2.3'
+version: '3.3'
 
 services:
-
-  mysql:
+   mysql2:
     image: mysql:5.7 
-    container_name: mysql
+    container_name: mysql2
     environment:
-      - MYSQL_URL=mysql
-      - MYSQL_DB=gennydb
-      - MYSQL_PORT=3306
-      - MYSQL_ALLOW_EMPTY=
-      - MYSQL_RANDOM_ROOT_PASSWORD=no
-      - MYSQL_DATABASE=gennydb
-      - MYSQL_USER=genny
-      - MYSQL_PASSWORD=password
-      - MYSQL_ROOT_PASSWORD=password
-      - ADMIN_USERNAME=admin
-      - ADMIN_PASSWORD=password
-    env_file:
-      - ${ENV_FILE}
+      MYSQL_DATABASE: 'keycloak'
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: password
+      ADMIN_USERNAME: admin
+      ADMIN_PASSWORD: password
     volumes:
-      - mysql_data2:/var/lib/mysql
+      - mysql_data3:/var/lib/mysql
     networks:
       - mainproxy
     ports:
-      - 3310:3306
+      - 3311:3306
     command: --sql_mode=""
-    healthcheck:
-      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
-      timeout: 20s
-      retries: 10
-    restart: unless-stopped
+    restart: always 
 
-  keycloak:
+   keycloak2:
     image: gennyproject/keycloak:6.0.1
-    container_name: keycloak
-    env_file:
-      - ${ENV_FILE}
+    container_name: keycloak2
     environment:
-      - VIRTUAL_HOST=keycloak.*,bouncer.*
-      - VIRTUAL_PORT=8080
-      - VIRTUAL_PROTO=http
-      - CERT_NAME=genny.life
 #      - IMPORTEXPORT=EXPORT
       - KEYCLOAK_USER=admin
       - KEYCLOAK_PASSWORD=Outcome2016KeycloakAdmin
-      - MYSQL_URL=mysql
+      - MYSQL_URL=mysql2
       - MYSQL_PORT=3306
-      - MYSQL_DB=gennydb
-      - MYSQL_USERNAME=genny
+      - MYSQL_DB=keycloak
+      - MYSQL_USERNAME=admin
       - MYSQL_PASSWORD=password
-    volumes:
+#    volumes:
 #      - /opt/jboss/backup:/opt/jboss/backup
-      - ./realm:/tmp/realm
-      - ./data:/opt/jboss/keycloak/standalone/data
+#      - ./realm:/tmp/realm
+#      - ./data:/opt/jboss/keycloak/standalone/data
     networks:
       - mainproxy
     ports:
-      - 8180:8080
+      - 8190:8080
     command: -b 0.0.0.0
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/auth"]
-      interval: 10s
-      timeout: 10s
-      retries: 30
 
 
 volumes:
   mysql_data2:
+  mysql_data3:
 networks:
   mainproxy:
     driver: bridge
