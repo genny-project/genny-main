@@ -43,7 +43,7 @@ mkdir genny
 (2) enter the genny folder and pull the genny-main project from git
 
 cd genny
-git clone -b v2.4.0 https://github.com/genny-project/genny-main
+git clone -b v3.0.0 https://github.com/genny-project/genny-main
 
 (3) Now fetch all the other projects
 
