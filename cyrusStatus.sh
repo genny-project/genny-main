@@ -2,18 +2,17 @@
 
 ver=v3.0.0
 
-cd ../qwanda;echo $PWD;git branch
-cd ../qwanda-utils;echo $PWD;git branch
-cd ../genny-verticle-rules;echo $PWD;git branch
-cd ../qwanda-services;echo $PWD;git branch
-cd ../genny-rules;echo $PWD;git branch
-cd ../wildfly-rulesservice;echo $PWD;git branch
-cd ../rulesservice;echo $PWD;git branch
-cd ../wildfly-qwanda-service;echo $PWD;git branch
-cd ../checkrules;echo $PWD;git branch
-cd ../bridge;echo $PWD;git branch
-cd ../messages;echo $PWD;git branch
-cd ../prj_genny;echo $PWD;git branch
-
-cd genny-main
+cd ../qwanda;echo $PWD;git branch;git status
+cd ../qwanda-utils;echo $PWD;git branch;git status
+cd ../genny-verticle-rules;echo $PWD;git branch;git status
+cd ../qwanda-services;echo $PWD;git branch;git status
+cd ../genny-rules;echo $PWD;git branch;git status
+cd ../wildfly-rulesservice;echo $PWD;git branch;git status
+cd ../rulesservice;echo $PWD;git branch;git status
+cd ../wildfly-qwanda-service;echo $PWD;git branch;git status
+cd ../checkrules;echo $PWD;git branch;git status
+cd ../bridge;echo $PWD;git branch;git status
+cd ../messages;echo $PWD;git branch;git status
+cd ../prj_genny;echo $PWD;git branch;git status
+cd ../genny-main
 
