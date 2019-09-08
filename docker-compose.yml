@@ -169,9 +169,10 @@ services:
     ports:
       - "8280:8080"
       - "8887:8787"
+      - "10003:10003"
     links:
       - mysql:mysql
-      #- keycloak:keycloak
+        #- keycloak:keycloak
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/version"]
       interval: 10s
@@ -246,8 +247,11 @@ services:
       - 8790:8787
       - 8089:8089
       - 5701:5701
+      - 10001:10001
 #      - 4001:15701
-    command: java  -Xdebug -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n  -Dvertx.metrics.options.enabled=true -Dvertx.options.blockedThreadCheckInterval=2147483647 -jar /service.jar 
+#    command: java  -Xdebug -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n  -Dvertx.metrics.options.enabled=true -Dvertx.options.blockedThreadCheckInterval=2147483647 -jar /service.jar 
+    command: java -agentpath:/usr/local/YourKit-JavaProfiler-2019.8/bin/linux-x86-64/libyjpagent.so=port=10001,listen=all -Xdebug -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n  -Dvertx.metrics.options.enabled=true -Dvertx.options.blockedThreadCheckInterval=2147483647 -jar /service.jar 
+
 
   wildfly-rulesservice:
     image: gennyproject/wildfly-rulesservice:latest
@@ -272,7 +276,7 @@ services:
       - VIRTUAL_PROTO=http
       - CERT_NAME=genny.life
       - HIDE_RULE_STATES=TRUE
-      - DEBUG=TRUE
+      - DEBUG=FALSE
       - DEBUG_SUSPEND=n
       - HAZELCAST_LOGLEVEL=ERROR
       - KEYCLOAK_LOGLEVEL=ERROR
@@ -285,6 +289,7 @@ services:
     ports:
       - "8380:8080"
       - "8987:8787"
+      - "10002:10002"
   #  healthcheck:
   #    test: ["CMD", "curl", "-f", "http://localhost:8080/version"]
   #    interval: 10s
@@ -394,7 +399,7 @@ services:
 #     env_file:
 #      - ${ENV_FILE}
 #     environment:
-#      - VIRTUAL_HOST=payments2.genny.life
+#      - VIRT:UAL_HOST=payments2.genny.life
 #      - VIRTUAL_PORT=3456
 #      - VIRTUAL_PROTO=http
 #      - CERT_NAME=genny.life
