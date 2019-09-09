@@ -276,7 +276,7 @@ services:
       - VIRTUAL_PROTO=http
       - CERT_NAME=genny.life
       - HIDE_RULE_STATES=TRUE
-      - DEBUG=FALSE
+      - DEBUG=TRUE
       - DEBUG_SUSPEND=n
       - HAZELCAST_LOGLEVEL=ERROR
       - KEYCLOAK_LOGLEVEL=ERROR
