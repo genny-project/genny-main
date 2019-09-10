@@ -93,6 +93,22 @@ services:
 #      - mainproxy
 #    restart: always
 
+  minio:
+    image: minio/minio:latest
+    container_name: minio
+    environment:
+      - MINIO_ACCESS_KEY=AKIAIOSFODNN7EXAMPLE
+      - MINIO_SECRET_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+    env_file:
+      - ${ENV_FILE}
+    volumes:
+      - ./minio/data:/data
+      - ./minio/config/root/.minio
+    networks:
+      - mainproxy
+    ports:
+      - 9000:9000
+    command: server /data
 
 
   mysql:
