@@ -102,14 +102,24 @@ services:
     env_file:
       - ${ENV_FILE}
     volumes:
-      - ./minio/data:/data
-      - ./minio/config/root/.minio
+      - minio_data:/data
+      - minio_conf:/root/.minio
     networks:
       - mainproxy
     ports:
       - 9000:9000
     command: server /data
 
+  media-proxy:
+    image: gennyproject/media-proxy:v3.0.0
+    container_name: media-proxy
+    env_file:
+      - ${ENV_FILE}
+    networks:
+      - mainproxy
+    ports:
+      - 9898:9898
+    command: java -jar /service.jar
 
   mysql:
     image: mysql:5.7 
@@ -483,6 +493,8 @@ services:
 
 volumes:
   mysql_data:
+  minio_conf:
+  minio_data:
   maildata:
     driver: local
   mailstate:
