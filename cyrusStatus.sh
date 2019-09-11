@@ -12,6 +12,7 @@ cd ../rulesservice;echo $PWD;git branch;git status
 cd ../wildfly-qwanda-service;echo $PWD;git branch;git status
 cd ../checkrules;echo $PWD;git branch;git status
 cd ../bridge;echo $PWD;git branch;git status
+cd ../media-proxy;echo $PWD;git branch;git status
 cd ../messages;echo $PWD;git branch;git status
 cd ../prj_genny;echo $PWD;git branch;git status
 cd ../genny-main

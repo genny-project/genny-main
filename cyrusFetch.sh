@@ -37,6 +37,10 @@ cd ../messages
 git pull;mvn package -DskipTests=true
 ./build-docker.sh
 
+cd ../media-proxy
+git pull;mvn package -DskipTests=true
+./build-docker.sh
+
 cd ../rulesservice
 git pull;mvn package -DskipTests=true
 ./build-docker.sh
