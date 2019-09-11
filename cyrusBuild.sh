@@ -19,6 +19,6 @@ cd ../bridge
 mvn package -DskipTests=true
 ./build-docker.sh
 cd ../media-proxy
-mvn package -DskipTests=true
+mvn clean package -DskipTests=true
 ./build-docker.sh
 
