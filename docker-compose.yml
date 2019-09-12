@@ -115,6 +115,8 @@ services:
     container_name: media-proxy
     env_file:
       - ${ENV_FILE}
+    environment:
+      - KEYCLOAKURL=https://keycloak.gada.io/auth/realms
     networks:
       - mainproxy
     ports:
