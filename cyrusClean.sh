@@ -7,6 +7,8 @@ cd ../genny-verticle-rules
 mvn clean install -DskipTests=true
 cd ../genny-rules
 mvn clean install -DskipTests=true
+cd ../bootxport
+mvn clean install -DskipTests=true
 cd ../qwanda-services
 mvn clean install -DskipTests=true
 cd ../wildfly-qwanda-service

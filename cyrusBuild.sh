@@ -7,6 +7,8 @@ cd ../genny-verticle-rules
 mvn install -DskipTests=true
 cd ../genny-rules
 mvn install -DskipTests=true
+cd ../bootxport
+mvn install -DskipTests=true
 cd ../qwanda-services
 mvn install -DskipTests=true
 cd ../wildfly-qwanda-service
@@ -21,4 +23,3 @@ mvn package -DskipTests=true
 cd ../media-proxy
 mvn clean package -DskipTests=true
 ./build-docker.sh
-

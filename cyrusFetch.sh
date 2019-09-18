@@ -18,6 +18,9 @@ git pull;mvn install -DskipTests=true
 cd ../genny-rules
 git pull;mvn install -DskipTests=true
 
+cd ../bootxport
+git pull;mvn install -DskipTests=true
+
 cd ../qwanda-services
 git pull;mvn install -DskipTests=true
 

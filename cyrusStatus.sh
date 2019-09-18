@@ -5,6 +5,7 @@ ver=v3.0.0
 cd ../qwanda;echo $PWD;git branch;git status
 cd ../qwanda-utils;echo $PWD;git branch;git status
 cd ../genny-verticle-rules;echo $PWD;git branch;git status
+cd ../bootxport;echo $PWD;git branch;git status
 cd ../qwanda-services;echo $PWD;git branch;git status
 cd ../genny-rules;echo $PWD;git branch;git status
 cd ../wildfly-rulesservice;echo $PWD;git branch;git status
