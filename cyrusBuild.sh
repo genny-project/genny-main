@@ -23,3 +23,7 @@ mvn package -DskipTests=true
 cd ../media-proxy
 mvn clean package -DskipTests=true
 ./build-docker.sh
+cd ../media-proxy
+mvn package -DskipTests=true
+./build-docker.sh
+cd ../genny-main

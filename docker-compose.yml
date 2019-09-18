@@ -111,10 +111,12 @@ services:
     command: server /data
 
   media-proxy:
-    image: gennyproject/media-proxy:latest
+    image: gennyproject/media-proxy:v3.0.0
     container_name: media-proxy
     env_file:
       - ${ENV_FILE}
+    environment:
+      - KEYCLOAKURL=https://keycloak.gada.io/auth/realms
     networks:
       - mainproxy
     ports:
