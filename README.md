@@ -36,6 +36,8 @@ RulesService - This Vertx service performs fast Esper/Drools Complex Event Proce
 
 to install:
 
+(*) Assume you have java 1.8 jdk and mvn 3.5+ installed along with git and docker and docker-compose 
+
 (1) create a project folder called 'genny'
 
 mkdir genny
@@ -43,7 +45,7 @@ mkdir genny
 (2) enter the genny folder and pull the genny-main project from git
 
 cd genny
-git clone -b v3.0.0 https://github.com/genny-project/genny-main
+git clone -b v3.1.0 https://github.com/genny-project/genny-main
 
 (3) Now fetch all the other projects
 

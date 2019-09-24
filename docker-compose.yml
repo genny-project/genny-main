@@ -316,7 +316,7 @@ services:
       - FORCE_CACHE_USE_API=FALSE
 #      - USE_JMS=TRUE
       - USE_EXECUTOR=TRUE
-      - USE_SINGLETON=TRUE
+      - USE_SINGLETON=FALSE
     ports:
       - "8380:8080"
       - "8987:8787"

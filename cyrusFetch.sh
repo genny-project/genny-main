@@ -3,7 +3,7 @@ git pull
 docker pull gennyproject/dummy:latest
 docker pull gennyproject/rulesservice:dummy
 docker pull gennyproject/wildfly-rulesservice:dummy
-docker pull gennyproject/wildfly:v3.0.0
+docker pull gennyproject/wildfly:v3.1.0
 
 
 cd ../qwanda

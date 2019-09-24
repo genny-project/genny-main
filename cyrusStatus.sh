@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ver=v3.0.0
+ver=v3.1.0
 
 cd ../qwanda;echo $PWD;git branch;git status
 cd ../qwanda-utils;echo $PWD;git branch;git status
