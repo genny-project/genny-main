@@ -1,0 +1,510 @@
+version: '2.3'
+
+services:
+  nginx:
+    image: jwilder/nginx-proxy:alpine
+    hostname: nginx
+    container_name: nginx
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - mainproxy
+    environment:
+      - SKIP_HTTPS_REDIRECT=true
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/vhost.d:/etc/nginx/vhost.d
+      - ./nginx/html:/usr/share/nginx/html
+      - ./nginx/certs:/etc/nginx/certs:ro
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+#    healthcheck:
+#      test: ["CMD", "curl", "--fail", "http://nginx.host.com"]
+#      interval: 1m30s
+#      timeout: 10s
+#      retries: 3
+
+#  in-app-call-server:
+#    image: gennyproject/in-app-call-server
+#    container_name: in-app-call-server
+#    ports:
+#      - "2255:2255"
+#    env_file:
+#      - ${ENV_FILE}
+
+#docker run -p 8080:8080 -p 8001:8001 -d --name jbpm-server-full -e JBPM_DB_DRIVER=mysql -e JBPM_DB_HOST=172.17.0.1 jboss/jbpm-server-full:latest
+
+
+#  workbench:
+#    image: jboss/jbpm-server-full:latest
+#    ports:
+#      - "8580:8080"
+#      - "8001:8001"
+#    environment:
+#      - JBPM_DB_DRIVER=mysql
+#      - JBPM_DB_HOST=10.123.123.123
+#      - JBPM_DB_PORT=3310
+ 
+#  imageproxy:
+#    image: willnorris/imageproxy:v0.7.0
+#    ports:
+#      - "46243:8080"
+#    command: -cache /tmp/imageproxy -addr 0.0.0.0:8080 -scaleUp true
+
+
+#  bsb-lookup:
+#    image: gennyproject/bsb-lookup:latest
+#    container_name: bsb-lookup
+#    ports:
+#      - 3333:3333
+#    networks:
+#      - mainproxy
+#    restart: always
+
+  alyson-v7:
+    image: gennyproject/alyson-v7:latest
+    container_name: alyson-v7
+    depends_on:
+      - bridge
+    ports:
+      - "7000:8080"
+    environment:
+      - REACT_BRIDGE_HOST=http://bridge.genny.life
+      - NODE_ENV=production
+    env_file:
+      - ${ENV_FILE}
+    networks:
+      - mainproxy
+    restart: always
+
+#  alyson-v3:
+#    image: gennyproject/alyson-v3:latest
+#    container_name: alyson-v3
+#    depends_on:
+#      - bridge
+#    ports:
+#      - "6000:8080"
+#    environment:
+#      - REACT_BRIDGE_HOST=http://bridge.genny.life
+#      - NODE_ENV=production
+#    env_file:
+#      - ${ENV_FILE}
+#    networks:
+#      - mainproxy
+#    restart: always
+
+  minio:
+    image: minio/minio:latest
+    container_name: minio
+    environment:
+      - MINIO_ACCESS_KEY=AKIAIOSFODNN7EXAMPLE
+      - MINIO_SECRET_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+    env_file:
+      - ${ENV_FILE}
+    volumes:
+      - minio_data:/data
+      - minio_conf:/root/.minio
+    networks:
+      - mainproxy
+    ports:
+      - 9000:9000
+    command: server /data
+
+  media-proxy:
+    image: gennyproject/media-proxy:v3.0.0
+    container_name: media-proxy
+    env_file:
+      - ${ENV_FILE}
+    environment:
+      - KEYCLOAKURL=https://keycloak.gada.io/auth/realms
+    networks:
+      - mainproxy
+    ports:
+      - 9898:9898
+    command: java -jar /service.jar
+
+  mysql:
+    image: mysql:5.7 
+    container_name: mysql
+    environment:
+      - MYSQL_URL=mysql
+      - MYSQL_DB=gennydb
+      - MYSQL_PORT=3306
+      - MYSQL_ALLOW_EMPTY=
+      - MYSQL_RANDOM_ROOT_PASSWORD=no
+      - MYSQL_DATABASE=gennydb
+      - MYSQL_USER=genny
+      - MYSQL_PASSWORD=password
+      - MYSQL_ROOT_PASSWORD=password
+      - ADMIN_USERNAME=admin
+      - ADMIN_PASSWORD=password
+    env_file:
+      - ${ENV_FILE}
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - mainproxy
+    ports:
+      - 3310:3306
+    command: --sql_mode=""
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+    restart: unless-stopped
+
+#  signatures:
+#    image: gennyproject/signatures:latest
+#    environment:
+#      - S3_BUCKET=${S3_BUCKET}
+#      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+#      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+#    ports:
+#      - "7446:7446"
+
+  qwanda-service:
+    depends_on:
+      mysql:
+        condition: service_healthy
+      #keycloak:
+      #  condition: service_healthy
+    image: gennyproject/wildfly-qwanda-service:latest
+    container_name: qwanda-service
+    volumes:
+      - ./realm:/opt/realm
+      - ./google_credentials:/root/.genny/sheets.googleapis.com-java-quickstart/
+    env_file:
+      - ${ENV_FILE}
+    environment:
+      - USE_VERTX_UTILS=true
+      - FORCE_EVENTBUS_USE_API=FALSE
+      - FORCE_CACHE_USE_API=FALSE
+      - VIRTUAL_HOST=qwanda-service.*,api.*
+      - ADMIN_USERNAME=GENNY 
+      - ADMIN_PASSWORD=GENNY
+      - VIRTUAL_PORT=8080
+      - VIRTUAL_PROTO=http
+      - CERT_NAME=genny.life
+      - LOAD_DDT_IN_STARTUP=TRUE
+      - SKIP_GITHUB_IN_STARTUP=TRUE
+      - SKIP_GOOGLE_DOC_IN_STARTUP=TRUE
+      - DEBUG=TRUE
+      - DEBUG_SUSPEND=n
+      - XMX=2048m
+  #    - DEV_MODE=TRUE
+      - DDTHOST=TRUE
+  #    - DDT_URL=http://bridge:8089 
+    ports:
+      - "8280:8080"
+      - "8887:8787"
+      - "10003:10003"
+    links:
+      - mysql:mysql
+        #- keycloak:keycloak
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/version"]
+      interval: 10s
+      timeout: 10s
+      retries: 50    
+    restart: unless-stopped
+    networks:
+      - mainproxy
+
+ # keycloak:
+ #   image: gennyproject/keycloak:latest
+ #   container_name: keycloak
+ #   env_file:
+ #     - ${ENV_FILE}
+ #   environment:
+ #     - VIRTUAL_HOST=keycloak.*,bouncer.*
+ #     - VIRTUAL_PORT=8080
+ #     - VIRTUAL_PROTO=http
+ #     - CERT_NAME=genny.life
+##      - IMPORTEXPORT=EXPORT
+ #     - KEYCLOAK_USER=admin
+ #     - KEYCLOAK_PASSWORD=***REMOVED***
+ #     - MYSQL_URL=mysql
+ #     - MYSQL_PORT=3306
+ #     - MYSQL_DB=keycloakdb
+ #     - MYSQL_USERNAME=keycloak
+ #     - MYSQL_PASSWORD=***REMOVED***
+ #   volumes:
+#      - /opt/jboss/backup:/opt/jboss/backup
+ #      - ./realm:/tmp/realm
+ #     # - ./data:/opt/jboss/keycloak/standalone/data
+ #     #- ./realm:/tmp/realm
+ #      - ../keycloak-themes/themes:/opt/jboss/keycloak/themes
+ #   networks:
+ #     - mainproxy
+ #   ports:
+ #     - 8180:8080
+ #   command: -b 0.0.0.0
+ #   healthcheck:
+ #     test: ["CMD", "curl", "-f", "http://localhost:8080/auth"]
+ #     interval: 10s
+ #     timeout: 10s
+ #     retries: 30
+
+  bridge:
+    image: gennyproject/bridge:latest
+    container_name: bridge
+    volumes:
+      - ./realm:/opt/realm
+    env_file:
+      - ${ENV_FILE}
+    environment:
+      - VIRTUAL_HOST=bridge.genny.life
+      - VIRTUAL_PORT=8088
+      - VIRTUAL_PROTO=http
+      - CERT_NAME=genny.life
+      - DDTHOST=TRUE
+      - API_PORT=8088
+      - CACHE_API_PORT=8089
+      - IS_CACHE_SERVER=true
+  #   - ZIP_MODE=TRUE
+      - MODE_GZIP=TRUE
+      - ZIP_MIN_THRESHOLD_BYTES=8000000
+  #    - DDT_URL=http://bridge:8089
+  #    - DEV_MODE=TRUE
+  #    - GENNYDEV=TRUE
+  #    - GENNY_DEV=TRUE
+    networks:
+      - mainproxy
+    ports:
+      - 8088:8088
+      - 8790:8787
+      - 8089:8089
+      - 5701:5701
+      - 10001:10001
+#      - 4001:15701
+#    command: java  -Xdebug -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n  -Dvertx.metrics.options.enabled=true -Dvertx.options.blockedThreadCheckInterval=2147483647 -jar /service.jar 
+    command: java -agentpath:/usr/local/YourKit-JavaProfiler-2019.8/bin/linux-x86-64/libyjpagent.so=port=10001,listen=all -Xdebug -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n  -Dvertx.metrics.options.enabled=true -Dvertx.options.blockedThreadCheckInterval=2147483647 -jar /service.jar 
+
+
+  wildfly-rulesservice:
+    image: gennyproject/wildfly-rulesservice:latest
+    depends_on:
+      qwanda-service:
+        condition: service_healthy
+      bridge:
+        condition: service_healthy
+      mysql:
+        condition: service_healthy
+    container_name: wildfly-rulesservice
+    env_file:
+      - ${ENV_FILE}
+    volumes:
+      - ./rules:/rules
+    environment:
+      - ADMIN_USERNAME=GENNY 
+      - ADMIN_PASSWORD=GENNY
+      - CERT_NAME=genny.life
+      - DEBUG=TRUE
+      - DEBUG_SUSPEND=n
+      - DETECT_RULE_CHANGES=TRUE
+      - DISABLE_LAYOUT_LOADING=TRUE
+      - DROOLS_LOGLEVEL=ERROR
+      - FORCE_EVENTBUS_USE_API=FALSE
+      - FORCE_CACHE_USE_API=FALSE
+      - FRAMES_ON_DEMAND=FALSE
+      - HAZELCAST_LOGLEVEL=ERROR
+      - HIDE_RULE_STATES=TRUE
+      - KEYCLOAK_LOGLEVEL=ERROR
+      - RULES_DIR=/rules
+      - USE_JMS=TRUE
+      - USE_EXECUTOR=TRUE
+      - USE_SINGLETON=FALSE
+      - VIRTUAL_HOST=rulesservice.*
+      - VIRTUAL_PORT=8080
+      - VIRTUAL_PROTO=http
+      - XMX=2048m
+      - XMS=2048m
+    ports:
+      - "8380:8080"
+      - "8987:8787"
+      - "10002:10002"
+  #  healthcheck:
+  #    test: ["CMD", "curl", "-f", "http://localhost:8080/version"]
+  #    interval: 10s
+  #    timeout: 10s
+  #    retries: 30    
+    restart: unless-stopped
+    networks:
+      - mainproxy
+
+
+#  rulesservice:
+#    image: gennyproject/rulesservice:dummy
+#    container_name:  rulesservice
+#    volumes:
+#      - ./realm:/opt/realm
+#      - ./rules:/rules
+#    environment:
+#      - RULES_DIR=/rules
+#      - VIRTUAL_PORT=80
+#      - CACHE_API_PORT=80
+#      - HIDE_RULE_STATES=TRUE
+#      - DISABLE_LAYOUT_LOADING=TRUE
+#      - VIRTUAL_PROTO=http
+#      - CERT_NAME=genny.life
+#      - RULESMANAGER=TRUE
+#      - DDTHOST=TRUE
+#      - API_PORT=8889
+#      - LAYOUT_CACHE_HOST=http://layout-cache:2223
+#    env_file:
+#      - ${ENV_FILE}
+#    ports:
+#      - 8997:8787
+#      - 8889:8889
+#    depends_on:
+#     qwanda-service:
+#       condition: service_healthy
+#     bridge:
+#        condition: service_healthy
+#    networks:
+#      - mainproxy
+#    restart: always
+#    healthcheck:
+#      test: ["CMD", "curl", "-f", "http://localhost:80/version"]
+#      interval: 10s
+#      timeout: 10s
+#      retries: 30
+#    command: java  -Xdebug -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n  -Dvertx.options.blockedThreadCheckInterval=2147483647 -jar /service.jar 
+
+#social:
+ #  image: gennyproject/social:latest
+  #  container_name: social
+  #  volumes:
+  #    - ./realm:/opt/realm
+  #  env_file:
+  #    - ${ENV_FILE}
+# #  environment:
+ # #    - VIRTUAL_HOST=social.genny.life
+  #    - VIRTUAL_PORT=8083
+  #    - VIRTUAL_PROTO=http
+  #    - CERT_NAME=genny.life
+  #  #  - DDT_URL=http://bridge:8089
+  #  networks:
+  #    - mainproxy
+  #  links:
+  #    - qwanda-service:qwanda-service
+  #    - keycloak
+  #  depends_on:
+  #    - qwanda-service
+  #  ports:
+  #    - 8083:8083
+  #    - 8788:8787
+  #  command: java -Djava.net.preferIPv6Addresses=false -Djava.net.preferIPv4Stack=true  -Xdebug -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n -Djava.net.preferIPv4Addresses=true -Dvertx.hazelcast.config=/cluster.xml -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /service.jar
+
+
+  messages:
+    image: gennyproject/messages:latest
+    container_name:  messages
+    volumes:
+      - ./realm:/opt/realm
+    env_file:
+      - ${ENV_FILE}
+    environment:
+      - DDTHOST=TRUE
+      - API_PORT=8089 
+      - CACHE_API_PORT=8099
+    ports:
+      - 8791:8787
+      - 5709:5709
+      - 8189:8088
+      - 8199:8089
+    depends_on:
+      qwanda-service:
+        condition: service_healthy
+      bridge:
+        condition: service_healthy
+    networks:
+      - mainproxy
+    restart: always
+    command: java   -Dvertx.metrics.options.enabled=true -Dvertx.options.blockedThreadCheckInterval=2147483647  -Xdebug -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n -Djava.net.preferIPv6Addresses=false -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true -Dvertx.hazelcast.config=/cluster.xml -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /service.jar
+
+#  payments:
+#     image: gennyproject/payments:latest
+#     container_name: payments
+#     env_file:
+#      - ${ENV_FILE}
+#     environment:
+#      - VIRT:UAL_HOST=payments2.genny.life
+#      - VIRTUAL_PORT=3456
+#      - VIRTUAL_PROTO=http
+#      - CERT_NAME=genny.life
+#     ports:
+#      - "3456:3456"
+#      - "6543:6543"
+# 
+#     networks:
+#       - mainproxy
+
+  uppy:
+     image: gennyproject/uppy:latest
+     container_name: uppy
+     env_file:
+      - ${ENV_FILE}
+     environment:
+      - VIRTUAL_HOST=uppy.genny.life
+      - VIRTUAL_PORT=3020
+      - VIRTUAL_PROTO=http
+      - CERT_NAME=genny.life
+#     ports:
+#       - "3020:3020"
+     networks:
+       - mainproxy
+
+#  layout-cache:
+#    image: gennyproject/layout-cache:latest
+#    container_name: layout-cache
+#    environment:
+#      - LAYOUT_REPO=https://github.com/genny-project/layouts.git
+#      #- NODE_ENV=dev
+#      - NODE_ENV=production
+#      - VIRTUAL_HOST=layout-cache.genny.life
+#      - VIRTUAL_PORT=2224
+#      - VIRTUAL_PROTO=http
+#      - CERT_NAME=genny.life
+#      - GIT_SSH=${GIT_SSH}
+#      - SSH_PRIVATE_KEY=${SSH_PRIVATE_KEY}
+#    ports:
+#      - "2223:2223"
+#      - "2224:2224"
+#    networks:
+#      - mainproxy
+#
+#  camelot-pdfgenerator:
+#    image: matthayward1997/camelot:latest
+#    container_name: camelot-pdfgenerator
+#    ports:
+#      - "7331:7331"
+#    networks:
+#      - mainproxy
+
+#  keisha-server:
+#    image: gennyproject/keisha:latest
+#    container_name: keisha-server
+#    networks:
+#      - mainproxy
+#    env_file:
+#      - ${ENV_FILE}
+#    healthcheck:
+#      test: ["CMD", "curl", "-f", "http://localhost:80/version"]
+#      interval: 10s
+#      timeout: 10s
+#      retries: 30
+
+volumes:
+  mysql_data:
+  minio_conf:
+  minio_data:
+  maildata:
+    driver: local
+  mailstate:
+    driver: local
+networks:
+  mainproxy:
+    driver: bridge
+
+

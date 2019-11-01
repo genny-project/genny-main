@@ -1,0 +1,64 @@
+/* Maintained by Nischal Gautam */
+
+/* Box sizing */
+html {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  -webkit-box-sizing: inherit;
+  -moz-box-sizing: inherit;
+  box-sizing: inherit;
+  }
+
+/* Page styling starts here */
+html,body{
+  height:100%;
+  width:100%;
+}
+
+body{
+  font-family: 'Open Sans', sans-serif;
+}
+
+.wrapper{
+  height:100%;
+  color:#fff;
+  display: flex;
+  justify-content: center;
+  background: #F0C27B;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #4B1248, #F0C27B);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #4B1248, #F0C27B); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+.wrapper > .content{
+  line-height: 2.8em;
+  text-align:center;
+  border-radius: 20px;
+  margin: 10rem 5rem;
+  color:#444;
+  flex-basis: 500px;
+  height: 500px;
+  background-color: #fff;
+  border-style: solid;
+  box-shadow: 0 0px 0px rgba(0, 0, 0, 0),
+  0 5px 5px rgba(0, 0, 0, 0.23);
+}
+
+.content >h1{
+  color:#e3b477;
+  font-weight: bold;
+  padding: 30px;
+  font-size: 32px;
+}
+
+.content > span {
+  font-size:18px !important;
+}
+
+.content > .fa-capsules{
+  color: #824d5b;
+  margin-top:5rem;
+  font-size: 12em;
+}
+
