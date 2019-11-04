@@ -75,7 +75,7 @@ MYSQL_PORT=3306
 MYSQL_DB=gennydb
 MYSQL_URL=mysql
 MYSQL_PASSWORD=password
-FULL_MYSQL_URL=jdbc:mysql://${MYSQL_URL}:${MYSQL_PORT}/${MYSQL_DB}
+FULL_MYSQL_URL=jdbc:mysql://${MYSQL_URL}:${MYSQL_PORT}/${MYSQL_DB}?useSSL=false
 MYSQL_USER=genny
 
 #MYSQL_PASSWORD=password
