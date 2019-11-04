@@ -44,7 +44,7 @@ services:
 #      - JBPM_DB_DRIVER=mysql
 #      - JBPM_DB_HOST=10.123.123.123
 #      - JBPM_DB_PORT=3310
- 
+
 #  imageproxy:
 #    image: willnorris/imageproxy:v0.7.0
 #    ports:
@@ -124,7 +124,7 @@ services:
     command: java -jar /service.jar
 
   mysql:
-    image: mysql:5.7 
+    image: mysql:5.7
     container_name: mysql
     environment:
       - MYSQL_URL=mysql
@@ -180,24 +180,20 @@ services:
       - FORCE_EVENTBUS_USE_API=FALSE
       - FORCE_CACHE_USE_API=FALSE
       - VIRTUAL_HOST=qwanda-service.*,api.*
-      - ADMIN_USERNAME=GENNY 
+      - ADMIN_USERNAME=GENNY
       - ADMIN_PASSWORD=GENNY
       - VIRTUAL_PORT=8080
       - VIRTUAL_PROTO=http
       - CERT_NAME=genny.life
       - LOAD_DDT_IN_STARTUP=TRUE
       - SKIP_GITHUB_IN_STARTUP=TRUE
-<<<<<<< HEAD
-      - SKIP_GOOGLE_DOC_IN_STARTUP=FALSE
-=======
       - SKIP_GOOGLE_DOC_IN_STARTUP=TRUE
->>>>>>> da494743768193c367466bcbad54058d9014536f
       - DEBUG=TRUE
       - DEBUG_SUSPEND=n
       - XMX=2048m
   #    - DEV_MODE=TRUE
       - DDTHOST=TRUE
-  #    - DDT_URL=http://bridge:8089 
+  #    - DDT_URL=http://bridge:8089
     ports:
       - "8280:8080"
       - "8887:8787"
@@ -209,7 +205,7 @@ services:
       test: ["CMD", "curl", "-f", "http://localhost:8080/version"]
       interval: 10s
       timeout: 10s
-      retries: 50    
+      retries: 50
     restart: unless-stopped
     networks:
       - mainproxy
@@ -281,8 +277,8 @@ services:
       - 5701:5701
       - 10001:10001
 #      - 4001:15701
-#    command: java  -Xdebug -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n  -Dvertx.metrics.options.enabled=true -Dvertx.options.blockedThreadCheckInterval=2147483647 -jar /service.jar 
-    command: java -agentpath:/usr/local/YourKit-JavaProfiler-2019.8/bin/linux-x86-64/libyjpagent.so=port=10001,listen=all -Xdebug -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n  -Dvertx.metrics.options.enabled=true -Dvertx.options.blockedThreadCheckInterval=2147483647 -jar /service.jar 
+#    command: java  -Xdebug -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n  -Dvertx.metrics.options.enabled=true -Dvertx.options.blockedThreadCheckInterval=2147483647 -jar /service.jar
+    command: java -agentpath:/usr/local/YourKit-JavaProfiler-2019.8/bin/linux-x86-64/libyjpagent.so=port=10001,listen=all -Xdebug -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n  -Dvertx.metrics.options.enabled=true -Dvertx.options.blockedThreadCheckInterval=2147483647 -jar /service.jar
 
 
   wildfly-rulesservice:
@@ -300,7 +296,7 @@ services:
     volumes:
       - ./rules:/rules
     environment:
-      - ADMIN_USERNAME=GENNY 
+      - ADMIN_USERNAME=GENNY
       - ADMIN_PASSWORD=GENNY
       - CERT_NAME=genny.life
       - DEBUG=TRUE
@@ -310,11 +306,7 @@ services:
       - DROOLS_LOGLEVEL=ERROR
       - FORCE_EVENTBUS_USE_API=FALSE
       - FORCE_CACHE_USE_API=FALSE
-<<<<<<< HEAD
-      - FRAMES_ON_DEMAND=TRUE
-=======
       - FRAMES_ON_DEMAND=FALSE
->>>>>>> da494743768193c367466bcbad54058d9014536f
       - HAZELCAST_LOGLEVEL=ERROR
       - HIDE_RULE_STATES=TRUE
       - KEYCLOAK_LOGLEVEL=ERROR
@@ -335,7 +327,7 @@ services:
   #    test: ["CMD", "curl", "-f", "http://localhost:8080/version"]
   #    interval: 10s
   #    timeout: 10s
-  #    retries: 30    
+  #    retries: 30
     restart: unless-stopped
     networks:
       - mainproxy
@@ -377,7 +369,7 @@ services:
 #      interval: 10s
 #      timeout: 10s
 #      retries: 30
-#    command: java  -Xdebug -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n  -Dvertx.options.blockedThreadCheckInterval=2147483647 -jar /service.jar 
+#    command: java  -Xdebug -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n  -Dvertx.options.blockedThreadCheckInterval=2147483647 -jar /service.jar
 
 #social:
  #  image: gennyproject/social:latest
@@ -405,6 +397,7 @@ services:
   #  command: java -Djava.net.preferIPv6Addresses=false -Djava.net.preferIPv4Stack=true  -Xdebug -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n -Djava.net.preferIPv4Addresses=true -Dvertx.hazelcast.config=/cluster.xml -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /service.jar
 
 
+<<<<<<< HEAD
 <<<<<<< HEAD
  # messages:
  #   image: gennyproject/messages:latest
@@ -434,7 +427,6 @@ services:
  #     - mainproxy
  #   restart: always
  #   command: java  -Xdebug -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n -Djava.net.preferIPv6Addresses=false -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true -Dvertx.hazelcast.config=/cluster.xml -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /service.jar
-=======
   messages:
     image: gennyproject/messages:latest
     container_name:  messages
@@ -444,7 +436,7 @@ services:
       - ${ENV_FILE}
     environment:
       - DDTHOST=TRUE
-      - API_PORT=8089 
+      - API_PORT=8089
       - CACHE_API_PORT=8099
     ports:
       - 8791:8787
@@ -460,7 +452,6 @@ services:
       - mainproxy
     restart: always
     command: java   -Dvertx.metrics.options.enabled=true -Dvertx.options.blockedThreadCheckInterval=2147483647  -Xdebug -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n -Djava.net.preferIPv6Addresses=false -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true -Dvertx.hazelcast.config=/cluster.xml -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /service.jar
->>>>>>> da494743768193c367466bcbad54058d9014536f
 
 #  payments:
 #     image: gennyproject/payments:latest
@@ -475,7 +466,7 @@ services:
 #     ports:
 #      - "3456:3456"
 #      - "6543:6543"
-# 
+#
 #     networks:
 #       - mainproxy
 
@@ -545,5 +536,3 @@ volumes:
 networks:
   mainproxy:
     driver: bridge
-
-
