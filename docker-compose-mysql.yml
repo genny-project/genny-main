@@ -17,8 +17,8 @@ services:
       - MYSQL_ROOT_PASSWORD=password
       - ADMIN_USERNAME=admin
       - ADMIN_PASSWORD=password
-    env_file:
-      - ${ENV_FILE}
+#    env_file:
+#      - ${ENV_FILE}
     volumes:
       - mysql_data:/var/lib/mysql
     networks:
