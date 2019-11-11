@@ -16,6 +16,7 @@ services:
       - ./nginx/conf.d:/etc/nginx/conf.d
       - ./nginx/vhost.d:/etc/nginx/vhost.d
       - ./nginx/html:/usr/share/nginx/html
+      - ./unity:/unity
       - ./nginx/certs:/etc/nginx/certs:ro
       - /var/run/docker.sock:/tmp/docker.sock:ro
 #    healthcheck:
@@ -301,7 +302,7 @@ services:
       - CERT_NAME=genny.life
       - DEBUG=TRUE
       - DEBUG_SUSPEND=n
-      - DETECT_RULE_CHANGES=TRUE
+      - DETECT_RULE_CHANGES=FALSE
       - DISABLE_LAYOUT_LOADING=TRUE
       - DROOLS_LOGLEVEL=ERROR
       - FORCE_EVENTBUS_USE_API=FALSE
