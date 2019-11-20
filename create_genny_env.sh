@@ -75,7 +75,8 @@ MYSQL_PORT=3306
 MYSQL_DB=gennydb
 MYSQL_URL=mysql
 MYSQL_PASSWORD=password
-FULL_MYSQL_URL=jdbc:mysql://${MYSQL_URL}:${MYSQL_PORT}/${MYSQL_DB}?useSSL=false
+FULL_MYSQL_URL="jdbc:mysql://${MYSQL_URL}:${MYSQL_PORT}/${MYSQL_DB}?allowPublicKeyRetrieval=true&syscharacterEncoding=utf8mb4&useSSL=FALSE&serverTimezone=UTC&rewriteBatchedStatements=true"
+#FULL_MYSQL_URL=jdbc:mysql://${MYSQL_URL}:${MYSQL_PORT}/${MYSQL_DB}?allowPublicKeyRetrieval=true&syscharacterEncoding=utf8mb4&useSSL=FALSE&serverTimezone=UTC&rewriteBatchedStatements=true
 MYSQL_USER=genny
 
 #MYSQL_PASSWORD=password
