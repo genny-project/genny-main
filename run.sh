@@ -5,7 +5,7 @@ rm -Rf ./rules/prj_*
 #cp -rp ../prj_genny/rules/rulesCurrent ./rules/
 #mkdir rules
 for i in ` find .. -mindepth 1 -maxdepth 1 -type d | grep prj  | awk -F "/" '{ print $2 }'`;do
-   mkdir ./rules/$i
+   mkdir -p ./rules/$i
    cp -rp ../$i/rules ./rules/$i/
   echo $i
 done
