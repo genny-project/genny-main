@@ -19,5 +19,7 @@ cd ../bridge
 onefetch -d .
 cd ../media-proxy
 onefetch -d .
+cd ../alyson-v7
+onefetch -d .
 cd ../genny-main
 onefetch -d .
