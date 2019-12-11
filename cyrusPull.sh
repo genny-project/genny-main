@@ -21,3 +21,13 @@ git stash;git pull
 #mvn package -DskipTests=true
 #./build-docker.sh
 cd ../genny-main
+
+for i in ` find .. -mindepth 1 -maxdepth 1 -type d | grep prj  | awk -F "/" '{ print $2 }'`;do
+   cd ../$i
+   git stash;git pull
+   cd ../genny-main 
+   echo $i
+done
+
+
+
