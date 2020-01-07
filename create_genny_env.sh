@@ -81,7 +81,7 @@ MYSQL_USER=genny
 
 #MYSQL_PASSWORD=password
 MYSQL_ROOT_PASSWORD=password
-MYSQL_ALLOW_EMPTY_PASSWORD=no
+
 MYSQL_RANDOM_ROOT_PASSWORD=no
 MYSQL_ROOT_HOST=${HOSTIP}
 
@@ -90,7 +90,7 @@ KIE_SERVER_URL="http://${myip}:8230/kie-server/services/rest/server"
 KIE_USERNAME="kieserver"
 KIE_PASSWORD="kieserver1!"
 
-
+DDT_URL=http://alyson7.geenny.life
 DEVUSER=${USER}
 RULES_DIR=/opt/rules
 
