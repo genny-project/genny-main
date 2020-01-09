@@ -300,6 +300,7 @@ services:
       - ADMIN_USERNAME=GENNY 
       - ADMIN_PASSWORD=GENNY
       - CERT_NAME=genny.life
+      - DDT_UTL=http://alyson7.genny.life:8889:wq
       - DEBUG=TRUE
       - DEBUG_SUSPEND=n
       - DETECT_RULE_CHANGES=TRUE
