@@ -296,6 +296,7 @@ services:
       - ${ENV_FILE}
     volumes:
       - ./rules:/rules
+      - ./google_credentials:/root/.genny/sheets.googleapis.com-java-quickstart/
     environment:
       - ADMIN_USERNAME=GENNY 
       - ADMIN_PASSWORD=GENNY
