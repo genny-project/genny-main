@@ -188,7 +188,7 @@ echo "CLUSTER_IP=${CLUSTER_IP}" >> $ENV_FILE
 echo "IS_CACHE_SERVER=${IS_CACHE_SERVER}" >> $ENV_FILE
 echo "CACHE_SERVER_NAME=${CACHE_SERVER_NAME}" >> $ENV_FILE
 
-GOOGLE_SVC_ACC_PATH=$PWD/google_credentials/token-secret-service-account.json
+GOOGLE_SVC_ACC_PATH=/root/.genny/sheets.googleapis.com-java-quickstart/token-secret-service-account.json
 echo "GOOGLE_SVC_ACC_PATH=${GOOGLE_SVC_ACC_PATH}" >> $ENV_FILE
 
 echo ""
