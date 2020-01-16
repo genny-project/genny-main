@@ -365,7 +365,7 @@ ENV_FILE=$ENV_FILE docker-compose -f docker-compose-staging.yml logs -f  rulesse
 
          echo "DEBUG=TRUE" >> ${ENV_FILE}
          echo "DEBUG_SUSPEND=n" >> ${ENV_FILE}
-         echo "XMX=1024m" >> ${ENV_FILE}
+        # echo "XMX=3048m" >> ${ENV_FILE}
   
          ENV_FILE=$ENV_FILE docker-compose up -d
 #         ENV_FILE=$ENV_FILE docker-compose logs -f bridge  qwanda-service

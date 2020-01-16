@@ -320,8 +320,8 @@ services:
       - VIRTUAL_HOST=rulesservice.*
       - VIRTUAL_PORT=8080
       - VIRTUAL_PROTO=http
-      - XMX=2048m
-      - XMS=2048m
+      - XMX=3048m
+      - XMS=3048m
     ports:
       - "8380:8080"
       - "8987:8787"
