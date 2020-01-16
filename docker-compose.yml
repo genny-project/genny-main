@@ -322,6 +322,7 @@ services:
       - VIRTUAL_PROTO=http
       - XMX=3048m
       - XMS=3048m
+      - JAVA_OPTS="-Xms3096m -Xmx3096m -Djava.net.preferIPv4Stack=true"
     ports:
       - "8380:8080"
       - "8987:8787"
