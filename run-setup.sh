@@ -1,5 +1,6 @@
 #!/bin/bash
-if ping -c 1 10.123.123.123 &> /dev/null
+if [ `ifconfig | grep 10.123.123.123` ]
+#if ping -c 1 10.123.123.123 &> /dev/null
 then
   echo "10.123.123.123 exists"
 else
