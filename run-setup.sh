@@ -1,10 +1,13 @@
 #!/bin/bash
-if [ `ifconfig | grep 10.123.123.123` ]
+
+IP=$(ifconfig | grep 10.123.123.123)
+echo $IP
+if [[ -z "$IP" ]];
 #if ping -c 1 10.123.123.123 &> /dev/null
 then
-  echo "10.123.123.123 exists"
+  sudo ifconfig lo0 alias 10.123.123.123
 else
-sudo ifconfig lo0 alias 10.123.123.123
+  echo "10.123.123.123 exists"
 fi
 
 DOCUMENTATION=\
