@@ -181,6 +181,7 @@ services:
       - FORCE_EVENTBUS_USE_API=FALSE
       - FORCE_CACHE_USE_API=FALSE
       - VIRTUAL_HOST=qwanda-service.*,api.*
+      - IS_CACHE_SERVER=true
       - ADMIN_USERNAME=GENNY 
       - ADMIN_PASSWORD=GENNY
       - VIRTUAL_PORT=8080
@@ -258,6 +259,7 @@ services:
       - VIRTUAL_PORT=8088
       - VIRTUAL_PROTO=http
       - CERT_NAME=genny.life
+      - CACHE_SERVER_NAME=qwanda-service
       - DDTHOST=TRUE
       - API_PORT=8088
       - CACHE_API_PORT=8089
@@ -309,6 +311,7 @@ services:
       - DROOLS_LOGLEVEL=ERROR
       - FORCE_EVENTBUS_USE_API=FALSE
       - FORCE_CACHE_USE_API=FALSE
+      - CACHE_SERVER_NAME=qwanda-service
       - FRAMES_ON_DEMAND=TRUE
       - HAZELCAST_LOGLEVEL=ERROR
       - HIDE_RULE_STATES=TRUE

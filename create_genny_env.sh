@@ -31,8 +31,8 @@ docker volume create mysql_data
 
 #create env file
 
-IS_CACHE_SERVER=true
-CACHE_SERVER_NAME=bridge
+#IS_CACHE_SERVER=true
+CACHE_SERVER_NAME=qwanda-service
 
 PDF_GEN_SERVICE_API_URL=http://camelot-pdfgenerator:7331
 ENV_SECURITY_KEY=WubbaLubbaDubDub
