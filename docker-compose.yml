@@ -19,7 +19,7 @@ services:
       - ./nginx/conf.d:/etc/nginx/conf.d
       - ./nginx/vhost.d:/etc/nginx/vhost.d
       - ./nginx/html:/usr/share/nginx/html
-      - ../stt-unity/safeTrafficTown/Build:/usr/share/nginx/html/unity
+#      - ../stt-unity/safeTrafficTown/Build:/usr/share/nginx/html/unity
       - ./nginx/certs:/etc/nginx/certs:ro
       - /var/run/docker.sock:/tmp/docker.sock:ro
 #    healthcheck:
