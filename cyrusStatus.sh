@@ -9,7 +9,7 @@ cd ../bootxport;echo $PWD;git branch;git status
 cd ../qwanda-services;echo $PWD;git branch;git status
 cd ../genny-rules;echo $PWD;git branch;git status
 cd ../wildfly-rulesservice;echo $PWD;git branch;git status
-cd ../rulesservice;echo $PWD;git branch;git status
+#cd ../rulesservice;echo $PWD;git branch;git status
 cd ../wildfly-qwanda-service;echo $PWD;git branch;git status
 cd ../checkrules;echo $PWD;git branch;git status
 cd ../bridge;echo $PWD;git branch;git status
