@@ -312,6 +312,7 @@ services:
     environment:
       - ADMIN_USERNAME=GENNY 
       - ADMIN_PASSWORD=GENNY
+      - BULKPULL=TRUE
       - CERT_NAME=genny.life
       - DDT_URL=http://alyson7.genny.life:8089
       - DEBUG=TRUE
