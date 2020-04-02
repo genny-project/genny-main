@@ -107,7 +107,6 @@ buildProject(){
 }
 
 # Git pull latest and save everything on a uuid branch
-
 pullLatest ../alyson-v7
 pullLatest ../qwanda
 pullLatest ../qwanda-utils
@@ -118,6 +117,9 @@ pullLatest ../genny-verticle-rules
 pullLatest ../genny-rules
 pullLatest ../wildfly-rulesservice
 pullLatest ../bridge
+pullLatest ../prj_stt
+pullLatest ../prj_internmatch
+pullLatest ../prj_genny
 
 
 # Very dumb way of building everything in order or build from a certain project
