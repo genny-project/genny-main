@@ -312,12 +312,12 @@ services:
     environment:
       - ADMIN_USERNAME=GENNY 
       - ADMIN_PASSWORD=GENNY
-      - BULKPULL=TRUE
+      - BULKPULL=FALSE
       - CERT_NAME=genny.life
       - DDT_URL=http://alyson7.genny.life:8089
       - DEBUG=TRUE
       - DEBUG_SUSPEND=n
-      - DETECT_RULE_CHANGES=TRUE
+      - DETECT_RULE_CHANGES=FALSEe
       - DISABLE_LAYOUT_LOADING=TRUE
       - DROOLS_LOGLEVEL=ERROR
       - FORCE_EVENTBUS_USE_API=FALSE
@@ -327,6 +327,7 @@ services:
       - HAZELCAST_LOGLEVEL=ERROR
       - HIDE_RULE_STATES=TRUE
       - KEYCLOAK_LOGLEVEL=ERROR
+      - PERSIST_RULES=FALSE
       - LOG_WORKFLOWS=FALSE
       - RULES_DIR=/rules
       - USE_JMS=TRUE
