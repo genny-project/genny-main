@@ -332,7 +332,7 @@ services:
       - RULES_DIR=/rules
       - USE_JMS=TRUE
       - USE_EXECUTOR=TRUE
-      - USE_SINGLETON=FALSE
+      - USE_SINGLETON=TRUE
       - VIRTUAL_HOST=rulesservice.*
       - VIRTUAL_PORT=8080
       - VIRTUAL_PROTO=http
