@@ -328,11 +328,11 @@ services:
       - HIDE_RULE_STATES=TRUE
       - KEYCLOAK_LOGLEVEL=ERROR
       - PERSIST_RULES=FALSE
-      - LOG_WORKFLOWS=FALSE
+      - LOG_WORKFLOWS=TRUE
       - RULES_DIR=/rules
       - USE_JMS=TRUE
       - USE_EXECUTOR=TRUE
-      - USE_SINGLETON=TRUE
+      - USE_SINGLETON=FALSE
       - VIRTUAL_HOST=rulesservice.*
       - VIRTUAL_PORT=8080
       - VIRTUAL_PROTO=http
