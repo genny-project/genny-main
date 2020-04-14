@@ -16,9 +16,9 @@ services:
     environment:
       - SKIP_HTTPS_REDIRECT=true
     volumes:
-      - ./nginx/conf.d:/etc/nginx/conf.d
-      - ./nginx/vhost.d:/etc/nginx/vhost.d
-      - ./nginx/html:/usr/share/nginx/html
+      - ./nginx/conf.d:/etc/nginx/conf.d:delegated
+      - ./nginx/vhost.d:/etc/nginx/vhost.d:delegated
+      - ./nginx/html:/usr/share/nginx/html:delegated
 #      - ../stt-unity/safeTrafficTown/Build:/usr/share/nginx/html/unity
       - ./nginx/certs:/etc/nginx/certs:ro
       - /var/run/docker.sock:/tmp/docker.sock:ro
@@ -106,8 +106,8 @@ services:
     env_file:
       - ${ENV_FILE}
     volumes:
-      - minio_data:/data
-      - minio_conf:/root/.minio
+      - minio_data:/data:delegated
+      - minio_conf:/root/.minio:delegated
     networks:
       - mainproxy
     ports:
@@ -145,7 +145,7 @@ services:
     env_file:
       - ${ENV_FILE}
     volumes:
-      - mysql_data:/var/lib/mysql
+      - mysql_data:/var/lib/mysql:delegated
     networks:
       - mainproxy
     ports:
@@ -175,8 +175,8 @@ services:
     image: gennyproject/wildfly-qwanda-service:latest
     container_name: qwanda-service
     volumes:
-      - ./realm:/opt/realm
-      - ./google_credentials:/root/.genny/sheets.googleapis.com-java-quickstart/
+      - ./realm:/opt/realm:delegated
+      - ./google_credentials:/root/.genny/sheets.googleapis.com-java-quickstart/:delegated
     env_file:
       - ${ENV_FILE}
     environment:
@@ -257,7 +257,7 @@ services:
         condition: service_healthy
     container_name: bridge
     volumes:
-      - ./realm:/opt/realm
+      - ./realm:/opt/realm:delegated
     env_file:
       - ${ENV_FILE}
     environment:
@@ -307,8 +307,8 @@ services:
     env_file:
       - ${ENV_FILE}
     volumes:
-      - ./rules:/rules
-      - ./google_credentials:/root/.genny/sheets.googleapis.com-java-quickstart/
+      - ./rules:/rules:delegated
+      - ./google_credentials:/root/.genny/sheets.googleapis.com-java-quickstart/:delegated
     environment:
       - ADMIN_USERNAME=GENNY 
       - ADMIN_PASSWORD=GENNY
@@ -421,7 +421,7 @@ services:
     image: gennyproject/messages:latest
     container_name:  messages
     volumes:
-      - ./realm:/opt/realm
+      - ./realm:/opt/realm:delegated
     env_file:
       - ${ENV_FILE}
     environment:
