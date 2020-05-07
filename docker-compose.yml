@@ -135,7 +135,6 @@ services:
       - MYSQL_DB=gennydb
       - MYSQL_PORT=3306
       - MYSQL_ALLOW_EMPTY=
-      - MYSQL_RANDOM_ROOT_PASSWORD=no
       - MYSQL_DATABASE=gennydb
       - MYSQL_USER=genny
       - MYSQL_PASSWORD=password
