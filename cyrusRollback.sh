@@ -1,5 +1,5 @@
 #!/bin/bash
-dt="2020-03-07 23:30"
+dt="2020-05-15 23:30"
 ver=v3.1.0
 cd ../qwanda
 git stash;git checkout `git rev-list -n 1 --first-parent --before="${dt}" ${ver}`
