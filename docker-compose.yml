@@ -178,25 +178,25 @@ services:
     env_file:
       - ${ENV_FILE}
     environment:
-      - USE_VERTX_UTILS=true
-      - FORCE_EVENTBUS_USE_API=FALSE
-      - FORCE_CACHE_USE_API=FALSE
-      - VIRTUAL_HOST=qwanda-service.*,api.*
-      - IS_CACHE_SERVER=true
-      - JAVA_OPTS=-Xms2048m -Xmx2048m -Djava.net.preferIPv4Stack=true -Dsun.rmi.dgc.client.gcInterval=1800000 -Dsun.rmi.dgc.server.gcInterval=1800000  -server
       - ADMIN_USERNAME=GENNY 
       - ADMIN_PASSWORD=GENNY
-      - VIRTUAL_PORT=8080
-      - VIRTUAL_PROTO=http
       - CERT_NAME=genny.life
+      - DEBUG=TRUE
+      - DEBUG_SUSPEND=n
+      - DDTHOST=TRUE
+      - FORCE_EVENTBUS_USE_API=FALSE
+      - FORCE_CACHE_USE_API=FALSE
+      - IS_CACHE_SERVER=true
+      - JAVA_OPTS=-Xms2048m -Xmx2048m -Djava.net.preferIPv4Stack=true -Dsun.rmi.dgc.client.gcInterval=1800000 -Dsun.rmi.dgc.server.gcInterval=1800000  -server
       - LOAD_DDT_IN_STARTUP=TRUE
       - SKIP_GITHUB_IN_STARTUP=TRUE
       - SKIP_GOOGLE_DOC_IN_STARTUP=FALSE
-      - DEBUG=TRUE
-      - DEBUG_SUSPEND=n
+      - USE_VERTX_UTILS=true
+      - VIRTUAL_HOST=qwanda-service.*,api.*
+      - VIRTUAL_PORT=8080
+      - VIRTUAL_PROTO=http
       - XMX=2048m
   #    - DEV_MODE=TRUE
-      - DDTHOST=TRUE
   #    - DDT_URL=http://bridge:8089 
     ports:
       - "8280:8080"
@@ -316,7 +316,7 @@ services:
       - DDT_URL=http://alyson7.genny.life:8089
       - DEBUG=TRUE
       - DEBUG_SUSPEND=n
-      - DETECT_RULE_CHANGES=TRUE
+      - DETECT_RULE_CHANGES=FALSE
       - DISABLE_LAYOUT_LOADING=TRUE
       - DROOLS_LOGLEVEL=ERROR
       - FORCE_EVENTBUS_USE_API=FALSE
@@ -326,9 +326,10 @@ services:
       - HAZELCAST_LOGLEVEL=ERROR
       - HIDE_RULE_STATES=TRUE
       - KEYCLOAK_LOGLEVEL=ERROR
-      - PERSIST_RULES=TRUE
+      - PERSIST_RULES=FALSE
       - LOG_WORKFLOWS=FALSE
       - RULES_DIR=/rules
+      - USE_API_RULES=TRUE
       - USE_JMS=TRUE
       - USE_EXECUTOR=TRUE
       - USE_SINGLETON=FALSE
