@@ -115,7 +115,7 @@ services:
     command: server /data
 
   media-proxy:
-    image: gennyproject/media-proxy:v3.0.0
+    image: gennyproject/media-proxy:v3.1.0
     container_name: media-proxy
     env_file:
       - ${ENV_FILE}
@@ -181,11 +181,14 @@ services:
       - ADMIN_USERNAME=GENNY 
       - ADMIN_PASSWORD=GENNY
       - CERT_NAME=genny.life
+  #    - DDT_URL=http://bridge:8089 
       - DEBUG=TRUE
       - DEBUG_SUSPEND=n
+  #    - DEV_MODE=TRUE
       - DDTHOST=TRUE
       - FORCE_EVENTBUS_USE_API=FALSE
       - FORCE_CACHE_USE_API=FALSE
+      - GITHUB_LAYOUTS_URL=https://github.com/genny-project/prj_genny;https://github.como/OutcomeLife/prj_internmatch;https://github.com/OutcomeLife/Prj_stt
       - IS_CACHE_SERVER=true
       - JAVA_OPTS=-Xms2048m -Xmx2048m -Djava.net.preferIPv4Stack=true -Dsun.rmi.dgc.client.gcInterval=1800000 -Dsun.rmi.dgc.server.gcInterval=1800000  -server
       - LOAD_DDT_IN_STARTUP=TRUE
@@ -196,8 +199,6 @@ services:
       - VIRTUAL_PORT=8080
       - VIRTUAL_PROTO=http
       - XMX=2048m
-  #    - DEV_MODE=TRUE
-  #    - DDT_URL=http://bridge:8089 
     ports:
       - "8280:8080"
       - "8887:8787"
@@ -311,7 +312,7 @@ services:
     environment:
       - ADMIN_USERNAME=GENNY 
       - ADMIN_PASSWORD=GENNY
-      - BULKPULL=FALSE
+      - BULKPULL=TRUE
       - CERT_NAME=genny.life
       - DDT_URL=http://alyson7.genny.life:8089
       - DEBUG=TRUE
@@ -326,7 +327,7 @@ services:
       - HAZELCAST_LOGLEVEL=ERROR
       - HIDE_RULE_STATES=TRUE
       - KEYCLOAK_LOGLEVEL=ERROR
-      - PERSIST_RULES=TRUE
+      - PERSIST_RULES=FALSE
       - LOG_WORKFLOWS=FALSE
       - RULES_DIR=/rules
       - USE_API_RULES=TRUE
@@ -339,7 +340,6 @@ services:
       - XMX=3048m
       - XMS=3048m
       - JAVA_OPTS=-Xms3048m -Xmx3048m -Djava.net.preferIPv4Stack=true -Dsun.rmi.dgc.client.gcInterval=1800000 -Dsun.rmi.dgc.server.gcInterval=1800000  -server 
-      - PDF_GEN_SERVICE_API_URL=http://internmatch.genny.life/camelot
     ports:
       - "8380:8080"
       - "8987:8787"
@@ -495,13 +495,13 @@ services:
 #    networks:
 #      - mainproxy
 #
-  camelot-pdfgenerator:
-    image: gennyproject/camelot:latest
-    container_name: camelot-pdfgenerator
-    ports:
-      - "7331:7331"
-    networks:
-      - mainproxy
+#  camelot-pdfgenerator:
+#    image: matthayward1997/camelot:latest
+#    container_name: camelot-pdfgenerator
+#    ports:
+#      - "7331:7331"
+#    networks:
+#      - mainproxy
 
 #  keisha-server:
 #    image: gennyproject/keisha:latest
