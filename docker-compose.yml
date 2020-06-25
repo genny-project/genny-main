@@ -57,7 +57,7 @@ services:
 #    restart: always
 
   alyson-v7:
-    image: gennyproject/alyson-v7:latest
+    image: gennyproject/alyson-v7:v3.1.0
     container_name: alyson-v7
     depends_on:
       - bridge
@@ -318,6 +318,7 @@ services:
       - XMX=3048m
       - XMS=3048m
       - JAVA_OPTS=-Xms3048m -Xmx3048m -Djava.net.preferIPv4Stack=true -Dsun.rmi.dgc.client.gcInterval=1800000 -Dsun.rmi.dgc.server.gcInterval=1800000  -server 
+      - PDF_GEN_SERVICE_API_URL=http://internmatch.genny.life/camelot
     ports:
       - "8380:8080"
       - "8987:8787"
@@ -332,43 +333,6 @@ services:
       - mainproxy
 
 
-#  rulesservice:
-#    image: gennyproject/rulesservice:dummy
-#    container_name:  rulesservice
-#    volumes:
-#      - ./realm:/opt/realm
-#      - ./rules:/rules
-#    environment:
-#      - RULES_DIR=/rules
-#      - VIRTUAL_PORT=80
-#      - CACHE_API_PORT=80
-#      - HIDE_RULE_STATES=TRUE
-#      - DISABLE_LAYOUT_LOADING=TRUE
-#      - VIRTUAL_PROTO=http
-#      - CERT_NAME=genny.life
-#      - RULESMANAGER=TRUE
-#      - DDTHOST=TRUE
-#      - API_PORT=8889
-#      - LAYOUT_CACHE_HOST=http://layout-cache:2223
-#    env_file:
-#      - ${ENV_FILE}
-#    ports:
-#      - 8997:8787
-#      - 8889:8889
-#    depends_on:
-#     qwanda-service:
-#       condition: service_healthy
-#     bridge:
-#        condition: service_healthy
-#    networks:
-#      - mainproxy
-#    restart: always
-#    healthcheck:
-#      test: ["CMD", "curl", "-f", "http://localhost:80/version"]
-#      interval: 10s
-#      timeout: 10s
-#      retries: 30
-#    command: java  -Xdebug -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n  -Dvertx.options.blockedThreadCheckInterval=2147483647 -jar /service.jar 
 
 #social:
  #  image: gennyproject/social:latest
@@ -422,22 +386,15 @@ services:
     restart: always
     command: java   -Dvertx.metrics.options.enabled=true -Dvertx.options.blockedThreadCheckInterval=2147483647  -Xdebug -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n -Djava.net.preferIPv6Addresses=false -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true -Dvertx.hazelcast.config=/cluster.xml -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /service.jar
 
-#  payments:
-#     image: gennyproject/payments:latest
-#     container_name: payments
-#     env_file:
-#      - ${ENV_FILE}
-#     environment:
-#      - VIRT:UAL_HOST=payments2.genny.life
-#      - VIRTUAL_PORT=3456
-#      - VIRTUAL_PROTO=http
-#      - CERT_NAME=genny.life
-#     ports:
-#      - "3456:3456"
-#      - "6543:6543"
-# 
-#     networks:
-#       - mainproxy
+
+
+  camelot-pdfgenerator:
+    image: gennyproject/camelot:latest
+    container_name: camelot-pdfgenerator
+    ports:
+      - "7331:7331"
+    networks:
+      - mainproxy
 
 
 volumes:
