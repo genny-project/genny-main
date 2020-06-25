@@ -371,7 +371,7 @@ while [ "$1" != "" ]; do
                 cd - &> /dev/null
             fi
             ./create_genny_env.sh ${ENV_FILE} $ip >& /dev/null
-
+	echo "GOT TO HERE"
             if [ -n $project_realm ]; then
                 echo  "PROJECT_REALM=$project_realm" >> $ENV_FILE
                 UPPER_REALM=`echo $project_realm | tr '[:lower:]' '[:upper:]'`
@@ -380,6 +380,7 @@ while [ "$1" != "" ]; do
                 #   echo  "$UPPER_REALM""_ENV_UPPY_URL=http://uppy.genny.life" >> $ENV_FILE
                 #  echo  "$UPPER_REALM""_ENV_LAYOUT_PUBLICURL=http://layout-cache.genny.life" >> $ENV_FILE
             fi
+	echo "GOT TO HERE2"
             cat "$CREDENTIALS_PROJECT-$project/conf.env" >> $ENV_FILE
             cat "$CREDENTIALS_PROJECT-$project/StoredCredential" > google_credentials/StoredCredential
 
@@ -387,8 +388,8 @@ while [ "$1" != "" ]; do
             echo "DEBUG_SUSPEND=n" >> ${ENV_FILE}
             # echo "XMX=3048m" >> ${ENV_FILE}
 
+	echo "GOT TO HERE3"
             ENV_FILE=$ENV_FILE docker-compose up -d
-            #         ENV_FILE=$ENV_FILE docker-compose logs -f bridge  qwanda-service
             ;;
         local )
             echo "local started"
