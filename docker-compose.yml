@@ -39,21 +39,12 @@ services:
 #docker run -p 8080:8080 -p 8001:8001 -d --name jbpm-server-full -e JBPM_DB_DRIVER=mysql -e JBPM_DB_HOST=172.17.0.1 jboss/jbpm-server-full:latest
 
 
-#  workbench:
-#    image: jboss/jbpm-server-full:latest
-#    ports:
-#      - "8580:8080"
-#      - "8001:8001"
-#    environment:
-#      - JBPM_DB_DRIVER=mysql
-#      - JBPM_DB_HOST=10.123.123.123
-#      - JBPM_DB_PORT=3310
  
-#  imageproxy:
-#    image: willnorris/imageproxy:v0.7.0
-#    ports:
-#      - "46243:8080"
-#    command: -cache /tmp/imageproxy -addr 0.0.0.0:8080 -scaleUp true
+  imageproxy:
+    image: willnorris/imageproxy:v0.10.0
+    ports:
+      - "46243:8080"
+    command: -cache /tmp/imageproxy -addr 0.0.0.0:8080 -scaleUp true
 
 
 #  bsb-lookup:
@@ -81,21 +72,6 @@ services:
       - mainproxy
     restart: always
 
-#  alyson-v3:
-#    image: gennyproject/alyson-v3:latest
-#    container_name: alyson-v3
-#    depends_on:
-#      - bridge
-#    ports:
-#      - "6000:8080"
-#    environment:
-#      - REACT_BRIDGE_HOST=http://bridge.genny.life
-#      - NODE_ENV=production
-#    env_file:
-#      - ${ENV_FILE}
-#    networks:
-#      - mainproxy
-#    restart: always
 
   minio:
     image: minio/minio:latest
@@ -128,7 +104,7 @@ services:
     command: java -jar /service.jar
 
   mysql:
-    image: mysql:8.0 
+    image: mysql:8.0.20 
     container_name: mysql
     environment:
       - MYSQL_URL=mysql
@@ -190,6 +166,7 @@ services:
       - VIRTUAL_PROTO=http
       - CERT_NAME=genny.life
       - LOAD_DDT_IN_STARTUP=TRUE
+      - SEARCH_ALT=FALSE
       - SKIP_GITHUB_IN_STARTUP=TRUE
       - SKIP_GOOGLE_DOC_IN_STARTUP=FALSE
       - DEBUG=TRUE
@@ -311,7 +288,7 @@ services:
     environment:
       - ADMIN_USERNAME=GENNY 
       - ADMIN_PASSWORD=GENNY
-      - BULKPULL=TRUE
+      - BULKPULL=FALSE
       - CERT_NAME=genny.life
       - DDT_URL=http://alyson7.genny.life:8089
       - DEBUG=TRUE
@@ -326,10 +303,13 @@ services:
       - HAZELCAST_LOGLEVEL=ERROR
       - HIDE_RULE_STATES=TRUE
       - KEYCLOAK_LOGLEVEL=ERROR
-      - PERSIST_RULES=TRUE
+      - PERSIST_RULES=FALSE
       - LOG_WORKFLOWS=FALSE
       - RULES_DIR=/rules
-      - USE_JMS=TRUE
+      - SEARCH_ALT=TRUE
+      - USE_CONCURRENCY_MSGS=TRUE
+      - USE_EVENT_QUEUE=FALSE
+      - USE_JMS=FALSE
       - USE_EXECUTOR=TRUE
       - USE_SINGLETON=FALSE
       - VIRTUAL_HOST=rulesservice.*
@@ -459,60 +439,6 @@ services:
 #     networks:
 #       - mainproxy
 
-  uppy:
-     image: gennyproject/uppy:latest
-     container_name: uppy
-     env_file:
-      - ${ENV_FILE}
-     environment:
-      - VIRTUAL_HOST=uppy.genny.life
-      - VIRTUAL_PORT=3020
-      - VIRTUAL_PROTO=http
-      - CERT_NAME=genny.life
-#     ports:
-#       - "3020:3020"
-     networks:
-       - mainproxy
-
-#  layout-cache:
-#    image: gennyproject/layout-cache:latest
-#    container_name: layout-cache
-#    environment:
-#      - LAYOUT_REPO=https://github.com/genny-project/layouts.git
-#      #- NODE_ENV=dev
-#      - NODE_ENV=production
-#      - VIRTUAL_HOST=layout-cache.genny.life
-#      - VIRTUAL_PORT=2224
-#      - VIRTUAL_PROTO=http
-#      - CERT_NAME=genny.life
-#      - GIT_SSH=${GIT_SSH}
-#      - SSH_PRIVATE_KEY=${SSH_PRIVATE_KEY}
-#    ports:
-#      - "2223:2223"
-#      - "2224:2224"
-#    networks:
-#      - mainproxy
-#
-#  camelot-pdfgenerator:
-#    image: matthayward1997/camelot:latest
-#    container_name: camelot-pdfgenerator
-#    ports:
-#      - "7331:7331"
-#    networks:
-#      - mainproxy
-
-#  keisha-server:
-#    image: gennyproject/keisha:latest
-#    container_name: keisha-server
-#    networks:
-#      - mainproxy
-#    env_file:
-#      - ${ENV_FILE}
-#    healthcheck:
-#      test: ["CMD", "curl", "-f", "http://localhost:80/version"]
-#      interval: 10s
-#      timeout: 10s
-#      retries: 30
 
 volumes:
   mysql_data:
