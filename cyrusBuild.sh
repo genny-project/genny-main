@@ -1,32 +1,34 @@
 #!/bin/bash
+clean=$1
+
 cd ../qwanda
-mvn install -DskipTests=true
+mvn $clean install -DskipTests=true
 
 cd ../qwanda-utils
-mvn install -DskipTests=true
+mvn $clean install -DskipTests=true
 
 cd ../bootxport
-mvn install -DskipTests=true
+mvn $clean install -DskipTests=true
 
 cd ../genny-verticle-rules
-mvn install -DskipTests=true
+mvn $clean install -DskipTests=true
 
 cd ../genny-rules
-mvn install -DskipTests=true
+mvn $clean install -DskipTests=true
 
 cd ../qwanda-services
-mvn install -DskipTests=true
+mvn $clean install -DskipTests=true
 
 cd ../wildfly-qwanda-service
-mvn package -DskipTests=true
+mvn $clean package -DskipTests=true
 ./build-docker.sh
 
 cd ../wildfly-rulesservice
-mvn package -DskipTests=true
+mvn $clean package -DskipTests=true
 ./build-docker.sh
 
 cd ../bridge
-mvn package -DskipTests=true
+mvn $clean package -DskipTests=true
 ./build-docker.sh
 
 #cd ../media-proxy
