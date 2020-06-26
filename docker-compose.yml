@@ -57,7 +57,7 @@ services:
 #    restart: always
 
   alyson-v7:
-    image: gennyproject/alyson-v7:forRahul
+    image: gennyproject/alyson-v7:v3.1.0
     container_name: alyson-v7
     depends_on:
       - bridge
@@ -318,6 +318,7 @@ services:
       - XMX=3048m
       - XMS=3048m
       - JAVA_OPTS=-Xms3048m -Xmx3048m -Djava.net.preferIPv4Stack=true -Dsun.rmi.dgc.client.gcInterval=1800000 -Dsun.rmi.dgc.server.gcInterval=1800000  -server 
+      - PDF_GEN_SERVICE_API_URL=http://internmatch.genny.life/camelot
     ports:
       - "8380:8080"
       - "8987:8787"
