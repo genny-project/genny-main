@@ -91,7 +91,7 @@ services:
     command: server /data
 
   media-proxy:
-    image: gennyproject/media-proxy:v3.0.0
+    image: gennyproject/media-proxy:v3.1.0
     container_name: media-proxy
     env_file:
       - ${ENV_FILE}
