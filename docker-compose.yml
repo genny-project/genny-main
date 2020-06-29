@@ -166,7 +166,7 @@ services:
       - VIRTUAL_PROTO=http
       - CERT_NAME=genny.life
       - LOAD_DDT_IN_STARTUP=TRUE
-      - SEARCH_ALT=FALSE
+      - SEARCH_ALT=TRUE
       - SKIP_GITHUB_IN_STARTUP=TRUE
       - SKIP_GOOGLE_DOC_IN_STARTUP=FALSE
       - DEBUG=TRUE
