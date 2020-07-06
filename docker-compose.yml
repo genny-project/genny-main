@@ -57,7 +57,7 @@ services:
 #    restart: always
 
   alyson-v7:
-    image: gennyproject/alyson-v7:forRahul
+    image: gennyproject/alyson-v7:latest
     container_name: alyson-v7
     depends_on:
       - bridge
@@ -91,7 +91,7 @@ services:
     command: server /data
 
   media-proxy:
-    image: gennyproject/media-proxy:v3.0.0
+    image: gennyproject/media-proxy:v7.0.0
     container_name: media-proxy
     env_file:
       - ${ENV_FILE}
