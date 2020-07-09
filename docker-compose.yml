@@ -36,9 +36,6 @@ services:
 #    env_file:
 #      - ${ENV_FILE}
 
-#docker run -p 8080:8080 -p 8001:8001 -d --name jbpm-server-full -e JBPM_DB_DRIVER=mysql -e JBPM_DB_HOST=172.17.0.1 jboss/jbpm-server-full:latest
-
-
  
   imageproxy:
     image: willnorris/imageproxy:v0.10.0
@@ -46,15 +43,6 @@ services:
       - "46243:8080"
     command: -cache /tmp/imageproxy -addr 0.0.0.0:8080 -scaleUp true
 
-
-#  bsb-lookup:
-#    image: gennyproject/bsb-lookup:latest
-#    container_name: bsb-lookup
-#    ports:
-#      - 3333:3333
-#    networks:
-#      - mainproxy
-#    restart: always
 
   alyson-v7:
     image: gennyproject/alyson-v7:latest
@@ -132,15 +120,6 @@ services:
       retries: 10
     restart: unless-stopped
 
-#  signatures:
-#    image: gennyproject/signatures:latest
-#    environment:
-#      - S3_BUCKET=${S3_BUCKET}
-#      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
-#      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
-#    ports:
-#      - "7446:7446"
-
   qwanda-service:
     depends_on:
       mysql:
@@ -166,7 +145,7 @@ services:
       - VIRTUAL_PROTO=http
       - CERT_NAME=genny.life
       - LOAD_DDT_IN_STARTUP=TRUE
-      - SEARCH_ALT=TRUE
+      - SEARCH_ALT=FALSE
       - SKIP_GITHUB_IN_STARTUP=TRUE
       - SKIP_GOOGLE_DOC_IN_STARTUP=FALSE
       - DEBUG=TRUE
@@ -191,40 +170,6 @@ services:
     networks:
       - mainproxy
 
- # keycloak:
- #   image: gennyproject/keycloak:latest
- #   container_name: keycloak
- #   env_file:
- #     - ${ENV_FILE}
- #   environment:
- #     - VIRTUAL_HOST=keycloak.*,bouncer.*
- #     - VIRTUAL_PORT=8080
- #     - VIRTUAL_PROTO=http
- #     - CERT_NAME=genny.life
-##      - IMPORTEXPORT=EXPORT
- #     - KEYCLOAK_USER=admin
- #     - KEYCLOAK_PASSWORD=Outcome2016KeycloakAdmin
- #     - MYSQL_URL=mysql
- #     - MYSQL_PORT=3306
- #     - MYSQL_DB=keycloakdb
- #     - MYSQL_USERNAME=keycloak
- #     - MYSQL_PASSWORD=Outcome2016KeycloakAdmin
- #   volumes:
-#      - /opt/jboss/backup:/opt/jboss/backup
- #      - ./realm:/tmp/realm
- #     # - ./data:/opt/jboss/keycloak/standalone/data
- #     #- ./realm:/tmp/realm
- #      - ../keycloak-themes/themes:/opt/jboss/keycloak/themes
- #   networks:
- #     - mainproxy
- #   ports:
- #     - 8180:8080
- #   command: -b 0.0.0.0
- #   healthcheck:
- #     test: ["CMD", "curl", "-f", "http://localhost:8080/auth"]
- #     interval: 10s
- #     timeout: 10s
- #     retries: 30
 
   bridge:
     image: gennyproject/bridge:latest
@@ -248,6 +193,7 @@ services:
   #   - ZIP_MODE=TRUE
       - MODE_GZIP=TRUE
       - ZIP_MIN_THRESHOLD_BYTES=8000000
+      - MEDIA_PROXY_URL=http://internmatch.genny.life/public
   #    - DDT_URL=http://bridge:8089
   #    - DEV_MODE=TRUE
   #    - GENNYDEV=TRUE
@@ -318,6 +264,7 @@ services:
       - XMX=3048m
       - XMS=3048m
       - JAVA_OPTS=-Xms3048m -Xmx3048m -Djava.net.preferIPv4Stack=true -Dsun.rmi.dgc.client.gcInterval=1800000 -Dsun.rmi.dgc.server.gcInterval=1800000  -server 
+      - PDF_GEN_SERVICE_API_URL=http://internmatch.genny.life/camelot
     ports:
       - "8380:8080"
       - "8987:8787"
@@ -330,33 +277,6 @@ services:
     restart: unless-stopped
     networks:
       - mainproxy
-
-
-
-#social:
- #  image: gennyproject/social:latest
-  #  container_name: social
-  #  volumes:
-  #    - ./realm:/opt/realm
-  #  env_file:
-  #    - ${ENV_FILE}
-# #  environment:
- # #    - VIRTUAL_HOST=social.genny.life
-  #    - VIRTUAL_PORT=8083
-  #    - VIRTUAL_PROTO=http
-  #    - CERT_NAME=genny.life
-  #  #  - DDT_URL=http://bridge:8089
-  #  networks:
-  #    - mainproxy
-  #  links:
-  #    - qwanda-service:qwanda-service
-  #    - keycloak
-  #  depends_on:
-  #    - qwanda-service
-  #  ports:
-  #    - 8083:8083
-  #    - 8788:8787
-  #  command: java -Djava.net.preferIPv6Addresses=false -Djava.net.preferIPv4Stack=true  -Xdebug -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n -Djava.net.preferIPv4Addresses=true -Dvertx.hazelcast.config=/cluster.xml -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /service.jar
 
 
   messages:
