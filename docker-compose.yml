@@ -45,7 +45,7 @@ services:
 
 
   alyson-v7:
-    image: gennyproject/alyson-v7:latest
+    image: gennyproject/alyson:latest
     container_name: alyson-v7
     depends_on:
       - bridge
@@ -92,7 +92,7 @@ services:
     command: java -jar /service.jar
 
   mysql:
-    image: mysql:8.0.20 
+    image:  gennyproject/mysql:8x 
     container_name: mysql
     environment:
       - MYSQL_URL=mysql
@@ -308,8 +308,11 @@ services:
   notes:
     image: gennyproject/notes:latest
     container_name: notes
+    environment:
+      - NOTES_URL=http://alyson7.genny.life:8095
+      - MYSQL_PASSWORD=password 
     ports:
-      - "8195:8195"
+      - "8195:8095"
     networks:
       - mainproxy
     restart: always
