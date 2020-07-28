@@ -84,7 +84,7 @@ services:
     env_file:
       - ${ENV_FILE}
     environment:
-      - KEYCLOAKURL=https://keycloak.gada.io/auth/realms
+      - KEYCLOAKURL=https://keycloak-hub.gada.io/auth/realms
     networks:
       - mainproxy
     ports:
