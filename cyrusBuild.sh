@@ -1,6 +1,17 @@
 #!/bin/bash
 clean=$1
 
+sudo rm -Rf ../qwanda/target/*
+sudo rm -Rf ../qwanda-utils/target/*
+sudo rm -Rf ../bootxport/target/*
+sudo rm -Rf ../genny-verticle-rules/target/*
+sudo rm -Rf ../genny-rules/target/*
+sudo rm -Rf ../qwanda-services/target/*
+sudo rm -Rf ../wildfly-qwanda-service/qwanda-service.war/target/*
+sudo rm -Rf ../wildfly-qwanda-service/qwanda-service.ear/target/*
+sudo rm -Rf ../wildfly-ruleservice/ruleservice.war/target/*
+sudo rm -Rf ../wildfly-ruleservice/ruleservice.ear/target/*
+
 cd ../qwanda
 mvn $clean install -DskipTests=true
 
