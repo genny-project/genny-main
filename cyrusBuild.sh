@@ -7,10 +7,10 @@ sudo rm -Rf ../bootxport/target/*
 sudo rm -Rf ../genny-verticle-rules/target/*
 sudo rm -Rf ../genny-rules/target/*
 sudo rm -Rf ../qwanda-services/target/*
-sudo rm -Rf ../wildfly-qwanda-service/qwanda-service.war/target/*
-sudo rm -Rf ../wildfly-qwanda-service/qwanda-service.ear/target/*
-sudo rm -Rf ../wildfly-ruleservice/ruleservice.war/target/*
-sudo rm -Rf ../wildfly-ruleservice/ruleservice.ear/target/*
+sudo rm -Rf ../wildfly-qwanda-service/qwanda-service-war/target/*
+sudo rm -Rf ../wildfly-qwanda-service/qwanda-service-ear/target/*
+sudo rm -Rf ../wildfly-ruleservice/rulesservice-war/target/*
+sudo rm -Rf ../wildfly-ruleservice/rulesservice-ear/target/*
 
 cd ../qwanda
 mvn $clean install -DskipTests=true
