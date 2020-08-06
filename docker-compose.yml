@@ -84,7 +84,7 @@ services:
     env_file:
       - ${ENV_FILE}
     environment:
-      - KEYCLOAKURL=https://keycloak-hub.gada.io/auth/realms
+      - KEYCLOAKURL=https://keycloak.gada.io/auth/realms
     networks:
       - mainproxy
     ports:
@@ -245,15 +245,15 @@ services:
       - FORCE_EVENTBUS_USE_API=FALSE
       - FORCE_CACHE_USE_API=FALSE
       - CACHE_SERVER_NAME=qwanda-service
-      - FRAMES_ON_DEMAND=TRUE
+      - FRAMES_ON_DEMAND=FALSE
       - HAZELCAST_LOGLEVEL=ERROR
       - HIDE_RULE_STATES=TRUE
       - KEYCLOAK_LOGLEVEL=ERROR
-      - PERSIST_RULES=FALSE
+      - PERSIST_RULES=TRUE
       - LOG_WORKFLOWS=FALSE
       - RULES_DIR=/rules
       - SEARCH_ALT=TRUE
-      - USE_CONCURRENCY_MSGS=TRUE
+      - USE_CONCURRENCY_MSGS=FALSE
       - USE_EVENT_QUEUE=TRUE
       - USE_JMS=TRUE
       - USE_EXECUTOR=TRUE
@@ -306,7 +306,7 @@ services:
     command: java   -Dvertx.metrics.options.enabled=true -Dvertx.options.blockedThreadCheckInterval=2147483647  -Xdebug -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n -Djava.net.preferIPv6Addresses=false -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true -Dvertx.hazelcast.config=/cluster.xml -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /service.jar
 
   notes:
-    image: gennyproject/notes:latest
+    image: gennyproject/notes:7.0.0
     container_name: notes
     environment:
       - NOTES_URL=http://alyson7.genny.life:8095
