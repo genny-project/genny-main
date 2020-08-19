@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ver=7.0.0
+ver=7.1.0
 folders=("qwanda" "qwanda-utils" "genny-verticle-rules" "bootxport" "qwanda-services" 
         "genny-rules" "wildfly-rulesservice" "wildfly-qwanda-service" "checkrules" "bridge" 
         "media-proxy" "messages" "prj_genny" "prj_internmatch")
