@@ -1,7 +1,7 @@
 #!/bin/bash
 NEW_VERSION=${1}
 OLD_VERSION=${2}
-GITHUB_TOKEN=0b8a44ff92325ec6eae00fde8eb315432eb70034
+GITHUB_TOKEN=${3}
 AUTH=genny-project
 
 # Concatenating
