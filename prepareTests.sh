@@ -50,6 +50,6 @@ fi
 
 cat ${boilerPlate} >> ${final_pathDir}
 
-cd ${final_pathDir}
+cd ~/projects/genny/prj_internmatch/tests/interaction/tests/00_${pathDir}/00_${pathDir}
 
-ls
+sed 's/TEST/tes/' ${pathDir}.js;
