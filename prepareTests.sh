@@ -49,3 +49,7 @@ else
 fi
 
 cat ${boilerPlate} >> ${final_pathDir}
+
+cd ${final_pathDir}
+
+ls
