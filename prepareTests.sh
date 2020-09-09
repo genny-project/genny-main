@@ -23,6 +23,8 @@ else
     ./build-docker.sh;
 fi
 
+echo "### Preparing Testing Scripts ###";
+
 if [ -d ~/projects/genny/prj_internmatch/ ]
 then
     cd ~/projects/genny/prj_internmatch;
