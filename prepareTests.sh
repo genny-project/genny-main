@@ -15,12 +15,12 @@ if [ -d ~/projects/genny/gennyteer/ ]
 then
     cd ~/projects/genny/gennyteer;
     git pull;
-    # ./build-docker.sh;
+    ./build-docker.sh;
 else
     cd ~/projects/genny;
     git clone https://github.com/genny-project/gennyteer.git;
     cd ~/projects/genny/gennyteer;
-    # ./build-docker.sh;
+    ./build-docker.sh;
 fi
 
 if [ -d ~/projects/genny/prj_internmatch/ ]
@@ -52,4 +52,4 @@ cat ${boilerPlate} >> ${final_pathDir}
 
 cd ~/projects/genny/prj_internmatch/tests/interaction/tests/00_${pathDir}/00_${pathDir}
 
-sed 's/TEST/tes/' ${pathDir}.js;
+# sed "s/\(TEST\).*/\1${pathDir}/" ${pathDir}.js;
