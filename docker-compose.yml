@@ -28,15 +28,6 @@ services:
 #      timeout: 10s
 #      retries: 3
 
-#  in-app-call-server:
-#    image: gennyproject/in-app-call-server
-#    container_name: in-app-call-server
-#    ports:
-#      - "2255:2255"
-#    env_file:
-#      - ${ENV_FILE}
-
- 
   imageproxy:
     image: willnorris/imageproxy:v0.10.0
     ports:
@@ -81,7 +72,7 @@ services:
     command: server /data
 
   media-proxy:
-    image: gennyproject/media-proxy:v7.0.0
+    image: gennyproject/media-proxy:latest
     container_name: media-proxy
     env_file:
       - ${ENV_FILE}
@@ -195,7 +186,7 @@ services:
   #   - ZIP_MODE=TRUE
       - MODE_GZIP=TRUE
       - ZIP_MIN_THRESHOLD_BYTES=8000000
-      - MEDIA_PROXY_URL=http://internmatch.genny.life/public
+      - MEDIA_PROXY_URL=https://internmatch.genny.life/public
   #    - DDT_URL=http://bridge:8089
   #    - DEV_MODE=TRUE
   #    - GENNYDEV=TRUE
@@ -266,7 +257,7 @@ services:
       - XMX=3048m
       - XMS=3048m
       - JAVA_OPTS=-Xms3048m -Xmx3048m -Djava.net.preferIPv4Stack=true -Dsun.rmi.dgc.client.gcInterval=1800000 -Dsun.rmi.dgc.server.gcInterval=1800000  -server 
-      - PDF_GEN_SERVICE_API_URL=http://internmatch.genny.life/camelot
+      - PDF_GEN_SERVICE_API_URL=http://internmatch.genny.life:7331
     ports:
       - "8380:8080"
       - "8987:8787"
@@ -308,17 +299,27 @@ services:
     command: java   -Dvertx.metrics.options.enabled=true -Dvertx.options.blockedThreadCheckInterval=2147483647  -Xdebug -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n -Djava.net.preferIPv6Addresses=false -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true -Dvertx.hazelcast.config=/cluster.xml -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /service.jar
 
   notes:
-    image: gennyproject/notes:7.0.0
+    image: gennyproject/notes:7.1.0
     container_name: notes
+    links:
+      - mysql:mysql
+    depends_on:
+      bridge:
+        condition: service_healthy
+      mysql:
+        condition: service_healthy
     environment:
+      - MYSQL_URL=mysql
+      - MYSQL_DB=gennydb
+      - MYSQL_USER=genny
+      - MYSQL_PASSWORD=password
+      - BRIDGE_URL=bridge.genny.life
       - NOTES_URL=http://alyson7.genny.life:8095
-      - MYSQL_PASSWORD=password 
     ports:
       - "8195:8095"
     networks:
       - mainproxy
-    restart: always
-
+        #restart: always
 
   camelot-pdfgenerator:
     image: gennyproject/camelot:latest
