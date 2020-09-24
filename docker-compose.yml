@@ -195,7 +195,7 @@ services:
   #   - ZIP_MODE=TRUE
       - MODE_GZIP=TRUE
       - ZIP_MIN_THRESHOLD_BYTES=8000000
-      - MEDIA_PROXY_URL=http://internmatch.genny.life/public
+      - MEDIA_PROXY_URL=https://internmatch.genny.life/public
   #    - DDT_URL=http://bridge:8089
   #    - DEV_MODE=TRUE
   #    - GENNYDEV=TRUE
@@ -266,7 +266,7 @@ services:
       - XMX=3048m
       - XMS=3048m
       - JAVA_OPTS=-Xms3048m -Xmx3048m -Djava.net.preferIPv4Stack=true -Dsun.rmi.dgc.client.gcInterval=1800000 -Dsun.rmi.dgc.server.gcInterval=1800000  -server 
-      - PDF_GEN_SERVICE_API_URL=http://internmatch.genny.life/camelot
+      - PDF_GEN_SERVICE_API_URL=https://internmatch.genny.life/camelot
     ports:
       - "8380:8080"
       - "8987:8787"
