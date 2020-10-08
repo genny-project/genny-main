@@ -71,6 +71,21 @@ services:
       - 9000:9000
     command: server /data
 
+  abn-lite:
+    image: gennyproject/abn-lite:latest
+    container_name: abn-lite
+    depends_on:
+      qwanda-service:
+        condition: service_healthy
+    volumes:
+      - abn_tmp:/tmp/
+    environment:
+      - CORS_LIST=*
+    networks:
+      - mainproxy
+    ports:
+      - 8483:8080
+
   media-proxy:
     image: gennyproject/media-proxy:latest
     container_name: media-proxy
@@ -123,6 +138,7 @@ services:
     container_name: qwanda-service
     volumes:
       - ./google_credentials:/root/.genny/sheets.googleapis.com-java-quickstart
+      - abn_tmp:/tmp/
     env_file:
       - ${ENV_FILE}
     environment:
@@ -331,6 +347,7 @@ services:
 
 
 volumes:
+  abn_tmp:
   mysql_data:
   minio_conf:
   minio_data:
