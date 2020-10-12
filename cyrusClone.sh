@@ -1,31 +1,25 @@
 #!/bin/bash
 
-ver=v7.1.0
-
+ver=v7.2.0
 
 git pull
 docker pull gennyproject/dummy:latest
 docker pull gennyproject/rulesservice:dummy
-docker pull gennyproject/wildfly-rulesservice:dummy
 docker pull gennyproject/wildfly:${ver}
 
 cd ..
-git clone -b ${ver} https://github.com/genny-project/qwanda
-git clone -b ${ver} https://github.com/genny-project/qwanda-utils
-git clone -b ${ver} https://github.com/genny-project/genny-verticle-rules
-git clone -b ${ver} https://github.com/genny-project/genny-rules 
-git clone -b ${ver} https://github.com/genny-project/qwanda-services 
-git clone -b ${ver} https://github.com/genny-project/bootxport 
-git clone -b ${ver} https://github.com/genny-project/wildfly-rulesservice 
-git clone -b ${ver} https://github.com/genny-project/wildfly-qwanda-service 
-#git clone -b ${ver} https://github.com/genny-project/prj_genny 
-#git clone -b ${ver} https://github.com/genny-project/checkrules 
-#git clone -b ${ver} https://github.com/genny-project/rulesservice
-#git clone -b ${ver} https://github.com/genny-project/bridge
-#git clone -b ${ver} https://github.com/genny-project/media-proxy
-#git clone -b ${ver} https://github.com/genny-project/messages
-#git clone -b ${ver} https://github.com/genny-project/alyson-v7
-#git clone -b ${ver} https://github.com/genny-project/gennyteer
+
+for value in qwanda qwanda-utils bootxport genny-verticle-rules genny-rules qwanda-services wildfly-rulesservice wildfly-qwanda-service checkrules bridge media-proxy messages alyson gennyteer prj_genny
+do
+    echo $value
+    git clone -b ${ver} https://github.com/genny-project/$value
+done
+
+for value in prj_internmatch prj_stt
+do
+    echo $value
+    git clone -b ${ver} https://github.com/OutcomeLife/$value
+done
 
 cd genny-main
 
