@@ -1,48 +1,26 @@
 #!/bin/bash
 clean=$1
+for value in qwanda qwanda-utils bootxport genny-verticle-rules genny-rules qwanda-services    
+do
+    echo $value
+    sudo rm -Rf  ../$value/target/*
+    mvn $clean install -DskipTests=true
+    cd genny-main
+done
 
-sudo rm -Rf ../qwanda/target/*
-sudo rm -Rf ../qwanda-utils/target/*
-sudo rm -Rf ../bootxport/target/*
-sudo rm -Rf ../genny-verticle-rules/target/*
-sudo rm -Rf ../genny-rules/target/*
-sudo rm -Rf ../qwanda-services/target/*
-sudo rm -Rf ../wildfly-qwanda-service/qwanda-service-war/target/*
-sudo rm -Rf ../wildfly-qwanda-service/qwanda-service-ear/target/*
-sudo rm -Rf ../wildfly-ruleservice/rulesservice-war/target/*
-sudo rm -Rf ../wildfly-ruleservice/rulesservice-ear/target/*
+for value in wildfly-qwanda-service/qwanda-service-war wildfly-qwanda-service/qwanda-service-ear wildfly-ruleservice/rulesservice-war wildfly-ruleservice/rulesservice-ear 
+do
+    echo $value
+    sudo rm -Rf  ../$value/target/*
+    cd genny-main
+done
 
-cd ../qwanda
-mvn $clean install -DskipTests=true
+for value in wildfly-qwanda-service wildfly-ruleservice bridge checkrules media-proxy messages 
+do
+    echo $value
+    sudo rm -Rf  ../$value/target/*
+    mvn $clean package -DskipTests=true
+    ./build-docker.sh
+    cd genny-main
+done
 
-cd ../qwanda-utils
-mvn $clean install -DskipTests=true
-
-cd ../bootxport
-mvn $clean install -DskipTests=true
-
-cd ../genny-verticle-rules
-mvn $clean install -DskipTests=true
-
-cd ../genny-rules
-mvn $clean install -DskipTests=true
-
-cd ../qwanda-services
-mvn $clean install -DskipTests=true
-
-cd ../wildfly-qwanda-service
-mvn $clean package -DskipTests=true
-./build-docker.sh
-
-cd ../wildfly-rulesservice
-mvn $clean package -DskipTests=true
-./build-docker.sh
-
-cd ../bridge
-mvn $clean package -DskipTests=true
-./build-docker.sh
-
-#cd ../media-proxy
-#mvn package -DskipTests=true
-#./build-docker.sh
-cd ../genny-main
