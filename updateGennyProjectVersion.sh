@@ -1,6 +1,13 @@
 #!/bin/bash
-NEW_VERSION=${1}
-OLD_VERSION=${2}
+if [ $# -ne 3 ]
+then
+   echo "usage: updateGennyProjectVersion  <OLD_VERSION> <NEW_VERSION> <GITHUB_TOKEN>"
+   echo "e.g. ./updateGennyProjectVersion.sh v7.1.0 v7.2.0 6576sd5f76d5f76576 "
+   exit;
+fi
+
+OLD_VERSION=${1}
+NEW_VERSION=${2}
 GITHUB_TOKEN=${3}
 AUTH=genny-project
 
@@ -27,7 +34,7 @@ else
 fi
 
 repos=("genny-main" "qwanda" "qwanda-utils" "genny-verticle-rules" "bootxport" "qwanda-services"
-"genny-rules" "wildfly-rulesservice" "wildfly-qwanda-service" "bridge"
+"genny-rules" "wildfly-rulesservice" "wildfly-qwanda-service" "checkrules"  "bridge"
 "media-proxy" "messages" "prj_genny" "alyson" "gennyteer")
 
 # check jq
@@ -73,153 +80,29 @@ fi
 
 cd ~/projects/genny/genny-main/
 
-cd ../qwanda
-git stash;git pull;git checkout ${NEW_BRANCH}
-mvn versions:set -DnewVersion=${NEW_VERSION}
-mvn versions:commit
-cd ../qwanda-utils
-git stash;git pull;git checkout ${NEW_BRANCH}
-mvn versions:set -DnewVersion=${NEW_VERSION}
-mvn versions:commit
-cd ../genny-verticle-rules
-git stash;git pull;git checkout ${NEW_BRANCH}
-mvn versions:set -DnewVersion=${NEW_VERSION}
-mvn versions:commit
-cd ../genny-rules
-git stash;git pull;git checkout ${NEW_BRANCH}
-mvn versions:set -DnewVersion=${NEW_VERSION}
-mvn versions:commit
-cd ../bootxport
-git stash;git pull;git checkout ${NEW_BRANCH}
-mvn versions:set -DnewVersion=${NEW_VERSION}
-mvn versions:commit
-cd ../qwanda-services
-git stash;git pull;git checkout ${NEW_BRANCH}
-mvn versions:set -DnewVersion=${NEW_VERSION}
-mvn versions:commit
-cd ../wildfly-qwanda-service
-git stash;git pull;git checkout ${NEW_BRANCH}
-mvn versions:set -DnewVersion=${NEW_VERSION}
-mvn versions:commit
-cd ../wildfly-rulesservice
-git stash;git pull;git checkout ${NEW_BRANCH}
-mvn versions:set -DnewVersion=${NEW_VERSION}
-mvn versions:commit
-cd ../bridge
-git stash;git pull;git checkout ${NEW_BRANCH}
-mvn versions:set -DnewVersion=${NEW_VERSION}
-mvn versions:commit
-cd ../alyson
-git stash;git pull;git checkout ${NEW_BRANCH}
-cd ../prj_genny
-git stash;git pull;git checkout ${NEW_BRANCH}
-mvn versions:set -DnewVersion=${NEW_VERSION}
-mvn versions:commit
-cd ../prj_internmatch
-git stash;git pull;git checkout ${NEW_BRANCH}
-mvn versions:set -DnewVersion=${NEW_VERSION}
-mvn versions:commit
-cd ../messages
-git stash;git pull;git checkout ${NEW_BRANCH}
-mvn versions:set -DnewVersion=${NEW_VERSION}
-mvn versions:commit
-cd ../gennyteer
-git stash;git pull;git checkout ${NEW_BRANCH}
-cd ../genny-main
-git stash;git pull;git checkout ${NEW_BRANCH}
+for REPO in "${repos[@]}"; do
+   echo $REPO
+   cd ../$REPO
+   git stash;git pull;git checkout ${NEW_BRANCH}
+   mvn versions:set -DnewVersion=${NEW_VERSION}
+   mvn versions:commit
+   git add .; git commit -m "Upgrade to ${NEW_BRANCH}"; git push --set-upstream origin ${NEW_BRANCH}
 
-for i in ` find .. -mindepth 1 -maxdepth 1 -type d | grep prj  | awk -F "/" '{ print $2 }'`;do
-   cd ../$i
-   git stash;git pull
-   cd ../genny-main
-   echo $i
 done
 
-cd ../qwanda
-mvn clean install -DskipTests=true
 
-cd ../qwanda-utils
-mvn clean install -DskipTests=true
-
-cd ../bootxport
-mvn clean install -DskipTests=true
-
-cd ../genny-verticle-rules
-mvn clean install -DskipTests=true
-
-cd ../genny-rules
-mvn clean install -DskipTests=true
-
-cd ../qwanda-services
-mvn clean install -DskipTests=true
-
-cd ../wildfly-qwanda-service
-mvn clean package -DskipTests=true
-./build-docker.sh
-
-cd ../wildfly-rulesservice
-mvn clean package -DskipTests=true
-./build-docker.sh
-
-cd ../bridge
-mvn clean package -DskipTests=true
-./build-docker.sh
-
-cd ../prj_genny
-./build.sh
-./build-docker.sh
-
-cd ../prj_internmatch
-./build-docker.sh
-
-cd ../alyson/scripts
-./build-docker.sh
-
-cd ../../gennyteer
-./build-docker.sh
+for i in ` find .. -mindepth 1 -maxdepth 1 -type d | grep prj  | awk -F "/" '{ print $2 }'`;do
+   echo $i
+   cd ../$i
+   git stash;git pull;git checkout ${NEW_BRANCH}
+   mvn versions:set -DnewVersion=${NEW_VERSION}
+   mvn versions:commit
+   git add .; git commit -m "Upgrade to ${NEW_BRANCH}"; git push --set-upstream origin ${NEW_BRANCH}
+done
 
 cd ../genny-main
 
 echo "### Pushing Maven Update To Github ###"
-
-cd ../qwanda
-git add .; git commit -m "Upgrade to ${NEW_BRANCH}"; git push --set-upstream origin ${NEW_BRANCH}
-
-cd ../qwanda-utils
-git add .; git commit -m "Upgrade to ${NEW_BRANCH}"; git push --set-upstream origin ${NEW_BRANCH}
-
-cd ../bootxport
-git add .; git commit -m "Upgrade to ${NEW_BRANCH}"; git push --set-upstream origin ${NEW_BRANCH}
-
-cd ../genny-verticle-rules
-git add .; git commit -m "Upgrade to ${NEW_BRANCH}"; git push --set-upstream origin ${NEW_BRANCH}
-
-cd ../genny-rules
-git add .; git commit -m "Upgrade to ${NEW_BRANCH}"; git push --set-upstream origin ${NEW_BRANCH}
-
-cd ../qwanda-services
-git add .; git commit -m "Upgrade to ${NEW_BRANCH}"; git push --set-upstream origin ${NEW_BRANCH}
-
-cd ../wildfly-qwanda-service
-git add .; git commit -m "Upgrade to ${NEW_BRANCH}"; git push --set-upstream origin ${NEW_BRANCH}
-
-cd ../wildfly-rulesservice
-git add .; git commit -m "Upgrade to ${NEW_BRANCH}"; git push --set-upstream origin ${NEW_BRANCH}
-
-cd ../bridge
-git add .; git commit -m "Upgrade to ${NEW_BRANCH}"; git push --set-upstream origin ${NEW_BRANCH}
-
-cd ../prj_genny
-git add .; git commit -m "Upgrade to ${NEW_BRANCH}"; git push --set-upstream origin ${NEW_BRANCH}
-
-cd ../prj_internmatch
-git add .; git commit -m "Upgrade to ${NEW_BRANCH}"; git push --set-upstream origin ${NEW_BRANCH}
-
-cd ../alyson/scripts
-git add .; git commit -m "Upgrade to ${NEW_BRANCH}"; git push --set-upstream origin ${NEW_BRANCH}
-
-cd ../../gennyteer
-git add .; git commit -m "Upgrade to ${NEW_BRANCH}"; git push --set-upstream origin ${NEW_BRANCH}
 
 cd ../genny-main
 git add .; git commit -m "Upgrade to ${NEW_BRANCH}"; git push --set-upstream origin ${NEW_BRANCH}
