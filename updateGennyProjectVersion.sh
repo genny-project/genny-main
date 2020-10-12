@@ -12,8 +12,8 @@ GITHUB_TOKEN=${3}
 AUTH=genny-project
 
 # Concatenating
-NEW_BRANCH="v${NEW_VERSION}"
-PREVIOUS_BRANCH="v${OLD_VERSION}"
+NEW_BRANCH="${NEW_VERSION}"
+PREVIOUS_BRANCH="${OLD_VERSION}"
 
 echo "### GitHub Update ###"
 
