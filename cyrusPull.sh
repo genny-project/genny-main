@@ -1,26 +1,13 @@
 #!/bin/bash
-cd ../qwanda
-git stash;git pull
-cd ../qwanda-utils
-git stash;git pull
-cd ../genny-verticle-rules
-git stash;git pull
-cd ../genny-rules
-git stash;git pull
-cd ../bootxport
-git stash;git pull
-cd ../qwanda-services
-git stash;git pull
-cd ../wildfly-qwanda-service
-git stash;git pull
-cd ../wildfly-rulesservice
-git stash;git pull
-cd ../bridge
-git stash;git pull
-#cd ../media-proxy
-#mvn package -DskipTests=true
-#./build-docker.sh
-cd ../genny-main
+
+for value in qwanda qwanda-utils bootxport genny-verticle-rules genny-rules qwanda-services wildfly-rulesservice wildfly-qwanda-service checkrules bridge media-proxy messages alyson gennyteer 
+do
+    echo $value
+    cd ../$value 
+    git stash
+    git pull
+    cd genny-main
+done
 
 for i in ` find .. -mindepth 1 -maxdepth 1 -type d | grep prj  | awk -F "/" '{ print $2 }'`;do
    cd ../$i
