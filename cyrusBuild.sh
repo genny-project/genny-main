@@ -14,7 +14,7 @@ do
     echo $value
     cd ../$value
     sudo rm -Rf  ../$value/target/*
-    cd ../genny-main
+    cd ../../genny-main
 done
 
 for value in wildfly-qwanda-service wildfly-ruleservice bridge checkrules media-proxy messages 
