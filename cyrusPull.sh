@@ -1,6 +1,6 @@
 #!/bin/bash
 
-for value in qwanda qwanda-utils bootxport genny-verticle-rules genny-rules qwanda-services wildfly-rulesservice wildfly-qwanda-service checkrules bridge media-proxy messages alyson gennyteer 
+for value in qwanda qwanda-utils bootxport genny-verticle-rules genny-rules qwanda-services wildfly-rulesservice wildfly-qwanda-service checkrules bridge media-proxy messages notes shleemy  alyson gennyteer 
 do
     echo $value
     cd ../${value} 
