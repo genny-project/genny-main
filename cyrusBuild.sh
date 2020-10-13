@@ -27,3 +27,14 @@ do
     cd ../genny-main
 done
 
+for value in notes shleemy 
+do
+    jdk 11
+    echo $value
+    sudo rm -Rf  ../$value/target/*
+    cd ../$value
+    mvn $clean package -DskipTests=true
+    ./build-docker.sh
+    cd ../genny-main
+    jdk 1.8
+done
