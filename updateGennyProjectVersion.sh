@@ -34,7 +34,7 @@ else
 fi
 
 repos=("genny-main" "qwanda" "qwanda-utils" "genny-verticle-rules" "bootxport" "qwanda-services"
-"genny-rules" "wildfly-rulesservice" "wildfly-qwanda-service" "checkrules"  "bridge"
+"genny-rules" "wildfly-rulesservice" "wildfly-qwanda-service" "checkrules"  "bridge" "notes" "shleemy"
 "media-proxy" "messages" "prj_genny" )
 
 repos2=("alyson","gennyteer")
