@@ -1,5 +1,5 @@
 VERSION=$1
-if [[ -z $VERSION ]];then
+if [ -z $VERSION ];then
     echo "you need pass branch name as argument, e.g checkout.sh v7.1.0"
     exit 1
 fi
