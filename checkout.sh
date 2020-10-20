@@ -4,7 +4,8 @@ if [[ -z $VERSION ]];then
     exit 1
 fi
 
-for i in ` find .. -mindepth 1 -maxdepth 1 -type d | awk -F "/" '{ print $2 }'`;do
+for value in alyson qwanda qwanda-utils bootxport genny-verticle-rules genny-rules qwanda-services wildfly-qwanda-service wildfly-ruleservice bridge checkrules media-proxy messages notes abn-lite  
+do
     cd ../$i
     git pull ; git checkout $VERSION
     cd ../genny-main
