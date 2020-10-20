@@ -4,10 +4,10 @@ if [ -z $VERSION ];then
     exit 1
 fi
 
-for value in alyson qwanda qwanda-utils bootxport genny-verticle-rules genny-rules qwanda-services wildfly-qwanda-service wildfly-ruleservice bridge checkrules media-proxy messages notes abn-lite  
+for i in alyson qwanda qwanda-utils bootxport genny-verticle-rules genny-rules qwanda-services wildfly-qwanda-service wildfly-ruleservice bridge checkrules media-proxy messages notes abn-lite  
 do
+    echo $i
     cd ../$i
     git pull ; git checkout $VERSION
     cd ../genny-main
-    echo $i
 done
