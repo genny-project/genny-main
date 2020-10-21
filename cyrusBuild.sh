@@ -16,7 +16,7 @@ done
 
 
 #clean up package only
-for value in wildfly-qwanda-service/qwanda-service-war wildfly-qwanda-service/qwanda-service-ear wildfly-ruleservice/rulesservice-war wildfly-ruleservice/rulesservice-ear 
+for value in wildfly-qwanda-service/qwanda-service-war wildfly-qwanda-service/qwanda-service-ear wildfly-rulesservice/rulesservice-war wildfly-rulesservice/rulesservice-ear 
 do
     echo $value
     cd $parentdir/$value
@@ -24,7 +24,7 @@ do
 done
 
 # build package build docker image
-for value in wildfly-qwanda-service wildfly-ruleservice bridge checkrules media-proxy messages 
+for value in wildfly-qwanda-service wildfly-rulesservice bridge checkrules media-proxy messages 
 do
     echo $value
     sudo rm -Rf  $parentdir/$value/target/*
