@@ -36,15 +36,15 @@ done
 
 # build with jdk 11
 # switch to jdk 11
-jdk 11
-for value in notes shleemy 
-do
-    echo $value
-    sudo rm -Rf  $parentdir/$value/target/*
-    cd $parentdir/$value
-    mvn $clean package -DskipTests=true
-    ./build-docker.sh
-done
+#jdk 11
+#for value in notes shleemy 
+#do
+#    echo $value
+#    sudo rm -Rf  $parentdir/$value/target/*
+#    cd $parentdir/$value
+#    mvn $clean package -DskipTests=true
+#    ./build-docker.sh
+#done
 
 # switch to jdk 1.8
 jdk 1.8
