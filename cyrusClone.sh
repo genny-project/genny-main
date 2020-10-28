@@ -18,8 +18,7 @@ done
 for value in prj_internmatch prj_stt
 do
     echo $value
-    git clone -b ${ver} https://github.com/OutcomeLife/$value
+    git clone -b ${ver} git@github.com:OutcomeLife/OutcomeLife/$value
 done
 
 cd genny-main
-
