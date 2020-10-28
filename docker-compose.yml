@@ -338,7 +338,7 @@ services:
         #restart: always
 
   shleemy:
-    image: gennyproject/dummy:latest
+    image: gennyproject/shleemy:latest
     container_name: shleemy 
     links:
       - mysql:mysql
@@ -353,9 +353,8 @@ services:
       - MYSQL_USER=genny
       - MYSQL_PASSWORD=password
       - BRIDGE_URL=bridge.genny.life
-      - SHLEEMY_URL=http://alyson7.genny.life:8199
     ports:
-      - "8197:8080"
+      - "8199:8095"
     networks:
       - mainproxy
         #restart: always
