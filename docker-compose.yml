@@ -352,6 +352,7 @@ services:
       - MYSQL_DB=gennydb
       - MYSQL_USER=genny
       - MYSQL_PASSWORD=password
+      - FULL_MYSQL_URL=mysql:3306/gennydb?zeroDateTimeBehavior=convertToNull
       - BRIDGE_URL=bridge.genny.life
     ports:
       - "8299:8095"
