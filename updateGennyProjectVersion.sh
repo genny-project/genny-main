@@ -49,31 +49,31 @@ else
     exit 1
 fi
 
-for REPO in "${repos[@]}"; do
-    # Create new branch
-    SHA=$(curl -H "Authorization: token $GITHUB_TOKEN" https://api.github.com/repos/${AUTH}/${REPO}/git/refs/heads/${PREVIOUS_BRANCH} | jq -r '.object.sha')
-    curl -X POST -H "Authorization: token $GITHUB_TOKEN"  -d  "{\"ref\": \"refs/heads/${NEW_BRANCH}\",\"sha\": \"$SHA\"}"  https://api.github.com/repos/${AUTH}/${REPO}/git/refs
+# for REPO in "${repos[@]}"; do
+#     # Create new branch
+#     SHA=$(curl -H "Authorization: token $GITHUB_TOKEN" https://api.github.com/repos/${AUTH}/${REPO}/git/refs/heads/${PREVIOUS_BRANCH} | jq -r '.object.sha')
+#     curl -X POST -H "Authorization: token $GITHUB_TOKEN"  -d  "{\"ref\": \"refs/heads/${NEW_BRANCH}\",\"sha\": \"$SHA\"}"  https://api.github.com/repos/${AUTH}/${REPO}/git/refs
 
-    # set default branch
-    curl -X PATCH -H "Authorization: token $GITHUB_TOKEN"  -d  "{\"name\": \"${REPO}\",\"default_branch\": \"$NEW_BRANCH\"}"  https://api.github.com/repos/${AUTH}/${REPO}
+#     # set default branch
+#     curl -X PATCH -H "Authorization: token $GITHUB_TOKEN"  -d  "{\"name\": \"${REPO}\",\"default_branch\": \"$NEW_BRANCH\"}"  https://api.github.com/repos/${AUTH}/${REPO}
 
-    # set branch protection rule
-    curl  -X PUT -H "Authorization: token $GITHUB_TOKEN"  -H "Accept: application/vnd.github.luke-cage-preview+json"  https://api.github.com/repos/${AUTH}/${REPO}/branches/${NEW_BRANCH}/protection -d '{"required_status_checks":{"strict":true, "contexts":["continuous-integration/jenkins"]},"enforce_admins":false,"required_pull_request_reviews":{"required_approving_review_count":1}, "restrictions": null}'
+#     # set branch protection rule
+#     curl  -X PUT -H "Authorization: token $GITHUB_TOKEN"  -H "Accept: application/vnd.github.luke-cage-preview+json"  https://api.github.com/repos/${AUTH}/${REPO}/branches/${NEW_BRANCH}/protection -d '{"required_status_checks":{"strict":true, "contexts":["continuous-integration/jenkins"]},"enforce_admins":false,"required_pull_request_reviews":{"required_approving_review_count":1}, "restrictions": null}'
 
-done
+# done
 
-for REPO in "${repos2[@]}"; do
-    # Create new branch
-    SHA=$(curl -H "Authorization: token $GITHUB_TOKEN" https://api.github.com/repos/${AUTH}/${REPO}/git/refs/heads/${PREVIOUS_BRANCH} | jq -r '.object.sha')
-    curl -X POST -H "Authorization: token $GITHUB_TOKEN"  -d  "{\"ref\": \"refs/heads/${NEW_BRANCH}\",\"sha\": \"$SHA\"}"  https://api.github.com/repos/${AUTH}/${REPO}/git/refs
+# for REPO in "${repos2[@]}"; do
+#     # Create new branch
+#     SHA=$(curl -H "Authorization: token $GITHUB_TOKEN" https://api.github.com/repos/${AUTH}/${REPO}/git/refs/heads/${PREVIOUS_BRANCH} | jq -r '.object.sha')
+#     curl -X POST -H "Authorization: token $GITHUB_TOKEN"  -d  "{\"ref\": \"refs/heads/${NEW_BRANCH}\",\"sha\": \"$SHA\"}"  https://api.github.com/repos/${AUTH}/${REPO}/git/refs
 
-    # set default branch
-    curl -X PATCH -H "Authorization: token $GITHUB_TOKEN"  -d  "{\"name\": \"${REPO}\",\"default_branch\": \"$NEW_BRANCH\"}"  https://api.github.com/repos/${AUTH}/${REPO}
+#     # set default branch
+#     curl -X PATCH -H "Authorization: token $GITHUB_TOKEN"  -d  "{\"name\": \"${REPO}\",\"default_branch\": \"$NEW_BRANCH\"}"  https://api.github.com/repos/${AUTH}/${REPO}
 
-    # set branch protection rule
-    curl  -X PUT -H "Authorization: token $GITHUB_TOKEN"  -H "Accept: application/vnd.github.luke-cage-preview+json"  https://api.github.com/repos/${AUTH}/${REPO}/branches/${NEW_BRANCH}/protection -d '{"required_status_checks":{"strict":true, "contexts":["continuous-integration/jenkins"]},"enforce_admins":false,"required_pull_request_reviews":{"required_approving_review_count":1}, "restrictions": null}'
+#     # set branch protection rule
+#     curl  -X PUT -H "Authorization: token $GITHUB_TOKEN"  -H "Accept: application/vnd.github.luke-cage-preview+json"  https://api.github.com/repos/${AUTH}/${REPO}/branches/${NEW_BRANCH}/protection -d '{"required_status_checks":{"strict":true, "contexts":["continuous-integration/jenkins"]},"enforce_admins":false,"required_pull_request_reviews":{"required_approving_review_count":1}, "restrictions": null}'
 
-done
+# done
 echo "### Maven Update ###"
 
 if [ -z "$NEW_VERSION" ]
