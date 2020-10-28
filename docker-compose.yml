@@ -354,7 +354,7 @@ services:
       - MYSQL_PASSWORD=password
       - BRIDGE_URL=bridge.genny.life
     ports:
-      - "8199:8095"
+      - "8299:8095"
     networks:
       - mainproxy
         #restart: always
