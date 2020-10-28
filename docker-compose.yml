@@ -43,7 +43,7 @@ services:
     ports:
       - "7000:8080"
     environment:
-      - VIRTUAL_HOST=internmatch.genny.life,stt.genny.life
+      - VIRTUAL_HOST=internmatch.genny.life,stt.genny.life,alyson.*
       - VIRTUAL_PORT=8080
       - REACT_BRIDGE_HOST=http://bridge.genny.life
       - NODE_ENV=production
@@ -80,7 +80,7 @@ services:
     volumes:
       - abn_tmp:/tmp/
     environment:
-      - CORS_LIST=*
+      - CORS_LIST=https://internmatch.genny.life,http://localhost:3000,https://stt.genny.life
     networks:
       - mainproxy
     ports:
@@ -202,7 +202,7 @@ services:
   #   - ZIP_MODE=TRUE
       - MODE_GZIP=TRUE
       - ZIP_MIN_THRESHOLD_BYTES=8000000
-      - MEDIA_PROXY_URL=https://internmatch.genny.life/public
+      - MEDIA_PROXY_URL=https://alyson.genny.life/web/public
   #    - DDT_URL=http://bridge:8089
   #    - DEV_MODE=TRUE
   #    - GENNYDEV=TRUE
