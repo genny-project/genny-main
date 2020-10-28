@@ -100,7 +100,7 @@ for REPO in "${repos[@]}"; do
    git stash;git pull;git checkout ${NEW_BRANCH}
    mvn versions:set -DnewVersion=${NEW_VERSION}
    mvn versions:commit
-   git add .; git commit -m "Upgrade to ${NEW_BRANCH}"; git push --set-upstream origin ${NEW_BRANCH}
+#    git add .; git commit -m "Upgrade to ${NEW_BRANCH}"; git push --set-upstream origin ${NEW_BRANCH}
 
 done
 
@@ -108,7 +108,7 @@ for REPO in "${repos2[@]}"; do
    echo $REPO
    cd ../$REPO
    git stash;git pull;git checkout ${NEW_BRANCH}
-   git add .; git commit -m "Upgrade to ${NEW_BRANCH}"; git push --set-upstream origin ${NEW_BRANCH}
+#    git add .; git commit -m "Upgrade to ${NEW_BRANCH}"; git push --set-upstream origin ${NEW_BRANCH}
 
 done
 
@@ -118,7 +118,7 @@ for i in ` find .. -mindepth 1 -maxdepth 1 -type d | grep prj  | awk -F "/" '{ p
    git stash;git pull;git checkout ${NEW_BRANCH}
    mvn versions:set -DnewVersion=${NEW_VERSION}
    mvn versions:commit
-   git add .; git commit -m "Upgrade to ${NEW_BRANCH}"; git push --set-upstream origin ${NEW_BRANCH}
+#    git add .; git commit -m "Upgrade to ${NEW_BRANCH}"; git push --set-upstream origin ${NEW_BRANCH}
 done
 
 cd ../genny-main
@@ -126,4 +126,4 @@ cd ../genny-main
 echo "### Pushing Maven Update To Github ###"
 
 cd ../genny-main
-git add .; git commit -m "Upgrade to ${NEW_BRANCH}"; git push --set-upstream origin ${NEW_BRANCH}
+# git add .; git commit -m "Upgrade to ${NEW_BRANCH}"; git push --set-upstream origin ${NEW_BRANCH}
