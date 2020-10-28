@@ -18,7 +18,7 @@ done
 for value in prj_internmatch prj_stt
 do
     echo $value
-    git clone -b ${ver} git@github.com:OutcomeLife/$value
+    git clone -b 7.3.0 git@github.com:OutcomeLife/$value
 done
 
 cd genny-main
