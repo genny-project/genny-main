@@ -30,8 +30,11 @@ services:
 
   imageproxy:
     image: willnorris/imageproxy:v0.10.0
+    container_name: imageproxy
     ports:
       - "46243:8080"
+    networks:
+      - mainproxy
     command: -cache /tmp/imageproxy -addr 0.0.0.0:8080 -scaleUp true
 
 
@@ -195,6 +198,7 @@ services:
       - VIRTUAL_PORT=8088
       - VIRTUAL_PROTO=http
       - CERT_NAME=genny.life
+      - KEYCLOAKURL=https://keycloak.gada.io/auth/realms
       - CACHE_SERVER_NAME=qwanda-service
       - DDTHOST=TRUE
       - API_PORT=8088
