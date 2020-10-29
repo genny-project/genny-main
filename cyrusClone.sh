@@ -15,10 +15,12 @@ do
     git clone -b ${ver} https://github.com/genny-project/$value
 done
 
-for value in prj_internmatch prj_stt
+for value in prj_internmatch
 do
     echo $value
-    git clone -b 7.3.0 git@github.com:OutcomeLife/$value
+    git clone -b ${ver} git@github.com:OutcomeLife/$value
 done
+
+git clone -b 7.3.0 git@github.com:OutcomeLife/prj_stt
 
 cd genny-main
