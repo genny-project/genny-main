@@ -21,6 +21,6 @@ do
     git clone -b ${ver} git@github.com:OutcomeLife/$value
 done
 
-git clone -b ${ver} git@github.com:OutcomeLife/prj_stt
+git clone -b 7.3.0 git@github.com:OutcomeLife/prj_stt
 
 cd genny-main
