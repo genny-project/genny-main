@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ver=7.4.0
+ver=$1
 
 git pull
 docker pull gennyproject/dummy:latest
