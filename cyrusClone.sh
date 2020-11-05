@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ver=v7.3.0
+ver=7.4.0
 
 git pull
 docker pull gennyproject/dummy:latest
@@ -21,6 +21,6 @@ do
     git clone -b ${ver} git@github.com:OutcomeLife/$value
 done
 
-git clone -b 7.3.0 git@github.com:OutcomeLife/prj_stt
+git clone -b ${ver} git@github.com:OutcomeLife/prj_stt
 
 cd genny-main
