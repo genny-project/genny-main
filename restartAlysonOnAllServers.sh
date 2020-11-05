@@ -1,7 +1,6 @@
 #!/bin/bash
 
-domainNames=("internmatch-dev.gada.io" "internmatch-demo.gada.io" "internmatch-pipeline.gada.io" "internmatch-interns.gada.io" "internmatch-staging.gada.io"
-"internmatch-adam2.gada.io" "stt-dev.gada.io" "stt-prod.gada.io" "stt-demo.gada.io");
+domainNames=("internmatch-dev.gada.io" "internmatch-demo.gada.io" "internmatch-pipeline.gada.io" "internmatch-staging.gada.io" "internmatch-adam2.gada.io" "stt-dev.gada.io" "stt-prod.gada.io" "stt-demo.gada.io");
 
 # servers=("54.206.97.49" "13.211.83.117" "54.252.215.97" "13.211.147.163" "54.253.110.21");
 
