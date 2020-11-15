@@ -4,7 +4,7 @@ if [ -z $VERSION ];then
     exit 1
 fi
 
-for i in alyson qwanda qwanda-utils bootxport genny-verticle-rules genny-rules qwanda-services wildfly wildfly-qwanda-service wildfly-rulesservice bridge checkrules prj_genny media-proxy messages notes abn-lite
+for i in alyson qwanda qwanda-utils bootxport genny-verticle-rules genny-rules qwanda-services wildfly wildfly-qwanda-service wildfly-rulesservice bridge checkrules prj_genny media-proxy messages notes shleemy abn-lite
 do
     echo $i
     cd ../$i
