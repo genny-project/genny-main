@@ -95,7 +95,7 @@ services:
     env_file:
       - ${ENV_FILE}
     environment:
-      - KEYCLOAKURL=https://keycloak-office.gada.io/auth/realms
+      - KEYCLOAKURL=https://keycloak.gada.io/auth/realms
     networks:
       - mainproxy
     ports:
@@ -198,7 +198,7 @@ services:
       - VIRTUAL_PORT=8088
       - VIRTUAL_PROTO=http
       - CERT_NAME=genny.life
-      - KEYCLOAKURL=https://keycloak-office.gada.io/auth/realms
+      - KEYCLOAKURL=https://keycloak.gada.io/auth/realms
       - CACHE_SERVER_NAME=qwanda-service
       - DDTHOST=TRUE
       - API_PORT=8088
