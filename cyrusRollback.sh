@@ -1,6 +1,6 @@
 #!/bin/bash
-dt="2020-03-07 23:30"
-ver=v3.1.0
+dt="2020-11-19 12:35"
+ver=7.6.0
 cd ../qwanda
 git stash;git checkout `git rev-list -n 1 --first-parent --before="${dt}" ${ver}`
 cd ../qwanda-utils
@@ -18,6 +18,8 @@ git stash;git checkout `git rev-list -n 1 --first-parent --before="${dt}" ${ver}
 cd ../wildfly-rulesservice
 git stash;git checkout `git rev-list -n 1 --first-parent --before="${dt}" ${ver}`
 cd ../bridge
+git stash;git checkout `git rev-list -n 1 --first-parent --before="${dt}" ${ver}`
+cd ../messages
 git stash;git checkout `git rev-list -n 1 --first-parent --before="${dt}" ${ver}`
 #cd ../media-proxy
 #git stash;git checkout `git rev-list -n 1 --first-parent --before="${dt}" ${ver}`

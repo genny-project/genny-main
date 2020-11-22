@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ver=v7.2.0
+ver=7.6.0
 
 
 git pull
