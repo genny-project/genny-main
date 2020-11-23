@@ -194,6 +194,8 @@ services:
     env_file:
       - ${ENV_FILE}
     environment:
+      - ADMIN_USERNAME=GENNY 
+      - ADMIN_PASSWORD=GENNY
       - VIRTUAL_HOST=bridge.genny.life
       - VIRTUAL_PORT=8088
       - VIRTUAL_PROTO=http
@@ -221,7 +223,8 @@ services:
       - 10001:10001
 #      - 4001:15701
 #    command: java  -Xdebug -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n  -Dvertx.metrics.options.enabled=true -Dvertx.options.blockedThreadCheckInterval=2147483647 -jar /service.jar 
-    command: java -agentpath:/usr/local/YourKit-JavaProfiler-2019.8/bin/linux-x86-64/libyjpagent.so=port=10001,listen=all -Xdebug -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n  -Dvertx.options.blockedThreadCheckInterval=2147483647 -jar /service.jar 
+#    command: java -agentpath:/usr/local/YourKit-JavaProfiler-2019.8/bin/linux-x86-64/libyjpagent.so=port=10001,listen=all -Xdebug -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n  -Dvertx.options.blockedThreadCheckInterval=2147483647 -jar /service.jar 
+    command: java -jar -Dadmin.username=GENNY -Dadmin.password=GENNY /deployments/service.jar 
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8088/version"]
       interval: 10s
