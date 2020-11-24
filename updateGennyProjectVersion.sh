@@ -117,6 +117,8 @@ fi
 
 cd ~/projects/genny/genny-main/
 
+echo "### Pushing Maven Update To Github ###"
+
 # for REPO in "${repos[@]}"; do
 #    echo $REPO
 #    cd ../$REPO
@@ -143,10 +145,6 @@ done
 #    mvn versions:commit; mvn clean install
 #    git add .; git commit -m "Upgrade to ${NEW_BRANCH}"; git push --set-upstream origin ${NEW_BRANCH}
 # done
-
-cd ../genny-main
-
-echo "### Pushing Maven Update To Github ###"
 
 cd ../genny-main
 git add .; git commit -m "Upgrade to ${NEW_BRANCH}"; git push --set-upstream origin ${NEW_BRANCH}
