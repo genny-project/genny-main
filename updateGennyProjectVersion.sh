@@ -36,9 +36,9 @@ fi
 
 # repos=("genny-main" "qwanda" "qwanda-utils" "genny-verticle-rules" "bootxport" "qwanda-services"
 # "genny-rules" "wildfly" "wildfly-rulesservice" "wildfly-qwanda-service" "checkrules"  "bridge" "notes" "shleemy"
-# "media-proxy" "messages"  )
+# "media-proxy" "messages")
 
-repos2=("alyson", "gennyteer")
+repos2=("alyson" "gennyteer")
 
 # repos3=("prj_genny" "prj_stt" "prj_internmatch")
 
