@@ -34,13 +34,13 @@ else
     echo "PREVIOUS_BRANCH: ${PREVIOUS_BRANCH}"
 fi
 
-repos=("genny-main" "qwanda" "qwanda-utils" "genny-verticle-rules" "bootxport" "qwanda-services"
-"genny-rules" "wildfly" "wildfly-rulesservice" "wildfly-qwanda-service" "checkrules"  "bridge" "notes" "shleemy"
-"media-proxy" "messages"  )
+# repos=("genny-main" "qwanda" "qwanda-utils" "genny-verticle-rules" "bootxport" "qwanda-services"
+# "genny-rules" "wildfly" "wildfly-rulesservice" "wildfly-qwanda-service" "checkrules"  "bridge" "notes" "shleemy"
+# "media-proxy" "messages"  )
 
 repos2=("alyson", "gennyteer")
 
-repos3=("prj_genny" "prj_stt" "prj_internmatch")
+# repos3=("prj_genny" "prj_stt" "prj_internmatch")
 
 # check jq
 which jq
@@ -54,48 +54,48 @@ fi
 
 echo "### repos set 1 ###"
 
-for REPO in "${repos[@]}"; do
-    # Create new branch
-    SHA=$(curl -H "Authorization: token $GITHUB_TOKEN" https://api.github.com/repos/${AUTH}/${REPO}/git/refs/heads/${PREVIOUS_BRANCH} | jq -r '.object.sha')
-    curl -X POST -H "Authorization: token $GITHUB_TOKEN"  -d  "{\"ref\": \"refs/heads/${NEW_BRANCH}\",\"sha\": \"$SHA\"}"  https://api.github.com/repos/${AUTH}/${REPO}/git/refs
+# for REPO in "${repos[@]}"; do
+#     # Create new branch
+#     SHA=$(curl -H "Authorization: token $GITHUB_TOKEN" https://api.github.com/repos/${AUTH}/${REPO}/git/refs/heads/${PREVIOUS_BRANCH} | jq -r '.object.sha')
+#     curl -X POST -H "Authorization: token $GITHUB_TOKEN"  -d  "{\"ref\": \"refs/heads/${NEW_BRANCH}\",\"sha\": \"$SHA\"}"  https://api.github.com/repos/${AUTH}/${REPO}/git/refs
 
-    # set default branch
-    curl -X PATCH -H "Authorization: token $GITHUB_TOKEN"  -d  "{\"name\": \"${REPO}\",\"default_branch\": \"$NEW_BRANCH\"}"  https://api.github.com/repos/${AUTH}/${REPO}
+#     # set default branch
+#     curl -X PATCH -H "Authorization: token $GITHUB_TOKEN"  -d  "{\"name\": \"${REPO}\",\"default_branch\": \"$NEW_BRANCH\"}"  https://api.github.com/repos/${AUTH}/${REPO}
 
-    # set branch protection rule
-    curl  -X PUT -H "Authorization: token $GITHUB_TOKEN"  -H "Accept: application/vnd.github.luke-cage-preview+json"  https://api.github.com/repos/${AUTH}/${REPO}/branches/${NEW_BRANCH}/protection -d '{"required_status_checks":{"strict":true, "contexts":["continuous-integration/jenkins"]},"enforce_admins":false,"required_pull_request_reviews":{"required_approving_review_count":1}, "restrictions": null}'
+#     # set branch protection rule
+#     curl  -X PUT -H "Authorization: token $GITHUB_TOKEN"  -H "Accept: application/vnd.github.luke-cage-preview+json"  https://api.github.com/repos/${AUTH}/${REPO}/branches/${NEW_BRANCH}/protection -d '{"required_status_checks":{"strict":true, "contexts":["continuous-integration/jenkins"]},"enforce_admins":false,"required_pull_request_reviews":{"required_approving_review_count":1}, "restrictions": null}'
 
-done
+# done
 
 echo "### repos set 2 ###"
 
-for REPO in "${repos2[@]}"; do
-    # Create new branch
-    SHA=$(curl -H "Authorization: token $GITHUB_TOKEN" https://api.github.com/repos/${AUTH}/${REPO}/git/refs/heads/${PREVIOUS_BRANCH} | jq -r '.object.sha')
-    curl -X POST -H "Authorization: token $GITHUB_TOKEN"  -d  "{\"ref\": \"refs/heads/${NEW_BRANCH}\",\"sha\": \"$SHA\"}"  https://api.github.com/repos/${AUTH}/${REPO}/git/refs
+# for REPO in "${repos2[@]}"; do
+#     # Create new branch
+#     SHA=$(curl -H "Authorization: token $GITHUB_TOKEN" https://api.github.com/repos/${AUTH}/${REPO}/git/refs/heads/${PREVIOUS_BRANCH} | jq -r '.object.sha')
+#     curl -X POST -H "Authorization: token $GITHUB_TOKEN"  -d  "{\"ref\": \"refs/heads/${NEW_BRANCH}\",\"sha\": \"$SHA\"}"  https://api.github.com/repos/${AUTH}/${REPO}/git/refs
 
-    # set default branch
-    curl -X PATCH -H "Authorization: token $GITHUB_TOKEN"  -d  "{\"name\": \"${REPO}\",\"default_branch\": \"$NEW_BRANCH\"}"  https://api.github.com/repos/${AUTH}/${REPO}
+#     # set default branch
+#     curl -X PATCH -H "Authorization: token $GITHUB_TOKEN"  -d  "{\"name\": \"${REPO}\",\"default_branch\": \"$NEW_BRANCH\"}"  https://api.github.com/repos/${AUTH}/${REPO}
 
-    # set branch protection rule
-    curl  -X PUT -H "Authorization: token $GITHUB_TOKEN"  -H "Accept: application/vnd.github.luke-cage-preview+json"  https://api.github.com/repos/${AUTH}/${REPO}/branches/${NEW_BRANCH}/protection -d '{"required_status_checks":{"strict":true, "contexts":["continuous-integration/jenkins"]},"enforce_admins":false,"required_pull_request_reviews":{"required_approving_review_count":1}, "restrictions": null}'
+#     # set branch protection rule
+#     curl  -X PUT -H "Authorization: token $GITHUB_TOKEN"  -H "Accept: application/vnd.github.luke-cage-preview+json"  https://api.github.com/repos/${AUTH}/${REPO}/branches/${NEW_BRANCH}/protection -d '{"required_status_checks":{"strict":true, "contexts":["continuous-integration/jenkins"]},"enforce_admins":false,"required_pull_request_reviews":{"required_approving_review_count":1}, "restrictions": null}'
 
-done
+# done
 
 echo "### repos set 3 ###"
 
-for REPO in "${repos3[@]}"; do
-    # Create new branch
-    SHA=$(curl -H "Authorization: token $GITHUB_TOKEN" https://api.github.com/repos/${PRIVATE_AUTH}/${REPO}/git/refs/heads/${PREVIOUS_BRANCH} | jq -r '.object.sha')
-    curl -X POST -H "Authorization: token $GITHUB_TOKEN"  -d  "{\"ref\": \"refs/heads/${NEW_BRANCH}\",\"sha\": \"$SHA\"}"  https://api.github.com/repos/${PRIVATE_AUTH}/${REPO}/git/refs
+# for REPO in "${repos3[@]}"; do
+#     # Create new branch
+#     SHA=$(curl -H "Authorization: token $GITHUB_TOKEN" https://api.github.com/repos/${PRIVATE_AUTH}/${REPO}/git/refs/heads/${PREVIOUS_BRANCH} | jq -r '.object.sha')
+#     curl -X POST -H "Authorization: token $GITHUB_TOKEN"  -d  "{\"ref\": \"refs/heads/${NEW_BRANCH}\",\"sha\": \"$SHA\"}"  https://api.github.com/repos/${PRIVATE_AUTH}/${REPO}/git/refs
 
-    # set default branch
-    curl -X PATCH -H "Authorization: token $GITHUB_TOKEN"  -d  "{\"name\": \"${REPO}\",\"default_branch\": \"$NEW_BRANCH\"}"  https://api.github.com/repos/${PRIVATE_AUTH}/${REPO}
+#     # set default branch
+#     curl -X PATCH -H "Authorization: token $GITHUB_TOKEN"  -d  "{\"name\": \"${REPO}\",\"default_branch\": \"$NEW_BRANCH\"}"  https://api.github.com/repos/${PRIVATE_AUTH}/${REPO}
 
-    # set branch protection rule
-    curl  -X PUT -H "Authorization: token $GITHUB_TOKEN"  -H "Accept: application/vnd.github.luke-cage-preview+json"  https://api.github.com/repos/${PRIVATE_AUTH}/${REPO}/branches/${NEW_BRANCH}/protection -d '{"required_status_checks":{"strict":true, "contexts":["continuous-integration/jenkins"]},"enforce_admins":false,"required_pull_request_reviews":{"required_approving_review_count":1}, "restrictions": null}'
+#     # set branch protection rule
+#     curl  -X PUT -H "Authorization: token $GITHUB_TOKEN"  -H "Accept: application/vnd.github.luke-cage-preview+json"  https://api.github.com/repos/${PRIVATE_AUTH}/${REPO}/branches/${NEW_BRANCH}/protection -d '{"required_status_checks":{"strict":true, "contexts":["continuous-integration/jenkins"]},"enforce_admins":false,"required_pull_request_reviews":{"required_approving_review_count":1}, "restrictions": null}'
 
-done
+# done
 
 echo "### Maven Update ###"
 
@@ -117,15 +117,15 @@ fi
 
 cd ~/projects/genny/genny-main/
 
-for REPO in "${repos[@]}"; do
-   echo $REPO
-   cd ../$REPO
-   git stash;git pull;git checkout ${NEW_BRANCH}
-   mvn versions:set -DnewVersion=${NEW_VERSION}
-   mvn versions:commit; mvn clean install
-   git add .; git commit -m "Upgrade to ${NEW_BRANCH}"; git push --set-upstream origin ${NEW_BRANCH}
+# for REPO in "${repos[@]}"; do
+#    echo $REPO
+#    cd ../$REPO
+#    git stash;git pull;git checkout ${NEW_BRANCH}
+#    mvn versions:set -DnewVersion=${NEW_VERSION}
+#    mvn versions:commit; mvn clean install
+#    git add .; git commit -m "Upgrade to ${NEW_BRANCH}"; git push --set-upstream origin ${NEW_BRANCH}
 
-done
+# done
 
 for REPO in "${repos2[@]}"; do
    echo $REPO
@@ -135,14 +135,14 @@ for REPO in "${repos2[@]}"; do
 
 done
 
-for i in ` find .. -mindepth 1 -maxdepth 1 -type d | grep prj  | awk -F "/" '{ print $2 }'`;do
-   echo $i
-   cd ../$i
-   git stash;git pull;git checkout ${NEW_BRANCH}
-   mvn versions:set -DnewVersion=${NEW_VERSION}
-   mvn versions:commit; mvn clean install
-   git add .; git commit -m "Upgrade to ${NEW_BRANCH}"; git push --set-upstream origin ${NEW_BRANCH}
-done
+# for i in ` find .. -mindepth 1 -maxdepth 1 -type d | grep prj  | awk -F "/" '{ print $2 }'`;do
+#    echo $i
+#    cd ../$i
+#    git stash;git pull;git checkout ${NEW_BRANCH}
+#    mvn versions:set -DnewVersion=${NEW_VERSION}
+#    mvn versions:commit; mvn clean install
+#    git add .; git commit -m "Upgrade to ${NEW_BRANCH}"; git push --set-upstream origin ${NEW_BRANCH}
+# done
 
 cd ../genny-main
 
