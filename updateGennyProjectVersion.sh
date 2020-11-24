@@ -36,11 +36,11 @@ fi
 
 repos=("genny-main" "qwanda" "qwanda-utils" "genny-verticle-rules" "bootxport" "qwanda-services"
 "genny-rules" "wildfly" "wildfly-rulesservice" "wildfly-qwanda-service" "checkrules"  "bridge" "notes" "shleemy"
-"media-proxy" "messages" "prj_genny" )
+"media-proxy" "messages"  )
 
 repos2=("alyson", "gennyteer")
 
-repos3=("prj_stt" "prj_internmatch")
+repos3=("prj_genny" "prj_stt" "prj_internmatch")
 
 # check jq
 which jq
