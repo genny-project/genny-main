@@ -129,6 +129,12 @@ for REPO in "${repos[@]}"; do
 
 done
 
+echo "### Alysom Version Update ###"
+
+cd ~/projects/genny/alyson/
+
+npm version ${NEW_BRANCH}
+
 for REPO in "${repos2[@]}"; do
    echo $REPO
    cd ../$REPO
@@ -147,4 +153,5 @@ for i in ` find .. -mindepth 1 -maxdepth 1 -type d | grep prj  | awk -F "/" '{ p
 done
 
 cd ../genny-main
+
 git add .; git commit -m "Upgrade to ${NEW_BRANCH}"; git push --set-upstream origin ${NEW_BRANCH}
