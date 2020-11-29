@@ -4,10 +4,11 @@ if [ -z $VERSION ];then
     exit 1
 fi
 
-for i in alyson qwanda qwanda-utils bootxport genny-verticle-rules genny-rules qwanda-services wildfly wildfly-qwanda-service wildfly-rulesservice bridge checkrules prj_genny media-proxy messages notes shleemy abn-lite
+parentdir="$(dirname `pwd`)" 
+
+for i in alyson qwanda qwanda-utils bootxport genny-verticle-rules genny-rules qwanda-services wildfly wildfly-qwanda-service wildfly-rulesservice bridge checkrules prj_genny prj_internmatch media-proxy messages notes shleemy abn-lite genny-proxy
 do
     echo $i
-    cd ../$i
+    cd $parentdir/$i
     git pull ; git checkout $VERSION ; git pull
-    cd ../genny-main
 done
