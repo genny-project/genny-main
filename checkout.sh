@@ -4,9 +4,9 @@ if [ -z $VERSION ];then
     exit 1
 fi
 
-parentdir="$(dirname `pwd`)" 
+parentdir="$(dirname `pwd`)"
 
-for i in alyson qwanda qwanda-utils bootxport genny-verticle-rules genny-rules qwanda-services wildfly wildfly-qwanda-service wildfly-rulesservice bridge checkrules prj_genny prj_internmatch media-proxy messages notes shleemy abn-lite genny-proxy
+for i in alyson qwanda qwanda-utils bootxport genny-verticle-rules genny-rules qwanda-services wildfly wildfly-qwanda-service wildfly-rulesservice bridge checkrules prj_genny prj_internmatch media-proxy messages notes shleemy genny-proxy
 do
     echo $i
     cd $parentdir/$i
