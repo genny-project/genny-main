@@ -3,7 +3,7 @@ clean=$1
 parentdir="$(dirname `pwd`)"
 
 # switch to jdk 1.8
-jdk 1.8
+jdk 8
 
 # clean and build package
 for value in qwanda qwanda-utils bootxport genny-verticle-rules genny-rules qwanda-services    
@@ -47,5 +47,5 @@ do
 done
 
 # switch to jdk 1.8
-jdk 1.8
+jdk 8
 cd $parentdir/genny-main

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ver=7.0.0
+ver=7.8.0
 
 cd ../qwanda;echo $PWD;git branch;git status
 cd ../qwanda-utils;echo $PWD;git branch;git status
