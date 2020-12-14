@@ -3,7 +3,7 @@ clean=$1
 parentdir="$(dirname `pwd`)"
 
 # switch to jdk 1.8
-jdk 8
+sdk use java 20.3.0.r8-grl
 
 # clean and build package
 for value in qwanda qwanda-utils bootxport genny-verticle-rules genny-rules qwanda-services    
@@ -36,16 +36,17 @@ done
 
 # build with jdk 11
 # switch to jdk 11
-jdk 11
-for value in notes shleemy 
-do
-    echo $value
-    sudo rm -Rf  $parentdir/$value/target/*
-    cd $parentdir/$value
-    mvn $clean package -DskipTests=true
-    ./build-docker.sh
-done
+sdk use java 20.3.0.r11-grl
+
+#for value in notes shleemy 
+#do
+#    echo $value
+#    sudo rm -Rf  $parentdir/$value/target/*
+#    cd $parentdir/$value
+#    mvn $clean package -DskipTests=true
+#    ./build-docker.sh
+#done
 
 # switch to jdk 1.8
-jdk 8
+sdk use java 20.3.0.r8-grl
 cd $parentdir/genny-main
