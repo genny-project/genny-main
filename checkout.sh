@@ -12,3 +12,6 @@ do
     cd $parentdir/$i
     git pull ; git checkout $VERSION ; git pull
 done
+
+cd $parentdir/genny-main
+
