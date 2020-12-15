@@ -6,6 +6,7 @@ then
    exit;
 fi
 
+
 OLD_VERSION=${1}
 NEW_VERSION=${2}
 GITHUB_TOKEN=${3}
@@ -115,43 +116,41 @@ else
     echo "OLD_VERSION: ${OLD_VERSION}"
 fi
 
-cd ~/projects/genny/genny-main/
+parentdir="$HOME/projects/genny"
 
 echo "### Pushing Maven Update To Github ###"
-
 for REPO in "${repos[@]}"; do
    echo $REPO
-   cd ../$REPO
+   cd $parentdir/$REPO
    git stash;git pull;git checkout ${NEW_BRANCH}
    mvn versions:set -DnewVersion=${NEW_VERSION}
    mvn versions:commit; mvn clean install
    git add .; git commit -m "Upgrade to ${NEW_BRANCH}"; git push --set-upstream origin ${NEW_BRANCH}
-
 done
 
 echo "### Alysom Version Update ###"
 
-cd ~/projects/genny/alyson/
+cd $parentdir/alyson
 
 npm version ${NEW_BRANCH}
 
 for REPO in "${repos2[@]}"; do
    echo $REPO
-   cd ../$REPO
+   cd $parentdir/$REPO
    git stash;git pull;git checkout ${NEW_BRANCH}
    git add .; git commit -m "Upgrade to ${NEW_BRANCH}"; git push --set-upstream origin ${NEW_BRANCH}
-
 done
 
+cd $parentdir/genny-main
 for i in ` find .. -mindepth 1 -maxdepth 1 -type d | grep prj  | awk -F "/" '{ print $2 }'`;do
    echo $i
-   cd ../$i
+   cd $parentdir/$i
    git stash;git pull;git checkout ${NEW_BRANCH}
    mvn versions:set -DnewVersion=${NEW_VERSION}
    mvn versions:commit; mvn clean install
    git add .; git commit -m "Upgrade to ${NEW_BRANCH}"; git push --set-upstream origin ${NEW_BRANCH}
 done
 
-cd ../genny-main
+cd $parentdir/genny-main
 
 git add .; git commit -m "Upgrade to ${NEW_BRANCH}"; git push --set-upstream origin ${NEW_BRANCH}
