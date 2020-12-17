@@ -35,7 +35,7 @@ else
     echo "PREVIOUS_BRANCH: ${PREVIOUS_BRANCH}"
 fi
 
-repos=("genny-main" "qwanda" "qwanda-utils" "genny-verticle-rules" "bootxport" "qwanda-services"
+repos=("genny-main" "qwanda" "qwanda-utils" "bootxport" "genny-verticle-rules" "qwanda-services"
 "genny-rules" "wildfly" "wildfly-rulesservice" "wildfly-qwanda-service" "checkrules"  "bridge" "notes" "shleemy"
 "media-proxy" "messages" "genny-proxy")
 
