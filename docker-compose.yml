@@ -311,7 +311,7 @@ services:
       - 8791:8787
       - 5709:5709
       - 8189:8088
-      - 8199:8089
+#      - 8199:8089
     depends_on:
       qwanda-service:
         condition: service_healthy
