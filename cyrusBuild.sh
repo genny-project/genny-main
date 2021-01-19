@@ -36,7 +36,7 @@ done
 
 # build with jdk 11
 # switch to jdk 11
-sdk use java 20.3.0.r11-grl
+#sdk use java 20.3.0.r11-grl
 
 #for value in notes shleemy 
 #do
