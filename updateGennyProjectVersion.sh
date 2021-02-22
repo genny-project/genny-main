@@ -39,7 +39,7 @@ repos=("genny-main" "qwanda" "qwanda-utils" "bootxport" "genny-verticle-rules" "
 "genny-rules" "wildfly" "wildfly-rulesservice" "wildfly-qwanda-service" "checkrules"  "bridge" "notes" "shleemy"
 "media-proxy" "messages" "genny-proxy")
 
-repos2=("alyson" "gennyteer")
+repos2=("alyson" "alyson-v9" "gennyteer")
 
 repos3=("prj_genny" "prj_stt" "prj_internmatch" "prj_mentormatch")
 
