@@ -1,6 +1,16 @@
 version: '2.3'
 
 services:
+  infinispan:
+    image: quay.io/infinispan/server-native:11.0
+    container_name: infinispan
+    environment:
+      - USER=genny
+      - PASS=password
+    ports:
+      - 11222:11222
+    networks:
+      - mainproxy
   nginx:
     image: jwilder/nginx-proxy:alpine
     hostname: nginx
@@ -202,7 +212,7 @@ services:
       - VIRTUAL_PROTO=http
       - CERT_NAME=genny.life
       - KEYCLOAKURL=https://keycloak.gada.io/auth/realms
-      - CACHE_SERVER_NAME=qwanda-service
+      - CACHE_SERVER_NAME=infinispan
       - DDTHOST=TRUE
       - API_PORT=8088
       - CACHE_API_PORT=8089
@@ -261,7 +271,7 @@ services:
       - DROOLS_LOGLEVEL=ERROR
       - FORCE_EVENTBUS_USE_API=FALSE
       - FORCE_CACHE_USE_API=FALSE
-      - CACHE_SERVER_NAME=qwanda-service
+      - CACHE_SERVER_NAME=infinispan
       - FRAMES_ON_DEMAND=FALSE
       - HAZELCAST_LOGLEVEL=ERROR
       - HIDE_RULE_STATES=TRUE
