@@ -32,7 +32,9 @@ docker volume create mysql_data
 #create env file
 
 #IS_CACHE_SERVER=true
-CACHE_SERVER_NAME=qwanda-service
+CACHE_SERVER_NAME=infinispan
+INFINISPAN_USERNAME=genny
+INFINISPAN_PASSWORD=password
 
 PDF_GEN_SERVICE_API_URL=http://camelot-pdfgenerator:7331
 ENV_SECURITY_KEY=WubbaLubbaDubDub
@@ -185,6 +187,8 @@ echo "JAVA_OPTS=${JAVA_OPTS}" >> $ENV_FILE
 echo "CLUSTER_IP=${CLUSTER_IP}" >> $ENV_FILE
 echo "IS_CACHE_SERVER=${IS_CACHE_SERVER}" >> $ENV_FILE
 echo "CACHE_SERVER_NAME=${CACHE_SERVER_NAME}" >> $ENV_FILE
+echo "INFINISPAN_USERNAME=${INFINISPAN_USERNAME}" >> $ENV_FILE
+echo "INFINISPAN_PASSWORD=${INFINISPAN_PASSWORD}" >> $ENV_FILE
 
 GOOGLE_SVC_ACC_PATH=/root/.genny/sheets.googleapis.com-java-quickstart/token-secret-service-account.json
 echo "GOOGLE_SVC_ACC_PATH=${GOOGLE_SVC_ACC_PATH}" >> $ENV_FILE
