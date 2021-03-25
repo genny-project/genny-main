@@ -84,15 +84,9 @@ services:
       - 9000:9000
     command: server /data
 
-<<<<<<< HEAD
   abn-lite:
     image: gennyproject/genny-proxy:latest
     container_name: abn-lite
-=======
-  genny-proxy:
-    image: gennyproject/genny-proxy:latest
-    container_name: genny-proxy 
->>>>>>> origin/7.25.0
     user: root
     depends_on:
       qwanda-service:
