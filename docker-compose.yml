@@ -1,6 +1,38 @@
 version: '2.3'
 
 services:
+  zookeeper:
+    image: strimzi/kafka:latest-kafka-2.5.0
+    command: [
+      "sh", "-c",
+      "bin/zookeeper-server-start.sh config/zookeeper.properties"
+    ]
+    ports:
+      - "2181:2181"
+    networks:
+      - mainproxy
+    environment:
+      LOG_DIR: /tmp/logs
+
+  kafka:
+    image: strimzi/kafka:latest-kafka-2.5.0
+    hostname: kafka
+    container_name: kafka
+    command: [
+      "sh", "-c",
+      "bin/kafka-server-start.sh config/server.properties --override listeners=$${KAFKA_LISTENERS} --override advertised.listeners=$${KAFKA_ADVERTISED_LISTENERS} --override zookeeper.connect=$${KAFKA_ZOOKEEPER_CONNECT}"
+    ]
+    depends_on:
+      - zookeeper
+    networks:
+      - mainproxy
+    ports:
+      - "9092:9092"
+    environment:
+      LOG_DIR: "/tmp/logs"
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
   infinispan:
     image: quay.io/infinispan/server-native:11.0
     container_name: infinispan
@@ -307,31 +339,31 @@ services:
       - mainproxy
 
 
-  messages:
-    image: gennyproject/messages:latest
-    container_name:  messages
-    volumes:
-      - ./realm:/opt/realm:delegated
-    env_file:
-      - ${ENV_FILE}
-    environment:
-      - DDTHOST=TRUE
-      - API_PORT=8089 
-      - CACHE_API_PORT=8099
-    ports:
-      - 8791:8787
-      - 5709:5709
-      - 8189:8088
-#      - 8199:8089
-    depends_on:
-      qwanda-service:
-        condition: service_healthy
-      bridge:
-        condition: service_healthy
-    networks:
-      - mainproxy
-    restart: always
-    command: java   -Dvertx.options.blockedThreadCheckInterval=2147483647  -Xdebug -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n -Djava.net.preferIPv6Addresses=false -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true -Dvertx.hazelcast.config=/cluster.xml -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /service.jar
+  #messages:
+    #image: gennyproject/messages:latest
+    #container_name:  messages
+    #volumes:
+      #- ./realm:/opt/realm:delegated
+    #env_file:
+      #- ${ENV_FILE}
+    #environment:
+      #- DDTHOST=TRUE
+      #- API_PORT=8089 
+      #- CACHE_API_PORT=8099
+    #ports:
+      #- 8791:8787
+      #- 5709:5709
+      #- 8189:8088
+##      - 8199:8089
+    #depends_on:
+      #qwanda-service:
+        #condition: service_healthy
+      #bridge:
+        #condition: service_healthy
+    #networks:
+      #- mainproxy
+    #restart: always
+    #command: java   -Dvertx.options.blockedThreadCheckInterval=2147483647  -Xdebug -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n -Djava.net.preferIPv6Addresses=false -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true -Dvertx.hazelcast.config=/cluster.xml -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /service.jar
 
   notes:
     image: gennyproject/notes:latest
@@ -379,13 +411,13 @@ services:
       - mainproxy
         #restart: always
 
-  camelot-pdfgenerator:
-    image: gennyproject/camelot:latest
-    container_name: camelot-pdfgenerator
-    ports:
-      - "7331:7331"
-    networks:
-      - mainproxy
+  #camelot-pdfgenerator:
+    #image: gennyproject/camelot:latest
+    #container_name: camelot-pdfgenerator
+    #ports:
+      #- "7331:7331"
+    #networks:
+      #- mainproxy
 
 
 volumes:
