@@ -464,7 +464,6 @@ services:
            ipv4_address: 172.20.0.57
         #restart: always
 
-<<<<<<< HEAD
   camelot-pdfgenerator:
     image: gennyproject/camelot:latest
     container_name: camelot-pdfgenerator
@@ -473,15 +472,6 @@ services:
     networks:
       mainproxy:
            ipv4_address: 172.20.0.61
-=======
-  #camelot-pdfgenerator:
-    #image: gennyproject/camelot:latest
-    #container_name: camelot-pdfgenerator
-    #ports:
-      #- "7331:7331"
-    #networks:
-      #- mainproxy
->>>>>>> badd8f4ef381dc1001a0a34a66115ac3c36a764e
 
 
 volumes:
