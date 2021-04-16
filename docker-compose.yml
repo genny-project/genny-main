@@ -33,16 +33,43 @@ services:
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
       KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+
+#  infinispan:
+#    image: quay.io/infinispan/server-native:11.0
+#    container_name: infinispan
+#    environment:
+#      - USER=genny
+#      - PASS=password
+#    ports:
+#      - 11222:11222
+#    networks:
+#      - mainproxy
+
   infinispan:
-    image: quay.io/infinispan/server-native:11.0
+    #image: infinispan/server-native:12.0.2.Final
+    image: infinispan/server:12.1
+    #image: quay.io/infinispan/server-native:11.0
     container_name: infinispan
     environment:
       - USER=genny
       - PASS=password
+      - JAVA_OPTIONS="-Djboss.bind.address:0.0.0.0"
     ports:
-      - 11222:11222
+      - 0.0.0.0:11222:11222
     networks:
-      - mainproxy
+      mainproxy:
+        ipv4_address: 172.20.0.5
+
+    healthcheck:
+      #test: ["CMD", "curl", "-f", "https://google.com/"]
+      test: ["CMD", "curl", "-f", "http://172.20.0.5:11222/console/welcome/"]
+      #test: curl --fail http://localhost:11222/rest/v2/cache-managers/default/health/status || exit 1
+      #test: curl --fail http://localhost:11222/console/welcome || exit 1
+      start_period: 10s
+      interval: 10s
+      timeout: 10s
+      retries: 6
+
   nginx:
     image: jwilder/nginx-proxy:alpine
     hostname: nginx
@@ -54,7 +81,9 @@ services:
       - 80:80
       - 443:443
     networks:
-      - mainproxy
+      mainproxy:
+          ipv4_address: 172.20.0.9
+
     environment:
       - SKIP_HTTPS_REDIRECT=true
     volumes:
@@ -76,7 +105,8 @@ services:
     ports:
       - "46243:8080"
     networks:
-      - mainproxy
+      mainproxy:
+           ipv4_address: 172.20.0.13
     command: -cache /tmp/imageproxy -addr 0.0.0.0:8080 -scaleUp true
 
 
@@ -95,7 +125,8 @@ services:
     env_file:
       - ${ENV_FILE}
     networks:
-      - mainproxy
+      mainproxy:
+           ipv4_address: 172.20.0.17
     restart: always
 
 
@@ -111,7 +142,8 @@ services:
       - minio_data:/data:delegated
       - minio_conf:/root/.minio:delegated
     networks:
-      - mainproxy
+      mainproxy:
+           ipv4_address: 172.20.0.21
     ports:
       - 9000:9000
     command: server /data
@@ -128,7 +160,8 @@ services:
     environment:
       - CORS_LIST=https://internmatch.genny.life,http://localhost:3000,https://stt.genny.life
     networks:
-      - mainproxy
+      mainproxy:
+           ipv4_address: 172.20.0.25
     ports:
       - 8483:8080
 
@@ -140,7 +173,8 @@ services:
     environment:
       - KEYCLOAKURL=https://keycloak.gada.io/auth/realms
     networks:
-      - mainproxy
+      mainproxy:
+           ipv4_address: 172.20.0.29
     ports:
       - 9898:9898
     command: java -jar /service.jar
@@ -164,7 +198,8 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql:delegated
     networks:
-      - mainproxy
+      mainproxy:
+           ipv4_address: 172.20.0.33
     ports:
       - 3310:3306
     command: --sql_mode=""
@@ -177,6 +212,8 @@ services:
   qwanda-service:
     depends_on:
       mysql:
+        condition: service_healthy
+      infinispan:
         condition: service_healthy
       #keycloak:
       #  condition: service_healthy
@@ -223,13 +260,16 @@ services:
       retries: 50    
     restart: unless-stopped
     networks:
-      - mainproxy
+      mainproxy:
+           ipv4_address: 172.20.0.37
 
 
   bridge:
     image: gennyproject/bridge:latest
     depends_on:
       qwanda-service:
+        condition: service_healthy
+      infinispan:
         condition: service_healthy
     container_name: bridge
     volumes:
@@ -258,7 +298,8 @@ services:
   #    - GENNYDEV=TRUE
   #    - GENNY_DEV=TRUE
     networks:
-      - mainproxy
+      mainproxy:
+           ipv4_address: 172.20.0.41
     ports:
       - 8088:8088
       - 8790:8787
@@ -285,6 +326,8 @@ services:
       bridge:
         condition: service_healthy
       mysql:
+        condition: service_healthy
+      infinispan:
         condition: service_healthy
     container_name: wildfly-rulesservice
     env_file:
@@ -338,34 +381,38 @@ services:
   #    retries: 30    
     restart: unless-stopped
     networks:
-      - mainproxy
+      mainproxy:
+           ipv4_address: 172.20.0.45
 
 
-  #messages:
-    #image: gennyproject/messages:latest
-    #container_name:  messages
-    #volumes:
-      #- ./realm:/opt/realm:delegated
-    #env_file:
-      #- ${ENV_FILE}
-    #environment:
-      #- DDTHOST=TRUE
-      #- API_PORT=8089 
-      #- CACHE_API_PORT=8099
-    #ports:
-      #- 8791:8787
-      #- 5709:5709
-      #- 8189:8088
-##      - 8199:8089
-    #depends_on:
-      #qwanda-service:
-        #condition: service_healthy
-      #bridge:
-        #condition: service_healthy
-    #networks:
-      #- mainproxy
-    #restart: always
-    #command: java   -Dvertx.options.blockedThreadCheckInterval=2147483647  -Xdebug -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n -Djava.net.preferIPv6Addresses=false -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true -Dvertx.hazelcast.config=/cluster.xml -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /service.jar
+  messages:
+    image: gennyproject/messages:latest
+    container_name:  messages
+    volumes:
+      - ./realm:/opt/realm:delegated
+    env_file:
+      - ${ENV_FILE}
+    environment:
+      - DDTHOST=TRUE
+      - API_PORT=8089 
+      - CACHE_API_PORT=8099
+    ports:
+      - 8791:8787
+      - 5709:5709
+      - 8189:8088
+#      - 8199:8089
+    depends_on:
+      qwanda-service:
+        condition: service_healthy
+      bridge:
+        condition: service_healthy
+      infinispan:
+        condition: service_healthy
+    networks:
+      mainproxy:
+           ipv4_address: 172.20.0.49
+    restart: always
+    command: java   -Dvertx.options.blockedThreadCheckInterval=2147483647  -Xdebug -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n -Djava.net.preferIPv6Addresses=false -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true -Dvertx.hazelcast.config=/cluster.xml -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /service.jar
 
   notes:
     image: gennyproject/notes:latest
@@ -377,6 +424,8 @@ services:
         condition: service_healthy
       mysql:
         condition: service_healthy
+      infinispan:
+        condition: service_healthy
     environment:
       - MYSQL_URL=mysql
       - MYSQL_DB=gennydb
@@ -387,7 +436,8 @@ services:
     ports:
       - "8195:8095"
     networks:
-      - mainproxy
+      mainproxy:
+           ipv4_address: 172.20.0.53
         #restart: always
 
   shleemy:
@@ -400,6 +450,8 @@ services:
         condition: service_healthy
       mysql:
         condition: service_healthy
+      infinispan:
+        condition: service_healthy
     environment:
       - MYSQL_URL=mysql
       - MYSQL_DB=gennydb
@@ -410,16 +462,18 @@ services:
     ports:
       - "8197:8080"
     networks:
-      - mainproxy
+      mainproxy:
+           ipv4_address: 172.20.0.57
         #restart: always
 
-  #camelot-pdfgenerator:
-    #image: gennyproject/camelot:latest
-    #container_name: camelot-pdfgenerator
-    #ports:
-      #- "7331:7331"
-    #networks:
-      #- mainproxy
+  camelot-pdfgenerator:
+    image: gennyproject/camelot:latest
+    container_name: camelot-pdfgenerator
+    ports:
+      - "7331:7331"
+    networks:
+      mainproxy:
+           ipv4_address: 172.20.0.61
 
 
 volumes:
@@ -431,8 +485,12 @@ volumes:
     driver: local
   mailstate:
     driver: local
+
 networks:
   mainproxy:
-    driver: bridge
-
-
+    external: true
+#    driver: bridge
+#    ipam:
+#     config:
+#       - subnet: 172.20.0.0/24
+#       - gateway: 172.20.0.1
