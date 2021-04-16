@@ -20,7 +20,7 @@ services:
     container_name: kafka
     command: [
       "sh", "-c",
-      "bin/kafka-server-start.sh config/server.properties --override listeners=$${KAFKA_LISTENERS} --override advertised.listeners=$${KAFKA_ADVERTISED_LISTENERS} --override zookeeper.connect=$${KAFKA_ZOOKEEPER_CONNECT}"
+      "bin/kafka-server-start.sh config/server.properties --override listeners=$${KAFKA_LISTENERS} --override advertised.listeners=$${KAFKA_ADVERTISED_LISTENERS} --override zookeeper.connect=$${KAFKA_ZOOKEEPER_CONNECT} --override  message.max.bytes=1147483648" 
     ]
     depends_on:
       - zookeeper
@@ -241,6 +241,7 @@ services:
       - ADMIN_PASSWORD=GENNY
       - VIRTUAL_HOST=bridge.genny.life
       - VIRTUAL_PORT=8088
+      - KAFKA_URL=kafka:9092
       - VIRTUAL_PROTO=http
       - CERT_NAME=genny.life
       - KEYCLOAKURL=https://keycloak.gada.io/auth/realms
@@ -295,6 +296,7 @@ services:
       - ADMIN_USERNAME=GENNY 
       - ADMIN_PASSWORD=GENNY
       - BULKPULL=FALSE
+      - kafka.bootstrap.servers=kafka:9092
       - CERT_NAME=genny.life
       - DDT_URL=http://alyson7.genny.life:8089
       - DEBUG=TRUE
