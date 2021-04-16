@@ -383,7 +383,6 @@ services:
            ipv4_address: 172.20.0.45
 
 
-<<<<<<< HEAD
   messages:
     image: gennyproject/messages:latest
     container_name:  messages
@@ -412,33 +411,6 @@ services:
            ipv4_address: 172.20.0.49
     restart: always
     command: java   -Dvertx.options.blockedThreadCheckInterval=2147483647  -Xdebug -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n -Djava.net.preferIPv6Addresses=false -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true -Dvertx.hazelcast.config=/cluster.xml -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /service.jar
-=======
-  #messages:
-    #image: gennyproject/messages:latest
-    #container_name:  messages
-    #volumes:
-      #- ./realm:/opt/realm:delegated
-    #env_file:
-      #- ${ENV_FILE}
-    #environment:
-      #- DDTHOST=TRUE
-      #- API_PORT=8089 
-      #- CACHE_API_PORT=8099
-    #ports:
-      #- 8791:8787
-      #- 5709:5709
-      #- 8189:8088
-##      - 8199:8089
-    #depends_on:
-      #qwanda-service:
-        #condition: service_healthy
-      #bridge:
-        #condition: service_healthy
-    #networks:
-      #- mainproxy
-    #restart: always
-    #command: java   -Dvertx.options.blockedThreadCheckInterval=2147483647  -Xdebug -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n -Djava.net.preferIPv6Addresses=false -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true -Dvertx.hazelcast.config=/cluster.xml -DdockerNetworkNames=mainproxy -DdockerServiceNames=gennymain_hazelcast-genny -DhazelcastPeerPort=5701 -jar /service.jar
->>>>>>> badd8f4ef381dc1001a0a34a66115ac3c36a764e
 
   notes:
     image: gennyproject/notes:latest
