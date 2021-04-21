@@ -221,7 +221,7 @@ services:
       test: ["CMD", "curl", "-f", "http://localhost:8080/version"]
       interval: 10s
       timeout: 10s
-      retries: 50    
+      retries: 100    
     restart: unless-stopped
     networks:
       - mainproxy
