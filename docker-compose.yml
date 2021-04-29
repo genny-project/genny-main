@@ -81,9 +81,9 @@ services:
     command: -cache /tmp/imageproxy -addr 0.0.0.0:8080 -scaleUp true
 
 
-  alyson:
-    image: gennyproject/alyson-v9:7.23.0
-    container_name: alyson
+  alyson-v9:
+    image: gennyproject/alyson-v9:internmatch
+    container_name: alyson-v9
     depends_on:
       - bridge
     ports:
@@ -117,9 +117,9 @@ services:
       - 9000:9000
     command: server /data
 
-  abn-lite:
+  genny-proxy:
     image: gennyproject/genny-proxy:latest
-    container_name: abn-lite
+    container_name: genny-proxy 
     user: root
     depends_on:
       qwanda-service:
@@ -328,9 +328,6 @@ services:
       - XMS=3048m
       - JAVA_OPTS=-Xms3048m -Xmx3048m -Djava.net.preferIPv4Stack=true -Dsun.rmi.dgc.client.gcInterval=1800000 -Dsun.rmi.dgc.server.gcInterval=1800000  -server 
       - PDF_GEN_SERVICE_API_URL=http://internmatch.genny.life:7331
-      - TWILIO_ACCOUNT_SID=AC5a5145f9f59482a83d2f72e5f921e219
-      - TWILIO_AUTH_TOKEN=a1b6534a6cb7b8f2d67f3b3eef3758a6
-      - TWILIO_SENDER_MOBILE=+61488839252
     ports:
       - "8380:8080"
       - "8987:8787"
@@ -395,7 +392,7 @@ services:
         #restart: always
 
   shleemy:
-    image: gennyproject/shleemy:latest
+    image: gennyproject/dummy:latest
     container_name: shleemy 
     links:
       - mysql:mysql
@@ -405,7 +402,7 @@ services:
       mysql:
         condition: service_healthy
     environment:
-      - FULL_MYSQL_URL=mysql
+      - MYSQL_URL=mysql
       - MYSQL_DB=gennydb
       - MYSQL_USER=genny
       - MYSQL_PASSWORD=password
