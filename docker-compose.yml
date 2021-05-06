@@ -326,12 +326,13 @@ services:
       - VIRTUAL_PROTO=http
       - XMX=3048m
       - XMS=3048m
-      - JAVA_OPTS=-Xms3048m -Xmx3048m -Djava.net.preferIPv4Stack=true -Dsun.rmi.dgc.client.gcInterval=1800000 -Dsun.rmi.dgc.server.gcInterval=1800000  -server 
+      - JAVA_OPTS=-Xms3048m -Xmx3048m -agentpath:/usr/local/jprofiler12/bin/linux-x64/libjprofilerti.so=nowait -Djava.net.preferIPv4Stack=true -Dsun.rmi.dgc.client.gcInterval=1800000 -Dsun.rmi.dgc.server.gcInterval=1800000  -server 
       - PDF_GEN_SERVICE_API_URL=http://internmatch.genny.life:7331
     ports:
       - "8380:8080"
       - "8987:8787"
       - "10002:10002"
+      - "8849:8849"
   #  healthcheck:
   #    test: ["CMD", "curl", "-f", "http://localhost:8080/version"]
   #    interval: 10s
