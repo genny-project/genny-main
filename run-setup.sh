@@ -350,6 +350,49 @@ while [ "$1" != "" ]; do
             ENV_FILE=$ENV_FILE docker-compose -f docker-compose-hazelcast.yml up -d
             ENV_FILE=$ENV_FILE docker-compose -f docker-compose-hazelcast.yml logs -f bridge rulesservice
             ;;
+        quick )
+            echo "quick started"
+            if [ -z "$project" ]; then
+                echo "Running genny as default"
+                project="genny"
+            fi
+
+            if [ $project == "genny" ] && [ ! -d "$CREDENTIALS_PROJECT-${project}" ]; then
+                cd $CREDENTIALS_DIR
+                genny_repo_url="https://github.com/genny-project/credentials-genny.git"
+                git_output=$(git clone $genny_repo_url 2>&1)
+                repo_name_quotes=$(echo $git_output | sed 's/.*\('\''.*'\''\).*/\1/')
+                repo_name_no_quotes=$(echo "$repo_name_quotes" | tr -d "'")
+                echo "Stored repo path $CREDENTIALS_PROJECT/$repo_name_no_quotes"
+                if [ $repo_name_no_quotes != "$CREDENTIALS-$project" ]; then
+                    mv "$repo_name_no_quotes" $CREDENTIALS-${project}
+                    echo "Changing project name to $CREDENTIALS-$project"
+                fi
+                cd - &> /dev/null
+            fi
+            ./create_genny_env.sh ${ENV_FILE} $ip >& /dev/null
+	echo "GOT TO HERE"
+            if [ -n $project_realm ]; then
+                echo  "PROJECT_REALM=$project_realm" >> $ENV_FILE
+                UPPER_REALM=`echo $project_realm | tr '[:lower:]' '[:upper:]'`
+                echo  "UPPER_REALM=$UPPER_REALM"
+                #   echo  "$UPPER_REALM""_ENV_SIGNATURE_URL=http://signature.genny.life" >> $ENV_FILE
+                #   echo  "$UPPER_REALM""_ENV_UPPY_URL=http://uppy.genny.life" >> $ENV_FILE
+                #  echo  "$UPPER_REALM""_ENV_LAYOUT_PUBLICURL=http://layout-cache.genny.life" >> $ENV_FILE
+            fi
+	echo "GOT TO HERE2"
+            cat "$CREDENTIALS_PROJECT-$project/conf.env" >> $ENV_FILE
+            cat "$CREDENTIALS_PROJECT-$project/StoredCredential" > google_credentials/StoredCredential
+
+            echo "DEBUG=TRUE" >> ${ENV_FILE}
+            echo "DEBUG_SUSPEND=n" >> ${ENV_FILE}
+            # echo "XMX=3048m" >> ${ENV_FILE}
+
+	echo "GOT TO HERE3"
+            echo "SKIP_GOOGLE_DOC_IN_STARTUP=TRUE" >> $ENV_FILE
+
+            ENV_FILE=$ENV_FILE docker-compose up -d
+            ;;
         up | start )
             echo "started"
             if [ -z "$project" ]; then

@@ -8,7 +8,7 @@ sdk use java g21.0.0.r11-grl
 for value in qwanda qwanda-utils bootxport genny-verticle-rules genny-rules qwanda-services    
 do
     echo $value
-    sudo rm -Rf $parentdir/$value/target/*
+    rm -Rf $parentdir/$value/target/*
     cd $parentdir/$value
     mvn $clean install -DskipTests=true
 done
@@ -23,7 +23,7 @@ do
 done
 
 # build package build docker image
-for value in wildfly-qwanda-service wildfly-rulesservice bridge checkrules media-proxy messages notes shleemy
+for value in  bridge checkrules media-proxy messages notes shleemy
 do
     echo $value
     sudo rm -Rf  $parentdir/$value/target/*
@@ -32,6 +32,15 @@ do
     ./build-docker.sh
 done
 
+# build package build docker image
+for value in wildfly-qwanda-service wildfly-rulesservice 
+do
+    echo $value
+    sudo rm -Rf  $parentdir/$value/target/*
+    cd $parentdir/$value
+    mvn $clean package -DskipTests=true
+    ./build-docker-jprofiler.sh
+done
 
 cd $parentdir/genny-main
 echo "Finished Building all"
