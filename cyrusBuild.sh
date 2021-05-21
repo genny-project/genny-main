@@ -1,7 +1,7 @@
 #!/bin/bash
 clean=$1
 parentdir="$(dirname `pwd`)"
-sdk use java g21.0.0.r11-grl
+#sdk use java g21.0.0.r11-grl
 
 
 # clean and build package
