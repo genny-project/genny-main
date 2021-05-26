@@ -8,7 +8,7 @@ parentdir="$(dirname `pwd`)"
 for value in qwanda qwanda-utils bootxport genny-verticle-rules genny-rules qwanda-services    
 do
     echo $value
-    rm -Rf $parentdir/$value/target/*
+#    rm -Rf $parentdir/$value/target/*
     cd $parentdir/$value
     mvn $clean install -DskipTests=true
 done
@@ -19,14 +19,14 @@ for value in wildfly-qwanda-service/qwanda-service-war wildfly-qwanda-service/qw
 do
     echo $value
     cd $parentdir/$value
-    sudo rm -Rf  $parentdir/$value/target/*
+#   rm -Rf  $parentdir/$value/target/*
 done
 
 # build package build docker image
-for value in  bridge checkrules media-proxy messages notes shleemy
+for value in  bridge checkrules  messages notes shleemy
 do
     echo $value
-    sudo rm -Rf  $parentdir/$value/target/*
+#    rm -Rf  $parentdir/$value/target/*
     cd $parentdir/$value
     mvn $clean package -DskipTests=true
     ./build-docker.sh
@@ -36,7 +36,7 @@ done
 for value in wildfly-qwanda-service wildfly-rulesservice 
 do
     echo $value
-    sudo rm -Rf  $parentdir/$value/target/*
+#    sudo rm -Rf  $parentdir/$value/target/*
     cd $parentdir/$value
     mvn $clean package -DskipTests=true
     ./build-docker-jprofiler.sh
