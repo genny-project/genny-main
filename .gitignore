@@ -22,3 +22,4 @@ eclipse/
 data/
 minio/
 tmp/
+**/*.zip
