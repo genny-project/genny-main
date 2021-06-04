@@ -39,7 +39,7 @@ do
 #    sudo rm -Rf  $parentdir/$value/target/*
     cd $parentdir/$value
     mvn $clean package -DskipTests=true
-    ./build-docker-jprofiler.sh
+    ./build-docker.sh
 done
 
 cd $parentdir/genny-main
