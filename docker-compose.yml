@@ -175,6 +175,38 @@ services:
       retries: 10
     restart: unless-stopped
 
+  bootq:
+    depends_on:
+      mysql:
+        condition: service_healthy
+    image: gennyproject/bootq:latest
+    container_name: bootq 
+    volumes:
+      - ./google_credentials:/root/.genny/sheets.googleapis.com-java-quickstart
+    env_file:
+      - ${ENV_FILE}
+    environment:
+      - VIRTUAL_HOST=bootq.*
+      - VIRTUAL_PORT=8080
+      - VIRTUAL_PROTO=http
+      - CERT_NAME=genny.life
+      - DEBUG_SUSPEND=n
+  #    - DDT_URL=http://bridge:8089 
+    ports:
+      - "8480:8080"
+      - "8487:8787"
+    links:
+      - mysql:mysql
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/version"]
+      interval: 10s
+      timeout: 10s
+      retries: 100    
+    restart: unless-stopped
+    networks:
+      - mainproxy
+
+
   qwanda-service:
     depends_on:
       mysql:

@@ -2,7 +2,7 @@
 
 ver=7.0.0
 folders=("qwanda" "qwanda-utils" "genny-verticle-rules" "bootxport" "qwanda-services" 
-        "genny-rules" "wildfly-rulesservice" "wildfly-qwanda-service" "checkrules" "bridge" 
+        "genny-rules" "wildfly-rulesservice" "wildfly-qwanda-service" "checkrules" "bridge"  "notes" "shleemy" "bootq" 
         "media-proxy" "messages" "prj_genny" "prj_internmatch")
 NEWLINE=$'\n'
 
