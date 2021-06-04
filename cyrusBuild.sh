@@ -23,7 +23,7 @@ do
 done
 
 # build package build docker image
-for value in  bridge checkrules  messages notes shleemy
+for value in  bridge checkrules  messages notes shleemy bootq genny-proxy
 do
     echo $value
 #    rm -Rf  $parentdir/$value/target/*
