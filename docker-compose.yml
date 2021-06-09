@@ -191,6 +191,7 @@ services:
       - VIRTUAL_PROTO=http
       - CERT_NAME=genny.life
       - DEBUG_SUSPEND=n
+      - FULL_MYSQL_URL=jdbc:mysql://mysql/gennydb?serverTimezone=UTC
   #    - DDT_URL=http://bridge:8089 
     ports:
       - "8480:8080"
