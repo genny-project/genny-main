@@ -437,7 +437,7 @@ services:
       mysql:
         condition: service_healthy
     environment:
-      - FULL_MYSQL_URL=mysql
+      - FULL_MYSQL_URL=mysql/gennydb
       - MYSQL_URL=mysql
       - MYSQL_DB=gennydb
       - MYSQL_USER=genny
