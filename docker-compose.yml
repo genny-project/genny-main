@@ -426,7 +426,7 @@ services:
         #restart: always
 
   shleemy:
-    image: gennyproject/dummy:latest
+    image: gennyproject/shleemy:latest
     container_name: shleemy 
     links:
       - mysql:mysql
@@ -436,12 +436,13 @@ services:
       mysql:
         condition: service_healthy
     environment:
+      - FULL_MYSQL_URL=mysql
       - MYSQL_URL=mysql
       - MYSQL_DB=gennydb
       - MYSQL_USER=genny
       - MYSQL_PASSWORD=password
       - BRIDGE_URL=bridge.genny.life
-      - SHLEEMY_URL=http://alyson7.genny.life:8199
+      - SHLEEMY_URL=http://alyson7.genny.life:8197
     ports:
       - "8197:8080"
     networks:
