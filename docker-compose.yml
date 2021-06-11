@@ -191,6 +191,7 @@ services:
       - VIRTUAL_PROTO=http
       - CERT_NAME=genny.life
       - DEBUG_SUSPEND=n
+      - FULL_MYSQL_URL=jdbc:mysql://mysql/gennydb?serverTimezone=UTC
   #    - DDT_URL=http://bridge:8089 
     ports:
       - "8480:8080"
@@ -235,7 +236,7 @@ services:
       - LOAD_DDT_IN_STARTUP=TRUE
       - SEARCH_ALT=TRUE
       - SKIP_GITHUB_IN_STARTUP=TRUE
-      - SKIP_GOOGLE_DOC_IN_STARTUP=FALSE
+      - SKIP_GOOGLE_DOC_IN_STARTUP=TRUE
       - DEBUG=TRUE
       - DEBUG_SUSPEND=n
       - XMX=2048m
@@ -426,7 +427,7 @@ services:
         #restart: always
 
   shleemy:
-    image: gennyproject/dummy:latest
+    image: gennyproject/shleemy:latest
     container_name: shleemy 
     links:
       - mysql:mysql
@@ -436,12 +437,13 @@ services:
       mysql:
         condition: service_healthy
     environment:
+      - FULL_MYSQL_URL=mysql/gennydb
       - MYSQL_URL=mysql
       - MYSQL_DB=gennydb
       - MYSQL_USER=genny
       - MYSQL_PASSWORD=password
       - BRIDGE_URL=bridge.genny.life
-      - SHLEEMY_URL=http://alyson7.genny.life:8199
+      - SHLEEMY_URL=http://alyson7.genny.life:8197
     ports:
       - "8197:8080"
     networks:

@@ -44,4 +44,8 @@ done
 
 cd $parentdir/genny-main
 echo "Finished Building all"
-say "Completed building all"
+
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    os_type="mac"
+    say "Completed building all"
+fi
