@@ -147,7 +147,8 @@ services:
     command: java -jar /service.jar
 
   mysql:
-    image:  gennyproject/mysql:8x 
+    image:  mysql:8.0.25 
+#    image:  gennyproject/mysql:8x 
     container_name: mysql
     environment:
       - MYSQL_URL=mysql
@@ -168,7 +169,7 @@ services:
       - mainproxy
     ports:
       - 3310:3306
-    command: --sql_mode=""
+    command: --sql_mode="" --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --default_time_zone=UTC
     healthcheck:
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
       timeout: 20s
@@ -195,7 +196,7 @@ services:
   #    - DDT_URL=http://bridge:8089 
     ports:
       - "8480:8080"
-      - "8487:8787"
+      - "8487:5005"
     links:
       - mysql:mysql
     healthcheck:
@@ -236,7 +237,7 @@ services:
       - LOAD_DDT_IN_STARTUP=TRUE
       - SEARCH_ALT=TRUE
       - SKIP_GITHUB_IN_STARTUP=TRUE
-      - SKIP_GOOGLE_DOC_IN_STARTUP=TRUE
+      - SKIP_GOOGLE_DOC_IN_STARTUP=FALSE
       - DEBUG=TRUE
       - DEBUG_SUSPEND=n
       - XMX=2048m
