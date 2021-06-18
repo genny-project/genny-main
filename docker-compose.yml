@@ -169,7 +169,7 @@ services:
       - mainproxy
     ports:
       - 3310:3306
-    command: --sql_mode="" --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --default_time_zone=UTC
+    command: --sql_mode="" --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --default-time-zone="+00:00"
     healthcheck:
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
       timeout: 20s
