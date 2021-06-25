@@ -41,7 +41,7 @@ repos=("genny-main" "qwanda" "qwanda-utils" "bootxport" "genny-verticle-rules" "
 
 repos2=("alyson" "alyson-v9" "gennyteer")
 
-repos3=("prj_genny" "prj_stt" "prj_internmatch" "prj_mentormatch")
+repos3=("prj_genny" "prj_stt" "prj_internmatch" "prj_mentormatch" "genny-charts")
 
 # check jq
 which jq
