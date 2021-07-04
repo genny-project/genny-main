@@ -460,6 +460,21 @@ services:
       - mainproxy
 
 
+  mysqld-exporter:
+    #image: quay.io/prometheus/mysqld-exporter
+    image: prom/mysqld-exporter:latest
+    command:
+     - '--collect.info_schema.tablestats'
+    container_name: mysqld-exporter
+    environment:
+      # add the mysql database here
+      - DATA_SOURCE_NAME=exporter:exporter@(mysql:3306)/
+    ports:
+      - 9104:9104
+    networks:
+      - mainproxy
+
+
 volumes:
   abn_tmp:
   mysql_data:
