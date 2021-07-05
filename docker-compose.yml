@@ -81,9 +81,9 @@ services:
     command: -cache /tmp/imageproxy -addr 0.0.0.0:8080 -scaleUp true
 
 
-  alyson-v9:
-    image: gennyproject/alyson-v9:latest
-    container_name: alyson-v9
+  alyson:
+    image: gennyproject/alyson:latest
+    container_name: alyson
     depends_on:
       - bridge
     ports:
