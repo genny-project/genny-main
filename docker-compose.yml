@@ -81,9 +81,9 @@ services:
     command: -cache /tmp/imageproxy -addr 0.0.0.0:8080 -scaleUp true
 
 
-  alyson-v9:
-    image: gennyproject/alyson-v9:latest
-    container_name: alyson-v9
+  alyson:
+    image: gennyproject/alyson:latest
+    container_name: alyson
     depends_on:
       - bridge
     ports:
@@ -456,6 +456,21 @@ services:
     container_name: camelot-pdfgenerator
     ports:
       - "7331:7331"
+    networks:
+      - mainproxy
+
+
+  mysqld-exporter:
+    #image: quay.io/prometheus/mysqld-exporter
+    image: prom/mysqld-exporter:latest
+    command:
+     - '--collect.info_schema.tablestats'
+    container_name: mysqld-exporter
+    environment:
+      # add the mysql database here
+      - DATA_SOURCE_NAME=exporter:exporter@(mysql:3306)/
+    ports:
+      - 9104:9104
     networks:
       - mainproxy
 
