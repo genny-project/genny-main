@@ -61,3 +61,31 @@ To run: (simple)
 
 run the docker versions on your local machine -> ./run.sh <project> up
 
+
+# Genny Documentation
+  
+## Buckets
+  
+To establish a bucket page in Genny, the following must be set up:
+  
+1. A set of SearchEntitys must be built and placed in the `GenerateResources/GenerateSearches/Buckets` rulegroup directory.
+  
+2. Inside the file `GenerateResources/GenerateAsks/GENERATE_BUCKET_CODES.drl`, you must provide a list for caching of these search codes in the order of buckets from left to right.
+  
+3. In `INIT_GENERATE_CAPABILITIES.drl` you must create a seperate capability code for each of these search codes and assign viewing capabilities to the required roles for each of these capability codes
+  
+Example Role:
+```java
+capabilityUtils.addCapabilityToRole(role, "SBE_AVAILABLE_INTERNS", CapabilityMode.VIEW);
+```
+  
+## Add Items
+  
+2. Inside the file `GenerateResources/GenerateAsks/GENERATE_ADD_ITEMS.drl`, you must provide a LinkedHashmap for caching that contains the role (Prefixed with "QA" if quck add) and the corresponding text to display.
+  
+3. In `INIT_GENERATE_CAPABILITIES.drl` there must exist a capability code for each type i in the system (E.g `TYPE_INTERN`), and ADD capability must be provided for  the required roles.
+  
+Example Role:
+```java
+capabilityUtils.addCapabilityToRole(role, "TYPE_INTERN", CapabilityMode.ADD);
+```
