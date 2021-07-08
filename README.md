@@ -98,7 +98,7 @@ capabilityUtils.addCapabilityToRole(role, "SBE_AVAILABLE_INTERNS", CapabilityMod
   
 2. Inside the file `GenerateResources/GenerateAsks/GENERATE_ADD_ITEMS.drl`, you must provide a LinkedHashmap for caching that contains the role (Prefixed with "QA" if quck add) and the corresponding text to display.
   
-3. In `INIT_GENERATE_CAPABILITIES.drl` there must exist a capability code for each type i in the system (E.g `TYPE_INTERN`), and ADD capability must be provided for  the required roles.
+3. In `INIT_GENERATE_CAPABILITIES.drl` there must exist a capability code for each type in the system (E.g `TYPE_INTERN`), and ADD capability must be provided for  the required roles.
   
 Example Role:
 ```java
