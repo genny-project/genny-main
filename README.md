@@ -89,7 +89,7 @@ To establish a bucket page in Genny, the following must be set up:
   
 3. In `INIT_GENERATE_CAPABILITIES.drl` you must create a seperate capability code for each of these search codes and assign viewing capabilities to the required roles for each of these capability codes
   
-Example Role:
+Example in Role:
 ```java
 capabilityUtils.addCapabilityToRole(role, "SBE_AVAILABLE_INTERNS", CapabilityMode.VIEW);
 ```
@@ -100,7 +100,7 @@ capabilityUtils.addCapabilityToRole(role, "SBE_AVAILABLE_INTERNS", CapabilityMod
   
 3. In `INIT_GENERATE_CAPABILITIES.drl` there must exist a capability code for each type in the system (E.g `TYPE_INTERN`), and ADD capability must be provided for  the required roles.
   
-Example Role:
+Example in Role:
 ```java
 capabilityUtils.addCapabilityToRole(role, "TYPE_INTERN", CapabilityMode.ADD);
 ```
