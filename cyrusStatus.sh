@@ -1,7 +1,7 @@
 #!/bin/bash
 
 folders=("qwanda" "qwanda-utils" "genny-verticle-rules" "bootxport" "qwanda-services" 
-        "genny-rules" "wildfly-rulesservice" "wildfly-qwanda-service" "checkrules" "bridge"  "notes" "shleemy" "bootq" 
+        "genny-rules" "wildfly-rulesservice" "wildfly-qwanda-service" "checkrules" "bridge"  "notes" "shleemy" "bootq" "genny-proxy"
         "media-proxy" "messages" "prj_genny" "prj_internmatch")
 NEWLINE=$'\n'
 
