@@ -187,13 +187,10 @@ services:
     env_file:
       - ${ENV_FILE}
     environment:
-      - VIRTUAL_HOST=bootq.*
-      - VIRTUAL_PORT=8080
-      - VIRTUAL_PROTO=http
-      - CERT_NAME=genny.life
-      - DEBUG_SUSPEND=n
-      - FULL_MYSQL_URL=jdbc:mysql://mysql/gennydb?serverTimezone=UTC
-  #    - DDT_URL=http://bridge:8089 
+      - CLEANUP_TASK_AND_BEATTRFORM=false
+      - MYSQL_USER=genny
+      - MYSQL_PASSWORD=password
+      - FULL_MYSQL_URL=mysql/gennydb?serverTimezone=UTC
     ports:
       - "8480:8080"
       - "8487:5005"
