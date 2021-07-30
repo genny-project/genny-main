@@ -193,10 +193,11 @@ services:
       - CERT_NAME=genny.life
       - DEBUG_SUSPEND=n
       - CLEANUP_TASK_AND_BEATTRFORM="false"
-      - FULL_MYSQL_URL=mysql/gennydb?serverTimezone=UTC
       - GOOGLE_SVC_ACC_PATH=/root/.genny/sheets.googleapis.com-java-quickstart/token-secret-service-account.json
-      - MYSQL_PASSWORD=password
+      - CLEANUP_TASK_AND_BEATTRFORM=false
       - MYSQL_USER=genny
+      - MYSQL_PASSWORD=password
+      - FULL_MYSQL_URL=mysql/gennydb?serverTimezone=UTC
     ports:
       - "8480:8080"
       - "8487:5005"
