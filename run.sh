@@ -1,5 +1,5 @@
 #!/bin/bash
-jdk 1.8
+#jdk 1.8
 #find all the projects
 rm -Rf ./rules/prj_*
 #cp -rp ../prj_genny/rules/rulesCurrent ./rules/

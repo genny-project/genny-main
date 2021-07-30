@@ -192,8 +192,11 @@ services:
       - VIRTUAL_PROTO=http
       - CERT_NAME=genny.life
       - DEBUG_SUSPEND=n
-      - FULL_MYSQL_URL=jdbc:mysql://mysql/gennydb?serverTimezone=UTC
-  #    - DDT_URL=http://bridge:8089 
+      - CLEANUP_TASK_AND_BEATTRFORM="false"
+      - FULL_MYSQL_URL=mysql/gennydb?serverTimezone=UTC
+      - GOOGLE_SVC_ACC_PATH=/root/.genny/sheets.googleapis.com-java-quickstart/token-secret-service-account.json
+      - MYSQL_PASSWORD=password
+      - MYSQL_USER=genny
     ports:
       - "8480:8080"
       - "8487:5005"
@@ -296,7 +299,7 @@ services:
       - mainproxy
     ports:
       - 8088:8088
-      - 8790:8787
+      - 8790:5005
       - 8089:8089
       - 5701:5701
       - 10001:10001
