@@ -6,7 +6,7 @@ fi
 
 parentdir="$(dirname `pwd`)"
 
-for i in alyson qwanda qwanda-utils bootxport genny-verticle-rules genny-rules qwanda-services wildfly wildfly-qwanda-service wildfly-rulesservice bridge checkrules prj_genny prj_internmatch prj_mentormatch prj_stt  media-proxy messages notes shleemy genny-proxy genny-main bootq
+for i in alyson qwanda qwanda-utils bootxport genny-verticle-rules genny-rules qwanda-services wildfly wildfly-qwanda-service wildfly-rulesservice bridge checkrules prj_genny prj_internmatch prj_mentormatch prj_stt  media-proxy messages notes shleemy genny-proxy genny-main bootq sienna 
 do
     echo $i
     cd $parentdir/$i
