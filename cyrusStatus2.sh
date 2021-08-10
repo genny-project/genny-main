@@ -19,4 +19,7 @@ cd ../shleemy;echo $PWD;git branch;git status| grep '*'
 cd ../media-proxy;echo $PWD;git branch;git status| grep '*'
 cd ../messages;echo $PWD;git branch;git status| grep '*'
 cd ../prj_genny;echo $PWD;git branch;git status| grep '*'
+cd ../prj_internmatch;echo $PWD;git branch;git status| grep '*'
+cd ../prj_mentormatch;echo $PWD;git branch;git status| grep '*'
+cd ../prj_stt;echo $PWD;git branch;git status| grep '*'
 cd ../genny-main
