@@ -198,6 +198,7 @@ services:
       - MYSQL_USER=genny
       - MYSQL_PASSWORD=password
       - FULL_MYSQL_URL=mysql/gennydb?serverTimezone=UTC
+      - TIMEOUT=2500
     ports:
       - "8480:8080"
       - "8487:5005"
