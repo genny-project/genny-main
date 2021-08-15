@@ -18,7 +18,7 @@ db=$(ls tmp)
 #sed -i '/@@GLOBAL.GTID_PURGED=/d'    tmp/$db
 #sed -i '/@MYSQLDUMP_TEMP_LOG_BIN/d'   tmp/$db
 
-mysql -h $ip -u genny --password=password  gennydb  -e "drop database gennydb;"
-mysql -h $ip -u genny --password=password < tmp/$db
+mysql -h $ip -P 3310 -u genny --password=password  gennydb  -e "drop database gennydb;"
+mysql -h $ip -P 3310 -u genny --password=password < tmp/$db
 
 rm $latestBackup
