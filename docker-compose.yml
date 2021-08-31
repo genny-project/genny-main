@@ -268,6 +268,10 @@ services:
     depends_on:
       qwanda-service:
         condition: service_healthy
+      kafka:
+        condition: service_healthy
+      wildfly-rulesservice:
+        condition: service_healthy
     container_name: bridge
     volumes:
       - ./realm:/opt/realm:delegated
@@ -322,6 +326,8 @@ services:
       bridge:
         condition: service_healthy
       mysql:
+        condition: service_healthy
+      kafka:
         condition: service_healthy
     container_name: wildfly-rulesservice
     env_file:
@@ -416,6 +422,8 @@ services:
         condition: service_healthy
       mysql:
         condition: service_healthy
+      kafka:
+        condition: service_healthy
     environment:
       - MYSQL_URL=mysql
       - MYSQL_DB=gennydb
@@ -438,6 +446,8 @@ services:
       bridge:
         condition: service_healthy
       mysql:
+        condition: service_healthy
+      kafka:
         condition: service_healthy
     environment:
       - FULL_MYSQL_URL=mysql/gennydb
