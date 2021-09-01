@@ -323,8 +323,6 @@ services:
     depends_on:
       qwanda-service:
         condition: service_healthy
-      bridge:
-        condition: service_healthy
       mysql:
         condition: service_healthy
       kafka:
