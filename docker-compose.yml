@@ -33,6 +33,13 @@ services:
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
       KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    healthcheck:
+      test: ["CMD", "nc", "-vz", "localhost", "9092"]
+#      test:
+#        ["CMD", "kafka-topics.sh", "--list", "--zookeeper", "zookeeper:2181"]
+      interval: 30s
+      timeout: 10s
+      retries: 4
 
   infinispan:
     image: quay.io/infinispan/server-native:11.0
@@ -179,6 +186,8 @@ services:
   bootq:
     depends_on:
       mysql:
+        condition: service_healthy
+      kafka:
         condition: service_healthy
     image: gennyproject/bootq:latest
     container_name: bootq 
