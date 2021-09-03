@@ -218,7 +218,7 @@ services:
     links:
       - mysql:mysql
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/version"]
+      test: ["CMD", "curl", "-f", "http://localhost:8080/bootq/version"]
       interval: 10s
       timeout: 10s
       retries: 100    
