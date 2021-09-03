@@ -148,18 +148,18 @@ services:
     ports:
       - 8483:8080
 
-  media-proxy:
-    image: gennyproject/media-proxy:latest
-    container_name: media-proxy
-    env_file:
-      - ${ENV_FILE}
-    environment:
-      - KEYCLOAKURL=https://keycloak.gada.io/auth/realms
-    networks:
-      - mainproxy
-    ports:
-      - 9898:9898
-    command: java -jar /service.jar
+#  media-proxy:
+#    image: gennyproject/media-proxy:latest
+#    container_name: media-proxy
+#    env_file:
+#      - ${ENV_FILE}
+#    environment:
+#      - KEYCLOAKURL=https://keycloak.gada.io/auth/realms
+#    networks:
+#      - mainproxy
+#    ports:
+#      - 9898:9898
+#    command: java -jar /service.jar
 
   mysql:
     image:  mysql:8.0.25 
@@ -293,8 +293,8 @@ services:
         condition: service_healthy
       infinispan:
         condition: service_healthy
-      wildfly-rulesservice:
-        condition: service_healthy
+#      wildfly-rulesservice:
+#        condition: service_healthy
     container_name: bridge
     volumes:
       - ./realm:/opt/realm:delegated
