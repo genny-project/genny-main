@@ -136,9 +136,9 @@ services:
     image: gennyproject/genny-proxy:latest
     container_name: genny-proxy 
     user: root
-    depends_on:
-      qwanda-service:
-        condition: service_healthy
+#    depends_on:
+#      qwanda-service:
+#        condition: service_healthy
     volumes:
       - abn_tmp:/tmp/
     environment:
@@ -288,8 +288,8 @@ services:
   bridge:
     image: gennyproject/bridge:latest
     depends_on:
-      qwanda-service:
-        condition: service_healthy
+#      qwanda-service:
+#        condition: service_healthy
       kafka:
         condition: service_healthy
       infinispan:
