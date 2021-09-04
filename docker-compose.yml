@@ -266,9 +266,11 @@ services:
       - DEBUG=TRUE
       - DEBUG_SUSPEND=n
       - XMX=2048m
-  #    - DEV_MODE=TRUE
       - DDTHOST=TRUE
+      - DISABLE_BATCH_LOADING=TRUE
+  #    - DEV_MODE=TRUE
   #    - DDT_URL=http://bridge:8089 
+
     ports:
       - "8280:8080"
       - "8887:8787"
