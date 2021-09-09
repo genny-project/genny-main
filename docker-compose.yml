@@ -262,12 +262,12 @@ services:
       - LOAD_DDT_IN_STARTUP=TRUE
       - SEARCH_ALT=TRUE
       - SKIP_GITHUB_IN_STARTUP=TRUE
-      - SKIP_GOOGLE_DOC_IN_STARTUP=TRUE
+        #- SKIP_GOOGLE_DOC_IN_STARTUP=TRUE
       - DEBUG=TRUE
       - DEBUG_SUSPEND=n
       - XMX=2048m
       - DDTHOST=TRUE
-      - DISABLE_BATCH_LOADING=TRUE
+        #  - DISABLE_BATCH_LOADING=TRUE
   #    - DEV_MODE=TRUE
   #    - DDT_URL=http://bridge:8089 
 
@@ -398,6 +398,7 @@ services:
       - JAVA_OPTS=-Xms3048m -Xmx3048m  -Djava.net.preferIPv4Stack=true -Dsun.rmi.dgc.client.gcInterval=1800000 -Dsun.rmi.dgc.server.gcInterval=1800000  -server 
       #- JAVA_OPTS=-Xms3048m -Xmx3048m -agentpath:/usr/local/jprofiler12.0.2/bin/linux-x64/libjprofilerti.so=nowait -Djava.net.preferIPv4Stack=true -Dsun.rmi.dgc.client.gcInterval=1800000 -Dsun.rmi.dgc.server.gcInterval=1800000  -server 
       - PDF_GEN_SERVICE_API_URL=http://internmatch.genny.life:7331
+      - REACT_APP_QWANDA_API_URL=http://qwanda-service:8080
     ports:
       - "8380:8080"
       - "8987:8787"
