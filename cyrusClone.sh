@@ -15,12 +15,11 @@ do
     git clone -b ${ver} https://github.com/genny-project/$value
 done
 
-for value in prj_internmatch
+for value in prj_internmatch prj_mentormatch prj_stt
 do
     echo $value
     git clone -b ${ver} git@github.com:OutcomeLife/$value
 done
 
-git clone -b ${ver} git@github.com:OutcomeLife/prj_stt
 
 cd genny-main
