@@ -1,6 +1,6 @@
 #!/bin/bash
 becode=$1
-ip='127.0.0.1'
+ip='10.123.123.123'
 underline='_'
 
 echo $becode
@@ -13,13 +13,13 @@ UNDERLINEPOSITION=`strindex "$becode" "$underline"`
 
 if [[ $becode == *"@"* ]]; then
   echo "It's an email"
-      becode=`mysql -P 3310 -h 127.0.0.1 -u genny --password=password -s  gennydb -e "select baseentitycode  from baseentity_attribute where attributeCode='PRI_EMAIL' and baseentitycode like 'PER_%' and  valueString like '%${becode}%' LIMIT 1;"`
+      becode=`mysql -P 3310 -h ${ip} -u genny --password=password -s  gennydb -e "select baseentitycode  from baseentity_attribute where attributeCode='PRI_EMAIL' and baseentitycode like 'PER_%' and  valueString like '%${becode}%' LIMIT 1;"`
 else
   if  [[ $UNDERLINEPOSITION  == 4 ]]; then
        echo "It's a be code"
   else
        echo "It's a person lookup ${becode}"
-      becode=`mysql -P 3310 -h 127.0.0.1 -u genny --password=password -s  gennydb -e "select baseentitycode  from baseentity_attribute where attributeCode='PRI_NAME' and baseentitycode like 'PER_%' and  valueString like \"%${becode}%\" LIMIT 1;"`
+      becode=`mysql -P 3310 -h ${ip} -u genny --password=password -s  gennydb -e "select baseentitycode  from baseentity_attribute where attributeCode='PRI_NAME' and baseentitycode like 'PER_%' and  valueString like '%${becode}%' LIMIT 1;"`
   fi
 fi
 
