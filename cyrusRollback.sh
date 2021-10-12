@@ -1,6 +1,6 @@
 #!/bin/bash
-dt="2020-11-19 12:35"
-ver=7.6.0
+dt="2021-10-09 12:35"
+ver=9.7.0
 cd ../qwanda
 git stash;git checkout `git rev-list -n 1 --first-parent --before="${dt}" ${ver}`
 cd ../qwanda-utils

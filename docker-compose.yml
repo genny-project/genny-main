@@ -2,6 +2,8 @@ version: '2.3'
 
 services:
   zookeeper:
+    hostname: zookeeper 
+    container_name: zookeeper 
     image: strimzi/kafka:latest-kafka-2.5.0
     command: [
       "sh", "-c",
@@ -33,6 +35,9 @@ services:
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
       KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_NUM_PARTITIONS: 3
+      KAFKA_GROUP_MIN_SESSION_TIMEOUT_MS: 250
+      #KAFKA_GROUP_MIN_SESSION_TIMEOUT_MS: 100
     healthcheck:
       test: ["CMD", "nc", "-vz", "localhost", "9092"]
 #      test:
@@ -41,6 +46,17 @@ services:
       timeout: 10s
       start_period: 5s
       retries: 4
+
+#  ksqldb-cli:
+#    image: confluentinc/ksqldb-cli:0.21.0
+#    container_name: ksqldb-cli
+#    depends_on:
+#      - broker
+#      - ksqldb-server
+#    entrypoint: /bin/sh
+#    tty: true
+#    networks:
+#      - mainproxy
 
   infinispan:
     image: infinispan/server:13.0
@@ -536,6 +552,7 @@ volumes:
     driver: local
 networks:
   mainproxy:
+    name: mp
     driver: bridge
 
 
