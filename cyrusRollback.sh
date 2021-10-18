@@ -1,6 +1,6 @@
 #!/bin/bash
-dt="2021-10-09 12:35"
-ver=9.7.0
+dt="2020-11-19 12:35"
+ver=9.9.0
 cd ../qwanda
 git stash;git checkout `git rev-list -n 1 --first-parent --before="${dt}" ${ver}`
 cd ../qwanda-utils
@@ -16,6 +16,8 @@ git stash;git checkout `git rev-list -n 1 --first-parent --before="${dt}" ${ver}
 cd ../wildfly-qwanda-service
 git stash;git checkout `git rev-list -n 1 --first-parent --before="${dt}" ${ver}`
 cd ../wildfly-rulesservice
+git stash;git checkout `git rev-list -n 1 --first-parent --before="${dt}" ${ver}`
+cd ../lauchy
 git stash;git checkout `git rev-list -n 1 --first-parent --before="${dt}" ${ver}`
 cd ../bridge
 git stash;git checkout `git rev-list -n 1 --first-parent --before="${dt}" ${ver}`
@@ -33,4 +35,5 @@ for i in ` find .. -mindepth 1 -maxdepth 1 -type d | grep prj  | awk -F "/" '{ p
    cd ../genny-main
    echo $i
 done
+
 

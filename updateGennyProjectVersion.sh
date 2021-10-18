@@ -37,11 +37,15 @@ fi
 
 repos=("genny-main" "qwanda" "qwanda-utils" "bootxport" "genny-verticle-rules" "qwanda-services"
 "genny-rules" "wildfly" "wildfly-rulesservice" "wildfly-qwanda-service" "checkrules"  "bridge" "notes" "shleemy"
+<<<<<<< HEAD
 "media-proxy" "messages" "genny-proxy" "bootq")
+=======
+"media-proxy" "messages" "genny-proxy" "bootq" "prj_genny")
+>>>>>>> origin/ptest
 
-repos2=("alyson" "alyson-v9" "gennyteer")
+repos2=("alyson" "alyson-v9")
 
-repos3=("prj_genny" "prj_stt" "prj_internmatch" "prj_mentormatch" "genny-charts")
+repos3=("prj_stt" "prj_internmatch" "prj_mentormatch" "genny-charts" "gennyteer")
 
 # check jq
 which jq
