@@ -378,6 +378,8 @@ services:
   lauchy:
     image: gennyproject/lauchy:latest
     depends_on:
+      qwanda-service:
+        condition: service_healthy
       kafka:
         condition: service_healthy
     container_name: lauchy 
@@ -392,7 +394,6 @@ services:
       - VIRTUAL_PORT=8080
       - KAFKA_URL=kafka:9092
       - CERT_NAME=genny.life
-      - CACHE_SERVER_NAME=infinispan
       - GENNY_SHOW_VALUES=true
     networks:
       - mainproxy
@@ -400,7 +401,7 @@ services:
 #      - 8988:8080
   #  command: java  -jar /deployments/service.jar
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/version"]
+      test: ["CMD", "curl", "-f", "http://localhost:8080"]
       interval: 10s
       timeout: 10s
       retries: 30
