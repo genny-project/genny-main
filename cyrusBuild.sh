@@ -1,4 +1,6 @@
 #!/bin/bash
+set -e
+
 clean=$1
 parentdir="$(dirname `pwd`)"
 #sdk use java g21.0.0.r11-grl
@@ -15,20 +17,28 @@ done
 
 
 #clean up package only
-for value in wildfly-qwanda-service/qwanda-service-war wildfly-qwanda-service/qwanda-service-ear wildfly-rulesservice/rulesservice-war wildfly-rulesservice/rulesservice-ear 
-do
-    echo $value
-    cd $parentdir/$value
-#   rm -Rf  $parentdir/$value/target/*
-done
+#for value in wildfly-qwanda-service/qwanda-service-war wildfly-qwanda-service/qwanda-service-ear wildfly-rulesservice/rulesservice-war wildfly-rulesservice/rulesservice-ear 
+#do
+#    echo $value
+#    cd $parentdir/$value
+##   rm -Rf  $parentdir/$value/target/*
+#done
 
 # build package build docker image
-for value in  lauchy bridge checkrules  messages notes shleemy bootq genny-proxy sienna 
+for value in    checkrules  messages notes shleemy bootq genny-proxy  
 do
     echo $value
 #    rm -Rf  $parentdir/$value/target/*
     cd $parentdir/$value
-    mvn $clean package -DskipTests=true
+    ./mvnw  $clean  package -DskipTests=true
+    ./build-docker.sh
+done
+
+#Quarkus 2.3.0 
+for value in  bridge lauchy 
+do
+    echo $value
+    cd $parentdir/$value
     ./build-docker.sh
 done
 
