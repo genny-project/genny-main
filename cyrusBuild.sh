@@ -30,7 +30,7 @@ do
     echo $value
 #    rm -Rf  $parentdir/$value/target/*
     cd $parentdir/$value
-    ./mvnw  $clean  package -DskipTests=true
+    mvn  $clean  package -DskipTests=true
     ./build-docker.sh
 done
 

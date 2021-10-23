@@ -395,6 +395,7 @@ services:
       - KAFKA_URL=kafka:9092
       - CERT_NAME=genny.life
       - GENNY_SHOW_VALUES=true
+      - GENNY_ENABLE_BLACKLIST=false
     networks:
       - mainproxy
 #    ports:
