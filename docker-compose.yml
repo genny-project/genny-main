@@ -407,6 +407,40 @@ services:
       timeout: 10s
       retries: 30
 
+  dropkick:
+    image: gennyproject/dropkick:latest
+    depends_on:
+      qwanda-service:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+    container_name:  dropkick 
+    volumes:
+      - ./realm:/opt/realm:delegated
+    env_file:
+      - ${ENV_FILE}
+    environment:
+      - ADMIN_USERNAME=GENNY
+      - ADMIN_PASSWORD=GENNY
+      - VIRTUAL_HOST=dropkick.genny.life
+      - VIRTUAL_PORT=8080
+      - KAFKA_URL=kafka:9092
+      - CERT_NAME=genny.life
+      - GENNY_SHOW_VALUES=true
+      - GENNY_SERVICE_USERNAME=service
+      - GENNY_KEYCLOAK_URL=https://keycloak-office.gada.io
+      - GENNY_API_URL=http://qwanda-service:8080
+    networks:
+      - mainproxy
+#    ports:
+#      - 8988:8080
+  #  command: java  -jar /deployments/service.jar
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080"]
+      interval: 10s
+      timeout: 10s
+      retries: 30
+
   wildfly-rulesservice:
     image: gennyproject/wildfly-rulesservice:latest
     depends_on:
