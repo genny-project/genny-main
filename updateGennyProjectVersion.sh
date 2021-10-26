@@ -37,7 +37,7 @@ fi
 
 repos=("genny-main" "qwanda" "qwanda-utils" "bootxport" "genny-verticle-rules" "qwanda-services"
 "genny-rules" "wildfly" "wildfly-rulesservice" "wildfly-qwanda-service" "checkrules"  "bridge" "notes" "shleemy"
-"media-proxy" "messages" "genny-proxy" "bootq" "prj_genny")
+"media-proxy" "messages" "genny-proxy" "bootq" "prj_genny" "dropkick" "lauchy")
 
 repos2=("alyson" "alyson-v9")
 
