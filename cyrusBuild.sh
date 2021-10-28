@@ -35,12 +35,12 @@ do
 done
 
 #Quarkus 2.3.0 
-for value in  bridge lauchy 
-do
-    echo $value
-    cd $parentdir/$value
-    ./build-docker.sh
-done
+#for value in  bridge lauchy 
+#do
+#    echo $value
+#    cd $parentdir/$value
+#    ./build-docker.sh
+#done
 
 # build package build docker image
 for value in wildfly-qwanda-service wildfly-rulesservice 

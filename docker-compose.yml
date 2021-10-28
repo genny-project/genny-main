@@ -120,7 +120,7 @@ services:
     depends_on:
       - bridge
     ports:
-      - "7000:8080"
+      - "7010:8080"
     environment:
       - VIRTUAL_HOST=internmatch.genny.life,stt.genny.life,alyson.*
       - VIRTUAL_PORT=8080
@@ -235,6 +235,7 @@ services:
       - MYSQL_PASSWORD=password
       - FULL_MYSQL_URL=mysql/gennydb?serverTimezone=UTC
       - REACT_APP_QWANDA_API_URL=http://qwanda-service:8080
+      - TIMEOUT=4800
     ports:
       - "8480:8080"
       - "8487:5005"
