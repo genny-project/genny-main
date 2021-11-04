@@ -290,7 +290,7 @@ services:
       - DEBUG_SUSPEND=n
       - XMX=2048m
       - DDTHOST=TRUE
-      - DISABLE_BATCH_LOADING=TRUE
+      - DISABLE_BATCH_LOADING=FALSE
   #    - DEV_MODE=TRUE
   #    - DDT_URL=http://bridge:8089 
 
@@ -352,6 +352,7 @@ services:
       - MODE_GZIP=TRUE
       - ZIP_MIN_THRESHOLD_BYTES=8000000
       - MEDIA_PROXY_URL=https://alyson.genny.life/web/public
+      - SHOW_OUTGOING_JSON=TRUE
   #    - DDT_URL=http://bridge:8089
   #    - DEV_MODE=TRUE
   #    - GENNYDEV=TRUE
