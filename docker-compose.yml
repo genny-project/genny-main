@@ -129,7 +129,7 @@ services:
       - CORS_URLS=http://10.123.123.123:3000|http://internmatch.genny.life:3000|
       - realm=internmatch
       - ENV_GOOGLE_MAPS_APIKEY=AIzaSyBbZ0cT40AScAqSeTi_tEcnzAgeW1jTCUg
-      - ENV_KEYCLOAK_REDIRECTURI=https://keycloak-office.gada.io/auth
+      - ENV_KEYCLOAK_REDIRECTURI=https://keycloak.gada.io/auth
     env_file:
       - ${ENV_FILE}
     networks:
@@ -177,7 +177,7 @@ services:
     env_file:
       - ${ENV_FILE}
     environment:
-      - KEYCLOAKURL=https://keycloak-office.gada.io/auth/realms
+      - KEYCLOAKURL=https://keycloak.gada.io/auth/realms
     networks:
       - mainproxy
     ports:
@@ -343,7 +343,7 @@ services:
       - KAFKA_URL=kafka:9092
       - VIRTUAL_PROTO=http
       - CERT_NAME=genny.life
-      - KEYCLOAKURL=https://keycloak-office.gada.io/auth/realms
+      - KEYCLOAKURL=https://keycloak.gada.io/auth/realms
       - CACHE_SERVER_NAME=infinispan
       - DDTHOST=TRUE
       - API_PORT=8088
@@ -430,7 +430,7 @@ services:
       - CERT_NAME=genny.life
       - GENNY_SHOW_VALUES=true
       - GENNY_SERVICE_USERNAME=service
-      - GENNY_KEYCLOAK_URL=https://keycloak-office.gada.io
+      - GENNY_KEYCLOAK_URL=https://keycloak.gada.io
       - GENNY_API_URL=http://qwanda-service:8080
     networks:
       - mainproxy
