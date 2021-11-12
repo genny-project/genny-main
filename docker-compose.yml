@@ -115,7 +115,7 @@ services:
 
 
   alyson:
-    image: gennyproject/alyson:latest
+    image: gennyproject/alyson:ptest
     container_name: alyson
     depends_on:
       - bridge
@@ -235,7 +235,6 @@ services:
       - MYSQL_PASSWORD=password
       - FULL_MYSQL_URL=mysql/gennydb?serverTimezone=UTC
       - REACT_APP_QWANDA_API_URL=http://qwanda-service:8080
-      - TIMEOUT=4800
     ports:
       - "8480:8080"
       - "8487:5005"
@@ -312,7 +311,7 @@ services:
 
 
   bridge:
-    image: gennyproject/bridge:latest
+    image: gennyproject/bridge:9.9.0
     depends_on:
 #      qwanda-service:
 #        condition: service_healthy
@@ -333,7 +332,7 @@ services:
       - CORS_URLS=http://10.123.123.123:3000|http://internmatch.genny.life:3000|
       - realm=internmatch
       - ENV_GOOGLE_MAPS_APIKEY=AIzaSyBbZ0cT40AScAqSeTi_tEcnzAgeW1jTCUg
-      - ENV_KEYCLOAK_REDIRECTURI=https://keycloak-office.gada.io/auth
+      - ENV_KEYCLOAK_REDIRECTURI=https://keycloak.gada.io/auth
       - QWANDA_SERVICE_URL=http://wildfly-rulesservice
       - RULESSERVICE_URL=http://wildfly-rulesservice
       - ADMIN_USERNAME=GENNY 
@@ -352,7 +351,6 @@ services:
       - MODE_GZIP=TRUE
       - ZIP_MIN_THRESHOLD_BYTES=8000000
       - MEDIA_PROXY_URL=https://alyson.genny.life/web/public
-      - SHOW_OUTGOING_JSON=TRUE
   #    - DDT_URL=http://bridge:8089
   #    - DEV_MODE=TRUE
   #    - GENNYDEV=TRUE
