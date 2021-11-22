@@ -315,7 +315,7 @@ services:
 
 
   bridge:
-    image: gennyproject/bridge:9.9.0
+    image: gennyproject/bridge
     depends_on:
 #      qwanda-service:
 #        condition: service_healthy
