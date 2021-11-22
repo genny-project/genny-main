@@ -115,7 +115,7 @@ services:
 
 
   alyson:
-    image: gennyproject/alyson:ptest
+    image: gennyproject/alyson
     container_name: alyson
     depends_on:
       - bridge
@@ -275,7 +275,11 @@ services:
       - FORCE_CACHE_USE_API=FALSE
       - VIRTUAL_HOST=qwanda-service.*,api.*
       - IS_CACHE_SERVER=true
-      - JAVA_OPTS=-Xms2048m -Xmx2048m -Djava.net.preferIPv4Stack=true -Dsun.rmi.dgc.client.gcInterval=1800000 -Dsun.rmi.dgc.server.gcInterval=1800000  -server
+      - JAVA_OPTS=-server 
+        -Xms64m -Xmx4096m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=2048m 
+        -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -XX:ParallelGCThreads=20 -XX:ConcGCThreads=5 -XX:InitiatingHeapOccupancyPercent=70 -XX:+ExplicitGCInvokesConcurrent 
+        -Dsun.rmi.dgc.client.gcInterval=1800000 -Dsun.rmi.dgc.server.gcInterval=1800000 
+        -Djava.net.preferIPv4Stack=true -Djboss.modules.system.pkgs=org.jboss.byteman -Djava.awt.headless=true
       - ADMIN_USERNAME=GENNY 
       - ADMIN_PASSWORD=GENNY
       - VIRTUAL_PORT=8080
@@ -284,12 +288,12 @@ services:
       - LOAD_DDT_IN_STARTUP=TRUE
       - SEARCH_ALT=TRUE
       - SKIP_GITHUB_IN_STARTUP=TRUE
-      - SKIP_GOOGLE_DOC_IN_STARTUP=TRUE
+      - SKIP_GOOGLE_DOC_IN_STARTUP=FALSE
       - DEBUG=TRUE
       - DEBUG_SUSPEND=n
-      - XMX=2048m
       - DDTHOST=TRUE
-      - DISABLE_BATCH_LOADING=TRUE
+      - DISABLE_BATCH_LOADING=FALSE
+      - XMX=4096m
   #    - DEV_MODE=TRUE
   #    - DDT_URL=http://bridge:8089 
 
@@ -396,6 +400,14 @@ services:
       - CERT_NAME=genny.life
       - GENNY_SHOW_VALUES=true
       - GENNY_ENABLE_BLACKLIST=false
+      - GENNY_API_URL=http://qwanda-service:8080
+      - GENNY_BRIDGE_URL=http://bridge:80
+      - GENNY_CLIENT_ID=backend
+      - GENNY_KAFKA_URL=kafka:9092
+      - GENNY_KEYCLOAK_URL=https://keycloak.gada.io
+      - GENNY_REALM=internmatch
+      - GENNY_SERVICE_USERNAME=service
+      - PROJECT_REALM=internmatch
     networks:
       - mainproxy
 #    ports:
@@ -430,6 +442,10 @@ services:
       - GENNY_SERVICE_USERNAME=service
       - GENNY_KEYCLOAK_URL=https://keycloak.gada.io
       - GENNY_API_URL=http://qwanda-service:8080
+      - GENNY_CLIENT_ID=backend
+      - GENNY_KAFKA_URL=kafka:9092
+      - GENNY_REALM=internmatch
+      - PROJECT_REALM=internmatch
     networks:
       - mainproxy
 #    ports:
@@ -489,9 +505,12 @@ services:
       - VIRTUAL_HOST=rulesservice.*
       - VIRTUAL_PORT=8080
       - VIRTUAL_PROTO=http
-      - XMX=3048m
-      - XMS=3048m
-      - JAVA_OPTS=-Xms3048m -Xmx3048m  -Djava.net.preferIPv4Stack=true -Dsun.rmi.dgc.client.gcInterval=1800000 -Dsun.rmi.dgc.server.gcInterval=1800000  -server 
+      - XMX=4096m
+      - JAVA_OPTS=-server 
+        -Xms64m -Xmx4096m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=2048m 
+        -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -XX:ParallelGCThreads=20 -XX:ConcGCThreads=5 -XX:InitiatingHeapOccupancyPercent=70 -XX:+ExplicitGCInvokesConcurrent 
+        -Dsun.rmi.dgc.client.gcInterval=1800000 -Dsun.rmi.dgc.server.gcInterval=1800000  
+        -Djava.net.preferIPv4Stack=true -Djboss.modules.system.pkgs=org.jboss.byteman -Djava.awt.headless=true
       #- JAVA_OPTS=-Xms3048m -Xmx3048m -agentpath:/usr/local/jprofiler12.0.2/bin/linux-x64/libjprofilerti.so=nowait -Djava.net.preferIPv4Stack=true -Dsun.rmi.dgc.client.gcInterval=1800000 -Dsun.rmi.dgc.server.gcInterval=1800000  -server 
       - PDF_GEN_SERVICE_API_URL=http://internmatch.genny.life:7331
     ports:
