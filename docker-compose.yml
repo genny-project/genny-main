@@ -441,6 +441,40 @@ services:
       timeout: 10s
       retries: 30
 
+  fyodor:
+    image: gennyproject/fyodor:9.10.0
+    depends_on:
+      qwanda-service:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+    container_name:  fyodor 
+    volumes:
+      - ./realm:/opt/realm:delegated
+    # env_file:
+    #   - ${ENV_FILE}
+    environment:
+      - KAFKA_URL=kafka:9092
+      - GENNY_REALM=internmatch
+      - GENNY_CLIENT_ID=${GENNY_CLIENT_ID}
+      - GENNY_CLIENT_SECRET=${GENNY_CLIENT_SECRET}
+      - GENNY_SERVICE_USERNAME=${GENNY_SERVICE_USERNAME}
+      - GENNY_SERVICE_PASSWORD=${GENNY_SERVICE_PASSWORD}
+      - GENNY_KEYCLOAK_URL=https://keycloak.gada.io
+      - GENNY_API_URL=http://qwanda-service:8080
+      - GENNY_MYSQL_FULL_URL=alyson.genny.life:3310/gennydb?zeroDateTimeBehavior=convertToNull&serverTimezone=UTC
+    ports:
+      - "4242:8080"
+    links:
+      - mysql:mysql
+    networks:
+      - mainproxy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080"]
+      interval: 10s
+      timeout: 10s
+      retries: 30
+
   wildfly-rulesservice:
     image: gennyproject/wildfly-rulesservice:latest
     depends_on:
