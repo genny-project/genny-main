@@ -30,6 +30,7 @@ for value in  bridge lauchy dropkick fyodor
 do
     echo $value
     cd $parentdir/$value
+    ./build.sh
     ./build-docker.sh
 done
 
