@@ -133,6 +133,7 @@ services:
       KSQL_LOG4J_PROCESSING_LOG_BROKERLIST: kafka:29092
       KSQL_LOG4J_PROCESSING_LOG_TOPIC: __ksql-processing-log
       KSQL_KSQL_LOGGING_PROCESSING_TOPIC_NAME: __ksql-processing-log
+      KSQL_KSQL_MAX_REQUEST_SIZE: 15728640
     healthcheck:
       test: curl -f http://ksqldb-server:8088/ || exit 1
 

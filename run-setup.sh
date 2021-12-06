@@ -433,6 +433,10 @@ while [ "$1" != "" ]; do
 
 	echo "GOT TO HERE3"
             ENV_FILE=$ENV_FILE docker-compose up -d
+            docker cp kafka_config_seeder.sh ksqldb-server:/tmp/
+            echo "Seeding the kafka connector and ksqldb configurations..."
+            docker exec ksqldb-server /tmp/kafka_config_seeder.sh
+            echo "Kafka config seeding complete."
             ;;
         local )
             echo "local started"
