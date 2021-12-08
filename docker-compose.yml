@@ -633,11 +633,11 @@ services:
       - USE_EVENT_QUEUE=TRUE
       - USE_JMS=TRUE
       - USE_EXECUTOR=TRUE
+      - USE_FYODOR=TRUE
       - USE_SINGLETON=FALSE
       - VIRTUAL_HOST=rulesservice.*
       - VIRTUAL_PORT=8080
       - VIRTUAL_PROTO=http
-      - USE_FYODOR=TRUE
       - XMX=4096m
       - JAVA_OPTS=-server 
         -Xms64m -Xmx4096m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=2048m 
