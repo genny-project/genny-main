@@ -166,7 +166,7 @@ services:
     networks:
       - mainproxy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://infinispan:11222/console/welcome"]
+      test: [ "CMD", "curl", "-f", "http://localhost:11222/rest/v2/cache-managers/default/health/status" ]
       interval: 10s
       timeout: 50s
       start_period: 20s
@@ -771,6 +771,89 @@ services:
     depends_on:
       mysql:
         condition: service_healthy
+
+
+
+
+  data-index:
+    container_name: data-index
+    image: quay.io/kiegroup/kogito-data-index-infinispan:latest
+    ports:
+      - "9180:8080"
+    depends_on:
+      kafka:
+        condition: service_started
+      infinispan:
+        condition: service_healthy
+    networks:
+      - mainproxy
+    volumes:
+      - ./persistence/:/home/kogito/data/protobufs/
+    environment:
+      QUARKUS_INFINISPAN_CLIENT_SERVER_LIST: infinispan:11222
+      QUARKUS_INFINISPAN_CLIENT_USE_AUTH: "true"
+      QUARKUS_INFINISPAN_CLIENT_AUTH_USERNAME: "genny"
+      QUARKUS_INFINISPAN_CLIENT_AUTH_PASSWORD: "password"
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      KOGITO_DATA_INDEX_PROPS: -Dkogito.protobuf.folder=/home/kogito/data/protobufs/
+
+  jobs-service:
+    container_name: jobs-service
+    image: quay.io/kiegroup/kogito-jobs-service-infinispan:latest
+    depends_on:
+      kafka:
+        condition: service_started
+      infinispan:
+        condition: service_healthy
+      data-index:
+        condition: service_started
+    networks:
+      - mainproxy
+    environment:
+      QUARKUS_INFINISPAN_CLIENT_SERVER_LIST: infinispan:11222
+      QUARKUS_INFINISPAN_CLIENT_USE_AUTH: "true"
+      QUARKUS_INFINISPAN_CLIENT_AUTH_USERNAME: "genny"
+      QUARKUS_INFINISPAN_CLIENT_AUTH_PASSWORD: "password"
+      ENABLE_EVENTS: "true"
+      KOGITO_JOBS_PROPS: -Dquarkus-profile=events-support -D%events-support.quarkus.http.port=8580 -D%events-support.kafka.bootstrap.servers=kafka:9092
+                         -D%events-support.mp.messaging.outgoing.kogito-job-service-job-status-events.bootstrap.servers=kafka:9092
+                         -Dkogito.service.url=http://jobs-service:8580
+
+  management-console:
+   container_name: management-console
+   image: quay.io/kiegroup/kogito-management-console:latest
+   ports:
+     - 9280:8080
+   depends_on:
+     data-index:
+       condition: service_started
+     jobs-service:
+       condition: service_started
+   networks:
+    - mainproxy
+   volumes:
+     - ./svg/:/home/kogito/data/svg/
+   environment:
+      KOGITO_DATAINDEX_HTTP_URL: http://data-index:8180/graphql
+      KOGITO_MANAGEMENT_CONSOLE_PROPS: -Dkogito.consoles.keycloak.config.url=https://keycloak-office.gada.io/auth -Dkogito.consoles.keycloak.config.health-check-url=https://keycloak-office.gada.io/auth/realms/kogito/.well-known/openid-configuration -Dkogito.svg.folder.path=/home/kogito/data/svg
+
+  task-console:
+    container_name: task-console
+    image: quay.io/kiegroup/kogito-task-console:latest
+    ports:
+      - 9380:8080
+    depends_on:
+      data-index:
+        condition: service_started
+    networks:
+      - mainproxy
+    environment:
+      KOGITO_DATAINDEX_HTTP_URL: http://data-index:8180/graphql
+      KOGITO_TASK_CONSOLE_PROPS: -Dkogito.consoles.keycloak.config.url=https://keycloak-office.gada.io/auth -Dkogito.consoles.keycloak.config.health-check-url=https://keycloak-office.gada.io/auth/realms/kogito/.well-known/openid-configuration
+
+
+
+
 
 
 volumes:
