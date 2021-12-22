@@ -554,7 +554,7 @@ services:
       retries: 30
 
   fyodor:
-    image: gennyproject/fyodor:9.10.0
+    image: gennyproject/fyodor:latest
     depends_on:
       qwanda-service:
         condition: service_healthy
