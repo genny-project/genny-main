@@ -566,7 +566,7 @@ services:
     # env_file:
     #   - ${ENV_FILE}
     environment:
-      - KAFKA_URL=kafka:9092
+      - GENNY_KAFKA_URL=kafka:9092
       - GENNY_REALM=internmatch
       - GENNY_CLIENT_ID=${GENNY_CLIENT_ID}
       - GENNY_CLIENT_SECRET=${GENNY_CLIENT_SECRET}
