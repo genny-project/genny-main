@@ -777,18 +777,21 @@ services:
 
   data-index:
     container_name: data-index
+    hostname: data-index
     image: quay.io/kiegroup/kogito-data-index-infinispan:latest
     ports:
       - "9180:8080"
     depends_on:
       kafka:
-        condition: service_started
+        condition: service_healthy
       infinispan:
         condition: service_healthy
     networks:
       - mainproxy
     volumes:
       - ./persistence/:/home/kogito/data/protobufs/
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/graphiql" ]
     environment:
       QUARKUS_INFINISPAN_CLIENT_SERVER_LIST: infinispan:11222
       QUARKUS_INFINISPAN_CLIENT_USE_AUTH: "true"
@@ -799,10 +802,13 @@ services:
 
   jobs-service:
     container_name: jobs-service
+    hostname: jobs-service
     image: quay.io/kiegroup/kogito-jobs-service-infinispan:latest
+    ports:
+      - "9080:9080"
     depends_on:
       kafka:
-        condition: service_started
+        condition: service_healthy
       infinispan:
         condition: service_healthy
       data-index:
@@ -815,12 +821,12 @@ services:
       QUARKUS_INFINISPAN_CLIENT_AUTH_USERNAME: "genny"
       QUARKUS_INFINISPAN_CLIENT_AUTH_PASSWORD: "password"
       ENABLE_EVENTS: "true"
-      KOGITO_JOBS_PROPS: -Dquarkus-profile=events-support -D%events-support.quarkus.http.port=8580 -D%events-support.kafka.bootstrap.servers=kafka:9092
-                         -D%events-support.mp.messaging.outgoing.kogito-job-service-job-status-events.bootstrap.servers=kafka:9092
-                         -Dkogito.service.url=http://jobs-service:8580
+      KOGITO_JOBS_PROPS: -Dquarkus.http.port=9080 -Dquarkus-profile=events-support -D%events-support.quarkus.http.port=9080 -D%events-support.kafka.bootstrap.servers=kafka:9092 -D%events-support.mp.messaging.outgoing.kogito-job-service-job-status-events.bootstrap.servers=kafka:9092 -Dkogito.service.url=http://192.168.17.90:8080 -Dkogito.jobs-service.persistence=infinispan -Dkogito.jobs-service.url=http://192.168.17.90:9080
+
 
   management-console:
    container_name: management-console
+   hostname: management-console
    image: quay.io/kiegroup/kogito-management-console:latest
    ports:
      - 9280:8080
@@ -834,22 +840,27 @@ services:
    volumes:
      - ./svg/:/home/kogito/data/svg/
    environment:
-      KOGITO_DATAINDEX_HTTP_URL: http://data-index:8180/graphql
-      KOGITO_MANAGEMENT_CONSOLE_PROPS: -Dkogito.consoles.keycloak.config.url=https://keycloak-office.gada.io/auth -Dkogito.consoles.keycloak.config.health-check-url=https://keycloak-office.gada.io/auth/realms/kogito/.well-known/openid-configuration -Dkogito.svg.folder.path=/home/kogito/data/svg
+      SCRIPT_DEBUG: "true"
+      KOGITO_DATAINDEX_HTTP_URL: "http://192.168.17.90:9180/graphql/"
+      KOGITO_MANAGEMENT_CONSOLE_PROPS: -Dkogito.consoles.keycloak.config.url=https://keycloak-office.gada.io/auth -Dkogito.consoles.keycloak.config.health-check-url=https://keycloak-office.gada.io/auth/realms/kogito/.well-known/openid-configuration -Dkogito.svg.folder.path=/home/kogito/data/svg -Dkogito.service.url=http://192.168.17.90:8080
 
   task-console:
     container_name: task-console
+    hostname: task-console
     image: quay.io/kiegroup/kogito-task-console:latest
     ports:
       - 9380:8080
     depends_on:
       data-index:
         condition: service_started
+      jobs-service:
+        condition: service_started
     networks:
       - mainproxy
     environment:
-      KOGITO_DATAINDEX_HTTP_URL: http://data-index:8180/graphql
-      KOGITO_TASK_CONSOLE_PROPS: -Dkogito.consoles.keycloak.config.url=https://keycloak-office.gada.io/auth -Dkogito.consoles.keycloak.config.health-check-url=https://keycloak-office.gada.io/auth/realms/kogito/.well-known/openid-configuration
+      SCRIPT_DEBUG: "true"
+      KOGITO_DATAINDEX_HTTP_URL: "http://192.168.17.90:9180/graphql/"
+      KOGITO_TASK_CONSOLE_PROPS: -Dkogito.consoles.keycloak.config.url=https://keycloak-office.gada.io/auth -Dkogito.consoles.keycloak.config.health-check-url=https://keycloak-office.gada.io/auth/realms/kogito/.well-known/openid-configuration -Dkogito.svg.folder.path=/home/kogito/data/svg -Dkogito.service.url=http://192.168.17.90:8080
 
 
 
