@@ -26,7 +26,7 @@ do
 done
 
 #Quarkus 2.3.0 
-for value in  bridge lauchy dropkick fyodor
+for value in  bridge lauchy dropkick fyodor rulesq-kogito
 do
     echo $value
     cd $parentdir/$value

@@ -790,8 +790,6 @@ services:
       - mainproxy
     volumes:
       - ./persistence/:/home/kogito/data/protobufs/
-    healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:8080/graphiql" ]
     environment:
       QUARKUS_INFINISPAN_CLIENT_SERVER_LIST: infinispan:11222
       QUARKUS_INFINISPAN_CLIENT_USE_AUTH: "true"
@@ -840,9 +838,8 @@ services:
    volumes:
      - ./svg/:/home/kogito/data/svg/
    environment:
-      SCRIPT_DEBUG: "true"
       KOGITO_DATAINDEX_HTTP_URL: "http://192.168.17.90:9180/graphql/"
-      KOGITO_MANAGEMENT_CONSOLE_PROPS: -Dkogito.consoles.keycloak.config.url=https://keycloak-office.gada.io/auth -Dkogito.consoles.keycloak.config.health-check-url=https://keycloak-office.gada.io/auth/realms/kogito/.well-known/openid-configuration -Dkogito.svg.folder.path=/home/kogito/data/svg -Dkogito.service.url=http://192.168.17.90:8080
+      KOGITO_MANAGEMENT_CONSOLE_PROPS: -Dkogito.consoles.keycloak.config.url=https://keycloak-office.gada.io/auth -Dkogito.consoles.keycloak.config.health-check-url=https://keycloak-office.gada.io/auth/realms/kogito/.well-known/openid-configuration -Dkogito.svg.folder.path=/home/kogito/data/svg -Dkogito.service.url=http://192.168.17.90:8989
 
   task-console:
     container_name: task-console
@@ -858,11 +855,39 @@ services:
     networks:
       - mainproxy
     environment:
-      SCRIPT_DEBUG: "true"
       KOGITO_DATAINDEX_HTTP_URL: "http://192.168.17.90:9180/graphql/"
-      KOGITO_TASK_CONSOLE_PROPS: -Dkogito.consoles.keycloak.config.url=https://keycloak-office.gada.io/auth -Dkogito.consoles.keycloak.config.health-check-url=https://keycloak-office.gada.io/auth/realms/kogito/.well-known/openid-configuration -Dkogito.svg.folder.path=/home/kogito/data/svg -Dkogito.service.url=http://192.168.17.90:8080
+      KOGITO_TASK_CONSOLE_PROPS: -Dkogito.consoles.keycloak.config.url=https://keycloak-office.gada.io/auth -Dkogito.consoles.keycloak.config.health-check-url=https://keycloak-office.gada.io/auth/realms/kogito/.well-known/openid-configuration -Dkogito.svg.folder.path=/home/kogito/data/svg -Dkogito.service.url=http://192.168.17.90:8989
 
-
+  rulesqkogito:
+    image: gennyproject/rulesqkogito:latest
+    depends_on:
+      infinispan:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+    container_name:  rulesqkogito
+    hostname: rulesqkogito
+    env_file:
+      - ${ENV_FILE}
+    environment:
+      - ADMIN_USERNAME=GENNY
+      - ADMIN_PASSWORD=GENNY
+      - VIRTUAL_HOST=rulesq-kogito.genny.life
+      - VIRTUAL_PORT=8080
+      - KAFKA_URL=192.168.17.90:9092
+      - CERT_NAME=genny.life
+      - GENNY_SHOW_VALUES=true
+      - GENNY_SERVICE_USERNAME=service
+      - GENNY_KEYCLOAK_URL=https://keycloak-office.gada.io
+      # - GENNY_API_URL=http://qwanda-service:8080
+      - GENNY_CLIENT_ID=backend
+      - GENNY_KAFKA_URL=192.168.17.90:9092
+      - GENNY_REALM=kogito
+      - PROJECT_REALM=kogito
+    networks:
+      - mainproxy
+    ports:
+      - 8989:8080
 
 
 
