@@ -9,7 +9,7 @@ docker pull gennyproject/wildfly:${ver}
 
 cd ..
 
-for value in qwanda qwandaq qwanda-utils bootxport genny-verticle-rules genny-rules qwanda-services wildfly-rulesservice wildfly-qwanda-service checkrules lauchy dropkick bridge media-proxy messages fyodor notes shleemy alyson gennyteer prj_genny genny-proxy bootq  
+for value in qwanda qwandaq qwanda-utils bootxport genny-verticle-rules genny-rules qwanda-services wildfly-rulesservice wildfly-qwanda-service checkrules lauchy dropkick bridge media-proxy messages fyodor notes shleemy alyson gennyteer prj_genny genny-proxy bootq  kogitoq
 do
     echo $value
     git clone -b ${ver} https://github.com/genny-project/$value
