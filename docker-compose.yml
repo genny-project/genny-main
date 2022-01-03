@@ -859,7 +859,7 @@ services:
       KOGITO_TASK_CONSOLE_PROPS: -Dkogito.consoles.keycloak.config.url=https://keycloak-office.gada.io/auth -Dkogito.consoles.keycloak.config.health-check-url=https://keycloak-office.gada.io/auth/realms/kogito/.well-known/openid-configuration -Dkogito.svg.folder.path=/home/kogito/data/svg -Dkogito.service.url=http://192.168.17.90:8989
 
   rulesqkogito:
-    image: gennyproject/rulesqkogito:latest
+    image: gennyproject/kogitoq:latest
     depends_on:
       infinispan:
         condition: service_healthy
