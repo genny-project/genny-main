@@ -17,7 +17,8 @@ services:
       LOG_DIR: /tmp/logs
 
   kafka:
-    image: strimzi/kafka:latest-kafka-2.5.0
+#    image: strimzi/kafka:latest-kafka-2.5.0
+    image: strimzi/kafka:0.20.1-kafka-2.6.0
     hostname: kafka
     container_name: kafka
     command: [
@@ -32,10 +33,15 @@ services:
       - "9092:9092"
     environment:
       LOG_DIR: "/tmp/logs"
+      KAFKA_BROKER_ID: 0
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://10.123.123.123:9092
       KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_NUM_PARTITIONS: 3
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_GROUP_MIN_SESSION_TIMEOUT_MS: 6000
       KAFKA_GROUP_MAX_SESSION_TIMEOUT_MS: 60000
       #KAFKA_GROUP_MIN_SESSION_TIMEOUT_MS: 100
@@ -157,6 +163,7 @@ services:
 
   infinispan:
     image: infinispan/server:13.0
+    #image: infinispan/server:12.1.7.Final
     container_name: infinispan
     environment:
       - USER=genny
@@ -165,12 +172,17 @@ services:
       - 11222:11222
     networks:
       - mainproxy
+#    healthcheck:
+#      test: ["CMD", "curl", "-f", "http://infinispan:11222/console/welcome"]
+#      interval: 10s
+#      timeout: 50s
+#      start_period: 20s
+#      retries: 100 
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://infinispan:11222/console/welcome"]
-      interval: 10s
-      timeout: 50s
-      start_period: 20s
-      retries: 100 
+      test: [ "CMD", "curl", "-f", "http://localhost:11222/rest/v2/cache-managers/default/health/status" ]
+      interval: 1s
+      timeout: 30s
+      retries: 50
 
 
   nginx:
@@ -605,6 +617,70 @@ services:
     depends_on:
       mysql:
         condition: service_healthy
+
+  data-index:
+    container_name: data-index
+    image: quay.io/kiegroup/kogito-data-index-infinispan:latest
+    ports:
+      - "8180:8080"
+    depends_on:
+      kafka:
+        condition: service_started
+      infinispan:
+        condition: service_healthy
+    volumes:
+      - ./persistence/:/home/kogito/data/protobufs/
+    environment:
+      QUARKUS_INFINISPAN_CLIENT_SERVER_LIST: infinispan:11222
+      QUARKUS_INFINISPAN_CLIENT_USE_AUTH: "false"
+      KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+      KOGITO_DATA_INDEX_PROPS: -Dkogito.protobuf.folder=/home/kogito/data/protobufs/
+
+  jobs-service:
+    container_name: jobs-service
+    network_mode: "host"
+    image: quay.io/kiegroup/kogito-jobs-service-infinispan:latest
+    depends_on:
+      kafka:
+        condition: service_started
+      infinispan:
+        condition: service_healthy
+      data-index:
+        condition: service_started
+    environment:
+      QUARKUS_INFINISPAN_CLIENT_USE_AUTH: "false"
+      ENABLE_EVENTS: "true"
+      KOGITO_JOBS_PROPS: -Dquarkus-profile=events-support -D%events-support.quarkus.http.port=8580 -D%events-support.kafka.bootstrap.servers=kafka:9092
+                         -D%events-support.mp.messaging.outgoing.kogito-job-service-job-status-events.bootstrap.servers=kafka:9092
+                         -Dkogito.service.url=http://alyson.genny.life:8580
+
+  management-console:
+   container_name: management-console
+   image: quay.io/kiegroup/kogito-management-console:latest
+   ports:
+     - 7280:8080
+   depends_on:
+     data-index:
+       condition: service_started
+     jobs-service:
+       condition: service_started
+   volumes:
+     - ./svg/:/home/kogito/data/svg/
+   environment:
+      KOGITO_DATAINDEX_HTTP_URL: http://alyson.genny.life:8180/graphql
+      KOGITO_MANAGEMENT_CONSOLE_PROPS: -Dkogito.consoles.keycloak.config.url=https://keycloak.gada.io/auth -Dkogito.consoles.keycloak.config.health-check-url=https://keycloak.gada.io/auth/realms/internmatch/.well-known/openid-configuration -Dkogito.svg.folder.path=/home/kogito/data/svg
+
+  task-console:
+    container_name: task-console
+    image: quay.io/kiegroup/kogito-task-console:latest
+    ports:
+      - 7380:8080
+    depends_on:
+      data-index:
+        condition: service_started
+    environment:
+      KOGITO_DATAINDEX_HTTP_URL: http://alyson.genny.life:8180/graphql
+      KOGITO_TASK_CONSOLE_PROPS: -Dkogito.consoles.keycloak.config.url=http://alyson.genny.life:8480/auth -Dkogito.consoles.keycloak.config.health-check-url=https://keycloak.gada.io/auth/realms/internmatch/.well-known/openid-configuration
 
 
 volumes:
