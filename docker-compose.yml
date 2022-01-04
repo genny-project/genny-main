@@ -673,7 +673,7 @@ services:
      - ./svg/:/home/kogito/data/svg/
    environment:
       KOGITO_DATAINDEX_HTTP_URL: http://alyson.genny.life:8180/graphql/
-      KOGITO_MANAGEMENT_CONSOLE_PROPS: -Dkogito.consoles.keycloak.config.url=https://keycloak-office.gada.io/auth -Dkogito.consoles.keycloak.config.health-check-url=https://keycloak-office.gada.io/auth/realms/internmatch/.well-known/openid-configuration -Dkogito.svg.folder.path=/home/kogito/data/svg
+      KOGITO_MANAGEMENT_CONSOLE_PROPS: -Dkogito.consoles.keycloak.config.url=https://keycloak-office.gada.io/auth -Dkogito.consoles.keycloak.config.health-check-url=https://keycloak-office.gada.io/auth/realms/internmatch/.well-known/openid-configuration -Dkogito.svg.folder.path=/home/kogito/data/svg -Dkogito.consoles.keycloak.config.client=alyson
    networks:
      - mainproxy
 
