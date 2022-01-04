@@ -622,7 +622,7 @@ services:
     container_name: data-index
     image: quay.io/kiegroup/kogito-data-index-infinispan:latest
     ports:
-      - "8180:8080"
+      - 8582:8080
     depends_on:
       kafka:
         condition: service_started
@@ -663,7 +663,7 @@ services:
    container_name: management-console
    image: quay.io/kiegroup/kogito-management-console:latest
    ports:
-     - 7280:8080
+     - 8584:8080
    depends_on:
      data-index:
        condition: service_started
@@ -672,7 +672,7 @@ services:
    volumes:
      - ./svg/:/home/kogito/data/svg/
    environment:
-      KOGITO_DATAINDEX_HTTP_URL: http://alyson.genny.life:8180/graphql/
+      KOGITO_DATAINDEX_HTTP_URL: http://alyson.genny.life:8582/graphql/
       KOGITO_MANAGEMENT_CONSOLE_PROPS: -Dkogito.consoles.keycloak.config.url=https://keycloak-office.gada.io/auth -Dkogito.consoles.keycloak.config.health-check-url=https://keycloak-office.gada.io/auth/realms/internmatch/.well-known/openid-configuration -Dkogito.svg.folder.path=/home/kogito/data/svg -Dkogito.consoles.keycloak.config.client=alyson
    networks:
      - mainproxy
@@ -681,12 +681,12 @@ services:
     container_name: task-console
     image: quay.io/kiegroup/kogito-task-console:latest
     ports:
-      - 7380:8080
+      - 8583:8080
     depends_on:
       data-index:
         condition: service_started
     environment:
-      KOGITO_DATAINDEX_HTTP_URL: http://alyson.genny.life:8180/graphql/
+      KOGITO_DATAINDEX_HTTP_URL: http://alyson.genny.life:8582/graphql/
       KOGITO_TASK_CONSOLE_PROPS: -Dkogito.consoles.keycloak.config.url=https://keycloak-office.gada.io/auth -Dkogito.consoles.keycloak.config.health-check-url=https://keycloak-office.gada.io/auth/realms/internmatch/.well-known/openid-configuration
     networks:
      - mainproxy
