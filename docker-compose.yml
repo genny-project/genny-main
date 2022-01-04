@@ -643,6 +643,8 @@ services:
   jobs-service:
     container_name: jobs-service
     image: quay.io/kiegroup/kogito-jobs-service-infinispan:latest
+    ports:
+      - 8581:8080
     depends_on:
       kafka:
         condition: service_started
@@ -653,9 +655,11 @@ services:
     environment:
       QUARKUS_INFINISPAN_CLIENT_USE_AUTH: "false"
       ENABLE_EVENTS: "true"
-      KOGITO_JOBS_PROPS: -Dquarkus-profile=events-support -D%events-support.quarkus.http.port=8580 -D%events-support.kafka.bootstrap.servers=kafka:9092
-                         -D%events-support.mp.messaging.outgoing.kogito-job-service-job-status-events.bootstrap.servers=kafka:9092
-                         -Dkogito.service.url=http://alyson.genny.life:8580
+      QUARKUS_INFINISPAN_CLIENT_SERVER_LIST: infinispan:11222
+      QUARKUS_INFINISPAN_CLIENT_USE_AUTH: "true"
+      QUARKUS_INFINISPAN_CLIENT_AUTH_USERNAME: "genny"
+      QUARKUS_INFINISPAN_CLIENT_AUTH_PASSWORD: "password"
+      KOGITO_JOBS_PROPS: -Dquarkus-profile=events-support -Dquarkus.http.port=8080 -D%events-support.quarkus.http.port=8080 -D%events-support.kafka.bootstrap.servers=kafka:9092 -D%events-support.mp.messaging.outgoing.kogito-job-service-job-status-events.bootstrap.servers=kafka:9092 -Dkogito.jobs-service.persistence=infinispan -Dkogito.service.url=http://alyson.genny.life:8581 -Dkogito.service.url=http://alyson.genny.life:8580
     networks:
       - mainproxy
 
