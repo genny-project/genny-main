@@ -271,7 +271,7 @@ services:
 #      qwanda-service:
 #        condition: service_healthy
     volumes:
-      - abn_tmp:/tmp/
+      - abn_tmp:/tmp/:delegated
     environment:
       - CORS_LIST=https://internmatch.genny.life,http://localhost:3000,https://stt.genny.life
     networks:
@@ -333,7 +333,7 @@ services:
     image: gennyproject/bootq:latest
     container_name: bootq 
     volumes:
-      - ./google_credentials:/root/.genny/sheets.googleapis.com-java-quickstart
+      - ./google_credentials:/root/.genny/sheets.googleapis.com-java-quickstart:delegated
     env_file:
       - ${ENV_FILE}
     environment:
@@ -372,8 +372,8 @@ services:
     image: gennyproject/wildfly-qwanda-service:latest
     container_name: qwanda-service
     volumes:
-      - ./google_credentials:/root/.genny/sheets.googleapis.com-java-quickstart
-      - abn_tmp:/tmp/
+      - ./google_credentials:/root/.genny/sheets.googleapis.com-java-quickstart:delegated
+      - abn_tmp:/tmp/:delegated
     env_file:
       - ${ENV_FILE}
     environment:
@@ -629,7 +629,7 @@ services:
       infinispan:
         condition: service_healthy
     volumes:
-      - ./persistence/:/home/kogito/data/protobufs/
+      - ./persistence/:/home/kogito/data/protobufs/:delegated
     environment:
       QUARKUS_INFINISPAN_CLIENT_SERVER_LIST: infinispan:11222
       QUARKUS_INFINISPAN_CLIENT_USE_AUTH: "true"
@@ -674,7 +674,7 @@ services:
      jobs-service:
        condition: service_started
    volumes:
-     - ./svg/:/home/kogito/data/svg/
+     - ./svg/:/home/kogito/data/svg/:delegated
    environment:
       KOGITO_DATAINDEX_HTTP_URL: http://alyson.genny.life:8582/graphql/
       KOGITO_MANAGEMENT_CONSOLE_PROPS: -Dkogito.consoles.keycloak.config.url=https://keycloak-office.gada.io/auth -Dkogito.consoles.keycloak.config.health-check-url=https://keycloak-office.gada.io/auth/realms/internmatch/.well-known/openid-configuration -Dkogito.svg.folder.path=/home/kogito/data/svg -Dkogito.consoles.keycloak.config.client=alyson
