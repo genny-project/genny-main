@@ -659,7 +659,7 @@ services:
       QUARKUS_INFINISPAN_CLIENT_USE_AUTH: "true"
       QUARKUS_INFINISPAN_CLIENT_AUTH_USERNAME: "genny"
       QUARKUS_INFINISPAN_CLIENT_AUTH_PASSWORD: "password"
-      KOGITO_JOBS_PROPS: -Dquarkus-profile=events-support -Dquarkus.http.port=8080 -D%events-support.quarkus.http.port=8080 -D%events-support.kafka.bootstrap.servers=kafka:9092 -D%events-support.mp.messaging.outgoing.kogito-job-service-job-status-events.bootstrap.servers=kafka:9092 -Dkogito.jobs-service.persistence=infinispan -Dkogito.service.url=http://alyson.genny.life:8581 -Dkogito.service.url=http://alyson2.genny.life:8580
+      KOGITO_JOBS_PROPS: -Dquarkus-profile=events-support -Dquarkus.http.port=8080 -D%events-support.quarkus.http.port=8080 -D%events-support.kafka.bootstrap.servers=kafka:9092 -D%events-support.mp.messaging.outgoing.kogito-job-service-job-status-events.bootstrap.servers=kafka:9092 -Dkogito.jobs-service.persistence=infinispan -Dkogito.service.url=http://alyson.genny.life:8581 -Dkogito.service.url=http://alyson.genny.life:8580
     networks:
       - mainproxy
 
@@ -676,12 +676,8 @@ services:
    volumes:
      - ./svg/:/home/kogito/data/svg/:delegated
    environment:
-      VIRTUAL_HOST: management.genny.life
-      VIRTUAL_PORT: 8080
-      LETSENCRYPT_HOST: acrow.genny.life
-      LETSENCRYPT_EMAIL: cto@gada.io
       KOGITO_DATAINDEX_HTTP_URL: http://alyson.genny.life:8582/graphql/
-      KOGITO_MANAGEMENT_CONSOLE_PROPS: -Dkogito.consoles.keycloak.config.client-id=kogito-console-quarkus  -Dkogito.consoles.keycloak.config.realm=internmatch -Dkogito.consoles.keycloak.config.url=https://keycloak.gada.io/auth -Dkogito.consoles.keycloak.config.health-check-url=https://keycloak.gada.io/auth/realms/internmatch/.well-known/openid-configuration -Dkogito.svg.folder.path=/home/kogito/data/svg -Dkogito.consoles.keycloak.config.disable-health-check=false -Dkogito.consoles.keycloak.config.update-token-validity=30
+      KOGITO_MANAGEMENT_CONSOLE_PROPS: -Dkogito.consoles.keycloak.config.url=https://keycloak-office.gada.io/auth -Dkogito.consoles.keycloak.config.health-check-url=https://keycloak-office.gada.io/auth/realms/internmatch/.well-known/openid-configuration -Dkogito.svg.folder.path=/home/kogito/data/svg -Dkogito.consoles.keycloak.config.client=alyson
    networks:
      - mainproxy
 
@@ -694,12 +690,8 @@ services:
       data-index:
         condition: service_started
     environment:
-      VIRTUAL_HOST: task.genny.life
-      VIRTUAL_PORT: 8080
-      LETSENCRYPT_HOST: acrow.genny.life
-      LETSENCRYPT_EMAIL: cto@gada.io
       KOGITO_DATAINDEX_HTTP_URL: http://alyson.genny.life:8582/graphql/
-      KOGITO_TASK_CONSOLE_PROPS: -Dkogito.consoles.keycloak.config.client-id=kogito-console-quarkus -Dkogito.consoles.keycloak.config.realm=internmatch -Dkogito.consoles.keycloak.config.url=https://keycloak.gada.io/auth -Dkogito.consoles.keycloak.config.health-check-url=https://keycloak.gada.io/auth/realms/internmatch/.well-known/openid-configuration -Dkogito.consoles.keycloak.config.disable-health-check=false -Dkogito.consoles.keycloak.config.update-token-validity=30
+      KOGITO_TASK_CONSOLE_PROPS: -Dkogito.consoles.keycloak.config.url=https://keycloak-office.gada.io/auth -Dkogito.consoles.keycloak.config.health-check-url=https://keycloak-office.gada.io/auth/realms/internmatch/.well-known/openid-configuration
     networks:
      - mainproxy
 
