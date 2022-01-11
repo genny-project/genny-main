@@ -705,6 +705,78 @@ services:
     networks:
      - mainproxy
 
+  wildfly-rulesservice:
+    image: gennyproject/wildfly-rulesservice:latest
+    depends_on:
+      qwanda-service:
+        condition: service_healthy
+      mysql:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+      infinispan:
+        condition: service_healthy
+    container_name: wildfly-rulesservice
+    env_file:
+      - ${ENV_FILE}
+    volumes:
+      - ./rules:/rules:delegated
+      - ./google_credentials:/root/.genny/sheets.googleapis.com-java-quickstart/:delegated
+    environment:
+      - ADMIN_USERNAME=GENNY 
+      - ADMIN_PASSWORD=GENNY
+      - BULKPULL=FALSE
+      - kafka.bootstrap.servers=kafka:9092
+      - CERT_NAME=genny.life
+      - DDT_URL=http://alyson7.genny.life:8089
+      - DEBUG=TRUE
+      - DEBUG_SUSPEND=n
+      - DETECT_RULE_CHANGES=TRUE
+      - DISABLE_LAYOUT_LOADING=TRUE
+      - DROOLS_LOGLEVEL=ERROR
+      - FORCE_EVENTBUS_USE_API=FALSE
+      - FORCE_CACHE_USE_API=FALSE
+      - CACHE_SERVER_NAME=infinispan
+      - FRAMES_ON_DEMAND=FALSE
+      - HAZELCAST_LOGLEVEL=ERROR
+      - HIDE_RULE_STATES=TRUE
+      - KEYCLOAK_LOGLEVEL=ERROR
+      - PERSIST_RULES=TRUE
+      - LOG_WORKFLOWS=FALSE
+      - RULES_DIR=/rules
+      - SEARCH_ALT=TRUE
+      - USE_CONCURRENCY_MSGS=FALSE
+      - USE_EVENT_QUEUE=TRUE
+      - USE_JMS=TRUE
+      - USE_EXECUTOR=TRUE
+      - USE_FYODOR=TRUE
+      - USE_SINGLETON=FALSE
+      - VIRTUAL_HOST=rulesservice.*
+      - VIRTUAL_PORT=8080
+      - VIRTUAL_PROTO=http
+      - XMX=4096m
+      - JAVA_OPTS=-server 
+        -Xms64m -Xmx4096m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=2048m 
+        -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -XX:ParallelGCThreads=20 -XX:ConcGCThreads=5 -XX:InitiatingHeapOccupancyPercent=70 -XX:+ExplicitGCInvokesConcurrent 
+        -Dsun.rmi.dgc.client.gcInterval=1800000 -Dsun.rmi.dgc.server.gcInterval=1800000  
+        -Djava.net.preferIPv4Stack=true -Djboss.modules.system.pkgs=org.jboss.byteman -Djava.awt.headless=true
+      #- JAVA_OPTS=-Xms3048m -Xmx3048m -agentpath:/usr/local/jprofiler12.0.2/bin/linux-x64/libjprofilerti.so=nowait -Djava.net.preferIPv4Stack=true -Dsun.rmi.dgc.client.gcInterval=1800000 -Dsun.rmi.dgc.server.gcInterval=1800000  -server 
+      - PDF_GEN_SERVICE_API_URL=http://internmatch.genny.life:7331
+    ports:
+      - "8380:8080"
+      - "8987:8787"
+      - "10002:10002"
+      - "8849:8849"
+  #  healthcheck:
+  #    test: ["CMD", "curl", "-f", "http://localhost:8080/version"]
+  #    interval: 10s
+  #    timeout: 10s
+  #    retries: 30    
+    restart: unless-stopped
+    networks:
+      - mainproxy
+
+
 volumes:
   abn_tmp:
   mysql_data:
