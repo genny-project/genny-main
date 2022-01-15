@@ -738,6 +738,8 @@ services:
       - MYSQL_DB=gennydb
       - MYSQL_USER=genny
       - MYSQL_PASSWORD=password
+      - KAFKA_URL=kafka:9092
+      - GENNY_KAFKA_URL=kafka:9092
       - BRIDGE_URL=bridge.genny.life
       - SHLEEMY_URL=http://alyson7.genny.life:8197
     ports:
