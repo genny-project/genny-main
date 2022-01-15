@@ -773,7 +773,7 @@ services:
       LETSENCRYPT_HOST: acrow.genny.life
       LETSENCRYPT_EMAIL: cto@gada.io
       KOGITO_DATAINDEX_HTTP_URL: http://alyson.genny.life:8582/graphql/
-      KOGITO_MANAGEMENT_CONSOLE_PROPS: -Dkogito.consoles.keycloak.config.client-id=kogito-console-quarkus  -Dkogito.consoles.keycloak.config.realm=internmatch -Dkogito.consoles.keycloak.config.url=https://keycloak.gada.io/auth -Dkogito.consoles.keycloak.config.health-check-url=https://keycloak.gada.io/auth/realms/internmatch/.well-known/openid-configuration -Dkogito.svg.folder.path=/home/kogito/data/svg -Dkogito.consoles.keycloak.config.disable-health-check=false -Dkogito.consoles.keycloak.config.update-token-validity=30 -Dkogito.dataindex.http.url=http://data-index:8080/graphql
+      KOGITO_MANAGEMENT_CONSOLE_PROPS: -Dkogito.consoles.keycloak.config.client-id=kogito-console-quarkus  -Dkogito.consoles.keycloak.config.realm=internmatch -Dkogito.consoles.keycloak.config.url=https://keycloak.gada.io/auth -Dkogito.consoles.keycloak.config.health-check-url=https://keycloak.gada.io/auth/realms/internmatch/.well-known/openid-configuration -Dkogito.svg.folder.path=/home/kogito/data/svg -Dkogito.consoles.keycloak.config.disable-health-check=false -Dkogito.consoles.keycloak.config.update-token-validity=30 -Dkogito.dataindex.http.url=http://alyson.genny.life:8582/graphql
    networks:
      - mainproxy
 
@@ -791,7 +791,7 @@ services:
       LETSENCRYPT_HOST: acrow.genny.life
       LETSENCRYPT_EMAIL: cto@gada.io
       KOGITO_DATAINDEX_HTTP_URL: http://alyson.genny.life:8582/graphql/
-      KOGITO_TASK_CONSOLE_PROPS: -Dkogito.consoles.keycloak.config.client-id=kogito-console-quarkus -Dkogito.consoles.keycloak.config.realm=internmatch -Dkogito.consoles.keycloak.config.url=https://keycloak.gada.io/auth -Dkogito.consoles.keycloak.config.health-check-url=https://keycloak.gada.io/auth/realms/internmatch/.well-known/openid-configuration -Dkogito.consoles.keycloak.config.disable-health-check=false -Dkogito.consoles.keycloak.config.update-token-validity=30 -Dkogito.dataindex.http.url=http://data-index:8080/graphql
+      KOGITO_TASK_CONSOLE_PROPS: -Dkogito.consoles.keycloak.config.client-id=kogito-console-quarkus -Dkogito.consoles.keycloak.config.realm=internmatch -Dkogito.consoles.keycloak.config.url=https://keycloak.gada.io/auth -Dkogito.consoles.keycloak.config.health-check-url=https://keycloak.gada.io/auth/realms/internmatch/.well-known/openid-configuration -Dkogito.consoles.keycloak.config.disable-health-check=false -Dkogito.consoles.keycloak.config.update-token-validity=30 -Dkogito.dataindex.http.url=http://alyson.genny.life:8582/graphql
     networks:
      - mainproxy
 
