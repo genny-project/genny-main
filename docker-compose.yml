@@ -107,11 +107,11 @@ services:
     container_name: schema-registry
     environment:
       SCHEMA_REGISTRY_HOST_NAME: schema-registry
-      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: kakfa:29092
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: kafka:29092
     networks:
       - mainproxy
     depends_on:
-      - kakfa
+      - kafka
     ports:
       - '8081:8081'
 
