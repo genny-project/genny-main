@@ -746,18 +746,18 @@ services:
       - mainproxy
 
   management-console:
-   container_name: management-console
-   image: quay.io/kiegroup/kogito-management-console:latest
-   ports:
+    container_name: management-console
+    image: quay.io/kiegroup/kogito-management-console:latest
+    ports:
      - 8584:8080
-   depends_on:
+    depends_on:
      data-index:
        condition: service_started
      jobs-service:
        condition: service_started
-   volumes:
+    volumes:
      - ./svg/:/home/kogito/data/svg/:delegated
-   environment:
+    environment:
       VIRTUAL_HOST: management.genny.life
       VIRTUAL_PORT: 8080
       LETSENCRYPT_HOST: acrow.genny.life
@@ -765,9 +765,6 @@ services:
 #kogito.dataindex.http.url=kogito.dataindex.http.url=http://localhost:8180/graphql
       KOGITO_DATAINDEX_HTTP_URL: http://alyson.genny.life:8582/graphql
       KOGITO_MANAGEMENT_CONSOLE_PROPS: -Dkogito.consoles.keycloak.config.client-id=kogito-console-quarkus  -Dkogito.consoles.keycloak.config.realm=internmatch -Dkogito.consoles.keycloak.config.url=https://keycloak.gada.io/auth -Dkogito.consoles.keycloak.config.health-check-url=https://keycloak.gada.io/auth/realms/internmatch/.well-known/openid-configuration -Dkogito.svg.folder.path=/home/kogito/data/svg -Dkogito.consoles.keycloak.config.disable-health-check=false -Dkogito.consoles.keycloak.config.update-token-validity=30 
-   networks:
-     - mainproxy
-    environment:
       QUARKUS_INFINISPAN_CLIENT_AUTH_PASSWORD: password
       QUARKUS_INFINISPAN_CLIENT_AUTH_REALM: default
       QUARKUS_INFINISPAN_CLIENT_AUTH_USERNAME: genny
@@ -776,6 +773,8 @@ services:
       QUARKUS_INFINISPAN_CLIENT_USE_AUTH: "true"
       KOGITO_DATAINDEX_HTTP_URL: http://alyson.genny.life:8582/graphql
       KOGITO_MANAGEMENT_CONSOLE_PROPS:  -Dkogito.consoles.keycloak.config.client-id=kogito-console-quarkus  -Dkogito.consoles.keycloak.config.realm=internmatch -Dkogito.consoles.keycloak.config.url=https://keycloak.gada.io/auth -Dkogito.consoles.keycloak.config.health-check-url=https://keycloak.gada.io/auth/realms/internmatch/.well-known/openid-configuration -Dkogito.svg.folder.path=/home/kogito/data/svg -Dkogito.consoles.keycloak.config.disable-health-check=false -Dkogito.consoles.keycloak.config.update-token-validity=30
+    networks:
+     - mainproxy
 
 
 
