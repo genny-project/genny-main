@@ -59,15 +59,6 @@ services:
       LOG_DIR: "/tmp/logs"
       ZOOKEEPER_CLIENT_PORT: 2181
 
-  kafka:
-    image: confluentinc/cp-kafka:7.0.1
-    container_name: kafka
-    depends_on:
-      zookeeper:
-        condition: service_healthy
-    networks:
-     - mainproxy
-
   zookeeper-2:
     image: confluentinc/cp-zookeeper:latest
     environment:
