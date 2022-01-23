@@ -684,6 +684,9 @@ services:
       - GENNY_MYSQL_FULL_URL=alyson.genny.life:3310/gennydb?zeroDateTimeBehavior=convertToNull&serverTimezone=UTC
       - GENNY_CACHE_HOST=http://localhost
       - GENNY_CACHE_PORT=8090
+      - INFINISPAN_URL=localhost:11222
+      - INFINISPAN_USERNAME=genny
+      - INFINISPAN_PASSWORD=password
     ports:
       - "4242:8080"
     links:
