@@ -347,7 +347,7 @@ services:
     depends_on:
       mysql:
         condition: service_healthy
-      kakfa:
+      kafka:
         condition: service_healthy
       infinispan:
         condition: service_healthy
