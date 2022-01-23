@@ -704,28 +704,19 @@ services:
     networks:
      - mainproxy
     depends_on:
-<<<<<<< HEAD
       kafka:
         condition: service_healthy
       infinispank:
-=======
-      kakfa:
-        condition: service_started
-      infinispan:
->>>>>>> af38d2f1181552c8e760dd4751b63e07aa2fc38c
         condition: service_healthy
     volumes:
       - ./target/protobuf:/home/kogito/data/protobufs/:delegated
     environment:
-<<<<<<< HEAD
       KAFKA_BOOTSTRAP_SERVERS: kafka:29092
-=======
       QUARKUS_INFINISPAN_CLIENT_SERVER_LIST: infinispan:11222
       QUARKUS_INFINISPAN_CLIENT_USE_AUTH: "true"
       QUARKUS_INFINISPAN_CLIENT_AUTH_USERNAME: "genny"
       QUARKUS_INFINISPAN_CLIENT_AUTH_PASSWORD: "password"
       KAFKA_BOOTSTRAP_SERVERS: kakfa:9092
->>>>>>> af38d2f1181552c8e760dd4751b63e07aa2fc38c
       KOGITO_DATA_INDEX_PROPS: -Dkogito.protobuf.folder=/home/kogito/data/protobufs/
       PROJECT_REALM: internmatch
       QUARKUS_INFINISPAN_CLIENT_AUTH_PASSWORD: password
@@ -759,27 +750,11 @@ services:
       QUARKUS_INFINISPAN_CLIENT_USE_AUTH: "true"
       QUARKUS_INFINISPAN_CLIENT_AUTH_USERNAME: "genny"
       QUARKUS_INFINISPAN_CLIENT_AUTH_PASSWORD: "password"
-<<<<<<< HEAD
       KOGITO_JOBS_PROPS: -Dquarkus-profile=events-support -Dquarkus.http.port=8080 -D%events-support.quarkus.http.port=8080 -D%events-support.kafka.bootstrap.servers=kafka:9092 -D%events-support.mp.messaging.outgoing.kogito-job-service-job-status-events.bootstrap.servers=kafka:9092 -Dkogito.jobs-service.persistence=infinispank -Dkogito.service.url=http://alyson.genny.life:8581 -Dkogito.service.url=http://alyson2.genny.life:8580
-=======
-      KOGITO_JOBS_PROPS: -Dquarkus-profile=events-support -Dquarkus.http.port=8080 -D%events-support.quarkus.http.port=8080 -D%events-support.kafka.bootstrap.servers=kakfa:9092 -D%events-support.mp.messaging.outgoing.kogito-job-service-job-status-events.bootstrap.servers=kakfa:9092 -Dkogito.jobs-service.persistence=infinispan -Dkogito.service.url=http://alyson.genny.life:8581 
->>>>>>> af38d2f1181552c8e760dd4751b63e07aa2fc38c
     networks:
       - mainproxy
 
   management-console:
-<<<<<<< HEAD
-    container_name: management-console
-    image: quay.io/kiegroup/kogito-management-console:1.15.0
-    ports:
-      - 8584:8080
-    depends_on:
-      data-index:
-        condition: service_healthy
-    volumes:
-      - ./svg/:/home/kogito/data/svg/
-    networks:
-=======
    container_name: management-console
    image: quay.io/kiegroup/kogito-management-console:latest
    ports:
@@ -800,7 +775,6 @@ services:
       KOGITO_DATAINDEX_HTTP_URL: http://alyson.genny.life:8582/graphql
       KOGITO_MANAGEMENT_CONSOLE_PROPS: -Dkogito.consoles.keycloak.config.client-id=kogito-console-quarkus  -Dkogito.consoles.keycloak.config.realm=internmatch -Dkogito.consoles.keycloak.config.url=https://keycloak.gada.io/auth -Dkogito.consoles.keycloak.config.health-check-url=https://keycloak.gada.io/auth/realms/internmatch/.well-known/openid-configuration -Dkogito.svg.folder.path=/home/kogito/data/svg -Dkogito.consoles.keycloak.config.disable-health-check=false -Dkogito.consoles.keycloak.config.update-token-validity=30 
    networks:
->>>>>>> af38d2f1181552c8e760dd4751b63e07aa2fc38c
      - mainproxy
     environment:
       QUARKUS_INFINISPAN_CLIENT_AUTH_PASSWORD: password
