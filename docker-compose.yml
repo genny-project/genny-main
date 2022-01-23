@@ -542,6 +542,9 @@ services:
       - GENNY_KAFKA_URL=kafka:9092
       - GENNY_REALM=internmatch
       - PROJECT_REALM=internmatch
+      - INFINISPAN_URL=localhost:11222
+      - INFINISPAN_USERNAME=genny
+      - INFINISPAN_PASSWORD=password
     networks:
       - mainproxy
 #    ports:
