@@ -101,45 +101,6 @@ services:
       start_period: 5s
       retries: 4
 
-  kafka-2:
-    image: confluentinc/cp-kafka:latest
-    hostname: kafka-2
-    container_name: kafka-2
-    depends_on:
-      - zookeeper
-      - zookeeper-2
-    ports:
-      - 39092:39092
-    environment:
-      KAFKA_BROKER_ID: 0
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_LISTENERS: INTERNAL://0.0.0.0:29092,EXTERNAL://0.0.0.0:9092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
-      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
-      KAFKA_BROKER_ID: 2
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181,zookeeper-2:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka-2:39092,PLAINTEXT_HOST://alyson.genny.life:9092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
-      KAFKA_NUM_PARTITIONS: 3
-      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
-      KAFKA_NUM_PARTITIONS: "3"
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_GROUP_MIN_SESSION_TIMEOUT_MS: 6000
-      KAFKA_GROUP_MAX_SESSION_TIMEOUT_MS: 60000
-      KAFKA_PRODUCER_MAX_REQUEST_SIZE: 15728640
-      KAFKA_REPLICA_FETCH_MAX_BYTES: 15728640
-      KAFKA_CONSUMER_MAX_PARTITION_FETCH_BYTES: 15728640
-    networks:
-      - mainproxy
-    healthcheck:
-      test: ["CMD", "nc", "-vz", "localhost", "39092"]
-      interval: 30s
-      timeout: 10s
-      start_period: 5s
-      retries: 4
-
-
   schema-registry:
     image: confluentinc/cp-schema-registry:7.0.0
     hostname: schema-registry
