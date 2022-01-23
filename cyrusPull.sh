@@ -2,7 +2,7 @@
 
 parentdir="$(dirname `pwd`)"
 
-for value in qwanda qwandaq qwanda-utils bootxport genny-verticle-rules genny-rules qwanda-services wildfly-rulesservice wildfly-qwanda-service checkrules lauchy dropkick bridge media-proxy messages fyodor notes shleemy  alyson gennyteer bootq kogitoq
+for value in qwanda qwandaq qwanda-utils bootxport genny-verticle-rules genny-rules qwanda-services wildfly-rulesservice wildfly-qwanda-service checkrules lauchy dropkick bridge media-proxy messages fyodor notes shleemy  alyson  bootq kogitoq
 do
     echo $value
     cd $parentdir/${value}

@@ -40,11 +40,14 @@ services:
       timeout: 10s
       retries: 4
 
+
   zookeeper:
-    container_name: zookeeper
-    image: confluentinc/cp-zookeeper:7.0.1
+    image: confluentinc/cp-zookeeper:latest
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
     ports:
-      - "2181:2181"
+      - 22181:2181
     networks:
      - mainproxy
     healthcheck:
@@ -64,19 +67,42 @@ services:
         condition: service_healthy
     networks:
      - mainproxy
-    ports:
-      - "9092:9092"
+
+  zookeeper-2:
+    image: confluentinc/cp-zookeeper:latest
     environment:
-      KAFKA_BROKER_ID: 0
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_LISTENERS: INTERNAL://0.0.0.0:29092,EXTERNAL://0.0.0.0:9092
-      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:29092,EXTERNAL://alyson.genny.life:9092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
-      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - 32181:2181
+    networks:
+      - mainproxy
+  
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    depends_on:
+      - zookeeper
+      - zookeeper-2
+    hostname: kafka
+    container_name: kafka
+    ports:
+      - 29092:29092
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181,zookeeper-2:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://alyson.genny.life:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_NUM_PARTITIONS: 3
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
-      KAFKA_NUM_PARTITIONS: "3"
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      LOG_DIR: "/tmp/logs"
+      KAFKA_GROUP_MIN_SESSION_TIMEOUT_MS: 6000
+      KAFKA_GROUP_MAX_SESSION_TIMEOUT_MS: 60000
+      KAFKA_PRODUCER_MAX_REQUEST_SIZE: 15728640
+      KAFKA_REPLICA_FETCH_MAX_BYTES: 15728640
+      KAFKA_CONSUMER_MAX_PARTITION_FETCH_BYTES: 15728640
+    networks:
+      - mainproxy
     healthcheck:
       test: ["CMD", "nc", "-vz", "localhost", "9092"]
       interval: 30s
@@ -84,17 +110,57 @@ services:
       start_period: 5s
       retries: 4
 
+  kafka-2:
+    image: confluentinc/cp-kafka:latest
+    hostname: kafka-2
+    container_name: kafka-2
+    depends_on:
+      - zookeeper
+      - zookeeper-2
+    ports:
+      - 39092:39092
+    environment:
+      KAFKA_BROKER_ID: 0
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENERS: INTERNAL://0.0.0.0:29092,EXTERNAL://0.0.0.0:9092
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:29092,EXTERNAL://alyson.genny.life:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_BROKER_ID: 2
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181,zookeeper-2:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka-2:9092,PLAINTEXT_HOST://alyson.genny.life:39092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_NUM_PARTITIONS: 3
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_NUM_PARTITIONS: "3"
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_MIN_SESSION_TIMEOUT_MS: 6000
+      KAFKA_GROUP_MAX_SESSION_TIMEOUT_MS: 60000
+      KAFKA_PRODUCER_MAX_REQUEST_SIZE: 15728640
+      KAFKA_REPLICA_FETCH_MAX_BYTES: 15728640
+      KAFKA_CONSUMER_MAX_PARTITION_FETCH_BYTES: 15728640
+    networks:
+      - mainproxy
+    healthcheck:
+      test: ["CMD", "nc", "-vz", "localhost", "39092"]
+      interval: 30s
+      timeout: 10s
+      start_period: 5s
+      retries: 4
+
+
   schema-registry:
     image: confluentinc/cp-schema-registry:7.0.0
     hostname: schema-registry
     container_name: schema-registry
     environment:
       SCHEMA_REGISTRY_HOST_NAME: schema-registry
-      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: kafka:9092
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: kakfa:9092
     networks:
       - mainproxy
     depends_on:
-      - kafka
+      - kakfa
     ports:
       - '8081:8081'
 
@@ -109,7 +175,7 @@ services:
     ports:
       - '8083:8083'
     environment:
-      CONNECT_BOOTSTRAP_SERVERS: kafka:9092
+      CONNECT_BOOTSTRAP_SERVERS: kakfa:9092
       CONNECT_PRODUCER_COMPRESSION_TYPE: lz4
       CONNECT_GROUP_ID: connect
       CONNECT_KEY_CONVERTER: io.confluent.connect.avro.AvroConverter
@@ -157,12 +223,12 @@ services:
       - "8090:8090"
     environment:
       KSQL_LISTENERS: http://ksqldb-server:8090
-      KSQL_BOOTSTRAP_SERVERS: kafka:9092
+      KSQL_BOOTSTRAP_SERVERS: kakfa:9092
       KSQL_KSQL_LOGGING_PROCESSING_STREAM_AUTO_CREATE: "true"
       KSQL_KSQL_LOGGING_PROCESSING_TOPIC_AUTO_CREATE: "true"
       KSQL_LOG4J_ROOT_LOGLEVEL: "ERROR"
       KSQL_LOG4J_LOGGERS: "org.apache.kafka.connect.runtime.rest=WARN,org.reflections=ERROR"
-      KSQL_LOG4J_PROCESSING_LOG_BROKERLIST: kafka:29092
+      KSQL_LOG4J_PROCESSING_LOG_BROKERLIST: kakfa:9092
       KSQL_LOG4J_PROCESSING_LOG_TOPIC: __ksql-processing-log
       KSQL_KSQL_LOGGING_PROCESSING_TOPIC_NAME: __ksql-processing-log
       KSQL_KSQL_SCHEMA_REGISTRY_URL: http://schema-registry:8081
@@ -330,7 +396,7 @@ services:
     depends_on:
       mysql:
         condition: service_healthy
-      kafka:
+      kakfa:
         condition: service_healthy
       infinispan:
         condition: service_healthy
@@ -367,7 +433,7 @@ services:
     depends_on:
       mysql:
         condition: service_healthy
-      kafka:
+      kakfa:
         condition: service_healthy
       infinispan:
         condition: service_healthy
@@ -397,6 +463,7 @@ services:
       - VIRTUAL_PORT=8080
       - VIRTUAL_PROTO=http
       - CERT_NAME=genny.life
+      - GENNY_KAFKA_URL=kakfa:9092
       - LOAD_DDT_IN_STARTUP=TRUE
       - SEARCH_ALT=TRUE
       - SKIP_GITHUB_IN_STARTUP=TRUE
@@ -415,6 +482,7 @@ services:
       - "10003:10003"
     links:
       - mysql:mysql
+      - kakfa:kakfa 
         #- keycloak:keycloak
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/version"]
@@ -431,7 +499,7 @@ services:
     depends_on:
 #      qwanda-service:
 #        condition: service_healthy
-      kafka:
+      kakfa:
         condition: service_healthy
 #      infinispan:
 #        condition: service_healthy
@@ -455,7 +523,7 @@ services:
       - ADMIN_PASSWORD=GENNY
       - VIRTUAL_HOST=bridge.genny.life
       - VIRTUAL_PORT=8088
-      - KAFKA_URL=kafka:9092
+      - KAFKA_URL=kakfa:9092
       - VIRTUAL_PROTO=http
       - CERT_NAME=genny.life
       - KEYCLOAKURL=https://keycloak.gada.io/auth/realms
@@ -496,7 +564,7 @@ services:
     depends_on:
       qwanda-service:
         condition: service_healthy
-      kafka:
+      kakfa:
         condition: service_healthy
     container_name: lauchy 
     volumes:
@@ -508,14 +576,14 @@ services:
       - ADMIN_PASSWORD=GENNY
       - VIRTUAL_HOST=lauchy.genny.life
       - VIRTUAL_PORT=8080
-      - KAFKA_URL=kafka:9092
+      - KAFKA_URL=kakfa:9092
       - CERT_NAME=genny.life
       - GENNY_SHOW_VALUES=true
       - GENNY_ENABLE_BLACKLIST=false
       - GENNY_API_URL=http://qwanda-service:8080
       - GENNY_BRIDGE_URL=http://bridge:80
       - GENNY_CLIENT_ID=backend
-      - GENNY_KAFKA_URL=kafka:9092
+      - GENNY_KAFKA_URL=kakfa:9092
       - GENNY_KEYCLOAK_URL=https://keycloak.gada.io
       - GENNY_REALM=internmatch
       - GENNY_SERVICE_USERNAME=service
@@ -536,7 +604,7 @@ services:
     depends_on:
       qwanda-service:
         condition: service_healthy
-      kafka:
+      kakfa:
         condition: service_healthy
     container_name:  dropkick 
     volumes:
@@ -548,16 +616,19 @@ services:
       - ADMIN_PASSWORD=GENNY
       - VIRTUAL_HOST=dropkick.genny.life
       - VIRTUAL_PORT=8080
-      - KAFKA_URL=kafka:9092
+      - KAFKA_URL=kakfa:9092
       - CERT_NAME=genny.life
       - GENNY_SHOW_VALUES=true
       - GENNY_SERVICE_USERNAME=service
       - GENNY_KEYCLOAK_URL=https://keycloak.gada.io
       - GENNY_API_URL=http://qwanda-service:8080
       - GENNY_CLIENT_ID=backend
-      - GENNY_KAFKA_URL=kafka:9092
+      - GENNY_KAFKA_URL=kakfa:9092
       - GENNY_REALM=internmatch
       - PROJECT_REALM=internmatch
+      - INFINISPAN_URL=localhost:11222
+      - INFINISPAN_USERNAME=genny
+      - INFINISPAN_PASSWORD=password
     networks:
       - mainproxy
 #    ports:
@@ -574,7 +645,7 @@ services:
     depends_on:
       qwanda-service:
         condition: service_healthy
-      kafka:
+      kakfa:
         condition: service_healthy
     container_name:  fyodor 
     volumes:
@@ -582,7 +653,7 @@ services:
     # env_file:
     #   - ${ENV_FILE}
     environment:
-      - GENNY_KAFKA_URL=kafka:9092
+      - GENNY_KAFKA_URL=kakfa:9092
       - GENNY_REALM=internmatch
       - GENNY_CLIENT_ID=${GENNY_CLIENT_ID}
       - GENNY_CLIENT_SECRET=${GENNY_CLIENT_SECRET}
@@ -593,6 +664,9 @@ services:
       - GENNY_MYSQL_FULL_URL=alyson.genny.life:3310/gennydb?zeroDateTimeBehavior=convertToNull&serverTimezone=UTC
       - GENNY_CACHE_HOST=http://localhost
       - GENNY_CACHE_PORT=8090
+      - INFINISPAN_URL=localhost:11222
+      - INFINISPAN_USERNAME=genny
+      - INFINISPAN_PASSWORD=password
     ports:
       - "4242:8080"
     links:
@@ -630,14 +704,28 @@ services:
     networks:
      - mainproxy
     depends_on:
+<<<<<<< HEAD
       kafka:
         condition: service_healthy
       infinispank:
+=======
+      kakfa:
+        condition: service_started
+      infinispan:
+>>>>>>> af38d2f1181552c8e760dd4751b63e07aa2fc38c
         condition: service_healthy
     volumes:
       - ./target/protobuf:/home/kogito/data/protobufs/:delegated
     environment:
+<<<<<<< HEAD
       KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+=======
+      QUARKUS_INFINISPAN_CLIENT_SERVER_LIST: infinispan:11222
+      QUARKUS_INFINISPAN_CLIENT_USE_AUTH: "true"
+      QUARKUS_INFINISPAN_CLIENT_AUTH_USERNAME: "genny"
+      QUARKUS_INFINISPAN_CLIENT_AUTH_PASSWORD: "password"
+      KAFKA_BOOTSTRAP_SERVERS: kakfa:9092
+>>>>>>> af38d2f1181552c8e760dd4751b63e07aa2fc38c
       KOGITO_DATA_INDEX_PROPS: -Dkogito.protobuf.folder=/home/kogito/data/protobufs/
       PROJECT_REALM: internmatch
       QUARKUS_INFINISPAN_CLIENT_AUTH_PASSWORD: password
@@ -658,7 +746,7 @@ services:
     ports:
       - 8581:8080
     depends_on:
-      kafka:
+      kakfa:
         condition: service_started
       infinispank:
         condition: service_healthy
@@ -671,11 +759,16 @@ services:
       QUARKUS_INFINISPAN_CLIENT_USE_AUTH: "true"
       QUARKUS_INFINISPAN_CLIENT_AUTH_USERNAME: "genny"
       QUARKUS_INFINISPAN_CLIENT_AUTH_PASSWORD: "password"
+<<<<<<< HEAD
       KOGITO_JOBS_PROPS: -Dquarkus-profile=events-support -Dquarkus.http.port=8080 -D%events-support.quarkus.http.port=8080 -D%events-support.kafka.bootstrap.servers=kafka:9092 -D%events-support.mp.messaging.outgoing.kogito-job-service-job-status-events.bootstrap.servers=kafka:9092 -Dkogito.jobs-service.persistence=infinispank -Dkogito.service.url=http://alyson.genny.life:8581 -Dkogito.service.url=http://alyson2.genny.life:8580
+=======
+      KOGITO_JOBS_PROPS: -Dquarkus-profile=events-support -Dquarkus.http.port=8080 -D%events-support.quarkus.http.port=8080 -D%events-support.kafka.bootstrap.servers=kakfa:9092 -D%events-support.mp.messaging.outgoing.kogito-job-service-job-status-events.bootstrap.servers=kakfa:9092 -Dkogito.jobs-service.persistence=infinispan -Dkogito.service.url=http://alyson.genny.life:8581 
+>>>>>>> af38d2f1181552c8e760dd4751b63e07aa2fc38c
     networks:
       - mainproxy
 
   management-console:
+<<<<<<< HEAD
     container_name: management-console
     image: quay.io/kiegroup/kogito-management-console:1.15.0
     ports:
@@ -686,6 +779,28 @@ services:
     volumes:
       - ./svg/:/home/kogito/data/svg/
     networks:
+=======
+   container_name: management-console
+   image: quay.io/kiegroup/kogito-management-console:latest
+   ports:
+     - 8584:8080
+   depends_on:
+     data-index:
+       condition: service_started
+     jobs-service:
+       condition: service_started
+   volumes:
+     - ./svg/:/home/kogito/data/svg/:delegated
+   environment:
+      VIRTUAL_HOST: management.genny.life
+      VIRTUAL_PORT: 8080
+      LETSENCRYPT_HOST: acrow.genny.life
+      LETSENCRYPT_EMAIL: cto@gada.io
+#kogito.dataindex.http.url=kogito.dataindex.http.url=http://localhost:8180/graphql
+      KOGITO_DATAINDEX_HTTP_URL: http://alyson.genny.life:8582/graphql
+      KOGITO_MANAGEMENT_CONSOLE_PROPS: -Dkogito.consoles.keycloak.config.client-id=kogito-console-quarkus  -Dkogito.consoles.keycloak.config.realm=internmatch -Dkogito.consoles.keycloak.config.url=https://keycloak.gada.io/auth -Dkogito.consoles.keycloak.config.health-check-url=https://keycloak.gada.io/auth/realms/internmatch/.well-known/openid-configuration -Dkogito.svg.folder.path=/home/kogito/data/svg -Dkogito.consoles.keycloak.config.disable-health-check=false -Dkogito.consoles.keycloak.config.update-token-validity=30 
+   networks:
+>>>>>>> af38d2f1181552c8e760dd4751b63e07aa2fc38c
      - mainproxy
     environment:
       QUARKUS_INFINISPAN_CLIENT_AUTH_PASSWORD: password
@@ -712,8 +827,8 @@ services:
       VIRTUAL_PORT: 8080
       LETSENCRYPT_HOST: acrow.genny.life
       LETSENCRYPT_EMAIL: cto@gada.io
-      KOGITO_DATAINDEX_HTTP_URL: http://alyson.genny.life:8582/graphql/
-      KOGITO_TASK_CONSOLE_PROPS: -Dkogito.consoles.keycloak.config.client-id=kogito-console-quarkus -Dkogito.consoles.keycloak.config.realm=internmatch -Dkogito.consoles.keycloak.config.url=https://keycloak.gada.io/auth -Dkogito.consoles.keycloak.config.health-check-url=https://keycloak.gada.io/auth/realms/internmatch/.well-known/openid-configuration -Dkogito.consoles.keycloak.config.disable-health-check=false -Dkogito.consoles.keycloak.config.update-token-validity=30
+      KOGITO_DATAINDEX_HTTP_URL: http://alyson.genny.life:8582/graphql
+      KOGITO_TASK_CONSOLE_PROPS: -Dkogito.consoles.keycloak.config.client-id=kogito-console-quarkus -Dkogito.consoles.keycloak.config.realm=internmatch -Dkogito.consoles.keycloak.config.url=https://keycloak.gada.io/auth -Dkogito.consoles.keycloak.config.health-check-url=https://keycloak.gada.io/auth/realms/internmatch/.well-known/openid-configuration -Dkogito.consoles.keycloak.config.disable-health-check=false -Dkogito.consoles.keycloak.config.update-token-validity=30 
     networks:
      - mainproxy
 
@@ -724,7 +839,7 @@ services:
         condition: service_healthy
       mysql:
         condition: service_healthy
-      kafka:
+      kakfa:
         condition: service_healthy
       infinispan:
         condition: service_healthy
@@ -738,7 +853,7 @@ services:
       - ADMIN_USERNAME=GENNY 
       - ADMIN_PASSWORD=GENNY
       - BULKPULL=FALSE
-      - kafka.bootstrap.servers=kafka:9092
+      - kafka.bootstrap.servers=kakfa:9092
       - CERT_NAME=genny.life
       - DDT_URL=http://alyson7.genny.life:8089
       - DEBUG=TRUE
