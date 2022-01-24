@@ -29,7 +29,7 @@ services:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
     ports:
-      - 22181:2181
+      - 2181:2181
     networks:
      - mainproxy
     healthcheck:
@@ -41,21 +41,11 @@ services:
       LOG_DIR: "/tmp/logs"
       ZOOKEEPER_CLIENT_PORT: 2181
 
-  zookeeper-2:
-    image: confluentinc/cp-zookeeper:latest
-    environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
-      ZOOKEEPER_TICK_TIME: 2000
-    ports:
-      - 32181:2181
-    networks:
-      - mainproxy
   
   kafka:
     image: confluentinc/cp-kafka:latest
     depends_on:
       - zookeeper
-      - zookeeper-2
     hostname: kafka
     container_name: kafka
     ports:
@@ -63,7 +53,7 @@ services:
       - 9092:9092
     environment:
       KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181,zookeeper-2:2181
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://alyson.genny.life:9092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
@@ -821,12 +811,12 @@ services:
       GENNY_CLIENT_ID: kogito-console-quarkus
       GENNY_REALM: internmatch
       GENNY_KOGITO_SERVICE_URL: http://alyson.genny.life:8580
-      GENNY_INFINISPAN_URL: alyson.genny.life:11222
+      GENNY_INFINISPAN_URL: infinispan:11222
       QUARKUS_INFINISPAN_CLIENT_AUTH_PASSWORD: password
       QUARKUS_INFINISPAN_CLIENT_AUTH_REALM: default
       QUARKUS_INFINISPAN_CLIENT_AUTH_USERNAME: genny
       QUARKUS_INFINISPAN_CLIENT_SASL_MECHANISM: DIGEST-MD5
-      QUARKUS_INFINISPAN_CLIENT_SERVER_LIST: alyson.genny.life:11222
+      QUARKUS_INFINISPAN_CLIENT_SERVER_LIST: infinispan:11222
       QUARKUS_INFINISPAN_CLIENT_USE_AUTH: "true"
     ports:
       - "8580:8080"
@@ -853,12 +843,12 @@ services:
       GENNY_CLIENT_ID: kogito-console-quarkus
       GENNY_REALM: internmatch
       GENNY_KOGITO_SERVICE_URL: http://alyson.genny.life:8579
-      GENNY_INFINISPAN_URL: alyson.genny.life:11222
+      GENNY_INFINISPAN_URL: infinispan:11222
       QUARKUS_INFINISPAN_CLIENT_USE_AUTH: "true"
       QUARKUS_INFINISPAN_CLIENT_AUTH_USERNAME: "genny"
       QUARKUS_INFINISPAN_CLIENT_AUTH_PASSWORD: "password"
       QUARKUS_INFINISPAN_CLIENT_SASL_MECHANISM: DIGEST-MD5
-      QUARKUS_INFINISPAN_CLIENT_SERVER_LIST: alyson.genny.life:11222
+      QUARKUS_INFINISPAN_CLIENT_SERVER_LIST: infinispan:11222
       QUARKUS_INFINISPAN_CLIENT_USE_AUTH: "true"
     ports:
       - "8579:8080"
