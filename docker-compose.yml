@@ -126,7 +126,7 @@ services:
     ports:
       - '8083:8083'
     environment:
-      CONNECT_BOOTSTRAP_SERVERS: kafka:9092
+      CONNECT_BOOTSTRAP_SERVERS: kafka:29092
       CONNECT_PRODUCER_COMPRESSION_TYPE: lz4
       CONNECT_GROUP_ID: connect
       CONNECT_KEY_CONVERTER: io.confluent.connect.avro.AvroConverter
@@ -174,12 +174,12 @@ services:
       - "8090:8090"
     environment:
       KSQL_LISTENERS: http://ksqldb-server:8090
-      KSQL_BOOTSTRAP_SERVERS: kafka:9092
+      KSQL_BOOTSTRAP_SERVERS: kafka:29092
       KSQL_KSQL_LOGGING_PROCESSING_STREAM_AUTO_CREATE: "true"
       KSQL_KSQL_LOGGING_PROCESSING_TOPIC_AUTO_CREATE: "true"
       KSQL_LOG4J_ROOT_LOGLEVEL: "ERROR"
       KSQL_LOG4J_LOGGERS: "org.apache.kafka.connect.runtime.rest=WARN,org.reflections=ERROR"
-      KSQL_LOG4J_PROCESSING_LOG_BROKERLIST: kafka:9092
+      KSQL_LOG4J_PROCESSING_LOG_BROKERLIST: kafka:29092
       KSQL_LOG4J_PROCESSING_LOG_TOPIC: __ksql-processing-log
       KSQL_KSQL_LOGGING_PROCESSING_TOPIC_NAME: __ksql-processing-log
       KSQL_KSQL_SCHEMA_REGISTRY_URL: http://schema-registry:8081
@@ -414,7 +414,7 @@ services:
       - VIRTUAL_PORT=8080
       - VIRTUAL_PROTO=http
       - CERT_NAME=genny.life
-      - GENNY_KAFKA_URL=kafka:9092
+      - GENNY_KAFKA_URL=kafka:29092
       - LOAD_DDT_IN_STARTUP=TRUE
       - SEARCH_ALT=TRUE
       - SKIP_GITHUB_IN_STARTUP=TRUE
@@ -474,7 +474,7 @@ services:
       - ADMIN_PASSWORD=GENNY
       - VIRTUAL_HOST=bridge.genny.life
       - VIRTUAL_PORT=8088
-      - KAFKA_URL=kafka:9092
+      - KAFKA_URL=kafka:29092
       - VIRTUAL_PROTO=http
       - CERT_NAME=genny.life
       - KEYCLOAKURL=https://keycloak.gada.io/auth/realms
@@ -527,14 +527,14 @@ services:
       - ADMIN_PASSWORD=GENNY
       - VIRTUAL_HOST=lauchy.genny.life
       - VIRTUAL_PORT=8080
-      - KAFKA_URL=kafka:9092
+      - KAFKA_URL=kafka:29092
       - CERT_NAME=genny.life
       - GENNY_SHOW_VALUES=true
       - GENNY_ENABLE_BLACKLIST=false
       - GENNY_API_URL=http://qwanda-service:8080
       - GENNY_BRIDGE_URL=http://bridge:80
       - GENNY_CLIENT_ID=backend
-      - GENNY_KAFKA_URL=kafka:9092
+      - GENNY_KAFKA_URL=kafka:29092
       - GENNY_KEYCLOAK_URL=https://keycloak.gada.io
       - GENNY_REALM=internmatch
       - GENNY_SERVICE_USERNAME=service
@@ -567,14 +567,14 @@ services:
       - ADMIN_PASSWORD=GENNY
       - VIRTUAL_HOST=dropkick.genny.life
       - VIRTUAL_PORT=8080
-      - KAFKA_URL=kafka:9092
+      - KAFKA_URL=kafka:29092
       - CERT_NAME=genny.life
       - GENNY_SHOW_VALUES=true
       - GENNY_SERVICE_USERNAME=service
       - GENNY_KEYCLOAK_URL=https://keycloak.gada.io
       - GENNY_API_URL=http://qwanda-service:8080
       - GENNY_CLIENT_ID=backend
-      - GENNY_KAFKA_URL=kafka:9092
+      - GENNY_KAFKA_URL=kafka:29092
       - GENNY_REALM=internmatch
       - PROJECT_REALM=internmatch
       - INFINISPAN_URL=localhost:11222
@@ -604,7 +604,7 @@ services:
     # env_file:
     #   - ${ENV_FILE}
     environment:
-      - GENNY_KAFKA_URL=kafka:9092
+      - GENNY_KAFKA_URL=kafka:29092
       - GENNY_REALM=internmatch
       - GENNY_CLIENT_ID=${GENNY_CLIENT_ID}
       - GENNY_CLIENT_SECRET=${GENNY_CLIENT_SECRET}
@@ -663,11 +663,6 @@ services:
       - ./target/protobuf:/home/kogito/data/protobufs/:delegated
     environment:
       KAFKA_BOOTSTRAP_SERVERS: kafka:29092
-      QUARKUS_INFINISPAN_CLIENT_SERVER_LIST: infinispank:11222
-      QUARKUS_INFINISPAN_CLIENT_USE_AUTH: "true"
-      QUARKUS_INFINISPAN_CLIENT_AUTH_USERNAME: "genny"
-      QUARKUS_INFINISPAN_CLIENT_AUTH_PASSWORD: "password"
-      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
       KOGITO_DATA_INDEX_PROPS: -Dkogito.protobuf.folder=/home/kogito/data/protobufs/
       PROJECT_REALM: internmatch
       QUARKUS_INFINISPAN_CLIENT_AUTH_PASSWORD: password
@@ -701,7 +696,7 @@ services:
       QUARKUS_INFINISPAN_CLIENT_USE_AUTH: "true"
       QUARKUS_INFINISPAN_CLIENT_AUTH_USERNAME: "genny"
       QUARKUS_INFINISPAN_CLIENT_AUTH_PASSWORD: "password"
-      KOGITO_JOBS_PROPS: -Dquarkus-profile=events-support -Dquarkus.http.port=8080 -D%events-support.quarkus.http.port=8080 -D%events-support.kafka.bootstrap.servers=kafka:9092 -D%events-support.mp.messaging.outgoing.kogito-job-service-job-status-events.bootstrap.servers=kafka:9092 -Dkogito.jobs-service.persistence=infinispank -Dkogito.service.url=http://alyson.genny.life:8581 -Dkogito.service.url=http://alyson2.genny.life:8580
+      KOGITO_JOBS_PROPS: -Dquarkus-profile=events-support -Dquarkus.http.port=8080 -D%events-support.quarkus.http.port=8080 -D%events-support.kafka.bootstrap.servers=kafka:29092 -D%events-support.mp.messaging.outgoing.kogito-job-service-job-status-events.bootstrap.servers=kafka:29092 -Dkogito.jobs-service.persistence=infinispank -Dkogito.service.url=http://alyson.genny.life:8581 -Dkogito.service.url=http://alyson2.genny.life:8580
     networks:
       - mainproxy
 
@@ -777,7 +772,7 @@ services:
       - ADMIN_USERNAME=GENNY 
       - ADMIN_PASSWORD=GENNY
       - BULKPULL=FALSE
-      - kafka.bootstrap.servers=kafka:9092
+      - kafka.bootstrap.servers=kafka:29092
       - CERT_NAME=genny.life
       - DDT_URL=http://alyson7.genny.life:8089
       - DEBUG=TRUE
