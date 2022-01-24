@@ -1,28 +1,10 @@
 version: '2.3'
 
 services:
+
   infinispan:
-    image: infinispan/server:13.0
-    container_name: infinispan
-    environment:
-      - USER=genny
-      - PASS=password
-    ports:
-      - 11222:11222
-    networks:
-      - mainproxy
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://infinispan:11222/console/welcome"]
-      interval: 10s
-      timeout: 50s
-      start_period: 20s
-      retries: 100 
-
-
-
-  infinispank:
     image: quay.io/infinispan/server:13.0.5.Final-2
-    container_name: infinispank
+    container_name: infinispan
     ports:
         - 11223:11222
 #    command: "/opt/infinispan/bin/server.sh -c infinispan.xml"
@@ -658,7 +640,7 @@ services:
     depends_on:
       kafka:
         condition: service_healthy
-      infinispank:
+      infinispan:
         condition: service_healthy
     volumes:
       - ./target/protobuf:/home/kogito/data/protobufs/:delegated
@@ -670,7 +652,7 @@ services:
       QUARKUS_INFINISPAN_CLIENT_AUTH_REALM: default
       QUARKUS_INFINISPAN_CLIENT_AUTH_USERNAME: genny
       QUARKUS_INFINISPAN_CLIENT_SASL_MECHANISM: DIGEST-MD5
-      QUARKUS_INFINISPAN_CLIENT_SERVER_LIST: infinispank:11222
+      QUARKUS_INFINISPAN_CLIENT_SERVER_LIST: infinispan:11222
       QUARKUS_INFINISPAN_CLIENT_USE_AUTH: "true"
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8080/q/health/ready" ]
@@ -686,18 +668,18 @@ services:
     depends_on:
       kafka:
         condition: service_started
-      infinispank:
+      infinispan:
         condition: service_healthy
       data-index:
         condition: service_started
     environment:
       QUARKUS_INFINISPAN_CLIENT_USE_AUTH: "false"
       ENABLE_EVENTS: "true"
-      QUARKUS_INFINISPAN_CLIENT_SERVER_LIST: infinispank:11222
+      QUARKUS_INFINISPAN_CLIENT_SERVER_LIST: infinispan:11222
       QUARKUS_INFINISPAN_CLIENT_USE_AUTH: "true"
       QUARKUS_INFINISPAN_CLIENT_AUTH_USERNAME: "genny"
       QUARKUS_INFINISPAN_CLIENT_AUTH_PASSWORD: "password"
-      KOGITO_JOBS_PROPS: -Dquarkus-profile=events-support -Dquarkus.http.port=8080 -D%events-support.quarkus.http.port=8080 -D%events-support.kafka.bootstrap.servers=kafka:29092 -D%events-support.mp.messaging.outgoing.kogito-job-service-job-status-events.bootstrap.servers=kafka:29092 -Dkogito.jobs-service.persistence=infinispank -Dkogito.service.url=http://alyson.genny.life:8581 -Dkogito.service.url=http://alyson2.genny.life:8580
+      KOGITO_JOBS_PROPS: -Dquarkus-profile=events-support -Dquarkus.http.port=8080 -D%events-support.quarkus.http.port=8080 -D%events-support.kafka.bootstrap.servers=kafka:29092 -D%events-support.mp.messaging.outgoing.kogito-job-service-job-status-events.bootstrap.servers=kafka:29092 -Dkogito.jobs-service.persistence=infinispan -Dkogito.service.url=http://alyson.genny.life:8581 -Dkogito.service.url=http://alyson2.genny.life:8580
     networks:
       - mainproxy
 
@@ -839,12 +821,12 @@ services:
       GENNY_CLIENT_ID: kogito-console-quarkus
       GENNY_REALM: internmatch
       GENNY_KOGITO_SERVICE_URL: http://alyson.genny.life:8580
-      GENNY_INFINISPAN_URL: alysoin.genny.life:11223
+      GENNY_INFINISPAN_URL: alyson.genny.life:11222
       QUARKUS_INFINISPAN_CLIENT_AUTH_PASSWORD: password
       QUARKUS_INFINISPAN_CLIENT_AUTH_REALM: default
       QUARKUS_INFINISPAN_CLIENT_AUTH_USERNAME: genny
       QUARKUS_INFINISPAN_CLIENT_SASL_MECHANISM: DIGEST-MD5
-      QUARKUS_INFINISPAN_CLIENT_SERVER_LIST: alyson.genny.life:11223
+      QUARKUS_INFINISPAN_CLIENT_SERVER_LIST: alyson.genny.life:11222
       QUARKUS_INFINISPAN_CLIENT_USE_AUTH: "true"
     ports:
       - "8580:8080"
@@ -867,11 +849,11 @@ services:
       GENNY_SERVICE_USERNAME: service
       GENNY_KEYCLOAK_URL: https://keycloak.gada.io
       GENNY_API_URL: http://alyson.genny.life:8280
-      GENNY_KAFKA_URL: alyson.genny.life:9093
+      GENNY_KAFKA_URL: alyson.genny.life:9092
       GENNY_CLIENT_ID: kogito-console-quarkus
       GENNY_REALM: internmatch
       GENNY_KOGITO_SERVICE_URL: http://alyson.genny.life:8579
-      GENNY_INFINISPAN_URL: alyson.genny.life:11223
+      GENNY_INFINISPAN_URL: alyson.genny.life:11222
       QUARKUS_INFINISPAN_CLIENT_USE_AUTH: "true"
       QUARKUS_INFINISPAN_CLIENT_AUTH_USERNAME: "genny"
       QUARKUS_INFINISPAN_CLIENT_AUTH_PASSWORD: "password"
