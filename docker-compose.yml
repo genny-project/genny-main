@@ -6,7 +6,7 @@ services:
     image: quay.io/infinispan/server:13.0.5.Final-2
     container_name: infinispan
     ports:
-        - 11223:11222
+        - 11222:11222
 #    command: "/opt/infinispan/bin/server.sh -c infinispan.xml"
     environment:
         JAVA_OPTIONS: "-Dinfinispan.bind.address=0.0.0.0"
@@ -560,7 +560,7 @@ services:
       - GENNY_KAFKA_URL=kafka:29092
       - GENNY_REALM=internmatch
       - PROJECT_REALM=internmatch
-      - INFINISPAN_URL=localhost:11222
+      - INFINISPAN_URL=alyson.genny.life:11222
       - INFINISPAN_USERNAME=genny
       - INFINISPAN_PASSWORD=password
     networks:
@@ -598,7 +598,7 @@ services:
       - GENNY_MYSQL_FULL_URL=alyson.genny.life:3310/gennydb?zeroDateTimeBehavior=convertToNull&serverTimezone=UTC
       - GENNY_CACHE_HOST=http://localhost
       - GENNY_CACHE_PORT=8090
-      - INFINISPAN_URL=localhost:11222
+      - INFINISPAN_URL=alyson.genny.life:11222
       - INFINISPAN_USERNAME=genny
       - INFINISPAN_PASSWORD=password
     ports:
@@ -858,7 +858,7 @@ services:
       QUARKUS_INFINISPAN_CLIENT_AUTH_USERNAME: "genny"
       QUARKUS_INFINISPAN_CLIENT_AUTH_PASSWORD: "password"
       QUARKUS_INFINISPAN_CLIENT_SASL_MECHANISM: DIGEST-MD5
-      QUARKUS_INFINISPAN_CLIENT_SERVER_LIST: alyson.genny.life:11223
+      QUARKUS_INFINISPAN_CLIENT_SERVER_LIST: alyson.genny.life:11222
       QUARKUS_INFINISPAN_CLIENT_USE_AUTH: "true"
     ports:
       - "8579:8080"
