@@ -5,8 +5,8 @@ services:
   infinispan:
     image: quay.io/infinispan/server:13.0.5.Final-2
     container_name: infinispan
-#    ports:
-#        - 11222:11222
+    ports:
+        - 11222:11222
 #    command: "/opt/infinispan/bin/server.sh -c infinispan.xml"
     environment:
         JAVA_OPTIONS: "-Dinfinispan.bind.address=0.0.0.0"
@@ -712,6 +712,31 @@ services:
     networks:
       - mainproxy
 
+
+  data-index:
+    container_name: data-index
+    image: quay.io/kiegroup/kogito-data-index-infinispan:${KOGITO_VERSION}
+    ports:
+      - "8582:8080"
+    networks:
+     - mainproxy
+    volumes:
+      - ./target/protobuf:/home/kogito/data/protobufs/:delegated
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: alyson.genny.life:9092
+      KOGITO_DATA_INDEX_PROPS: -Dkogito.protobuf.folder=/home/kogito/data/protobufs/
+      PROJECT_REALM: internmatch
+      QUARKUS_INFINISPAN_CLIENT_AUTH_PASSWORD: password
+      QUARKUS_INFINISPAN_CLIENT_AUTH_REALM: default
+      QUARKUS_INFINISPAN_CLIENT_AUTH_USERNAME: genny
+      QUARKUS_INFINISPAN_CLIENT_SASL_MECHANISM: DIGEST-MD5
+      QUARKUS_INFINISPAN_CLIENT_SERVER_LIST: alyson.genny.life:11222
+      QUARKUS_INFINISPAN_CLIENT_USE_AUTH: "true"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/q/health/ready" ]
+      interval: 30s
+      timeout: 10s
+      retries: 50
 
 
 
