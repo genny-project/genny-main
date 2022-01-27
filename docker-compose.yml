@@ -738,6 +738,83 @@ services:
       timeout: 10s
       retries: 50
 
+  management-console:
+    container_name: management-console
+    image: quay.io/kiegroup/kogito-management-console:${KOGITO_VERSION}
+    ports:
+      - 8584:8080
+    volumes:
+      - ./svg/:/home/kogito/data/svg/
+    networks:
+     - mainproxy
+    environment:
+      QUARKUS_INFINISPAN_CLIENT_AUTH_PASSWORD: password
+      QUARKUS_INFINISPAN_CLIENT_AUTH_REALM: default
+      QUARKUS_INFINISPAN_CLIENT_AUTH_USERNAME: genny
+      QUARKUS_INFINISPAN_CLIENT_SASL_MECHANISM: DIGEST-MD5
+      QUARKUS_INFINISPAN_CLIENT_SERVER_LIST: alyson.genny.life:11222
+      QUARKUS_INFINISPAN_CLIENT_USE_AUTH: "true"
+      KOGITO_DATAINDEX_HTTP_URL: http://alyson.genny.life:8582/graphql
+      KOGITO_MANAGEMENT_CONSOLE_PROPS:  -Dkogito.consoles.keycloak.config.client-id=kogito-console-quarkus  -Dkogito.consoles.keycloak.config.realm=internmatch -Dkogito.consoles.keycloak.config.url=https://keycloak.gada.io/auth -Dkogito.consoles.keycloak.config.health-check-url=https://keycloak.gada.io/auth/realms/internmatch/.well-known/openid-configuration -Dkogito.svg.folder.path=/home/kogito/data/svg -Dkogito.consoles.keycloak.config.disable-health-check=false -Dkogito.consoles.keycloak.config.update-token-validity=30
+
+  kogitoq-travels:
+    image: gennyproject/kogitoq-travels:latest
+    container_name: kogitoq-travels
+    environment:
+      GENNY_SHOW_VALUES: "TRUE"
+      GENNY_SERVICE_USERNAME: service
+      GENNY_KEYCLOAK_URL: https://keycloak.gada.io
+      GENNY_API_URL: http://alyson.genny.life:8280
+      GENNY_KAFKA_URL: alyson.genny.life:9092
+      GENNY_CLIENT_ID: kogito-console-quarkus
+      GENNY_REALM: internmatch
+      GENNY_KOGITO_SERVICE_URL: http://alyson.genny.life:8580
+      GENNY_INFINISPAN_URL: alyson.genny.life:11222
+      QUARKUS_INFINISPAN_CLIENT_AUTH_PASSWORD: password
+      QUARKUS_INFINISPAN_CLIENT_AUTH_REALM: default
+      QUARKUS_INFINISPAN_CLIENT_AUTH_USERNAME: genny
+      QUARKUS_INFINISPAN_CLIENT_SASL_MECHANISM: DIGEST-MD5
+      QUARKUS_INFINISPAN_CLIENT_SERVER_LIST: alyson.genny.life:11222
+      QUARKUS_INFINISPAN_CLIENT_USE_AUTH: "true"
+    ports:
+      - "8580:8080"
+    networks:
+      - mainproxy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080"]
+      interval: 10s
+      timeout: 10s
+      retries: 30
+
+
+  kogitoq-visas:
+    image: gennyproject/kogitoq-visas:latest
+    container_name: kogitoq-visas
+    environment:
+      GENNY_SHOW_VALUES: "TRUE"
+      GENNY_SERVICE_USERNAME: service
+      GENNY_KEYCLOAK_URL: https://keycloak.gada.io
+      GENNY_API_URL: http://alyson.genny.life:8280
+      GENNY_KAFKA_URL: alyson.genny.life:9092
+      GENNY_CLIENT_ID: kogito-console-quarkus
+      GENNY_REALM: internmatch
+      GENNY_KOGITO_SERVICE_URL: http://alyson.genny.life:8579
+      GENNY_INFINISPAN_URL: alyson.genny.life:11222
+      QUARKUS_INFINISPAN_CLIENT_USE_AUTH: "true"
+      QUARKUS_INFINISPAN_CLIENT_AUTH_USERNAME: "genny"
+      QUARKUS_INFINISPAN_CLIENT_AUTH_PASSWORD: "password"
+      QUARKUS_INFINISPAN_CLIENT_SASL_MECHANISM: DIGEST-MD5
+      QUARKUS_INFINISPAN_CLIENT_SERVER_LIST: alyson.genny.life:11222
+      QUARKUS_INFINISPAN_CLIENT_USE_AUTH: "true"
+    ports:
+      - "8579:8080"
+    networks:
+      - mainproxy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080"]
+      interval: 10s
+      timeout: 10s
+      retries: 30
 
 
 
