@@ -30,6 +30,33 @@ docker volume create cassandra_data
 docker volume create mysql_data
 
 #create env file
+KOGITO_VERSION=1.15.0
+PERSISTENCE_FOLDER=./persistence/protobuf
+KOGITO_TRAVEL_AGENCY_PERSISTENCE=../kogitoq2/kogitoq/extended/travels/target/classes/META-INF/resources/persistence/protobuf
+KOGITO_VISAS_PERSISTENCE=../kogitoq2/kogitoq/extended/visas/target/classes/META-INF/resources/persistence/protobuf
+
+mkdir -p $PERSISTENCE_FOLDER
+
+if [ -d "$KOGITO_TRAVEL_AGENCY_PERSISTENCE" ]
+then
+    cp $KOGITO_TRAVEL_AGENCY_PERSISTENCE/*.proto $PERSISTENCE_FOLDER
+else
+    echo "$KOGITO_TRAVEL_AGENCY_PERSISTENCE does not exist. Have you compiled your Kogito Travel Agency project?"
+    exit 1
+fi
+
+if [ -d "$KOGITO_VISAS_PERSISTENCE" ]
+then
+    cp $KOGITO_VISAS_PERSISTENCE/*.proto $PERSISTENCE_FOLDER
+else
+    echo "$KOGITO_VISAS_PERSISTENCE does not exist. Have you compiled your Kogito Visas project?"
+    exit 1
+fi
+
+SVG_FOLDER=./svg
+
+KOGITO_TRAVEL_SVG_FOLDER=./processSVG
+KOGITO_VISAS_SVG_FOLDER=./processSVG
 
 #IS_CACHE_SERVER=true
 CACHE_SERVER_NAME=infinispan
@@ -117,6 +144,14 @@ JAVA_OPTS="-Xms256m -Xmx512m -Djava.net.preferIPv4Stack=true"
 echo "HOSTIP=${myip}" > $ENV_FILE
 echo "DEVUSER=${DEVUSER}" >> $ENV_FILE
 echo "" >> $ENV_FILE
+echo "KOGITO_VERSION=${KOGITO_VERSION}" >> $ENV_FILE
+echo "PERSISTENCE_FOLDER=${PERSISTENCE_FOLDER}" >> $ENV_FILE
+echo "KOGITO_TRAVEL_AGENCY_PERSISTENCE=${KOGITO_TRAVEL_AGENCY_PERSISTENCE}" >> $ENV_FILE
+echo "KOGITO_VISAS_PERSISTENCE=${KOGITO_VISAS_PERSISTENCE}" >> $ENV_FILE
+echo "SVG_FOLDER=${SVG_FOLDER}" >> $ENV_FILE
+echo "KOGITO_TRAVEL_SVG_FOLDER=${KOGITO_TRAVEL_SVG_FOLDER}" >> $ENV_FILE
+echo "KOGITO_VISAS_SVG_FOLDER=${KOGITO_VISAS_SVG_FOLDER}" >> $ENV_FILE
+echo "" >> $ENV_FILE
 #echo "GOOGLE_HOSTING_SHEET_ID=${GOOGLE_HOSTING_SHEET_ID}" >> $ENV_FILE
 #echo "GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}" >> $ENV_FILE
 echo "REACT_APP_PROJECT_NAME=${REACT_APP_PROJECT_NAME}" >> $ENV_FILE
@@ -190,6 +225,10 @@ echo "CACHE_SERVER_NAME=${CACHE_SERVER_NAME}" >> $ENV_FILE
 echo "INFINISPAN_USERNAME=${INFINISPAN_USERNAME}" >> $ENV_FILE
 echo "INFINISPAN_PASSWORD=${INFINISPAN_PASSWORD}" >> $ENV_FILE
 echo "COMPOSE_HTTP_TIMEOUT=1000" >> $ENV_FILE
+
+
+
+
 
 GOOGLE_SVC_ACC_PATH=/root/.genny/sheets.googleapis.com-java-quickstart/token-secret-service-account.json
 echo "GOOGLE_SVC_ACC_PATH=${GOOGLE_SVC_ACC_PATH}" >> $ENV_FILE

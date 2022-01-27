@@ -431,7 +431,7 @@ while [ "$1" != "" ]; do
             echo "DEBUG_SUSPEND=n" >> ${ENV_FILE}
             # echo "XMX=3048m" >> ${ENV_FILE}
 
-	echo "GOT TO HERE3"
+	echo "GOT TO HERE3A"
             ENV_FILE=$ENV_FILE docker-compose up -f dev1.yml -d
             ;;
         up | start )
@@ -472,8 +472,9 @@ while [ "$1" != "" ]; do
             echo "DEBUG_SUSPEND=n" >> ${ENV_FILE}
             # echo "XMX=3048m" >> ${ENV_FILE}
 
-	echo "GOT TO HERE3"
-            ENV_FILE=$ENV_FILE docker-compose up -d
+		cat $ENV_FILE >> ./.env
+	echo "GOT TO HERE3B"
+            ENV_FILE=$ENV_FILE docker-compose  up -d
             ;;
         local )
             echo "local started"
