@@ -482,117 +482,36 @@ services:
       timeout: 10s
       retries: 30
 
-
-  lauchy:
-    image: gennyproject/lauchy:latest
-    depends_on:
-      qwanda-service:
-        condition: service_healthy
-      kafka:
-        condition: service_healthy
-    container_name: lauchy 
-    volumes:
-      - ./realm:/opt/realm:delegated
-    env_file:
-      - ${ENV_FILE}
-    environment:
-      - ADMIN_USERNAME=GENNY
-      - ADMIN_PASSWORD=GENNY
-      - VIRTUAL_HOST=lauchy.genny.life
-      - VIRTUAL_PORT=8080
-      - KAFKA_URL=kafka:29092
-      - CERT_NAME=genny.life
-      - GENNY_SHOW_VALUES=true
-      - GENNY_ENABLE_BLACKLIST=false
-      - GENNY_API_URL=http://qwanda-service:8080
-      - GENNY_BRIDGE_URL=http://bridge:80
-      - GENNY_CLIENT_ID=backend
-      - GENNY_KAFKA_URL=kafka:29092
-      - GENNY_KEYCLOAK_URL=https://keycloak.gada.io
-      - GENNY_REALM=internmatch
-      - GENNY_SERVICE_USERNAME=service
-      - PROJECT_REALM=internmatch
-    networks:
-      - mainproxy
-#    ports:
-#      - 8988:8080
-  #  command: java  -jar /deployments/service.jar
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080"]
-      interval: 10s
-      timeout: 10s
-      retries: 30
-
-  dropkick:
-    image: gennyproject/dropkick:latest
-    depends_on:
-      qwanda-service:
-        condition: service_healthy
-      kafka:
-        condition: service_healthy
-    container_name:  dropkick 
-    volumes:
-      - ./realm:/opt/realm:delegated
-    env_file:
-      - ${ENV_FILE}
-    environment:
-      - ADMIN_USERNAME=GENNY
-      - ADMIN_PASSWORD=GENNY
-      - KAFKA_URL=kafka:29092
-      - GENNY_SHOW_VALUES=true
-      - GENNY_KAFKA_URL=kafka:29092
-      - GENNY_REALM=internmatch
-      - PROJECT_REALM=internmatch
-      - GENNY_CLIENT_ID=${GENNY_CLIENT_ID}
-      - GENNY_CLIENT_SECRET=${GENNY_CLIENT_SECRET}
-      - GENNY_SERVICE_USERNAME=${GENNY_SERVICE_USERNAME}
-      - GENNY_SERVICE_PASSWORD=${GENNY_SERVICE_PASSWORD}
-      - GENNY_KEYCLOAK_URL=https://keycloak.gada.io
-      - GENNY_MYSQL_FULL_URL=alyson.genny.life:3310/gennydb?zeroDateTimeBehavior=convertToNull&serverTimezone=UTC
-      - MYSQL_USER=genny
-      - MYSQL_PASSWORD=password
-      - INFINISPAN_URL=alyson.genny.life:11222
-      - INFINISPAN_USERNAME=genny
-      - INFINISPAN_PASSWORD=password
-    networks:
-      - mainproxy
-#    ports:
-#      - 8988:8080
-  #  command: java  -jar /deployments/service.jar
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080"]
-      interval: 10s
-      timeout: 10s
-      retries: 30
-
   fyodor:
     image: gennyproject/fyodor:latest
+    container_name:  fyodor 
     depends_on:
-      qwanda-service:
+      mysql:
+        condition: service_healthy
+      infinispan:
         condition: service_healthy
       kafka:
         condition: service_healthy
-    container_name:  fyodor 
     volumes:
       - ./realm:/opt/realm:delegated
-    # env_file:
-    #   - ${ENV_FILE}
+    env_file:
+      - ${ENV_FILE}
     environment:
-      - GENNY_KAFKA_URL=kafka:29092
-      - GENNY_REALM=internmatch
-      - GENNY_CLIENT_ID=${GENNY_CLIENT_ID}
-      - GENNY_CLIENT_SECRET=${GENNY_CLIENT_SECRET}
-      - GENNY_SERVICE_USERNAME=${GENNY_SERVICE_USERNAME}
-      - GENNY_SERVICE_PASSWORD=${GENNY_SERVICE_PASSWORD}
-      - GENNY_KEYCLOAK_URL=https://keycloak.gada.io
-      - GENNY_CACHE_HOST=http://localhost
-      - GENNY_CACHE_PORT=8090
-      - GENNY_MYSQL_FULL_URL=alyson.genny.life:3310/gennydb?zeroDateTimeBehavior=convertToNull&serverTimezone=UTC
-      - MYSQL_USER=genny
-      - MYSQL_PASSWORD=password
-      - INFINISPAN_URL=alyson.genny.life:11222
-      - INFINISPAN_USERNAME=genny
-      - INFINISPAN_PASSWORD=password
+      GENNY_KAFKA_URL: kafka:29092
+      GENNY_REALM: internmatch
+      GENNY_CLIENT_ID: ${GENNY_CLIENT_ID}
+      GENNY_CLIENT_SECRET: ${GENNY_CLIENT_SECRET}
+      GENNY_SERVICE_USERNAME: ${GENNY_SERVICE_USERNAME}
+      GENNY_SERVICE_PASSWORD: ${GENNY_SERVICE_PASSWORD}
+      GENNY_KEYCLOAK_URL: https://keycloak.gada.io
+      GENNY_CACHE_HOST: http://localhost
+      GENNY_CACHE_PORT: 8090
+      GENNY_MYSQL_FULL_URL: alyson.genny.life:3310/gennydb?zeroDateTimeBehavior=convertToNull&serverTimezone=UTC
+      MYSQL_USER: genny
+      MYSQL_PASSWORD: password
+      INFINISPAN_URL: alyson.genny.life:11222
+      INFINISPAN_USERNAME: genny
+      INFINISPAN_PASSWORD: password
     ports:
       - "4242:8080"
     links:
@@ -601,6 +520,139 @@ services:
       - mainproxy
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/api/version"]
+      interval: 10s
+      timeout: 10s
+      retries: 30
+
+  dropkick:
+    image: gennyproject/dropkick:latest
+    container_name:  dropkick 
+    depends_on:
+      mysql:
+        condition: service_healthy
+      infinispan:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+      fyodor:
+        condition: service_healthy
+    volumes:
+      - ./realm:/opt/realm:delegated
+    env_file:
+      - ${ENV_FILE}
+    environment:
+      PROJECT_REALM: internmatch
+      FYODOR_SERVICE_API: "http://alyson.genny.life:4242"
+      GENNY_KAFKA_URL: kafka:29092
+      GENNY_REALM: internmatch
+      GENNY_CLIENT_ID: ${GENNY_CLIENT_ID}
+      GENNY_CLIENT_SECRET: ${GENNY_CLIENT_SECRET}
+      GENNY_SERVICE_USERNAME: ${GENNY_SERVICE_USERNAME}
+      GENNY_SERVICE_PASSWORD: ${GENNY_SERVICE_PASSWORD}
+      GENNY_KEYCLOAK_URL: https://keycloak.gada.io
+      GENNY_MYSQL_FULL_URL: alyson.genny.life:3310/gennydb?zeroDateTimeBehavior=convertToNull&serverTimezone=UTC
+      MYSQL_USER: genny
+      MYSQL_PASSWORD: password
+      INFINISPAN_URL: alyson.genny.life:11222
+      INFINISPAN_USERNAME: genny
+      INFINISPAN_PASSWORD: password
+      GENNY_SHOW_VALUES: "true"
+    networks:
+      - mainproxy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080"]
+      interval: 10s
+      timeout: 10s
+      retries: 30
+
+  lauchy:
+    image: gennyproject/lauchy:latest
+    container_name: lauchy 
+    depends_on:
+      mysql:
+        condition: service_healthy
+      infinispan:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+      fyodor:
+        condition: service_healthy
+    volumes:
+      - ./realm:/opt/realm:delegated
+    env_file:
+      - ${ENV_FILE}
+    environment:
+      PROJECT_REALM: internmatch
+      FYODOR_SERVICE_API: "http://alyson.genny.life:4242"
+      GENNY_KAFKA_URL: kafka:29092
+      GENNY_REALM: internmatch
+      GENNY_CLIENT_ID: ${GENNY_CLIENT_ID}
+      GENNY_CLIENT_SECRET: ${GENNY_CLIENT_SECRET}
+      GENNY_SERVICE_USERNAME: ${GENNY_SERVICE_USERNAME}
+      GENNY_SERVICE_PASSWORD: ${GENNY_SERVICE_PASSWORD}
+      GENNY_KEYCLOAK_URL: https://keycloak.gada.io
+      GENNY_MYSQL_FULL_URL: alyson.genny.life:3310/gennydb?zeroDateTimeBehavior=convertToNull&serverTimezone=UTC
+      MYSQL_USER: genny
+      MYSQL_PASSWORD: password
+      INFINISPAN_URL: alyson.genny.life:11222
+      INFINISPAN_USERNAME: genny
+      INFINISPAN_PASSWORD: password
+      GENNY_SHOW_VALUES: "true"
+      GENNY_ENABLE_BLACKLIST: "false"
+    networks:
+      - mainproxy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080"]
+      interval: 10s
+      timeout: 10s
+      retries: 30
+
+  messages:
+    image: gennyproject/messages:latest
+    container_name:  messages
+    depends_on:
+      mysql:
+        condition: service_healthy
+      infinispan:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+      fyodor:
+        condition: service_healthy
+    volumes:
+      - ./realm:/opt/realm:delegated
+    env_file:
+      - ${ENV_FILE}
+    environment:
+      PROJECT_REALM: internmatch
+      FYODOR_SERVICE_API: "http://alyson.genny.life:4242"
+      GENNY_KAFKA_URL: kafka:29092
+      GENNY_REALM: internmatch
+      GENNY_CLIENT_ID: ${GENNY_CLIENT_ID}
+      GENNY_CLIENT_SECRET: ${GENNY_CLIENT_SECRET}
+      GENNY_SERVICE_USERNAME: ${GENNY_SERVICE_USERNAME}
+      GENNY_SERVICE_PASSWORD: ${GENNY_SERVICE_PASSWORD}
+      GENNY_KEYCLOAK_URL: https://keycloak.gada.io
+      GENNY_MYSQL_FULL_URL: alyson.genny.life:3310/gennydb?zeroDateTimeBehavior=convertToNull&serverTimezone=UTC
+      MYSQL_USER: genny
+      MYSQL_PASSWORD: password
+      INFINISPAN_URL: alyson.genny.life:11222
+      INFINISPAN_USERNAME: genny
+      INFINISPAN_PASSWORD: password
+      EMAIL_SMTP_AUTH: "true"
+      EMAIL_SMTP_HOST: smtp.gmail.com
+      EMAIL_SMTP_PORT: 587
+      EMAIL_SMTP_STARTTLS: "true"
+      MAIL_SMTP_AUTH: "true"
+      MAIL_SMTP_HOST: smtp.gmail.com
+      MAIL_SMTP_PORT: 587
+      MAIL_SMTP_STARTTLS_ENABLE: "true"
+    ports:
+      - 8791:8787
+    networks:
+      - mainproxy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080"]
       interval: 10s
       timeout: 10s
       retries: 30
