@@ -884,7 +884,4 @@ networks:
   mainproxy:
     name: mp
     driver: bridge
-  kogitoqproxy:
-    name: kp
-    driver: bridge
 
