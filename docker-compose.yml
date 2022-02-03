@@ -9,7 +9,8 @@ services:
         - 11222:11222
 #    command: "/opt/infinispan/bin/server.sh -c infinispan.xml"
     environment:
-        JAVA_OPTIONS: "-Dinfinispan.bind.address=0.0.0.0"
+        JAVA_OPTIONS: "-Dinfinispan.bind.address=0.0.0.0 -Dquarkus.infinispan-client.client-intelligence=BASIC"
+        #JAVA_OPTIONS: "-Dinfinispan.bind.address=0.0.0.0 -Dquarkus.infinispan-client.server-list=localhost:11222,alyson.genny.life:11222"
         USER: genny
         PASS: password
     networks:
@@ -647,6 +648,7 @@ services:
       MAIL_SMTP_HOST: smtp.gmail.com
       MAIL_SMTP_PORT: 587
       MAIL_SMTP_STARTTLS_ENABLE: "true"
+      JAVA_OPTS: -Dquarkus.log.console.level=DEBUG 
     ports:
       - 8791:8787
     command: java  -jar /deployments/service.jar
