@@ -649,6 +649,7 @@ services:
       MAIL_SMTP_STARTTLS_ENABLE: "true"
     ports:
       - 8791:8787
+    command: java  -jar /deployments/service.jar
     networks:
       - mainproxy
     healthcheck:
