@@ -9,7 +9,8 @@ services:
         - 11222:11222
 #    command: "/opt/infinispan/bin/server.sh -c infinispan.xml"
     environment:
-        JAVA_OPTIONS: "-Dinfinispan.bind.address=0.0.0.0 -Dinfinispan.external_host=alyson.genny.life"
+        JAVA_OPTIONS: "-Dinfinispan.bind.address=0.0.0.0 -Dquarkus.infinispan-client.client-intelligence=BASIC"
+        #JAVA_OPTIONS: "-Dinfinispan.bind.address=0.0.0.0 -Dquarkus.infinispan-client.server-list=localhost:11222,alyson.genny.life:11222"
         USER: genny
         PASS: password
     networks:
@@ -285,52 +286,6 @@ services:
     ports:
       - 9898:9898
     command: java -jar /service.jar
-
-
-  messages:
-    image: gennyproject/messages:latest
-    container_name:  messages
-    volumes:
-      - ./realm:/opt/realm:delegated
-    env_file:
-      - ${ENV_FILE}
-    environment:
-      CACHE_API_PORT: "8080"
-      CACHE_SERVER_NAME: infinispan
-      EMAIL_SMTP_AUTH: "true"
-      EMAIL_SMTP_HOST: smtp.gmail.com
-      EMAIL_SMTP_PORT: "587"
-      EMAIL_SMTP_STARTTLS: "true"
-      INFINISPAN_PASSWORD: password
-      INFINISPAN_USERNAME: genny
-      KAFKA_URL: kafka:29092
-      KEYCLOAK_CLIENT_ID: backend
-      KEYCLOAK_URL: https://keycloak.gada.io
-      MAIL_SMTP_AUTH: "true"
-      MAIL_SMTP_HOST: smtp.gmail.com
-      MAIL_SMTP_PORT: "587"
-      MAIL_SMTP_STARTTLS_ENABLE: "true"
-      PROJECT: PRJ_INTERNMATCH
-      PROJECT_REALM: internmatch
-      PROJECT_URL: http://alyson.genny.life
-      REACT_APP_QWANDA_API_URL: http://alyson.genny.life:8280
-      SERVICE_USERNAME: service
-      USER: dev
-    ports:
-      - 8791:8787
-      - 5709:5709
-      - 8189:8088
-#      - 8199:8089
-    depends_on:
-      qwanda-service:
-        condition: service_healthy
-      bridge:
-        condition: service_healthy
-    networks:
-      - mainproxy
-    restart: always
-    command: java -jar /deployments/service.jar
-
 
   mysql:
     image:  mysql:8.0.25 
@@ -693,8 +648,10 @@ services:
       MAIL_SMTP_HOST: smtp.gmail.com
       MAIL_SMTP_PORT: 587
       MAIL_SMTP_STARTTLS_ENABLE: "true"
+      JAVA_OPTS: -Dquarkus.log.console.level=DEBUG 
     ports:
       - 8791:8787
+    command: java  -jar /deployments/service.jar
     networks:
       - mainproxy
     healthcheck:
