@@ -9,7 +9,7 @@ services:
         - 11222:11222
 #    command: "/opt/infinispan/bin/server.sh -c infinispan.xml"
     environment:
-        JAVA_OPTIONS: "-Dinfinispan.bind.address=0.0.0.0"
+        JAVA_OPTIONS: "-Dinfinispan.bind.address=0.0.0.0 -Dinfinispan.external_host=alyson.genny.life"
         USER: genny
         PASS: password
     networks:
@@ -861,19 +861,33 @@ services:
     environment:
       GENNY_SHOW_VALUES: "TRUE"
       GENNY_SERVICE_USERNAME: service
-      GENNY_KEYCLOAK_URL: https://keycloak.gada.io
-      GENNY_API_URL: http://alyson.genny.life:8280
-      GENNY_KAFKA_URL: alyson.genny.life:9092
+      GENNY_KEYCLOAK_URL: "https://keycloak.gada.io"
+      GENNY_API_URL: "alyson.genny.life:8280"
+      GENNY_KAFKA_URL: kafka:9092
       GENNY_CLIENT_ID: kogito-console-quarkus
       GENNY_REALM: internmatch
-      GENNY_KOGITO_SERVICE_URL: http://alyson.genny.life:8580
-      GENNY_INFINISPAN_URL: alyson.genny.life:11222
+      GENNY_KOGITO_SERVICE_URL: "alyson.genny.life:8580"
+      GENNY_KOGITO_DATAINDEX_HTTP_URL: "http://alyson.genny.life:8582"
+      GENNY_KOGITO_DATAINDEX_WS_URL: "ws://alyson.genny.life:8582"
+      GENNY_INFINISPAN_URL: "alyson.genny.life:11222"
+      GENNY_INFINISPAN_CLIENT_AUTH_PASSWORD: password
+      GENNY_INFINISPAN_CLIENT_AUTH_USERNAME: genny
+      GENNY_INFINISPAN_CLIENT_SERVER_LIST: "infinispan:11222"
+      GENNY_INFINISPAN_CLIENT_USE_AUTH: "true"
+      KOGITO_DATAINDEX_HTTP_URL: "http://alyson.genny.life:8582"
+      KOGITO_DATAINDEX_WS_URL: "ws://alyson.genny.life:8582"
+      GENNY_KOGITO_JOBSERVICE_URL: "alyson.genny.life:8581"
       QUARKUS_INFINISPAN_CLIENT_AUTH_PASSWORD: password
       QUARKUS_INFINISPAN_CLIENT_AUTH_REALM: default
       QUARKUS_INFINISPAN_CLIENT_AUTH_USERNAME: genny
       QUARKUS_INFINISPAN_CLIENT_SASL_MECHANISM: DIGEST-MD5
       QUARKUS_INFINISPAN_CLIENT_SERVER_LIST: alyson.genny.life:11222
       QUARKUS_INFINISPAN_CLIENT_USE_AUTH: "true"
+      QUARKUS_OIDC_AUTH_SERVER_URL: "http://keycloak.gada.io/auth/realms/internmatch"
+      QUARKUS_OIDC_CLIENT_ID: kogito-console-quarkus
+      QUARKUS_INFINISPAN_CLIENT_CLIENT_INTELLIGENCE: BASIC
+      INFINISPAN_CLIENT_HOTROD_SERVER_LIST: alyson.genny.life:11222
+      INFINISPAN_CLIENT_HOTROD_CLIENT_INTELLIGENCE: BASIC
     ports:
       - "8580:8080"
     networks:
