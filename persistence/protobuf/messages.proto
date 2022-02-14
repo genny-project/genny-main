@@ -1,18 +1,24 @@
 syntax = "proto2"; 
-package org.acme.messages.messages; 
+package org.acme.travels.messages; 
 import "kogito-index.proto";
 import "kogito-types.proto";
 option kogito_model = "Messages";
 option kogito_id = "messages";
 
 /* @Indexed */ 
-message Messages { 
+message MessageCode { 
 	option java_package = "org.acme.messages";
+	/* @Field(index = Index.NO, store = Store.YES) @SortableField */ 
+	optional string code = 1; 
+}
+/* @Indexed */ 
+message Messages { 
+	option java_package = "org.acme.travels";
 	/* @Field(index = Index.YES, store = Store.YES) @SortableField */ 
 	optional string id = 1; 
 	/* @Field(index = Index.NO, store = Store.YES) @SortableField
- @VariableInfo(tags="") */ 
-	optional string messageCode = 2; 
+ @VariableInfo(tags="input") */ 
+	optional MessageCode messageCode = 2; 
 	/* @Field(index = Index.NO, store = Store.YES) @SortableField */ 
 	optional org.kie.kogito.index.model.KogitoMetadata metadata = 3; 
 }

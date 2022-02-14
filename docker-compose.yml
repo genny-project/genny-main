@@ -845,6 +845,21 @@ services:
       QUARKUS_INFINISPAN_CLIENT_CLIENT_INTELLIGENCE: BASIC
       INFINISPAN_CLIENT_HOTROD_SERVER_LIST: alyson.genny.life:11222
       INFINISPAN_CLIENT_HOTROD_CLIENT_INTELLIGENCE: BASIC
+      GENNY_KAFKA_URL: kafka:29092
+      GENNY_REALM: internmatch
+      GENNY_CLIENT_ID: ${GENNY_CLIENT_ID}
+      GENNY_CLIENT_SECRET: ${GENNY_CLIENT_SECRET}
+      GENNY_SERVICE_USERNAME: ${GENNY_SERVICE_USERNAME}
+      GENNY_SERVICE_PASSWORD: ${GENNY_SERVICE_PASSWORD}
+      GENNY_KEYCLOAK_URL: https://keycloak.gada.io
+      GENNY_CACHE_HOST: http://localhost
+      GENNY_CACHE_PORT: 8090
+      GENNY_MYSQL_FULL_URL: alyson.genny.life:3310/gennydb?zeroDateTimeBehavior=convertToNull&serverTimezone=UTC
+      MYSQL_USER: genny
+      MYSQL_PASSWORD: password
+      INFINISPAN_URL: alyson.genny.life:11222
+      INFINISPAN_USERNAME: genny
+      INFINISPAN_PASSWORD: password
     ports:
       - "8580:8080"
     networks:
