@@ -860,6 +860,7 @@ services:
       INFINISPAN_URL: alyson.genny.life:11222
       INFINISPAN_USERNAME: genny
       INFINISPAN_PASSWORD: password
+      FYODOR_SERVICE_API: http://fyodor:8080
     ports:
       - "8580:8080"
     networks:
