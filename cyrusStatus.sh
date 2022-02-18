@@ -22,9 +22,8 @@ for dirname in ${folders[@]};
 do 
     if [[ -d ../$dirname ]]; then
         cd ../${dirname}; 
-		printf Project:\ ${Blue}$dirname${Color_Off}\ \ \ \ BRANCH:\ ${Green}`git rev-parse --abbrev-ref HEAD`${Color_Off}
+		printf Project:\ ${Blue}$dirname${Color_Off}\ \ \ \ Branch:\ ${Green}`git rev-parse --abbrev-ref HEAD`${Color_Off}
         echo ${NEWLINE}
-		echo STATUS:
 		git status
         echo ${NEWLINE}
     else
