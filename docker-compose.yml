@@ -819,7 +819,7 @@ services:
       GENNY_SHOW_VALUES: "TRUE"
       GENNY_SERVICE_USERNAME: service
       GENNY_KEYCLOAK_URL: "https://keycloak.gada.io"
-      GENNY_API_URL: "alyson.genny.life:8280"
+      GENNY_API_URL: "http://alyson.genny.life:8280"
       GENNY_KAFKA_URL: kafka:9092
       GENNY_CLIENT_ID: kogito-console-quarkus
       GENNY_REALM: internmatch
