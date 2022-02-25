@@ -320,29 +320,31 @@ message QDataBaseEntityMessage {
 	/* @Field(index = Index.NO, store = Store.YES) @SortableField */ 
 	optional string attributeCode = 14; 
 	/* @Field(index = Index.NO, store = Store.YES) @SortableField */ 
-	optional string message = 15; 
+	optional string bridgeId = 15; 
 	/* @Field(index = Index.NO, store = Store.YES) @SortableField */ 
-	optional string msg_type = 16; 
+	optional string message = 16; 
 	/* @Field(index = Index.NO, store = Store.YES) @SortableField */ 
-	optional string option = 17; 
+	optional string msg_type = 17; 
 	/* @Field(index = Index.NO, store = Store.YES) @SortableField */ 
-	optional string questionCode = 18; 
+	optional string option = 18; 
 	/* @Field(index = Index.NO, store = Store.YES) @SortableField */ 
-	repeated string recipientCodeArray = 19; 
+	optional string questionCode = 19; 
 	/* @Field(index = Index.NO, store = Store.YES) @SortableField */ 
-	optional bool redirect = 20; 
+	repeated string recipientCodeArray = 20; 
 	/* @Field(index = Index.NO, store = Store.YES) @SortableField */ 
-	optional string sourceAddress = 21; 
+	optional bool redirect = 21; 
 	/* @Field(index = Index.NO, store = Store.YES) @SortableField */ 
-	optional string sourceCode = 22; 
+	optional string sourceAddress = 22; 
 	/* @Field(index = Index.NO, store = Store.YES) @SortableField */ 
-	optional string targetCode = 23; 
+	optional string sourceCode = 23; 
 	/* @Field(index = Index.NO, store = Store.YES) @SortableField */ 
-	repeated string targetCodes = 24; 
+	optional string targetCode = 24; 
 	/* @Field(index = Index.NO, store = Store.YES) @SortableField */ 
-	optional string token = 25; 
+	repeated string targetCodes = 25; 
 	/* @Field(index = Index.NO, store = Store.YES) @SortableField */ 
-	optional string triggerCode = 26; 
+	optional string token = 26; 
+	/* @Field(index = Index.NO, store = Store.YES) @SortableField */ 
+	optional string triggerCode = 27; 
 }
 /* @Indexed */ 
 message Validation { 
