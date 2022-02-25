@@ -11,7 +11,7 @@ cd ..
 
 echo "Cloning from genny-project"
 
-for value in qwanda qwandaq qwanda-utils bootxport genny-verticle-rules genny-rules qwanda-services wildfly-rulesservice wildfly-qwanda-service checkrules lauchy dropkick bridge media-proxy messages fyodor notes shleemy alyson prj_genny genny-proxy bootq  kogitoq
+for value in qwanda qwandaq serviceq qwanda-utils bootxport genny-verticle-rules genny-rules qwanda-services wildfly-rulesservice wildfly-qwanda-service checkrules lauchy dropkick bridge media-proxy messages fyodor notes shleemy alyson prj_genny genny-proxy bootq  kogitoq kogitoq2
 do
     echo $value
     git clone -b ${ver} git@github.com:genny-project/$value
