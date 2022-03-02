@@ -19,7 +19,7 @@ done
 
 echo "Cloning from OutcomeLife"
 
-for value in prj_internmatch prj_mentormatch prj_stt prj_lojing gennyteer
+for value in prj_internmatch prj_mentormatch prj_stt prj_lojing gennyteer api2email
 do
     echo $value
     git clone -b ${ver} git@github.com:OutcomeLife/$value
