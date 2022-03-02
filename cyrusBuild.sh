@@ -7,7 +7,7 @@ parentdir="$(dirname `pwd`)"
 
 
 # clean and build package
-for value in qwanda qwandaq qwanda-utils bootxport genny-verticle-rules genny-rules qwanda-services    
+for value in qwanda qwandaq serviceq qwanda-utils bootxport genny-verticle-rules genny-rules qwanda-services    
 do
     echo $value
 #    rm -Rf $parentdir/$value/target/*
