@@ -42,7 +42,7 @@ repos1=("genny-main" "qwanda" "qwanda-utils" "bootxport" "genny-verticle-rules" 
 
 repos2=("alyson" "alyson-v9")
 
-repos3=("prj_stt" "prj_internmatch" "prj_mentormatch")
+repos3=("prj_stt" "prj_internmatch" "prj_mentormatch" "prj_lojing")
 
 # repos4 in public org , only need branch update
 repos4=("kogitoq2")
