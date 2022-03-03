@@ -32,7 +32,7 @@ do
         echo ${NEWLINE}
 
 		# output the status, cutting the first 4 lines out
-		git -c color.status=always status | tail +4
+		git -c color.status=always status | tail +3
         echo ${NEWLINE}
     else
         echo "$dirname does not exist!!!" 
