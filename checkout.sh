@@ -1,8 +1,11 @@
 VERSION=$1
 if [ -z $VERSION ];then
-    echo "you need pass branch name as argument, e.g checkout.sh v7.1.0"
+    echo "you need pass branch name as argument, e.g checkout.sh 10.0.0"
     exit 1
 fi
+
+git stash
+git pull
 
 parentdir="$(dirname `pwd`)"
 
