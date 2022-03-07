@@ -266,6 +266,7 @@ cat $ENV_FILE_APP
 
 
 #find all the projects
-for i in ` find .. -mindepth 1 -maxdepth 1 -type d | grep prj  | awk -F "/" '{ print $2 }'`do
+for i in ` find .. -mindepth 1 -maxdepth 1 -type d | grep prj  | awk -F "/" '{ print $2 }'`
+do
    echo $i
-end
+done
