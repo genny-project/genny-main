@@ -231,7 +231,6 @@ services:
       - NODE_ENV=production
       - CORS_URLS=http://10.123.123.123:3000|http://internmatch.genny.life:3000|
       - realm=internmatch
-      - ENV_GOOGLE_MAPS_APIKEY=AIzaSyBbZ0cT40AScAqSeTi_tEcnzAgeW1jTCUg
       - ENV_KEYCLOAK_REDIRECTURI=https://keycloak.gada.io/auth
     env_file:
       - ${ENV_FILE}
@@ -267,6 +266,8 @@ services:
 #        condition: service_healthy
     volumes:
       - abn_tmp:/tmp/:delegated
+    env_file:
+      - ${ENV_FILE}
     environment:
       - CORS_LIST=https://internmatch.genny.life,http://localhost:3000,https://stt.genny.life
     networks:
@@ -392,7 +393,7 @@ services:
       - LOAD_DDT_IN_STARTUP=TRUE
       - SEARCH_ALT=TRUE
       - SKIP_GITHUB_IN_STARTUP=TRUE
-      - SKIP_GOOGLE_DOC_IN_STARTUP=TRUE
+      - SKIP_GOOGLE_DOC_IN_STARTUP=FALSE
       - DEBUG=TRUE
       - DEBUG_SUSPEND=n
       - DDTHOST=TRUE
@@ -440,7 +441,6 @@ services:
     environment:
       - CORS_URLS=http://10.123.123.123:3000|http://internmatch.genny.life:3000|
       - realm=internmatch
-      - ENV_GOOGLE_MAPS_APIKEY=AIzaSyBbZ0cT40AScAqSeTi_tEcnzAgeW1jTCUg
       - ENV_KEYCLOAK_REDIRECTURI=https://keycloak.gada.io/auth
       - QWANDA_SERVICE_URL=http://wildfly-rulesservice
       - RULESSERVICE_URL=http://wildfly-rulesservice

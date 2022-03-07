@@ -17,7 +17,7 @@ White='\033[0;37m'        # White
 
 # define our list of directories
 folders=("qwanda" "qwandaq" "qwanda-utils" "genny-verticle-rules" "bootxport" "qwanda-services" 
-        "genny-rules" "wildfly-rulesservice" "wildfly-qwanda-service" "checkrules" "bridge" "fyodor" "dropkick" "lauchy" "messages" "notes" "shleemy" "bootq" "genny-proxy"
+        "genny-rules" "wildfly-rulesservice" "wildfly-qwanda-service" "checkrules" "bridge" "fyodor" "dropkick" "lauchy" "messages" "notes" "shleemy" "bootq" "genny-proxy" "api2email"
         "media-proxy" "prj_genny" "prj_internmatch")
 
 
@@ -32,7 +32,7 @@ do
         echo ${NEWLINE}
 
 		# output the status, cutting the first 4 lines out
-		git -c color.status=always status | tail +4
+		git -c color.status=always status | tail +3
         echo ${NEWLINE}
     else
         echo "$dirname does not exist!!!" 
