@@ -4,7 +4,8 @@ if [ -z $VERSION ];then
     exit 1
 fi
 
-git stash
+git fetch
+git checkout $VERSION
 git pull
 
 parentdir="$(dirname `pwd`)"
@@ -13,7 +14,7 @@ for i in alyson qwanda qwandaq serviceq qwanda-utils bootxport genny-verticle-ru
 do
     echo $i
     cd $parentdir/$i
-    git pull ; git checkout $VERSION ; git pull
+    git fetch ; git checkout $VERSION ; git pull
 done
 
 cd $parentdir/genny-main
