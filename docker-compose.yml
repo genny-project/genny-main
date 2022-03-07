@@ -420,7 +420,7 @@ services:
 
 
   bridge:
-    image: gennyproject/bridge
+    image: gennyproject/bridge:latest
     depends_on:
 #      qwanda-service:
 #        condition: service_healthy
@@ -468,12 +468,12 @@ services:
       - mainproxy
     ports:
       - 8088:8088
-      - 8790:5005
+      - 5115:5005
       - 8089:8089
       - 5701:5701
       - 10001:10001
 #      - 4001:15701
-    #command: java  -jar /deployments/service.jar 
+#     command: /deployments/run-java.sh
 #    command: java  -Xdebug -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n  -Dvertx.metrics.options.enabled=true -Dvertx.options.blockedThreadCheckInterval=2147483647 -jar /service.jar 
 #    command: java -agentpath:/usr/local/YourKit-JavaProfiler-2019.8/bin/linux-x86-64/libyjpagent.so=port=10001,listen=all -Xdebug -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n  -Dvertx.options.blockedThreadCheckInterval=2147483647 -Dadmin.password=GENNY -Dadmin.username=GENNY -jar /deployments/service.jar 
 #    command: java -jar -Dadmin.username=GENNY -Dadmin.password=GENNY /deployments/service.jar 
