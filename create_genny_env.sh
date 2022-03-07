@@ -1,6 +1,14 @@
 #!/bin/bash
 
 ENV_FILE=$1
+
+# Check env file is specified
+if [ -z $ENV_FILE ]; then
+    echo "ENV_FILE NOT SPECIFIED"
+    echo "Usage: ./create_genny_env.sh <ENV_FILE>"
+    exit 1
+fi
+
 ENV_FILE_APP=${ENV_FILE}.json
 
 
@@ -258,6 +266,6 @@ cat $ENV_FILE_APP
 
 
 #find all the projects
-for i in ` ind .. -mindepth 1 -maxdepth 1 -type d | grep prj  | awk -F "/" '{ print $2 }'`do
+for i in ` find .. -mindepth 1 -maxdepth 1 -type d | grep prj  | awk -F "/" '{ print $2 }'`do
    echo $i
 end
