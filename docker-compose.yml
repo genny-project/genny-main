@@ -2,7 +2,8 @@ version: '2.3'
 
 services:
   infinispan:
-    image: gennyproject/infinispan:14-1
+    #image: gennyproject/infinispan:14-1
+    image: quay.io/infinispan/server:13.0.5.Final-2
     container_name: infinispan
     hostname: infinispan
     depends_on:
@@ -10,7 +11,8 @@ services:
     ports:
       - 11222:11222
     environment:
-        JAVA_OPTIONS: "-Dinfinispan.bind.address=0.0.0.0 -Dquarkus.infinispan-client.client-intelligence=BASIC"
+        JAVA_OPTIONS: "-Dinfinispan.bind.address=0.0.0.0"
+        #JAVA_OPTIONS: "-Dinfinispan.bind.address=0.0.0.0 -Dquarkus.infinispan-client.client-intelligence=BASIC"
         USER: genny
         PASS: password
         ISPN_HOME: /opt/infinispan
