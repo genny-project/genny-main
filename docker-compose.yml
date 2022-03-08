@@ -1,28 +1,26 @@
 version: '2.3'
 
 services:
-
   infinispan:
-    image: quay.io/infinispan/server:13.0.5.Final-2
+    image: infinispan:14-1
     container_name: infinispan
+    hostname: infinispan
+    depends_on:
+      - mysql
     ports:
-        - 11222:11222
-#    command: "/opt/infinispan/bin/server.sh -c infinispan.xml"
+      - 11222:11222
     environment:
         JAVA_OPTIONS: "-Dinfinispan.bind.address=0.0.0.0 -Dquarkus.infinispan-client.client-intelligence=BASIC"
-        #JAVA_OPTIONS: "-Dinfinispan.bind.address=0.0.0.0 -Dquarkus.infinispan-client.server-list=localhost:11222,alyson.genny.life:11222"
         USER: genny
         PASS: password
+        ISPN_HOME: /opt/infinispan
     networks:
-     - mainproxy
- #   volumes:
- #     - ./infinispan/infinispan.xml:/opt/infinispan/server/conf/infinispan-demo.xml:delegated
+      - mainproxy
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:11222/rest/v2/cache-managers/default/health/status" ]
       interval: 30s
       timeout: 10s
       retries: 4
-
 
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
