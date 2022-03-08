@@ -2,7 +2,7 @@ version: '2.3'
 
 services:
   infinispan:
-    image: infinispan:14-1
+    image: gennyproject/infinispan:14-1
     container_name: infinispan
     hostname: infinispan
     depends_on:
