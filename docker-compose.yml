@@ -561,7 +561,7 @@ services:
     networks:
       - mainproxy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080"]
+      test: ["CMD", "curl", "-f", "http://localhost:8080/q/health"]
       interval: 10s
       timeout: 10s
       retries: 30
@@ -603,7 +603,7 @@ services:
     networks:
       - mainproxy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080"]
+      test: ["CMD", "curl", "-f", "http://localhost:8080/q/health"]
       interval: 10s
       timeout: 10s
       retries: 30
