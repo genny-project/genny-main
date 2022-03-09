@@ -11,8 +11,8 @@ services:
     ports:
       - 11222:11222
     environment:
-        JAVA_OPTIONS: "-Dinfinispan.bind.address=0.0.0.0"
-        #JAVA_OPTIONS: "-Dinfinispan.bind.address=0.0.0.0 -Dquarkus.infinispan-client.client-intelligence=BASIC"
+        #JAVA_OPTIONS: "-Dinfinispan.bind.address=0.0.0.0"
+        JAVA_OPTIONS: "-Dinfinispan.bind.address=0.0.0.0 -Dquarkus.infinispan-client.client-intelligence=BASIC"
         USER: genny
         PASS: password
         ISPN_HOME: /opt/infinispan
@@ -561,7 +561,7 @@ services:
     networks:
       - mainproxy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080"]
+      test: ["CMD", "curl", "-f", "http://localhost:8080/q/health/ready"]
       interval: 10s
       timeout: 10s
       retries: 30
@@ -603,7 +603,7 @@ services:
     networks:
       - mainproxy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080"]
+      test: ["CMD", "curl", "-f", "http://localhost:8080/q/health/ready"]
       interval: 10s
       timeout: 10s
       retries: 30
@@ -866,7 +866,7 @@ services:
     networks:
       - mainproxy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080"]
+      test: ["CMD", "curl", "-f", "http://localhost:8080/q/health/ready"]
       interval: 10s
       timeout: 10s
       retries: 30
@@ -896,7 +896,7 @@ services:
     networks:
       - mainproxy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080"]
+      test: ["CMD", "curl", "-f", "http://localhost:8080/q/health/ready"]
       interval: 10s
       timeout: 10s
       retries: 30
