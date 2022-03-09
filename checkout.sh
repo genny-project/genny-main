@@ -10,7 +10,7 @@ git pull
 
 parentdir="$(dirname `pwd`)"
 
-for i in alyson qwanda qwandaq serviceq qwanda-utils bootxport genny-verticle-rules genny-rules qwanda-services  wildfly wildfly-qwanda-service wildfly-rulesservice bridge lauchy  checkrules prj_genny prj_internmatch prj_mentormatch prj_stt  media-proxy messages notes shleemy genny-proxy genny-main bootq sienna gennyteer qwandaq fyodor kogitoq2 api2email
+for i in alyson qwanda qwandaq serviceq qwanda-utils bootxport genny-verticle-rules genny-rules qwanda-services wildfly wildfly-qwanda-service wildfly-rulesservice bridge lauchy adi checkrules prj_genny prj_internmatch prj_mentormatch prj_stt media-proxy messages notes shleemy genny-proxy genny-main bootq sienna gennyteer qwandaq fyodor kogitoq2 api2email
 do
     echo $i
     cd $parentdir/$i
