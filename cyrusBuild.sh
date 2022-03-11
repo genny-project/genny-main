@@ -26,7 +26,7 @@ do
 done
 
 #Quarkus 2.3.0 
-for value in bridge fyodor dropkick lauchy messages
+for value in bridge fyodor dropkick lauchy adi messages
 do
     echo $value
     cd $parentdir/$value
