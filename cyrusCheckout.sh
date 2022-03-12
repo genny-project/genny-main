@@ -8,6 +8,7 @@ do
     echo $value
     cd $value
     git stash
+    git fetch
     git checkout $VER
 done
 
