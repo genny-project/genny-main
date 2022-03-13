@@ -13,10 +13,11 @@ done
 
 
 #clean up package only
-for value in  wildfly-rulesservice/rulesservice-war wildfly-rulesservice/rulesservice-ear 
+for value in  wildfly-rulesservice/rulesservice-war
 do
     echo $value
     cd $parentdir/$value
+    mvn install -DskipTests=true
 done
 
 # build package build docker image
@@ -39,8 +40,4 @@ done
 
 cd $parentdir/genny-main
 echo "Finished Building Rules"
-
-if [[ "$OSTYPE" == "darwin"* ]]; then
-    os_type="mac"
-    say "Completed building Rules"
-fi
+./say.sh "Completed Building Rules"

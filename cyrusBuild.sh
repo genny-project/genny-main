@@ -49,13 +49,16 @@ do
 #    rm -Rf  $parentdir/$value/target/*
     cd $parentdir/$value
     mvn  $clean  package -DskipTests=true
-    ./build-docker.sh
+#    ./build-docker.sh
 done
 
 cd $parentdir/genny-main
 echo "Finished Building all"
+./say.sh "Completed Building All. Now building docker"
 
-if [[ "$OSTYPE" == "darwin"* ]]; then
-    os_type="mac"
-    say "Completed building all"
-fi
+for value in checkrules notes shleemy bootq genny-proxy kogitoq2 api2email
+do
+    echo $value
+    cd $parentdir/$value
+    ./build-docker.sh
+done
