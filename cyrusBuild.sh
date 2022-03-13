@@ -26,7 +26,7 @@ do
 done
 
 #Quarkus 2.3.0 
-for value in bridge fyodor dropkick lauchy adi messages
+for value in bridge fyodor dropkick lauchy 
 do
     echo $value
     cd $parentdir/$value
@@ -43,7 +43,7 @@ done
 #done
 
 # build package build docker image
-for value in checkrules notes shleemy bootq genny-proxy kogitoq2 api2email
+for value in checkrules notes shleemy bootq genny-proxy kogitoq2 api2email adi messages
 do
     echo $value
 #    rm -Rf  $parentdir/$value/target/*
