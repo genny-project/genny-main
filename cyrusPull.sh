@@ -11,6 +11,7 @@ do
         if [ ! -z $ver ]; then
             echo "Cloning "$value" repo into ../"$value
             git clone -b ${ver} git@github.com:genny-project/$value ../$value
+            git clone -b ${ver} git@github.com:OutcomeLife/$value ../$value
         else
             echo "Could not find $value repository, and no version specified."
             echo "Please specify a version with: ./cyrusPull.sh <ver>"
