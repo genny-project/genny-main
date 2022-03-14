@@ -14,7 +14,7 @@ wget $url
 name="apache-maven-$ver"
 zipped_name="$name-bin.tar.gz"
 
-sudo mv ~/$zipped_name /opt/
+sudo mv ./$zipped_name /opt/
 cd /opt
 sudo tar xf $zipped_name
 sudo rm -f $zipped_name
