@@ -1,6 +1,11 @@
 #!/bin/bash
 
 ver=$1
+if [ -z $ver ]; then
+	echo "Usage ./cyrusClone.sh <ver>"
+	echo "e.g   ./cyrusClone.sh 10.0.0"
+	exit 1
+fi
 
 git pull
 docker pull gennyproject/dummy:latest
