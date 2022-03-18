@@ -4,4 +4,4 @@ if [[ "$#" -eq 0 ]]; then
 	echo "Case Sensitive"
 fi
 cd ../
-grep -r "public class $1"
+find ../ -name "$1.java"
