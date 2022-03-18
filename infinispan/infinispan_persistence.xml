@@ -1,0 +1,104 @@
+<infinispan
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="urn:infinispan:config:13.0 https://infinispan.org/schemas/infinispan-config-13.0.xsd
+                            urn:infinispan:server:13.0 https://infinispan.org/schemas/infinispan-server-13.0.xsd"
+      xmlns="urn:infinispan:config:13.0"
+      xmlns:server="urn:infinispan:server:13.0"
+      xmlns:table-jdbc-store="urn:infinispan:config:store:sql:13.0">
+
+
+   <cache-container name="default" statistics="true">
+      <global-state/>
+      <distributed-cache name="baseentity_cache">
+         <encoding>
+            <key media-type="application/x-protostream"/>
+            <value media-type="application/x-protostream"/>
+         </encoding>
+         <persistence passivation="false">
+            <table-jdbc-store xmlns="urn:infinispan:config:store:sql:13.0" table-name="baseentity" dialect="MYSQL" db-major-version="8" db-minor-version="0">
+               <write-behind modification-queue-size="1024" fail-silently="false"/>
+               <connection-pool connection-url="jdbc:mysql://${persistence.db.server.ip:alyson.genny.life}:${persistence.db.server.port:3310}/${persistence.db.name:gennydb}"
+                         username="${persistence.db.username:genny}"
+                         password="${persistence.db.password:password}"
+                         driver="com.mysql.cj.jdbc.Driver"/>
+               <schema message-name="baseentity"
+                         package="genny"
+                         embedded-key="true"/>
+            </table-jdbc-store>
+         </persistence>
+      </distributed-cache>
+      <distributed-cache name="baseentity_attribute_cache">
+         <encoding>
+            <key media-type="application/x-protostream"/>
+            <value media-type="application/x-protostream"/>
+         </encoding>
+         <persistence passivation="false">
+            <table-jdbc-store xmlns="urn:infinispan:config:store:sql:13.0" table-name="baseentity_attribute" dialect="MYSQL" db-major-version="8" db-minor-version="0">
+               <write-behind modification-queue-size="1024" fail-silently="false"/>
+               <connection-pool connection-url="jdbc:mysql://${persistence.db.server.ip:alyson.genny.life}:${persistence.db.server.port:3310}/${persistence.db.name:gennydb}"
+                         username="${persistence.db.username:genny}"
+                         password="${persistence.db.password:password}"
+                         driver="com.mysql.cj.jdbc.Driver"/>
+               <schema message-name="baseentity_attribute_value"
+                         key-message-name="baseentity_attribute_key"
+                         package="genny"
+                         embedded-key="true"/>
+            </table-jdbc-store>
+         </persistence>
+      </distributed-cache>
+      <transport cluster="${infinispan.cluster.name:cluster}" stack="${infinispan.cluster.stack:tcp}" node-name="${infinispan.node.name:}"/>
+   </cache-container>
+
+
+   <server xmlns="urn:infinispan:server:13.0">
+      <interfaces>
+         <interface name="public">
+            <inet-address value="${infinispan.bind.address:0.0.0.0}"/>
+         </interface>
+      </interfaces>
+
+      <socket-bindings default-interface="public" port-offset="${infinispan.socket.binding.port-offset:0}">
+         <socket-binding name="default" port="${infinispan.bind.port:11222}"/>
+         <socket-binding name="memcached" port="11221"/>
+      </socket-bindings>
+
+      <security>
+         <credential-stores>
+            <credential-store name="credentials" path="credentials.pfx">
+               <clear-text-credential clear-text="secret"/>
+            </credential-store>
+         </credential-stores>
+         <security-realms>
+            <security-realm name="default">
+               <!-- Uncomment to enable TLS on the realm -->
+               <!-- server-identities>
+                  <ssl>
+                     <keystore path="application.keystore"
+                               password="password" alias="server"
+                               generate-self-signed-certificate-host="localhost"/>
+                  </ssl>
+               </server-identities-->
+               <properties-realm groups-attribute="Roles">
+                  <user-properties path="users.properties"/>
+                  <group-properties path="groups.properties"/>
+               </properties-realm>
+            </security-realm>
+         </security-realms>
+      </security>
+
+      <endpoints socket-binding="default" security-realm="default">
+        <endpoint>
+          <hotrod-connector>
+            <authentication>
+              <sasl mechanisms="SCRAM-SHA-512 SCRAM-SHA-384 SCRAM-SHA-256 SCRAM-SHA-1 DIGEST-SHA-512 DIGEST-SHA-384 DIGEST-SHA-256 DIGEST-SHA DIGEST-MD5 PLAIN"
+                 server-name="infinispan"
+                 qop="auth"/>
+            </authentication>
+          </hotrod-connector>
+          <rest-connector>
+            <authentication mechanisms="DIGEST"/>
+          </rest-connector>
+        </endpoint>
+      </endpoints>
+   </server>
+</infinispan>

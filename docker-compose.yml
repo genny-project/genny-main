@@ -2,7 +2,7 @@ version: '2.3'
 
 services:
   infinispan:
-    image: gennyproject/infinispan:14-4
+    image: gennyproject/infinispan:14-5
     #image: quay.io/infinispan/server:13.0.5.Final-2
     container_name: infinispan
     hostname: infinispan
@@ -11,11 +11,13 @@ services:
     ports:
       - 11222:11222
     environment:
-        JAVA_OPTIONS: "-Dinfinispan.bind.address=0.0.0.0"
+        JAVA_OPTIONS: "-Dinfinispan.bind.address=0.0.0.0 -Dpersistence.db.server.ip=alyson.genny.life -Dpersistence.db.server.port=3310 -Dpersistence.db.username=genny -Dpersistence.db.password=password"
         #JAVA_OPTIONS: "-Dinfinispan.bind.address=0.0.0.0 -Dquarkus.infinispan-client.client-intelligence=BASIC"
         USER: genny
         PASS: password
         ISPN_HOME: /opt/infinispan
+    volumes:
+      - ./infinispan/infinispan_persistence.xml:/opt/infinispan/server/conf/infinispan.xml
     networks:
       - mainproxy
     healthcheck:
