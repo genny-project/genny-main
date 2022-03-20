@@ -7,7 +7,7 @@ parentdir="$(dirname `pwd`)"
 
 
 # clean and build package
-for value in qwanda qwandaq serviceq qwanda-utils bootxport genny-verticle-rules genny-rules qwanda-services    
+for value in qwanda qwanda-utils bootxport genny-verticle-rules genny-rules qwanda-services    
 do
     echo $value
 #    rm -Rf $parentdir/$value/target/*
@@ -23,6 +23,14 @@ do
     cd $parentdir/$value
     mvn $clean package -DskipTests=true
     ./build-docker.sh
+done
+
+# Build native dependencies
+for value in qwandaq serviceq
+do
+    echo $value
+    cd $parentdir/$value
+    ./build.sh
 done
 
 #Quarkus 2.3.0 
