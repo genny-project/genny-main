@@ -1,4 +1,7 @@
 #!/bin/bash
+echo "Genny Main"
+git stash
+git pull
 
 parentdir="$(dirname `pwd`)"
 
