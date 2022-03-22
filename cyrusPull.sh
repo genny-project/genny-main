@@ -1,4 +1,7 @@
 #!/bin/bash
+echo "Genny Main"
+git stash
+git pull
 
 parentdir="$(dirname `pwd`)"
 
@@ -9,10 +12,12 @@ do
     echo $value
     if [ ! -d "../"$value ]; then
         if [ ! -z $ver ]; then
-            echo "Cloning "$value" repo into ../"$value
-            git clone -b ${ver} git@github.com:genny-project/$value ../$value
-            git clone -b ${ver} git@github.com:OutcomeLife/$value ../$value
-        else
+            	echo "Cloning "$value" repo into ../"$value
+            	git clone -b ${ver} git@github.com:genny-project/$value ../$value
+            	if [ ! -d "../"$value ]; then
+	    		git clone -b ${ver} git@github.com:OutcomeLife/$value ../$value
+        	fi
+	else
             echo "Could not find $value repository, and no version specified."
             echo "Please specify a version with: ./cyrusPull.sh <ver>"
             echo "E.g ./cyrusPull.sh 10.0.0"
