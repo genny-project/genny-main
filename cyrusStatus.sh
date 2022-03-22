@@ -16,8 +16,8 @@ White='\033[0;37m'        # White
 
 
 # define our list of directories
-folders=("qwanda" "qwandaq" "serviceq" "qwanda-utils" "genny-verticle-rules" "bootxport" "qwanda-services" 
-        "genny-rules" "wildfly-rulesservice" "wildfly-qwanda-service" "checkrules" "bridge" "fyodor" "dropkick" "lauchy" "messages" "notes" "shleemy" "bootq" "genny-proxy" "api2email"
+folders=("qwanda" "qwanda-utils" "genny-verticle-rules" "bootxport" "qwanda-services" 
+        "genny-rules" "wildfly-rulesservice" "wildfly-qwanda-service" "checkrules" "qwandaq" "serviceq" "bridge" "fyodor" "dropkick" "lauchy" "messages" "adi" "notes" "shleemy" "bootq" "genny-proxy" "api2email"
         "media-proxy" "prj_genny" "prj_internmatch")
 
 
