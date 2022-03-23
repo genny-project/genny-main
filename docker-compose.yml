@@ -393,7 +393,7 @@ services:
       - LOAD_DDT_IN_STARTUP=TRUE
       - SEARCH_ALT=TRUE
       - SKIP_GITHUB_IN_STARTUP=TRUE
-      - SKIP_GOOGLE_DOC_IN_STARTUP=FALSE
+      - SKIP_GOOGLE_DOC_IN_STARTUP=TRUE
       - DEBUG=TRUE
       - DEBUG_SUSPEND=n
       - DDTHOST=TRUE
@@ -444,26 +444,40 @@ services:
       - ENV_KEYCLOAK_REDIRECTURI=https://keycloak.gada.io/auth
       - QWANDA_SERVICE_URL=http://wildfly-rulesservice
       - RULESSERVICE_URL=http://wildfly-rulesservice
-      - ADMIN_USERNAME=GENNY 
-      - ADMIN_PASSWORD=GENNY
-      - VIRTUAL_HOST=bridge.genny.life
-      - VIRTUAL_PORT=8088
-      - KAFKA_URL=kafka:29092
-      - VIRTUAL_PROTO=http
-      - CERT_NAME=genny.life
-      - KEYCLOAKURL=https://keycloak.gada.io/auth/realms
-      - CACHE_SERVER_NAME=infinispan
-      - DDTHOST=TRUE
-      - API_PORT=8088
-      - CACHE_API_PORT=8089
+      # - ADMIN_USERNAME=GENNY 
+      # - ADMIN_PASSWORD=GENNY
+      # - VIRTUAL_HOST=bridge.genny.life
+      # - VIRTUAL_PORT=8080
+      # - KAFKA_URL=kafka:29092
+      # - VIRTUAL_PROTO=http
+      # - CERT_NAME=genny.life
+      # - KEYCLOAKURL=https://keycloak.gada.io/auth/realms
+      # - CACHE_SERVER_NAME=infinispan
+      # - DDTHOST=TRUE
+      # - API_PORT=8088
+      # - CACHE_API_PORT=8089
   #   - ZIP_MODE=TRUE
-      - MODE_GZIP=TRUE
-      - ZIP_MIN_THRESHOLD_BYTES=8000000
+      # - MODE_GZIP=TRUE
+      # - ZIP_MIN_THRESHOLD_BYTES=8000000
       - MEDIA_PROXY_URL=https://alyson.genny.life/web/public
   #    - DDT_URL=http://bridge:8089
   #    - DEV_MODE=TRUE
   #    - GENNYDEV=TRUE
   #    - GENNY_DEV=TRUE
+      - GENNY_KAFKA_URL=kafka:29092
+      - GENNY_REALM=internmatch
+      - GENNY_CLIENT_ID=${GENNY_CLIENT_ID}
+      - GENNY_CLIENT_SECRET=${GENNY_CLIENT_SECRET}
+      - GENNY_SERVICE_USERNAME=${GENNY_SERVICE_USERNAME}
+      - GENNY_SERVICE_PASSWORD=${GENNY_SERVICE_PASSWORD}
+      - GENNY_KEYCLOAK_URL=https://keycloak.gada.io
+      # - GENNY_MYSQL_FULL_URL=alyson.genny.life:3310/gennydb?zeroDateTimeBehavior=convertToNull&serverTimezone=UTC
+      # - MYSQL_USER=genny
+      # - MYSQL_PASSWORD=password
+      - INFINISPAN_URL=alyson.genny.life:11222
+      - INFINISPAN_USERNAME=genny
+      - INFINISPAN_PASSWORD=password
+      - GENNY_SHOW_VALUES=TRUE
     networks:
       - mainproxy
     ports:
@@ -505,8 +519,6 @@ services:
       GENNY_SERVICE_USERNAME: ${GENNY_SERVICE_USERNAME}
       GENNY_SERVICE_PASSWORD: ${GENNY_SERVICE_PASSWORD}
       GENNY_KEYCLOAK_URL: https://keycloak.gada.io
-      GENNY_CACHE_HOST: http://localhost
-      GENNY_CACHE_PORT: 8090
       GENNY_MYSQL_FULL_URL: alyson.genny.life:3310/gennydb?zeroDateTimeBehavior=convertToNull&serverTimezone=UTC
       MYSQL_USER: genny
       MYSQL_PASSWORD: password
