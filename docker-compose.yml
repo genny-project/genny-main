@@ -458,6 +458,8 @@ services:
       - 8089:8089
       - 5701:5701
       - 10001:10001
+      - 5154:5154
+      - 5155:5155
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/api/version"]
       interval: 10s
