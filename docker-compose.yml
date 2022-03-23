@@ -423,14 +423,8 @@ services:
   bridge:
     image: gennyproject/bridge:latest
     depends_on:
-#      qwanda-service:
-#        condition: service_healthy
       kafka:
         condition: service_healthy
-#      infinispan:
-#        condition: service_healthy
-#      wildfly-rulesservice:
-#        condition: service_healthy
       qwanda-service:
         condition: service_healthy
     container_name: bridge
@@ -444,26 +438,7 @@ services:
       - ENV_KEYCLOAK_REDIRECTURI=https://keycloak.gada.io/auth
       - QWANDA_SERVICE_URL=http://wildfly-rulesservice
       - RULESSERVICE_URL=http://wildfly-rulesservice
-      # - ADMIN_USERNAME=GENNY 
-      # - ADMIN_PASSWORD=GENNY
-      # - VIRTUAL_HOST=bridge.genny.life
-      # - VIRTUAL_PORT=8080
-      # - KAFKA_URL=kafka:29092
-      # - VIRTUAL_PROTO=http
-      # - CERT_NAME=genny.life
-      # - KEYCLOAKURL=https://keycloak.gada.io/auth/realms
-      # - CACHE_SERVER_NAME=infinispan
-      # - DDTHOST=TRUE
-      # - API_PORT=8088
-      # - CACHE_API_PORT=8089
-  #   - ZIP_MODE=TRUE
-      # - MODE_GZIP=TRUE
-      # - ZIP_MIN_THRESHOLD_BYTES=8000000
       - MEDIA_PROXY_URL=https://alyson.genny.life/web/public
-  #    - DDT_URL=http://bridge:8089
-  #    - DEV_MODE=TRUE
-  #    - GENNYDEV=TRUE
-  #    - GENNY_DEV=TRUE
       - GENNY_KAFKA_URL=kafka:29092
       - GENNY_REALM=internmatch
       - GENNY_CLIENT_ID=${GENNY_CLIENT_ID}
@@ -471,9 +446,6 @@ services:
       - GENNY_SERVICE_USERNAME=${GENNY_SERVICE_USERNAME}
       - GENNY_SERVICE_PASSWORD=${GENNY_SERVICE_PASSWORD}
       - GENNY_KEYCLOAK_URL=https://keycloak.gada.io
-      # - GENNY_MYSQL_FULL_URL=alyson.genny.life:3310/gennydb?zeroDateTimeBehavior=convertToNull&serverTimezone=UTC
-      # - MYSQL_USER=genny
-      # - MYSQL_PASSWORD=password
       - INFINISPAN_URL=alyson.genny.life:11222
       - INFINISPAN_USERNAME=genny
       - INFINISPAN_PASSWORD=password
@@ -481,18 +453,13 @@ services:
     networks:
       - mainproxy
     ports:
-      - 8088:8088
+      - 8088:8080
       - 5115:5005
       - 8089:8089
       - 5701:5701
       - 10001:10001
-#      - 4001:15701
-#     command: /deployments/run-java.sh
-#    command: java  -Xdebug -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n  -Dvertx.metrics.options.enabled=true -Dvertx.options.blockedThreadCheckInterval=2147483647 -jar /service.jar 
-#    command: java -agentpath:/usr/local/YourKit-JavaProfiler-2019.8/bin/linux-x86-64/libyjpagent.so=port=10001,listen=all -Xdebug -Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=n  -Dvertx.options.blockedThreadCheckInterval=2147483647 -Dadmin.password=GENNY -Dadmin.username=GENNY -jar /deployments/service.jar 
-#    command: java -jar -Dadmin.username=GENNY -Dadmin.password=GENNY /deployments/service.jar 
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8088/api/version"]
+      test: ["CMD", "curl", "-f", "http://localhost:8080/api/version"]
       interval: 10s
       timeout: 10s
       retries: 30
