@@ -1,0 +1,74 @@
+syntax = "proto2"; 
+package life.genny.internmatch.application.application; 
+import "kogito-index.proto";
+import "kogito-types.proto";
+option kogito_model = "Application";
+option kogito_id = "application";
+
+/* @Indexed */ 
+message Application { 
+	option java_package = "life.genny.internmatch.application";
+	/* @Field(index = Index.NO, store = Store.YES) @SortableField
+ @VariableInfo(tags="input,required") */ 
+	optional QEventMessage eventMessage = 1; 
+	/* @Field(index = Index.YES, store = Store.YES) @SortableField */ 
+	optional string id = 2; 
+	/* @Field(index = Index.NO, store = Store.YES) @SortableField */ 
+	optional org.kie.kogito.index.model.KogitoMetadata metadata = 3; 
+}
+/* @Indexed */ 
+message MessageData { 
+	option java_package = "life.genny.qwandaq.message";
+	/* @Field(index = Index.NO, store = Store.YES) @SortableField */ 
+	optional string code = 1; 
+	/* @Field(index = Index.NO, store = Store.YES) @SortableField */ 
+	optional string content = 2; 
+	/* @Field(index = Index.NO, store = Store.YES) @SortableField */ 
+	optional int64 id = 3; 
+	/* @Field(index = Index.NO, store = Store.YES) @SortableField */ 
+	optional string parentCode = 4; 
+	/* @Field(index = Index.NO, store = Store.YES) @SortableField */ 
+	optional string rootCode = 5; 
+	/* @Field(index = Index.NO, store = Store.YES) @SortableField */ 
+	optional string sourceCode = 6; 
+	/* @Field(index = Index.NO, store = Store.YES) @SortableField */ 
+	optional string targetCode = 7; 
+	/* @Field(index = Index.NO, store = Store.YES) @SortableField */ 
+	optional string value = 8; 
+}
+/* @Indexed */ 
+message QEventMessage { 
+	option java_package = "life.genny.qwandaq.message";
+	/* @Field(index = Index.NO, store = Store.YES) @SortableField */ 
+	optional MessageData data = 1; 
+	/* @Field(index = Index.NO, store = Store.YES) @SortableField */ 
+	optional string event_type = 2; 
+	/* @Field(index = Index.NO, store = Store.YES) @SortableField */ 
+	optional string attributeCode = 3; 
+	/* @Field(index = Index.NO, store = Store.YES) @SortableField */ 
+	optional string bridgeId = 4; 
+	/* @Field(index = Index.NO, store = Store.YES) @SortableField */ 
+	optional string message = 5; 
+	/* @Field(index = Index.NO, store = Store.YES) @SortableField */ 
+	optional string msg_type = 6; 
+	/* @Field(index = Index.NO, store = Store.YES) @SortableField */ 
+	optional string option = 7; 
+	/* @Field(index = Index.NO, store = Store.YES) @SortableField */ 
+	optional string questionCode = 8; 
+	/* @Field(index = Index.NO, store = Store.YES) @SortableField */ 
+	repeated string recipientCodeArray = 9; 
+	/* @Field(index = Index.NO, store = Store.YES) @SortableField */ 
+	optional bool redirect = 10; 
+	/* @Field(index = Index.NO, store = Store.YES) @SortableField */ 
+	optional string sourceAddress = 11; 
+	/* @Field(index = Index.NO, store = Store.YES) @SortableField */ 
+	optional string sourceCode = 12; 
+	/* @Field(index = Index.NO, store = Store.YES) @SortableField */ 
+	optional string targetCode = 13; 
+	/* @Field(index = Index.NO, store = Store.YES) @SortableField */ 
+	repeated string targetCodes = 14; 
+	/* @Field(index = Index.NO, store = Store.YES) @SortableField */ 
+	optional string token = 15; 
+	/* @Field(index = Index.NO, store = Store.YES) @SortableField */ 
+	optional string triggerCode = 16; 
+}
