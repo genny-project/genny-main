@@ -868,7 +868,7 @@ services:
       GENNY_KAFKA_URL: kafka:9092
       GENNY_CLIENT_ID: kogito-console-quarkus
       GENNY_REALM: internmatch
-      GENNY_KOGITO_SERVICE_URL: "alyson.genny.life:8580"
+      GENNY_KOGITO_SERVICE_URL: "http://alyson.genny.life:8580"
       GENNY_KOGITO_DATAINDEX_HTTP_URL: "http://alyson.genny.life:8582"
       GENNY_KOGITO_DATAINDEX_WS_URL: "ws://alyson.genny.life:8582"
       GENNY_INFINISPAN_URL: "alyson.genny.life:11222"
