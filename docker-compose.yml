@@ -2,7 +2,7 @@ version: '2.3'
 
 services:
   infinispan:
-    image: gennyproject/infinispan:14-5
+    image: gennyproject/infinispan:14-6
     #image: quay.io/infinispan/server:13.0.5.Final-2
     container_name: infinispan
     hostname: infinispan
@@ -293,6 +293,7 @@ services:
   mysql:
     image:  mysql:8.0.25 
 #    image:  gennyproject/mysql:8x 
+    platform: linux/x86_64
     container_name: mysql
     environment:
       - MYSQL_URL=mysql
@@ -725,23 +726,23 @@ services:
         condition: service_healthy
 
 
-#  task-console:
-#    container_name: task-console
-#    image: quay.io/kiegroup/kogito-task-console:latest
-#    ports:
-#      - 8583:8080
-#    depends_on:
-#      data-index:
-#        condition: service_started
-#    environment:
-#      VIRTUAL_HOST: task.genny.life
-#      VIRTUAL_PORT: 8080
-#      LETSENCRYPT_HOST: acrow.genny.life
-#      LETSENCRYPT_EMAIL: cto@gada.io
-#      KOGITO_DATAINDEX_HTTP_URL: http://alyson.genny.life:8582/graphql
-#      KOGITO_TASK_CONSOLE_PROPS: -Dkogito.consoles.keycloak.config.client-id=kogito-console-quarkus -Dkogito.consoles.keycloak.config.realm=internmatch -Dkogito.consoles.keycloak.config.url=https://keycloak.gada.io/auth -Dkogito.consoles.keycloak.config.health-check-url=https://keycloak.gada.io/auth/realms/internmatch/.well-known/openid-configuration -Dkogito.consoles.keycloak.config.disable-health-check=false -Dkogito.consoles.keycloak.config.update-token-validity=30 
-#    networks:
-#     - mainproxy
+ task-console:
+   container_name: task-console
+   image: quay.io/kiegroup/kogito-task-console:latest
+   ports:
+     - 8583:8080
+   depends_on:
+     data-index:
+       condition: service_started
+   environment:
+     VIRTUAL_HOST: task.genny.life
+     VIRTUAL_PORT: 8080
+     LETSENCRYPT_HOST: acrow.genny.life
+     LETSENCRYPT_EMAIL: cto@gada.io
+     KOGITO_DATAINDEX_HTTP_URL: http://alyson.genny.life:8582/graphql
+     KOGITO_TASK_CONSOLE_PROPS: -Dkogito.consoles.keycloak.config.client-id=kogito-console-quarkus -Dkogito.consoles.keycloak.config.realm=internmatch -Dkogito.consoles.keycloak.config.url=https://keycloak.gada.io/auth -Dkogito.consoles.keycloak.config.health-check-url=https://keycloak.gada.io/auth/realms/internmatch/.well-known/openid-configuration -Dkogito.consoles.keycloak.config.disable-health-check=false -Dkogito.consoles.keycloak.config.update-token-validity=30 
+   networks:
+    - mainproxy
 
   wildfly-rulesservice:
     image: gennyproject/wildfly-rulesservice:latest
@@ -824,6 +825,7 @@ services:
      - mainproxy
     volumes:
       - ./target/protobuf:/home/kogito/data/protobufs/:delegated
+      - ./data-index/data-index-service-infinispan-runner.jar:/home/kogito/bin/data-index-service-infinispan-runner.jar
     environment:
       KAFKA_BOOTSTRAP_SERVERS: alyson.genny.life:9092
       KOGITO_DATA_INDEX_PROPS: -Dkogito.protobuf.folder=/home/kogito/data/protobufs/
