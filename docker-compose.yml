@@ -872,11 +872,12 @@ services:
       GENNY_KAFKA_URL: kafka:9092
       GENNY_CLIENT_ID: kogito-console-quarkus
       GENNY_REALM: internmatch
-      GENNY_KOGITO_SERVICE_URL: "alyson.genny.life:8580"
+      GENNY_KOGITO_SERVICE_URL: "http://alyson.genny.life:8580"
       GENNY_KOGITO_DATAINDEX_HTTP_URL: "http://alyson.genny.life:8582"
       GENNY_KOGITO_DATAINDEX_WS_URL: "ws://alyson.genny.life:8582"
       GENNY_INFINISPAN_URL: "alyson.genny.life:11222"
       GENNY_INFINISPAN_CLIENT_AUTH_PASSWORD: password
+      INFINISPAN_PASSWORD: password
       GENNY_INFINISPAN_CLIENT_AUTH_USERNAME: genny
       GENNY_INFINISPAN_CLIENT_SERVER_LIST: "infinispan:11222"
       GENNY_INFINISPAN_CLIENT_USE_AUTH: "true"
