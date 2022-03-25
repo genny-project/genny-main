@@ -9,9 +9,55 @@ for i in ` find .. -mindepth 1 -maxdepth 1 -type d | grep prj  | awk -F "/" '{ p
   echo $i
 done
 
+#Copy all the protobufs, and svgs
+PERSISTENCE_FOLDER=./target/protobuf
+KOGITO_TRAVEL_AGENCY_PERSISTENCE=../kogitoq2/kogitoq/extended/travels/target/classes/META-INF/resources/persistence/protobuf
+KOGITO_VISAS_PERSISTENCE=../kogitoq2/kogitoq/extended/visas/target/classes/META-INF/resources/persistence/protobuf
+
+mkdir -p $PERSISTENCE_FOLDER
+
+if [ -d "$KOGITO_TRAVEL_AGENCY_PERSISTENCE" ]
+then
+    cp $KOGITO_TRAVEL_AGENCY_PERSISTENCE/*.proto $PERSISTENCE_FOLDER
+else
+    echo "$KOGITO_TRAVEL_AGENCY_PERSISTENCE does not exist. Have you compiled your Kogito Travel Agency project?"
+    exit 1
+fi
+
+if [ -d "$KOGITO_VISAS_PERSISTENCE" ]
+then
+    cp $KOGITO_VISAS_PERSISTENCE/*.proto $PERSISTENCE_FOLDER
+else
+    echo "$KOGITO_VISAS_PERSISTENCE does not exist. Have you compiled your Kogito Visas project?"
+    exit 1
+fi
+
+SVG_FOLDER=./svg
+
+KOGITO_TRAVEL_SVG_FOLDER=../kogitoq2/kogitoq/extended/travels/target/classes/META-INF/processSVG
+KOGITO_VISAS_SVG_FOLDER=../kogitoq2/kogitoq/extended/visas/target/classes/META-INF/processSVG
+
+mkdir -p $SVG_FOLDER
+
+if [ -d "$KOGITO_TRAVEL_SVG_FOLDER" ]
+then
+    cp $KOGITO_TRAVEL_SVG_FOLDER/*.svg $SVG_FOLDER
+else
+    echo "$KOGITO_TRAVEL_SVG_FOLDER does not exist. Have you compiled Kogito Travel Agency project?"
+    exit 1
+fi
+
+if [ -d "$KOGITO_VISAS_SVG_FOLDER" ]
+then
+    cp $KOGITO_VISAS_SVG_FOLDER/*.svg $SVG_FOLDER
+else
+    echo "$KOGITO_VISAS_SVG_FOLDER does not exist. Have you compiled Kogito Visas project?"
+    exit 1
+fi
+
 ENV_FILE=genny.env
 ENV_FILE=$ENV_FILE docker-compose stop $@ 
 ENV_FILE=$ENV_FILE docker-compose rm -f $@ 
 ENV_FILE=$ENV_FILE docker-compose up -d $@ 
-./cyrusSyncCache.sh
+#./cyrusSyncCache.sh
 ENV_FILE=$ENV_FILE docker-compose logs -f $@ 
