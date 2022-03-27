@@ -797,6 +797,7 @@ services:
       - XMX=4096m
       - PDF_GEN_SERVICE_API_URL=http://internmatch.genny.life:7331
       - GENNY_KOGITO_DATAINDEX_HTTP_URL=http://alyson.genny.life:8582
+      - GENNY_KOGITO_SERVICE_URL=http://alyson2.genny.life:8580
       - JAVA_OPTS=-server 
         -Xms64m -Xmx4096m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=2048m 
         -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -XX:ParallelGCThreads=20 -XX:ConcGCThreads=5 -XX:InitiatingHeapOccupancyPercent=70 -XX:+ExplicitGCInvokesConcurrent 
