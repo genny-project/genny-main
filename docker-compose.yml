@@ -48,6 +48,7 @@ services:
  
   kafka:
     image: confluentinc/cp-kafka:latest
+    #image: strimzi/kafka:latest-kafka-2.5.0
     depends_on:
       - zookeeper
     hostname: kafka
@@ -463,6 +464,7 @@ services:
       - MODE_GZIP=TRUE
       - ZIP_MIN_THRESHOLD_BYTES=8000000
       - MEDIA_PROXY_URL=https://alyson.genny.life/web/public
+      - GENNY_KOGITO_DATAINDEX_HTTP_URL=http://alyson.genny.life:8582
   #    - DDT_URL=http://bridge:8089
   #    - DEV_MODE=TRUE
   #    - GENNYDEV=TRUE

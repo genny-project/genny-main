@@ -14,6 +14,7 @@ PERSISTENCE_FOLDER=./target/protobuf
 KOGITO_TRAVEL_AGENCY_PERSISTENCE=../kogitoq2/kogitoq/extended/travels/target/classes/META-INF/resources/persistence/protobuf
 KOGITO_VISAS_PERSISTENCE=../kogitoq2/kogitoq/extended/visas/target/classes/META-INF/resources/persistence/protobuf
 
+rm -Rf $PERSISTENCE_FOLDER/*
 mkdir -p $PERSISTENCE_FOLDER
 
 if [ -d "$KOGITO_TRAVEL_AGENCY_PERSISTENCE" ]
