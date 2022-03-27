@@ -464,7 +464,6 @@ services:
       - MODE_GZIP=TRUE
       - ZIP_MIN_THRESHOLD_BYTES=8000000
       - MEDIA_PROXY_URL=https://alyson.genny.life/web/public
-      - GENNY_KOGITO_DATAINDEX_HTTP_URL=http://alyson.genny.life:8582
   #    - DDT_URL=http://bridge:8089
   #    - DEV_MODE=TRUE
   #    - GENNYDEV=TRUE
@@ -796,13 +795,14 @@ services:
       - VIRTUAL_PORT=8080
       - VIRTUAL_PROTO=http
       - XMX=4096m
+      - PDF_GEN_SERVICE_API_URL=http://internmatch.genny.life:7331
+      - GENNY_KOGITO_DATAINDEX_HTTP_URL=http://alyson.genny.life:8582
       - JAVA_OPTS=-server 
         -Xms64m -Xmx4096m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=2048m 
         -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -XX:ParallelGCThreads=20 -XX:ConcGCThreads=5 -XX:InitiatingHeapOccupancyPercent=70 -XX:+ExplicitGCInvokesConcurrent 
         -Dsun.rmi.dgc.client.gcInterval=1800000 -Dsun.rmi.dgc.server.gcInterval=1800000  
         -Djava.net.preferIPv4Stack=true -Djboss.modules.system.pkgs=org.jboss.byteman -Djava.awt.headless=true
       #- JAVA_OPTS=-Xms3048m -Xmx3048m -agentpath:/usr/local/jprofiler12.0.2/bin/linux-x64/libjprofilerti.so=nowait -Djava.net.preferIPv4Stack=true -Dsun.rmi.dgc.client.gcInterval=1800000 -Dsun.rmi.dgc.server.gcInterval=1800000  -server 
-      - PDF_GEN_SERVICE_API_URL=http://internmatch.genny.life:7331
     ports:
       - "8380:8080"
       - "8987:8787"
