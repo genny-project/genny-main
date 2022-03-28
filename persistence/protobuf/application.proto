@@ -13,8 +13,17 @@ message Application {
 	optional QEventMessage eventMessage = 1; 
 	/* @Field(index = Index.YES, store = Store.YES) @SortableField */ 
 	optional string id = 2; 
+	/* @Field(index = Index.NO, store = Store.YES) @SortableField
+ @VariableInfo(tags="readonly") */ 
+	optional string internCode = 3; 
+	/* @Field(index = Index.NO, store = Store.YES) @SortableField
+ @VariableInfo(tags="tracked") */ 
+	optional bool newApplication = 4; 
+	/* @Field(index = Index.NO, store = Store.YES) @SortableField
+ @VariableInfo(tags="readonly") */ 
+	optional string sourceCode = 5; 
 	/* @Field(index = Index.NO, store = Store.YES) @SortableField */ 
-	optional org.kie.kogito.index.model.KogitoMetadata metadata = 3; 
+	optional org.kie.kogito.index.model.KogitoMetadata metadata = 6; 
 }
 /* @Indexed */ 
 message MessageData { 
