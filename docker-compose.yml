@@ -11,8 +11,7 @@ services:
     ports:
       - 11222:11222
     environment:
-        JAVA_OPTIONS: "-Dinfinispan.bind.address=0.0.0.0 -Dpersistence.db.server.ip=alyson.genny.life -Dpersistence.db.server.port=3310 -Dpersistence.db.username=genny -Dpersistence.db.password=password"
-        #JAVA_OPTIONS: "-Dinfinispan.bind.address=0.0.0.0 -Dquarkus.infinispan-client.client-intelligence=BASIC"
+        JAVA_OPTS: "-Dinfinispan.bind.address=0.0.0.0 -Dpersistence.db.server.ip=alyson.genny.life -Dpersistence.db.server.port=3310 -Dpersistence.db.username=genny -Dpersistence.db.password=password"
         USER: genny
         PASS: password
         ISPN_HOME: /opt/infinispan
