@@ -1,5 +1,9 @@
 #!/bin/bash
 
+echo "Updating genny-main"
+git stash
+git pull
+
 parentdir="$(dirname `pwd`)"
 
 ver=$1
