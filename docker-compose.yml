@@ -7,7 +7,8 @@ services:
     container_name: infinispan
     hostname: infinispan
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
     ports:
       - 11222:11222
     environment:
@@ -825,6 +826,9 @@ services:
       - "8582:8080"
     networks:
      - mainproxy
+    depends_on:
+      infinispan:
+        condition: service_healthy
     volumes:
       - ./target/protobuf:/home/kogito/data/protobufs/:delegated
       - ./data-index/data-index-service-infinispan-runner.jar:/home/kogito/bin/data-index-service-infinispan-runner.jar
@@ -849,6 +853,9 @@ services:
     image: quay.io/kiegroup/kogito-management-console:${KOGITO_VERSION}
     ports:
       - 8584:8080
+    depends_on:
+      data-index:
+        condition: service_healthy
     volumes:
       - ./svg/:/home/kogito/data/svg/
     networks:
@@ -897,13 +904,10 @@ services:
       QUARKUS_INFINISPAN_CLIENT_CLIENT_INTELLIGENCE: BASIC
       INFINISPAN_CLIENT_HOTROD_SERVER_LIST: alyson.genny.life:11222
       INFINISPAN_CLIENT_HOTROD_CLIENT_INTELLIGENCE: BASIC
-      GENNY_KAFKA_URL: kafka:29092
-      GENNY_REALM: internmatch
       GENNY_CLIENT_ID: ${GENNY_CLIENT_ID}
       GENNY_CLIENT_SECRET: ${GENNY_CLIENT_SECRET}
       GENNY_SERVICE_USERNAME: ${GENNY_SERVICE_USERNAME}
       GENNY_SERVICE_PASSWORD: ${GENNY_SERVICE_PASSWORD}
-      GENNY_KEYCLOAK_URL: https://keycloak.gada.io
       GENNY_CACHE_HOST: http://localhost
       GENNY_CACHE_PORT: 8090
       GENNY_MYSQL_FULL_URL: alyson.genny.life:3310/gennydb?zeroDateTimeBehavior=convertToNull&serverTimezone=UTC
@@ -911,12 +915,14 @@ services:
       MYSQL_PASSWORD: password
       INFINISPAN_URL: alyson.genny.life:11222
       INFINISPAN_USERNAME: genny
-      INFINISPAN_PASSWORD: password
       FYODOR_SERVICE_API: http://fyodor:8080
     ports:
       - "8580:8080"
     networks:
       - mainproxy
+    depends_on:
+      data-index:
+        condition: service_healthy
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/q/health/ready"]
       interval: 10s
@@ -942,11 +948,13 @@ services:
       QUARKUS_INFINISPAN_CLIENT_AUTH_PASSWORD: "password"
       QUARKUS_INFINISPAN_CLIENT_SASL_MECHANISM: DIGEST-MD5
       QUARKUS_INFINISPAN_CLIENT_SERVER_LIST: alyson.genny.life:11222
-      QUARKUS_INFINISPAN_CLIENT_USE_AUTH: "true"
     ports:
       - "8579:8080"
     networks:
       - mainproxy
+    depends_on:
+      docker-compose.yml-index:
+        condition: service_healthy
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/q/health/ready"]
       interval: 10s
