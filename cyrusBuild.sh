@@ -43,7 +43,7 @@ done
 #done
 
 # build package build docker image
-for value in checkrules notes shleemy bootq genny-proxy kogitoq2 api2email 
+for value in checkrules notes shleemy bootq genny-proxy  api2email 
 do
     echo $value
 #    rm -Rf  $parentdir/$value/target/*
@@ -58,6 +58,13 @@ do
     echo $value
     cd $parentdir/$value
     ./build-docker.sh
+done
+for value in kogitoq2
+do
+    echo $value
+    cd $parentdir/$value/kogitoq/extended/travels
+    ./build.sh;./build-docker.sh
+    cd ../../..
 done
 
 cd $parentdir/genny-main

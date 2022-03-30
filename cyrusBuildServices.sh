@@ -16,4 +16,5 @@ for service in fyodor lauchy messages dropkick kogitoq2 adi; do
 	mvn $clean install -DskipTests=true
 	./build-docker.sh
 done
+cd $parentdir/genny-main
 ./say.sh "Completed Building Services"
