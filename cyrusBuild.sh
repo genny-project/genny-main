@@ -12,7 +12,7 @@ do
     echo $value
 #    rm -Rf $parentdir/$value/target/*
     cd $parentdir/$value
-    mvn $clean install -DskipTests=true
+    mvn $clean install -DskipTests=true -Dmaven.javadoc.skip=true
 done
 
 # build package build docker image
@@ -26,7 +26,7 @@ do
 done
 
 #Quarkus 2.3.0 
-for value in bridge fyodor dropkick lauchy adi 
+for value in bridge fyodor dropkick lauchy  
 do
     echo $value
     cd $parentdir/$value
