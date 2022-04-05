@@ -953,7 +953,7 @@ services:
     networks:
       - mainproxy
     depends_on:
-      docker-compose.ymldata-index:
+      data-index:
         condition: service_healthy
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/q/health/ready"]
