@@ -1,5 +1,7 @@
+persistence/
 genny.env
 genny.env.json
+target/
 env-conf
 .env
 google_credentials/StoredCredential

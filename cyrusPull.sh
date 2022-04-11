@@ -3,6 +3,10 @@ echo "Genny Main"
 git stash
 git pull
 
+echo "Updating genny-main"
+git stash
+git pull
+
 parentdir="$(dirname `pwd`)"
 
 ver=$1

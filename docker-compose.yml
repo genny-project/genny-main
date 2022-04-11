@@ -2,20 +2,22 @@ version: '2.3'
 
 services:
   infinispan:
-    image: gennyproject/infinispan:14-4
+    image: gennyproject/infinispan:14-6
     #image: quay.io/infinispan/server:13.0.5.Final-2
     container_name: infinispan
     hostname: infinispan
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
     ports:
       - 11222:11222
     environment:
-        JAVA_OPTIONS: "-Dinfinispan.bind.address=0.0.0.0"
-        #JAVA_OPTIONS: "-Dinfinispan.bind.address=0.0.0.0 -Dquarkus.infinispan-client.client-intelligence=BASIC"
+        JAVA_OPTS: "-Dinfinispan.bind.address=0.0.0.0 -Dpersistence.db.server.ip=alyson.genny.life -Dpersistence.db.server.port=3310 -Dpersistence.db.username=genny -Dpersistence.db.password=password"
         USER: genny
         PASS: password
         ISPN_HOME: /opt/infinispan
+    volumes:
+      - ./infinispan/infinispan_persistence.xml:/opt/infinispan/server/conf/infinispan.xml
     networks:
       - mainproxy
     healthcheck:
@@ -46,6 +48,7 @@ services:
  
   kafka:
     image: confluentinc/cp-kafka:latest
+    #image: strimzi/kafka:latest-kafka-2.5.0
     depends_on:
       - zookeeper
     hostname: kafka
@@ -291,6 +294,7 @@ services:
   mysql:
     image:  mysql:8.0.25 
 #    image:  gennyproject/mysql:8x 
+    platform: linux/x86_64
     container_name: mysql
     environment:
       - MYSQL_URL=mysql
@@ -589,51 +593,51 @@ services:
       timeout: 10s
       retries: 30
 
-  adi:
-    image: gennyproject/adi:latest
-    container_name: adi 
-    depends_on:
-      mysql:
-        condition: service_healthy
-      infinispan:
-        condition: service_healthy
-      kafka:
-        condition: service_healthy
-      fyodor:
-        condition: service_healthy
-    volumes:
-      - ./realm:/opt/realm:delegated
-    env_file:
-      - ${ENV_FILE}
-    environment:
-      PROJECT_REALM: internmatch
-      FYODOR_SERVICE_API: "http://alyson.genny.life:4242"
-      GENNY_KAFKA_URL: kafka:29092
-      GENNY_REALM: internmatch
-      GENNY_CLIENT_ID: ${GENNY_CLIENT_ID}
-      GENNY_CLIENT_SECRET: ${GENNY_CLIENT_SECRET}
-      GENNY_SERVICE_USERNAME: ${GENNY_SERVICE_USERNAME}
-      GENNY_SERVICE_PASSWORD: ${GENNY_SERVICE_PASSWORD}
-      GENNY_KEYCLOAK_URL: https://keycloak.gada.io
-      GENNY_MYSQL_FULL_URL: alyson.genny.life:3310/gennydb?zeroDateTimeBehavior=convertToNull&serverTimezone=UTC
-      MYSQL_USER: genny
-      MYSQL_PASSWORD: password
-      INFINISPAN_URL: alyson.genny.life:11222
-      INFINISPAN_USERNAME: genny
-      INFINISPAN_PASSWORD: password
-      GENNY_SHOW_VALUES: "true"
-    ports:
-      - "8771:8080"
-    links:
-      - mysql:mysql
-    networks:
-      - mainproxy
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/api/version"]
-      interval: 10s
-      timeout: 10s
-      retries: 30
-
+#  adi:
+#    image: gennyproject/adi:latest
+#    container_name: adi 
+#    depends_on:
+#      mysql:
+#        condition: service_healthy
+#      infinispan:
+#        condition: service_healthy
+#      kafka:
+#        condition: service_healthy
+#      fyodor:
+#        condition: service_healthy
+#    volumes:
+#      - ./realm:/opt/realm:delegated
+#    env_file:
+#      - ${ENV_FILE}
+#    environment:
+#      PROJECT_REALM: internmatch
+#      FYODOR_SERVICE_API: "http://alyson.genny.life:4242"
+#      GENNY_KAFKA_URL: kafka:29092
+#      GENNY_REALM: internmatch
+#      GENNY_CLIENT_ID: ${GENNY_CLIENT_ID}
+#      GENNY_CLIENT_SECRET: ${GENNY_CLIENT_SECRET}
+#      GENNY_SERVICE_USERNAME: ${GENNY_SERVICE_USERNAME}
+#      GENNY_SERVICE_PASSWORD: ${GENNY_SERVICE_PASSWORD}
+#      GENNY_KEYCLOAK_URL: https://keycloak.gada.io
+#      GENNY_MYSQL_FULL_URL: alyson.genny.life:3310/gennydb?zeroDateTimeBehavior=convertToNull&serverTimezone=UTC
+#      MYSQL_USER: genny
+#      MYSQL_PASSWORD: password
+#      INFINISPAN_URL: alyson.genny.life:11222
+#      INFINISPAN_USERNAME: genny
+#      INFINISPAN_PASSWORD: password
+#      GENNY_SHOW_VALUES: "true"
+#    ports:
+#      - "8771:8080"
+#    links:
+#      - mysql:mysql
+#    networks:
+#      - mainproxy
+#    healthcheck:
+#      test: ["CMD", "curl", "-f", "http://localhost:8080/api/version"]
+#      interval: 10s
+#      timeout: 10s
+#      retries: 30
+#
   messages:
     image: gennyproject/messages:latest
     container_name:  messages
@@ -772,13 +776,15 @@ services:
       - VIRTUAL_PORT=8080
       - VIRTUAL_PROTO=http
       - XMX=4096m
+      - PDF_GEN_SERVICE_API_URL=http://internmatch.genny.life:7331
+      - GENNY_KOGITO_DATAINDEX_HTTP_URL=http://alyson.genny.life:8582
+      - GENNY_KOGITO_SERVICE_URL=http://alyson2.genny.life:8580
       - JAVA_OPTS=-server 
         -Xms64m -Xmx4096m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=2048m 
         -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -XX:ParallelGCThreads=20 -XX:ConcGCThreads=5 -XX:InitiatingHeapOccupancyPercent=70 -XX:+ExplicitGCInvokesConcurrent 
         -Dsun.rmi.dgc.client.gcInterval=1800000 -Dsun.rmi.dgc.server.gcInterval=1800000  
         -Djava.net.preferIPv4Stack=true -Djboss.modules.system.pkgs=org.jboss.byteman -Djava.awt.headless=true
       #- JAVA_OPTS=-Xms3048m -Xmx3048m -agentpath:/usr/local/jprofiler12.0.2/bin/linux-x64/libjprofilerti.so=nowait -Djava.net.preferIPv4Stack=true -Dsun.rmi.dgc.client.gcInterval=1800000 -Dsun.rmi.dgc.server.gcInterval=1800000  -server 
-      - PDF_GEN_SERVICE_API_URL=http://internmatch.genny.life:7331
     ports:
       - "8380:8080"
       - "8987:8787"
@@ -801,8 +807,12 @@ services:
       - "8582:8080"
     networks:
      - mainproxy
+    depends_on:
+      infinispan:
+        condition: service_healthy
     volumes:
       - ./target/protobuf:/home/kogito/data/protobufs/:delegated
+      - ./data-index/data-index-service-infinispan-runner.jar:/home/kogito/bin/data-index-service-infinispan-runner.jar
     environment:
       KAFKA_BOOTSTRAP_SERVERS: alyson.genny.life:9092
       KOGITO_DATA_INDEX_PROPS: -Dkogito.protobuf.folder=/home/kogito/data/protobufs/
@@ -824,6 +834,9 @@ services:
     image: quay.io/kiegroup/kogito-management-console:${KOGITO_VERSION}
     ports:
       - 8584:8080
+    depends_on:
+      data-index:
+        condition: service_healthy
     volumes:
       - ./svg/:/home/kogito/data/svg/
     networks:
@@ -849,11 +862,12 @@ services:
       GENNY_KAFKA_URL: kafka:9092
       GENNY_CLIENT_ID: kogito-console-quarkus
       GENNY_REALM: internmatch
-      GENNY_KOGITO_SERVICE_URL: "alyson.genny.life:8580"
+      GENNY_KOGITO_SERVICE_URL: "http://alyson.genny.life:8580"
       GENNY_KOGITO_DATAINDEX_HTTP_URL: "http://alyson.genny.life:8582"
       GENNY_KOGITO_DATAINDEX_WS_URL: "ws://alyson.genny.life:8582"
       GENNY_INFINISPAN_URL: "alyson.genny.life:11222"
       GENNY_INFINISPAN_CLIENT_AUTH_PASSWORD: password
+      INFINISPAN_PASSWORD: password
       GENNY_INFINISPAN_CLIENT_AUTH_USERNAME: genny
       GENNY_INFINISPAN_CLIENT_SERVER_LIST: "infinispan:11222"
       GENNY_INFINISPAN_CLIENT_USE_AUTH: "true"
@@ -871,13 +885,10 @@ services:
       QUARKUS_INFINISPAN_CLIENT_CLIENT_INTELLIGENCE: BASIC
       INFINISPAN_CLIENT_HOTROD_SERVER_LIST: alyson.genny.life:11222
       INFINISPAN_CLIENT_HOTROD_CLIENT_INTELLIGENCE: BASIC
-      GENNY_KAFKA_URL: kafka:29092
-      GENNY_REALM: internmatch
       GENNY_CLIENT_ID: ${GENNY_CLIENT_ID}
       GENNY_CLIENT_SECRET: ${GENNY_CLIENT_SECRET}
       GENNY_SERVICE_USERNAME: ${GENNY_SERVICE_USERNAME}
       GENNY_SERVICE_PASSWORD: ${GENNY_SERVICE_PASSWORD}
-      GENNY_KEYCLOAK_URL: https://keycloak.gada.io
       GENNY_CACHE_HOST: http://localhost
       GENNY_CACHE_PORT: 8090
       GENNY_MYSQL_FULL_URL: alyson.genny.life:3310/gennydb?zeroDateTimeBehavior=convertToNull&serverTimezone=UTC
@@ -885,12 +896,14 @@ services:
       MYSQL_PASSWORD: password
       INFINISPAN_URL: alyson.genny.life:11222
       INFINISPAN_USERNAME: genny
-      INFINISPAN_PASSWORD: password
       FYODOR_SERVICE_API: http://fyodor:8080
     ports:
       - "8580:8080"
     networks:
       - mainproxy
+    depends_on:
+      data-index:
+        condition: service_healthy
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/q/health/ready"]
       interval: 10s
@@ -916,11 +929,13 @@ services:
       QUARKUS_INFINISPAN_CLIENT_AUTH_PASSWORD: "password"
       QUARKUS_INFINISPAN_CLIENT_SASL_MECHANISM: DIGEST-MD5
       QUARKUS_INFINISPAN_CLIENT_SERVER_LIST: alyson.genny.life:11222
-      QUARKUS_INFINISPAN_CLIENT_USE_AUTH: "true"
     ports:
       - "8579:8080"
     networks:
       - mainproxy
+    depends_on:
+      data-index:
+        condition: service_healthy
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/q/health/ready"]
       interval: 10s
