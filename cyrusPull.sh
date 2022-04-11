@@ -11,7 +11,7 @@ parentdir="$(dirname `pwd`)"
 
 ver=$1
 
-for value in qwanda qwandaq serviceq qwanda-utils bootxport genny-verticle-rules genny-rules qwanda-services wildfly-rulesservice wildfly-qwanda-service checkrules lauchy adi dropkick bridge media-proxy messages fyodor notes shleemy alyson bootq kogitoq2 api2email
+for value in qwanda qwandaq serviceq qwanda-utils bootxport genny-verticle-rules genny-rules qwanda-services wildfly-rulesservice wildfly-qwanda-service checkrules lauchy adi dropkick bridge media-proxy messages fyodor notes shleemy alyson bootq gennyq api2email
 do
     echo $value
     if [ ! -d "../"$value ]; then
