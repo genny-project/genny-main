@@ -45,7 +45,7 @@ repos2=("alyson" "alyson-v9")
 repos3=("prj_stt" "prj_internmatch" "prj_mentormatch" "prj_lojing" "api2email")
 
 # repos4 in public org , only need branch update
-repos4=("kogitoq2")
+repos4=("gennyq")
 
 #repos5 in private org , only need branch update
 repos5=("genny-charts" "gennyteer")

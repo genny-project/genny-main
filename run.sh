@@ -12,8 +12,8 @@ done
 
 #Copy all the protobufs, and svgs
 PERSISTENCE_FOLDER=./target/protobuf
-KOGITO_TRAVEL_AGENCY_PERSISTENCE=../kogitoq2/kogitoq/extended/travels/target/classes/META-INF/resources/persistence/protobuf
-KOGITO_VISAS_PERSISTENCE=../kogitoq2/kogitoq/extended/visas/target/classes/META-INF/resources/persistence/protobuf
+KOGITO_TRAVEL_AGENCY_PERSISTENCE=../gennyq/kogitoq/extended/travels/target/classes/META-INF/resources/persistence/protobuf
+KOGITO_VISAS_PERSISTENCE=../gennyq/kogitoq/extended/visas/target/classes/META-INF/resources/persistence/protobuf
 
 mkdir -p $PERSISTENCE_FOLDER
 rm -Rf $PERSISTENCE_FOLDER/*
@@ -36,8 +36,8 @@ fi
 
 SVG_FOLDER=./svg
 
-KOGITO_TRAVEL_SVG_FOLDER=../kogitoq2/kogitoq/extended/travels/target/classes/META-INF/processSVG
-KOGITO_VISAS_SVG_FOLDER=../kogitoq2/kogitoq/extended/visas/target/classes/META-INF/processSVG
+KOGITO_TRAVEL_SVG_FOLDER=../gennyq/kogitoq/extended/travels/target/classes/META-INF/processSVG
+KOGITO_VISAS_SVG_FOLDER=../gennyq/kogitoq/extended/visas/target/classes/META-INF/processSVG
 
 mkdir -p $SVG_FOLDER
 
