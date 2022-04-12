@@ -61,7 +61,7 @@ do
 done
 
 
-for value in checkrules notes shleemy bootq genny-proxy kogitoq2 api2email messages
+for value in checkrules notes shleemy bootq genny-proxy gennyq api2email messages
 do
     echo $value
     cd $parentdir/$value
