@@ -25,30 +25,6 @@ do
     ./build-docker.sh
 done
 
-# Build native dependencies
-for value in qwandaq serviceq
-do
-    echo $value
-    cd $parentdir/$value
-    ./build.sh
-done
-
-#Quarkus 2.3.0 
-for value in bridge fyodor dropkick lauchy  
-do
-    echo $value
-    cd $parentdir/$value
-    ./build.sh
-    ./build-docker.sh
-done
-
-#clean up package only
-#for value in wildfly-qwanda-service/qwanda-service-war wildfly-qwanda-service/qwanda-service-ear wildfly-rulesservice/rulesservice-war wildfly-rulesservice/rulesservice-ear 
-#do
-#    echo $value
-#    cd $parentdir/$value
-##   rm -Rf  $parentdir/$value/target/*
-#done
 
 # build package build docker image
 for value in checkrules notes shleemy bootq genny-proxy gennyq api2email 
@@ -61,7 +37,7 @@ do
 done
 
 
-for value in checkrules notes shleemy bootq genny-proxy gennyq api2email messages
+for value in checkrules notes shleemy bootq genny-proxy gennyq api2email
 do
     echo $value
     cd $parentdir/$value
