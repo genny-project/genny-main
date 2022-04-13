@@ -26,7 +26,7 @@ do
 done
 
 #Quarkus 2.3.0 
-for value in bridge fyodor dropkick lauchy adi 
+for value in bridge fyodor dropkick lauchy  
 do
     echo $value
     cd $parentdir/$value
@@ -59,7 +59,8 @@ do
     cd $parentdir/$value
     ./build-docker.sh
 done
-
+cd $parentdir/kogitoq2/kogitoq/extended/travels
+./build.sh;./build-docker.sh
 cd $parentdir/genny-main
 echo "Finished Building all"
 ./say.sh "Completed Building All. Now building docker"
