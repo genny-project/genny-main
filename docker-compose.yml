@@ -377,7 +377,7 @@ services:
     env_file:
       - ${ENV_FILE}
     environment:
-      - PROJECT_REALM=internmatch
+      - PROJECT_REALM=mentormatch
       - USE_VERTX_UTILS=true
       - FORCE_EVENTBUS_USE_API=FALSE
       - FORCE_CACHE_USE_API=FALSE
@@ -402,6 +402,7 @@ services:
       - DEBUG_SUSPEND=n
       - DDTHOST=TRUE
       - DISABLE_BATCH_LOADING=FALSE
+      - USE_FYODOR="TRUE"
       - XMX=4096m
   #    - DEV_MODE=TRUE
   #    - DDT_URL=http://bridge:8089 
@@ -454,6 +455,7 @@ services:
       - INFINISPAN_USERNAME=genny
       - INFINISPAN_PASSWORD=password
       - GENNY_SHOW_VALUES=TRUE
+      - realm=mentormatch
     networks:
       - mainproxy
     ports:
@@ -487,8 +489,8 @@ services:
     environment:
       GENNY_KAFKA_URL: kafka:29092
       GENNY_REALM: internmatch
-      GENNY_CLIENT_ID: ${GENNY_CLIENT_ID}
-      GENNY_CLIENT_SECRET: ${GENNY_CLIENT_SECRET}
+      GENNY_CLIENT_ID: mentormatch
+      GENNY_CLIENT_SECRET: nosecret
       GENNY_SERVICE_USERNAME: ${GENNY_SERVICE_USERNAME}
       GENNY_SERVICE_PASSWORD: ${GENNY_SERVICE_PASSWORD}
       GENNY_KEYCLOAK_URL: https://keycloak.gada.io
@@ -498,6 +500,9 @@ services:
       INFINISPAN_URL: alyson.genny.life:11222
       INFINISPAN_USERNAME: genny
       INFINISPAN_PASSWORD: password
+      PROJECT_REALM: mentormatch
+      PROJECT_URL: https://mentormatch.genny.life
+      realm: mentormatch
     ports:
       - "4242:8080"
     links:
@@ -527,12 +532,12 @@ services:
     env_file:
       - ${ENV_FILE}
     environment:
-      PROJECT_REALM: internmatch
+      PROJECT_REALM: mentormatch
       FYODOR_SERVICE_API: "http://alyson.genny.life:4242"
       GENNY_KAFKA_URL: kafka:29092
       GENNY_REALM: internmatch
-      GENNY_CLIENT_ID: ${GENNY_CLIENT_ID}
-      GENNY_CLIENT_SECRET: ${GENNY_CLIENT_SECRET}
+      GENNY_CLIENT_ID: mentormatch
+      GENNY_CLIENT_SECRET: nosecret
       GENNY_SERVICE_USERNAME: ${GENNY_SERVICE_USERNAME}
       GENNY_SERVICE_PASSWORD: ${GENNY_SERVICE_PASSWORD}
       GENNY_KEYCLOAK_URL: https://keycloak.gada.io
@@ -568,12 +573,12 @@ services:
     env_file:
       - ${ENV_FILE}
     environment:
-      PROJECT_REALM: internmatch
+      PROJECT_REALM: mentormatch
       FYODOR_SERVICE_API: "http://alyson.genny.life:4242"
       GENNY_KAFKA_URL: kafka:29092
       GENNY_REALM: internmatch
-      GENNY_CLIENT_ID: ${GENNY_CLIENT_ID}
-      GENNY_CLIENT_SECRET: ${GENNY_CLIENT_SECRET}
+      GENNY_CLIENT_ID: mentormatch
+      GENNY_CLIENT_SECRET: nosecret
       GENNY_SERVICE_USERNAME: ${GENNY_SERVICE_USERNAME}
       GENNY_SERVICE_PASSWORD: ${GENNY_SERVICE_PASSWORD}
       GENNY_KEYCLOAK_URL: https://keycloak.gada.io
@@ -729,13 +734,9 @@ services:
   wildfly-rulesservice:
     image: gennyproject/wildfly-rulesservice:latest
     depends_on:
-      qwanda-service:
-        condition: service_healthy
       mysql:
         condition: service_healthy
-      kafka:
-        condition: service_healthy
-      infinispan:
+      fyodor:
         condition: service_healthy
     container_name: wildfly-rulesservice
     env_file:
