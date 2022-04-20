@@ -484,13 +484,11 @@ services:
         condition: service_healthy
     volumes:
       - ./realm:/opt/realm:delegated
-    env_file:
-      - ${ENV_FILE}
     environment:
       GENNY_KAFKA_URL: kafka:29092
       GENNY_REALM: internmatch
       GENNY_CLIENT_ID: mentormatch
-      GENNY_CLIENT_SECRET: nosecret
+      GENNY_CLIENT_SECRET: ${GENNY_CLIENT_SECRET} 
       GENNY_SERVICE_USERNAME: ${GENNY_SERVICE_USERNAME}
       GENNY_SERVICE_PASSWORD: ${GENNY_SERVICE_PASSWORD}
       GENNY_KEYCLOAK_URL: https://keycloak.gada.io
