@@ -14,11 +14,13 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+SET @MYSQLDUMP_TEMP_LOG_BIN = @@SESSION.SQL_LOG_BIN;
 
 --
 -- Current Database: `gennydb`
 --
 
+CREATE DATABASE /*!32312 IF NOT EXISTS*/ `gennydb` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 
 USE `gennydb`;
 
@@ -601,6 +603,37 @@ CREATE TABLE `NOTIFICATION_ID_SEQ` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `NodeInstanceLog`
+--
+
+DROP TABLE IF EXISTS `NodeInstanceLog`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `NodeInstanceLog` (
+  `id` bigint NOT NULL,
+  `connection` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `log_date` datetime(6) DEFAULT NULL,
+  `externalId` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `nodeContainerId` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `nodeId` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `nodeInstanceId` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `nodeName` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `nodeType` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `processId` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `processInstanceId` bigint NOT NULL,
+  `referenceId` bigint DEFAULT NULL,
+  `slaCompliance` int DEFAULT NULL,
+  `sla_due_date` datetime(6) DEFAULT NULL,
+  `type` int NOT NULL,
+  `workItemId` bigint DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `IDX_NInstLog_pInstId` (`processInstanceId`),
+  KEY `IDX_NInstLog_nodeType` (`nodeType`),
+  KEY `IDX_NInstLog_pId` (`processId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `Notification`
 --
 
@@ -791,6 +824,26 @@ CREATE TABLE `PeopleAssignments_Stakeholders` (
   CONSTRAINT `FK9uy76cu650rg1nnkrtjwj1e9t` FOREIGN KEY (`entity_id`) REFERENCES `OrganizationalEntity` (`id`),
   CONSTRAINT `FKaeyk4nwslvx0jywjomjq7083i` FOREIGN KEY (`task_id`) REFERENCES `Task` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `ProcessInstanceInfo`
+--
+
+DROP TABLE IF EXISTS `ProcessInstanceInfo`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ProcessInstanceInfo` (
+  `InstanceId` bigint NOT NULL,
+  `lastModificationDate` datetime(6) DEFAULT NULL,
+  `lastReadDate` datetime(6) DEFAULT NULL,
+  `processId` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `processInstanceByteArray` longblob,
+  `startDate` datetime(6) DEFAULT NULL,
+  `state` int NOT NULL,
+  `OPTLOCK` int DEFAULT NULL,
+  PRIMARY KEY (`InstanceId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1427,6 +1480,30 @@ CREATE TABLE `VAR_INST_LOG_ID_SEQ` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `VariableInstanceLog`
+--
+
+DROP TABLE IF EXISTS `VariableInstanceLog`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `VariableInstanceLog` (
+  `id` bigint NOT NULL,
+  `log_date` datetime(6) DEFAULT NULL,
+  `externalId` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `oldValue` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `processId` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `processInstanceId` bigint NOT NULL,
+  `value` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `variableId` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `variableInstanceId` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `IDX_VInstLog_pInstId` (`processInstanceId`),
+  KEY `IDX_VInstLog_varId` (`variableId`),
+  KEY `IDX_VInstLog_pId` (`processId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `WORKITEMINFO_ID_SEQ`
 --
 
@@ -1436,6 +1513,25 @@ DROP TABLE IF EXISTS `WORKITEMINFO_ID_SEQ`;
 CREATE TABLE `WORKITEMINFO_ID_SEQ` (
   `next_val` bigint DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `WorkItemInfo`
+--
+
+DROP TABLE IF EXISTS `WorkItemInfo`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `WorkItemInfo` (
+  `workItemId` bigint NOT NULL,
+  `creationDate` datetime(6) DEFAULT NULL,
+  `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `processInstanceId` bigint NOT NULL,
+  `state` bigint NOT NULL,
+  `OPTLOCK` int DEFAULT NULL,
+  `workItemByteArray` longblob,
+  PRIMARY KEY (`workItemId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1601,7 +1697,7 @@ CREATE TABLE `baseentity` (
   KEY `code_idx` (`code`,`realm`),
   KEY `r_s_c` (`realm`,`status`,`code`),
   KEY `r_s_n` (`realm`,`status`,`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=74730 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=74734 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2111,11 +2207,8 @@ CREATE TABLE `validation` (
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-
-
 create table `hibernate_sequences` (
     `sequence_name` VARCHAR(255) NOT NULL,
     `next_val` bigint  NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- Dump completed on 2022-04-20 12:15:11
+-- Dump completed on 2022-04-20 13:25:50
