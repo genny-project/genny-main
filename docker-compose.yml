@@ -2,7 +2,7 @@ version: '2.3'
 
 services:
   infinispan:
-    image: gennyproject/infinispan:14-6
+    image: gennyproject/infinispan:14-7
     #image: quay.io/infinispan/server:13.0.5.Final-2
     container_name: infinispan
     hostname: infinispan
