@@ -745,7 +745,7 @@ services:
       - ./rules:/rules:delegated
       - ./google_credentials:/root/.genny/sheets.googleapis.com-java-quickstart/:delegated
     environment:
-      - PROJECT_REALMS=mentormatch
+      - PROJECT_REALMS=mentormatch:internmatch
       - ADMIN_USERNAME=GENNY 
       - ADMIN_PASSWORD=GENNY
       - BULKPULL=FALSE
