@@ -1,0 +1,7 @@
+# Update all statuses of accounts with emails matching "%gada%" or "%outcomelife%" to DISABLED
+UPDATE baseentity AS be1 SET status=5 WHERE EXISTS
+       (SELECT baseEntityCode
+          FROM baseentity_attribute AS be_attribute
+         WHERE be_attribute.baseEntityCode = be1.code
+         AND (attributeCode="PRI_EMAIL"
+         AND (valueString like "%gada%" or valueString like "%outcomelife%")))
