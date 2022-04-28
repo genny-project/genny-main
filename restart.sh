@@ -13,9 +13,18 @@ done
 PERSISTENCE_FOLDER=./target/protobuf
 KOGITO_TRAVEL_AGENCY_PERSISTENCE=../gennyq/kogitoq/extended/travels/target/classes/META-INF/resources/persistence/protobuf
 KOGITO_VISAS_PERSISTENCE=../gennyq/kogitoq/extended/visas/target/classes/META-INF/resources/persistence/protobuf
+KOGITO_GADAQ_PERSISTENCE=../gennyq/kogitoq/gadaq/target/classes/META-INF/resources/persistence/protobuf
 
 rm -Rf $PERSISTENCE_FOLDER/*
 mkdir -p $PERSISTENCE_FOLDER
+
+if [ -d "$KOGITO_GADAQ_PERSISTENCE" ]
+then
+    cp $KOGITO_GADAQ_PERSISTENCE/*.proto $PERSISTENCE_FOLDER
+else
+    echo "$KOGITO_GADAQ_PERSISTENCE does not exist. Have you compiled your GADAQ project?"
+    exit 1
+fi
 
 if [ -d "$KOGITO_TRAVEL_AGENCY_PERSISTENCE" ]
 then
@@ -37,6 +46,7 @@ SVG_FOLDER=./svg
 
 KOGITO_TRAVEL_SVG_FOLDER=../gennyq/kogitoq/extended/travels/target/classes/META-INF/processSVG
 KOGITO_VISAS_SVG_FOLDER=../gennyq/kogitoq/extended/visas/target/classes/META-INF/processSVG
+KOGITO_GADAQ_SVG_FOLDER=../gennyq/kogitoq/gadaq/target/classes/META-INF/processSVG
 
 mkdir -p $SVG_FOLDER
 
@@ -48,6 +58,13 @@ else
     exit 1
 fi
 
+if [ -d "$KOGITO_GADAQ_SVG_FOLDER" ]
+then
+    cp $KOGITO_GADAQ_SVG_FOLDER/*.svg $SVG_FOLDER
+else
+    echo "$KOGITO_GADAQ_SVG_FOLDER does not exist. Have you compiled GADAQ project?"
+    exit 1
+fi
 if [ -d "$KOGITO_VISAS_SVG_FOLDER" ]
 then
     cp $KOGITO_VISAS_SVG_FOLDER/*.svg $SVG_FOLDER
