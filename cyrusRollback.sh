@@ -1,6 +1,8 @@
 #!/bin/bash
-dt="2020-11-19 12:35"
-ver=9.9.0
+dt="2022-04-28 22:00"
+ver=10.0.0
+cd ../qwandaq
+git stash;git checkout `git rev-list -n 1 --first-parent --before="${dt}" ${ver}`
 cd ../qwanda
 git stash;git checkout `git rev-list -n 1 --first-parent --before="${dt}" ${ver}`
 cd ../qwanda-utils
@@ -9,20 +11,34 @@ cd ../genny-verticle-rules
 git stash;git checkout `git rev-list -n 1 --first-parent --before="${dt}" ${ver}`
 cd ../genny-rules
 git stash;git checkout `git rev-list -n 1 --first-parent --before="${dt}" ${ver}`
+
 cd ../bootxport
 git stash;git checkout `git rev-list -n 1 --first-parent --before="${dt}" ${ver}`
 cd ../qwanda-services
 git stash;git checkout `git rev-list -n 1 --first-parent --before="${dt}" ${ver}`
+
 cd ../wildfly-qwanda-service
 git stash;git checkout `git rev-list -n 1 --first-parent --before="${dt}" ${ver}`
 cd ../wildfly-rulesservice
 git stash;git checkout `git rev-list -n 1 --first-parent --before="${dt}" ${ver}`
+
+cd ../shleemy
+git stash;git checkout `git rev-list -n 1 --first-parent --before="${dt}" ${ver}`
+cd ../fyodor
+git stash;git checkout `git rev-list -n 1 --first-parent --before="${dt}" ${ver}`
+cd ../dropkick
+git stash;git checkout `git rev-list -n 1 --first-parent --before="${dt}" ${ver}`
 cd ../lauchy
 git stash;git checkout `git rev-list -n 1 --first-parent --before="${dt}" ${ver}`
+
+cd ../bootq
+git stash;git checkout `git rev-list -n 1 --first-parent --before="${dt}" ${ver}`
+
 cd ../bridge
 git stash;git checkout `git rev-list -n 1 --first-parent --before="${dt}" ${ver}`
 cd ../messages
 git stash;git checkout `git rev-list -n 1 --first-parent --before="${dt}" ${ver}`
+
 #cd ../media-proxy
 #git stash;git checkout `git rev-list -n 1 --first-parent --before="${dt}" ${ver}`
 #mvn package -DskipTests=true
