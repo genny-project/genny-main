@@ -515,6 +515,32 @@ services:
       timeout: 10s
       retries: 30
 
+  gadaq:
+    image: gennyproject/gadaq:latest
+    container_name: gadaq 
+    depends_on:
+      mysql:
+        condition: service_healthy
+      infinispan:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+      fyodor:
+        condition: service_healthy
+    env_file:
+      - ${ENV_FILE}
+    ports:
+      - "6590:8080"
+    links:
+      - mysql:mysql
+    networks:
+      - mainproxy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/api/version"]
+      interval: 10s
+      timeout: 10s
+      retries: 30
+
   dropkick:
     image: gennyproject/dropkick:latest
     container_name:  dropkick 
