@@ -1,0 +1,74 @@
+version: '2.3'
+
+services:
+  mysql:
+      image:  mysql:8.0.25
+  #    image:  gennyproject/mysql:8x
+      platform: linux/x86_64
+      container_name: mysql
+      environment:
+        - MYSQL_URL=mysql
+        - MYSQL_DB=gennydb
+        - MYSQL_PORT=3306
+        - MYSQL_ALLOW_EMPTY=
+        - MYSQL_DATABASE=gennydb
+        - MYSQL_USER=genny
+        - MYSQL_PASSWORD=password
+        - MYSQL_ROOT_PASSWORD=password
+        - ADMIN_USERNAME=admin
+        - ADMIN_PASSWORD=password
+      env_file:
+        - ${ENV_FILE}
+      volumes:
+        - mysql_data:/var/lib/mysql:delegated
+      networks:
+        - mainproxy
+      ports:
+        - 3310:3306
+      command: --sql_mode="" --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --default-time-zone="+00:00"
+      healthcheck:
+        test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+        timeout: 20s
+        retries: 10
+      restart: unless-stopped
+
+  infinispan:
+    image: gennyproject/infinispan:14-7
+    #image: quay.io/infinispan/server:13.0.5.Final-2
+    container_name: infinispan
+    hostname: infinispan
+    depends_on:
+      mysql:
+        condition: service_healthy
+    ports:
+      - 11222:11222
+    environment:
+        JAVA_OPTS: "-Dinfinispan.bind.address=0.0.0.0 -Dpersistence.db.server.ip=alyson.genny.life -Dpersistence.db.server.port=3310 -Dpersistence.db.name=gennydb  -Dpersistence.db.username=genny -Dpersistence.db.password=password"
+        USER: genny
+        PASS: password
+        ISPN_HOME: /opt/infinispan
+    volumes:
+      - ./infinispan/infinispan_persistence.xml:/opt/infinispan/server/conf/infinispan.xml
+      - ./infinispan/rebuild_index.sh:/opt/infinispan/server/bin/rebuild_index.sh
+      - ./databaseScripts/modify_primarykey_baseentity.sh:/opt/infinispan/server/bin/modify_primarykey_baseentity.sh
+    networks:
+      - mainproxy
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:11222/rest/v2/cache-managers/default/health/status" ]
+      interval: 30s
+      timeout: 10s
+      retries: 4
+
+volumes:
+  abn_tmp:
+  mysql_data:
+  minio_conf:
+  minio_data:
+  maildata:
+    driver: local
+  mailstate:
+    driver: local
+networks:
+  mainproxy:
+    name: mp
+    driver: bridge
