@@ -48,8 +48,9 @@ done
 cd $parentdir/gennyq
 ./build-docker.sh
 
-cd $parentdir/gennyq/kogitoq/extended/travels
-./build.sh;./build-docker.sh
+#cd $parentdir/gennyq/kogitoq/extended/travels
+#./build.sh;./build-docker.sh
+
 cd $parentdir/genny-main
 echo "Finished Building all"
 ./say.sh "Completed Building All. Now building docker"
