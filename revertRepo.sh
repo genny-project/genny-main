@@ -12,6 +12,12 @@ if [ "$#" -eq 4 ]; then
 	ac=$4
 fi
 
+if [ ! -d "../$repo" ]; then
+	echo "No such repo cloned!: $repo"
+	echo "Options: `ls ../`"
+	exit 1
+fi
+
 cd ../$repo
 safecommit=`git rev-list -n 1 --first-parent --before="${dt}" ${ver}`
 if [ -z $safecommit ]; then
