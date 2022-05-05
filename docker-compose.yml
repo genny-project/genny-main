@@ -1,6 +1,7 @@
 version: '2.3'
 
 services:
+
   infinispan:
     image: gennyproject/infinispan:14-7
     #image: quay.io/infinispan/server:13.0.5.Final-2
@@ -47,7 +48,6 @@ services:
       LOG_DIR: "/tmp/logs"
       ZOOKEEPER_CLIENT_PORT: 2181
 
- 
   kafka:
     image: confluentinc/cp-kafka:7.0.0
     #image: strimzi/kafka:latest-kafka-2.5.0
@@ -140,7 +140,6 @@ services:
         sleep infinity &
         /etc/confluent/docker/run
 
-
   ksqldb-server:
     image: confluentinc/ksqldb-server:0.22.0
     hostname: ksqldb-server
@@ -173,18 +172,6 @@ services:
       - |
         /usr/bin/docker/run
 
-#  ksqldb-cli:
-#    image: confluentinc/ksqldb-cli:0.21.0
-#    container_name: ksqldb-cli
-#    depends_on:
-#      - broker
-#      - ksqldb-server
-#    entrypoint: /bin/sh
-#    tty: true
-#    networks:
-#      - mainproxy
-
-
   nginx:
     image: jwilder/nginx-proxy:alpine
     hostname: nginx
@@ -203,14 +190,8 @@ services:
       - ./nginx/conf.d:/etc/nginx/conf.d:delegated
       - ./nginx/vhost.d:/etc/nginx/vhost.d:delegated
       - ./nginx/html:/usr/share/nginx/html:delegated
-#      - ../stt-unity/safeTrafficTown/Build:/usr/share/nginx/html/unity
       - ./nginx/certs:/etc/nginx/certs:ro
       - /var/run/docker.sock:/tmp/docker.sock:ro
-#    healthcheck:
-#      test: ["CMD", "curl", "--fail", "http://nginx.host.com"]
-#      interval: 1m30s
-#      timeout: 10s
-#      retries: 3
 
   imageproxy:
     image: willnorris/imageproxy:v0.10.0
@@ -220,7 +201,6 @@ services:
     networks:
       - mainproxy
     command: -cache /tmp/imageproxy -addr 0.0.0.0:8080 -scaleUp true
-
 
   alyson:
     image: gennyproject/alyson
@@ -242,8 +222,6 @@ services:
     networks:
       - mainproxy
     restart: always
-
-
 
   minio:
     image: minio/minio:latest
@@ -342,7 +320,6 @@ services:
       - MYSQL_USER=genny
       - MYSQL_PASSWORD=password
       - FULL_MYSQL_URL=mysql/gennydb?serverTimezone=UTC
-      - REACT_APP_QWANDA_API_URL=http://qwanda-service:8080
     ports:
       - "8480:8080"
       - "8487:5005"
@@ -357,7 +334,6 @@ services:
     restart: unless-stopped
     networks:
       - mainproxy
-
 
   # qwanda-service:
   #   depends_on:
@@ -424,7 +400,6 @@ services:
   #   networks:
   #     - mainproxy
 
-
   bridge:
     image: gennyproject/bridge:latest
     depends_on:
@@ -480,29 +455,10 @@ services:
         condition: service_healthy
       kafka:
         condition: service_healthy
-    volumes:
-      - ./realm:/opt/realm:delegated
-    environment:
-      GENNY_KAFKA_URL: kafka:29092
-      GENNY_REALM: internmatch
-      GENNY_CLIENT_ID: backend 
-      GENNY_CLIENT_SECRET: ${GENNY_CLIENT_SECRET} 
-      GENNY_SERVICE_USERNAME: ${GENNY_SERVICE_USERNAME}
-      GENNY_SERVICE_PASSWORD: ${GENNY_SERVICE_PASSWORD}
-      GENNY_KEYCLOAK_URL: https://keycloak.gada.io
-      GENNY_MYSQL_FULL_URL: alyson.genny.life:3310/gennydb?zeroDateTimeBehavior=convertToNull&serverTimezone=UTC
-      MYSQL_USER: genny
-      MYSQL_PASSWORD: password
-      INFINISPAN_URL: alyson.genny.life:11222
-      INFINISPAN_USERNAME: genny
-      INFINISPAN_PASSWORD: password
-      PROJECT_REALM: internmatch
-      PROJECT_URL: https://internmatch.genny.life
-      realm: mentormatch
+    env_file:
+      - ${ENV_FILE}
     ports:
       - "4242:8080"
-    links:
-      - mysql:mysql
     networks:
       - mainproxy
     healthcheck:
@@ -527,8 +483,6 @@ services:
       - ${ENV_FILE}
     ports:
       - "6590:8080"
-    links:
-      - mysql:mysql
     networks:
       - mainproxy
     healthcheck:
@@ -549,27 +503,8 @@ services:
         condition: service_healthy
       fyodor:
         condition: service_healthy
-    volumes:
-      - ./realm:/opt/realm:delegated
     env_file:
       - ${ENV_FILE}
-    environment:
-      PROJECT_REALM: mentormatch
-      FYODOR_SERVICE_API: "http://alyson.genny.life:4242"
-      GENNY_KAFKA_URL: kafka:29092
-      GENNY_REALM: internmatch
-      GENNY_CLIENT_ID: backend 
-      GENNY_CLIENT_SECRET: ${GENNY_CLIENT_SECRET} 
-      GENNY_SERVICE_USERNAME: ${GENNY_SERVICE_USERNAME}
-      GENNY_SERVICE_PASSWORD: ${GENNY_SERVICE_PASSWORD}
-      GENNY_KEYCLOAK_URL: https://keycloak.gada.io
-      GENNY_MYSQL_FULL_URL: alyson.genny.life:3310/gennydb?zeroDateTimeBehavior=convertToNull&serverTimezone=UTC
-      MYSQL_USER: genny
-      MYSQL_PASSWORD: password
-      INFINISPAN_URL: alyson.genny.life:11222
-      INFINISPAN_USERNAME: genny
-      INFINISPAN_PASSWORD: password
-      GENNY_SHOW_VALUES: "true"
     networks:
       - mainproxy
     healthcheck:
@@ -590,28 +525,8 @@ services:
         condition: service_healthy
       fyodor:
         condition: service_healthy
-    volumes:
-      - ./realm:/opt/realm:delegated
     env_file:
       - ${ENV_FILE}
-    environment:
-      PROJECT_REALM: internmatch
-      FYODOR_SERVICE_API: "http://alyson.genny.life:4242"
-      GENNY_KAFKA_URL: kafka:29092
-      GENNY_REALM: internmatch
-      GENNY_CLIENT_ID: backend
-      GENNY_CLIENT_SECRET: ${GENNY_CLIENT_SECRET} 
-      GENNY_SERVICE_USERNAME: ${GENNY_SERVICE_USERNAME}
-      GENNY_SERVICE_PASSWORD: ${GENNY_SERVICE_PASSWORD}
-      GENNY_KEYCLOAK_URL: https://keycloak.gada.io
-      GENNY_MYSQL_FULL_URL: alyson.genny.life:3310/gennydb?zeroDateTimeBehavior=convertToNull&serverTimezone=UTC
-      MYSQL_USER: genny
-      MYSQL_PASSWORD: password
-      INFINISPAN_URL: alyson.genny.life:11222
-      INFINISPAN_USERNAME: genny
-      INFINISPAN_PASSWORD: password
-      GENNY_SHOW_VALUES: "true"
-      GENNY_ENABLE_BLACKLIST: "false"
     networks:
       - mainproxy
     healthcheck:
@@ -620,51 +535,6 @@ services:
       timeout: 10s
       retries: 30
 
-#  adi:
-#    image: gennyproject/adi:latest
-#    container_name: adi 
-#    depends_on:
-#      mysql:
-#        condition: service_healthy
-#      infinispan:
-#        condition: service_healthy
-#      kafka:
-#        condition: service_healthy
-#      fyodor:
-#        condition: service_healthy
-#    volumes:
-#      - ./realm:/opt/realm:delegated
-#    env_file:
-#      - ${ENV_FILE}
-#    environment:
-#      PROJECT_REALM: internmatch
-#      FYODOR_SERVICE_API: "http://alyson.genny.life:4242"
-#      GENNY_KAFKA_URL: kafka:29092
-#      GENNY_REALM: internmatch
-#      GENNY_CLIENT_ID: backend 
-#      GENNY_CLIENT_SECRET: ${GENNY_CLIENT_SECRET}
-#      GENNY_SERVICE_USERNAME: ${GENNY_SERVICE_USERNAME}
-#      GENNY_SERVICE_PASSWORD: ${GENNY_SERVICE_PASSWORD}
-#      GENNY_KEYCLOAK_URL: https://keycloak.gada.io
-#      GENNY_MYSQL_FULL_URL: alyson.genny.life:3310/gennydb?zeroDateTimeBehavior=convertToNull&serverTimezone=UTC
-#      MYSQL_USER: genny
-#      MYSQL_PASSWORD: password
-#      INFINISPAN_URL: alyson.genny.life:11222
-#      INFINISPAN_USERNAME: genny
-#      INFINISPAN_PASSWORD: password
-#      GENNY_SHOW_VALUES: "true"
-#    ports:
-#      - "8771:8080"
-#    links:
-#      - mysql:mysql
-#    networks:
-#      - mainproxy
-#    healthcheck:
-#      test: ["CMD", "curl", "-f", "http://localhost:8080/api/version"]
-#      interval: 10s
-#      timeout: 10s
-#      retries: 30
-#
   messages:
     image: gennyproject/messages:latest
     container_name:  messages
@@ -677,26 +547,9 @@ services:
         condition: service_healthy
       fyodor:
         condition: service_healthy
-    volumes:
-      - ./realm:/opt/realm:delegated
     env_file:
       - ${ENV_FILE}
     environment:
-      PROJECT_REALM: internmatch
-      FYODOR_SERVICE_API: "http://alyson.genny.life:4242"
-      GENNY_KAFKA_URL: kafka:29092
-      GENNY_REALM: internmatch
-      GENNY_CLIENT_ID: backend 
-      GENNY_CLIENT_SECRET: ${GENNY_CLIENT_SECRET}
-      GENNY_SERVICE_USERNAME: ${GENNY_SERVICE_USERNAME}
-      GENNY_SERVICE_PASSWORD: ${GENNY_SERVICE_PASSWORD}
-      GENNY_KEYCLOAK_URL: https://keycloak.gada.io
-      GENNY_MYSQL_FULL_URL: alyson.genny.life:3310/gennydb?zeroDateTimeBehavior=convertToNull&serverTimezone=UTC
-      MYSQL_USER: genny
-      MYSQL_PASSWORD: password
-      INFINISPAN_URL: alyson.genny.life:11222
-      INFINISPAN_USERNAME: genny
-      INFINISPAN_PASSWORD: password
       EMAIL_SMTP_AUTH: "true"
       EMAIL_SMTP_HOST: smtp.gmail.com
       EMAIL_SMTP_PORT: 587
@@ -718,7 +571,6 @@ services:
       retries: 30
 
   mysqld-exporter:
-    #image: quay.io/prometheus/mysqld-exporter
     image: prom/mysqld-exporter:latest
     command:
      - '--collect.info_schema.tablestats'
@@ -733,25 +585,6 @@ services:
     depends_on:
       mysql:
         condition: service_healthy
-
-
-#  task-console:
-#    container_name: task-console
-#    image: quay.io/kiegroup/kogito-task-console:latest
-#    ports:
-#      - 8583:8080
-#    depends_on:
-#      data-index:
-#        condition: service_started
-#    environment:
-#      VIRTUAL_HOST: task.genny.life
-#      VIRTUAL_PORT: 8080
-#      LETSENCRYPT_HOST: acrow.genny.life
-#      LETSENCRYPT_EMAIL: cto@gada.io
-#      KOGITO_DATAINDEX_HTTP_URL: http://alyson.genny.life:8582/graphql
-#      KOGITO_TASK_CONSOLE_PROPS: -Dkogito.consoles.keycloak.config.client-id=kogito-console-quarkus -Dkogito.consoles.keycloak.config.realm=internmatch -Dkogito.consoles.keycloak.config.url=https://keycloak.gada.io/auth -Dkogito.consoles.keycloak.config.health-check-url=https://keycloak.gada.io/auth/realms/internmatch/.well-known/openid-configuration -Dkogito.consoles.keycloak.config.disable-health-check=false -Dkogito.consoles.keycloak.config.update-token-validity=30 
-#    networks:
-#     - mainproxy
 
   wildfly-rulesservice:
     image: gennyproject/wildfly-rulesservice:latest
@@ -822,7 +655,6 @@ services:
     restart: unless-stopped
     networks:
       - mainproxy
-
 
   data-index:
     container_name: data-index
