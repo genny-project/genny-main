@@ -271,7 +271,6 @@ services:
 
   mysql:
     image:  mysql:8.0.25 
-#    image:  gennyproject/mysql:8x 
     platform: linux/x86_64
     container_name: mysql
     environment:
@@ -412,22 +411,11 @@ services:
       - ${ENV_FILE}
     environment:
       - CORS_URLS=http://10.123.123.123:3000|http://internmatch.genny.life:3000|
-      - realm=internmatch
       - ENV_KEYCLOAK_REDIRECTURI=https://keycloak.gada.io/auth
-      - QWANDA_SERVICE_URL=http://wildfly-rulesservice
       - RULESSERVICE_URL=http://wildfly-rulesservice
       - MEDIA_PROXY_URL=https://alyson.genny.life/web/public
-      - GENNY_KAFKA_URL=kafka:29092
-      - GENNY_REALM=internmatch
-      - GENNY_CLIENT_ID=${GENNY_CLIENT_ID}
-      - GENNY_CLIENT_SECRET=${GENNY_CLIENT_SECRET}
-      - GENNY_SERVICE_USERNAME=${GENNY_SERVICE_USERNAME}
-      - GENNY_SERVICE_PASSWORD=${GENNY_SERVICE_PASSWORD}
-      - GENNY_KEYCLOAK_URL=https://keycloak.gada.io
-      - INFINISPAN_URL=alyson.genny.life:11222
-      - INFINISPAN_USERNAME=genny
-      - INFINISPAN_PASSWORD=password
-      - GENNY_SHOW_VALUES=TRUE
+      # This is Bad Hard Coding
+      # TODO: Fix this to be more dynamic
       - realm=mentormatch
     networks:
       - mainproxy
@@ -516,6 +504,28 @@ services:
   lauchy:
     image: gennyproject/lauchy:latest
     container_name: lauchy 
+    depends_on:
+      mysql:
+        condition: service_healthy
+      infinispan:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+      fyodor:
+        condition: service_healthy
+    env_file:
+      - ${ENV_FILE}
+    networks:
+      - mainproxy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/q/health/ready"]
+      interval: 10s
+      timeout: 10s
+      retries: 30
+
+  shleemy:
+    image: gennyproject/shleemy:latest
+    container_name: shleemy 
     depends_on:
       mysql:
         condition: service_healthy
@@ -707,99 +717,95 @@ services:
       KOGITO_DATAINDEX_HTTP_URL: http://alyson.genny.life:8582/graphql
       KOGITO_MANAGEMENT_CONSOLE_PROPS:  -Dkogito.consoles.keycloak.config.client-id=kogito-console-quarkus  -Dkogito.consoles.keycloak.config.realm=internmatch -Dkogito.consoles.keycloak.config.url=https://keycloak.gada.io/auth -Dkogito.consoles.keycloak.config.health-check-url=https://keycloak.gada.io/auth/realms/internmatch/.well-known/openid-configuration -Dkogito.svg.folder.path=/home/kogito/data/svg -Dkogito.consoles.keycloak.config.disable-health-check=false -Dkogito.consoles.keycloak.config.update-token-validity=30
 
-  kogitoq-travels:
-    image: gennyproject/kogitoq-travels:latest
-    container_name: kogitoq-travels
-    environment:
-      GENNY_SHOW_VALUES: "TRUE"
-      GENNY_SERVICE_USERNAME: service
-      GENNY_KEYCLOAK_URL: "https://keycloak.gada.io"
-      GENNY_API_URL: "http://alyson.genny.life:8280"
-      GENNY_KAFKA_URL: kafka:9092
-      GENNY_CLIENT_ID: kogito-console-quarkus
-      GENNY_REALM: internmatch
-      GENNY_KOGITO_SERVICE_URL: "http://alyson.genny.life:8580"
-      GENNY_KOGITO_DATAINDEX_HTTP_URL: "http://alyson.genny.life:8582"
-      GENNY_KOGITO_DATAINDEX_WS_URL: "ws://alyson.genny.life:8582"
-      GENNY_INFINISPAN_URL: "alyson.genny.life:11222"
-      GENNY_INFINISPAN_CLIENT_AUTH_PASSWORD: password
-      INFINISPAN_PASSWORD: password
-      GENNY_INFINISPAN_CLIENT_AUTH_USERNAME: genny
-      GENNY_INFINISPAN_CLIENT_SERVER_LIST: "infinispan:11222"
-      GENNY_INFINISPAN_CLIENT_USE_AUTH: "true"
-      KOGITO_DATAINDEX_HTTP_URL: "http://alyson.genny.life:8582"
-      KOGITO_DATAINDEX_WS_URL: "ws://alyson.genny.life:8582"
-      GENNY_KOGITO_JOBSERVICE_URL: "alyson.genny.life:8581"
-      QUARKUS_INFINISPAN_CLIENT_AUTH_PASSWORD: password
-      QUARKUS_INFINISPAN_CLIENT_AUTH_REALM: default
-      QUARKUS_INFINISPAN_CLIENT_AUTH_USERNAME: genny
-      QUARKUS_INFINISPAN_CLIENT_SASL_MECHANISM: DIGEST-MD5
-      QUARKUS_INFINISPAN_CLIENT_SERVER_LIST: alyson.genny.life:11222
-      QUARKUS_INFINISPAN_CLIENT_USE_AUTH: "true"
-      QUARKUS_OIDC_AUTH_SERVER_URL: "http://keycloak.gada.io/auth/realms/internmatch"
-      QUARKUS_OIDC_CLIENT_ID: kogito-console-quarkus
-      QUARKUS_INFINISPAN_CLIENT_CLIENT_INTELLIGENCE: BASIC
-      INFINISPAN_CLIENT_HOTROD_SERVER_LIST: alyson.genny.life:11222
-      INFINISPAN_CLIENT_HOTROD_CLIENT_INTELLIGENCE: BASIC
-      GENNY_CLIENT_ID: ${GENNY_CLIENT_ID}
-      GENNY_CLIENT_SECRET: ${GENNY_CLIENT_SECRET}
-      GENNY_SERVICE_USERNAME: ${GENNY_SERVICE_USERNAME}
-      GENNY_SERVICE_PASSWORD: ${GENNY_SERVICE_PASSWORD}
-      GENNY_CACHE_HOST: http://localhost
-      GENNY_CACHE_PORT: 8090
-      GENNY_MYSQL_FULL_URL: alyson.genny.life:3310/gennydb?zeroDateTimeBehavior=convertToNull&serverTimezone=UTC
-      MYSQL_USER: genny
-      MYSQL_PASSWORD: password
-      INFINISPAN_URL: alyson.genny.life:11222
-      INFINISPAN_USERNAME: genny
-      FYODOR_SERVICE_API: http://fyodor:8080
-    ports:
-      - "8580:8080"
-    networks:
-      - mainproxy
-    depends_on:
-      data-index:
-        condition: service_healthy
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/q/health/ready"]
-      interval: 10s
-      timeout: 10s
-      retries: 30
+  # kogitoq-travels:
+  #   image: gennyproject/kogitoq-travels:latest
+  #   container_name: kogitoq-travels
+  #   environment:
+  #     GENNY_SHOW_VALUES: "TRUE"
+  #     GENNY_SERVICE_USERNAME: service
+  #     GENNY_KEYCLOAK_URL: "https://keycloak.gada.io"
+  #     GENNY_API_URL: "http://alyson.genny.life:8280"
+  #     GENNY_KAFKA_URL: kafka:9092
+  #     GENNY_CLIENT_ID: kogito-console-quarkus
+  #     GENNY_REALM: internmatch
+  #     GENNY_KOGITO_SERVICE_URL: "http://alyson.genny.life:8580"
+  #     GENNY_KOGITO_DATAINDEX_HTTP_URL: "http://alyson.genny.life:8582"
+  #     GENNY_KOGITO_DATAINDEX_WS_URL: "ws://alyson.genny.life:8582"
+  #     GENNY_INFINISPAN_URL: "alyson.genny.life:11222"
+  #     GENNY_INFINISPAN_CLIENT_AUTH_PASSWORD: password
+  #     INFINISPAN_PASSWORD: password
+  #     GENNY_INFINISPAN_CLIENT_AUTH_USERNAME: genny
+  #     GENNY_INFINISPAN_CLIENT_SERVER_LIST: "infinispan:11222"
+  #     GENNY_INFINISPAN_CLIENT_USE_AUTH: "true"
+  #     KOGITO_DATAINDEX_HTTP_URL: "http://alyson.genny.life:8582"
+  #     KOGITO_DATAINDEX_WS_URL: "ws://alyson.genny.life:8582"
+  #     GENNY_KOGITO_JOBSERVICE_URL: "alyson.genny.life:8581"
+  #     QUARKUS_INFINISPAN_CLIENT_AUTH_PASSWORD: password
+  #     QUARKUS_INFINISPAN_CLIENT_AUTH_REALM: default
+  #     QUARKUS_INFINISPAN_CLIENT_AUTH_USERNAME: genny
+  #     QUARKUS_INFINISPAN_CLIENT_SASL_MECHANISM: DIGEST-MD5
+  #     QUARKUS_INFINISPAN_CLIENT_SERVER_LIST: alyson.genny.life:11222
+  #     QUARKUS_INFINISPAN_CLIENT_USE_AUTH: "true"
+  #     QUARKUS_OIDC_AUTH_SERVER_URL: "http://keycloak.gada.io/auth/realms/internmatch"
+  #     QUARKUS_OIDC_CLIENT_ID: kogito-console-quarkus
+  #     QUARKUS_INFINISPAN_CLIENT_CLIENT_INTELLIGENCE: BASIC
+  #     INFINISPAN_CLIENT_HOTROD_SERVER_LIST: alyson.genny.life:11222
+  #     INFINISPAN_CLIENT_HOTROD_CLIENT_INTELLIGENCE: BASIC
+  #     GENNY_CLIENT_ID: ${GENNY_CLIENT_ID}
+  #     GENNY_CLIENT_SECRET: ${GENNY_CLIENT_SECRET}
+  #     GENNY_SERVICE_USERNAME: ${GENNY_SERVICE_USERNAME}
+  #     GENNY_SERVICE_PASSWORD: ${GENNY_SERVICE_PASSWORD}
+  #     GENNY_CACHE_HOST: http://localhost
+  #     GENNY_CACHE_PORT: 8090
+  #     GENNY_MYSQL_FULL_URL: alyson.genny.life:3310/gennydb?zeroDateTimeBehavior=convertToNull&serverTimezone=UTC
+  #     MYSQL_USER: genny
+  #     MYSQL_PASSWORD: password
+  #     INFINISPAN_URL: alyson.genny.life:11222
+  #     INFINISPAN_USERNAME: genny
+  #     FYODOR_SERVICE_API: http://fyodor:8080
+  #   ports:
+  #     - "8580:8080"
+  #   networks:
+  #     - mainproxy
+  #   depends_on:
+  #     data-index:
+  #       condition: service_healthy
+  #   healthcheck:
+  #     test: ["CMD", "curl", "-f", "http://localhost:8080/q/health/ready"]
+  #     interval: 10s
+  #     timeout: 10s
+  #     retries: 30
 
-
-  kogitoq-visas:
-    image: gennyproject/kogitoq-visas:latest
-    container_name: kogitoq-visas
-    environment:
-      GENNY_SHOW_VALUES: "TRUE"
-      GENNY_SERVICE_USERNAME: service
-      GENNY_KEYCLOAK_URL: https://keycloak.gada.io
-      GENNY_API_URL: http://alyson.genny.life:8280
-      GENNY_KAFKA_URL: alyson.genny.life:9092
-      GENNY_CLIENT_ID: kogito-console-quarkus
-      GENNY_REALM: internmatch
-      GENNY_KOGITO_SERVICE_URL: http://alyson.genny.life:8579
-      GENNY_INFINISPAN_URL: alyson.genny.life:11222
-      QUARKUS_INFINISPAN_CLIENT_USE_AUTH: "true"
-      QUARKUS_INFINISPAN_CLIENT_AUTH_USERNAME: "genny"
-      QUARKUS_INFINISPAN_CLIENT_AUTH_PASSWORD: "password"
-      QUARKUS_INFINISPAN_CLIENT_SASL_MECHANISM: DIGEST-MD5
-      QUARKUS_INFINISPAN_CLIENT_SERVER_LIST: alyson.genny.life:11222
-    ports:
-      - "8579:8080"
-    networks:
-      - mainproxy
-    depends_on:
-      data-index:
-        condition: service_healthy
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/q/health/ready"]
-      interval: 10s
-      timeout: 10s
-      retries: 30
-
-
-
+  # kogitoq-visas:
+  #   image: gennyproject/kogitoq-visas:latest
+  #   container_name: kogitoq-visas
+  #   environment:
+  #     GENNY_SHOW_VALUES: "TRUE"
+  #     GENNY_SERVICE_USERNAME: service
+  #     GENNY_KEYCLOAK_URL: https://keycloak.gada.io
+  #     GENNY_API_URL: http://alyson.genny.life:8280
+  #     GENNY_KAFKA_URL: alyson.genny.life:9092
+  #     GENNY_CLIENT_ID: kogito-console-quarkus
+  #     GENNY_REALM: internmatch
+  #     GENNY_KOGITO_SERVICE_URL: http://alyson.genny.life:8579
+  #     GENNY_INFINISPAN_URL: alyson.genny.life:11222
+  #     QUARKUS_INFINISPAN_CLIENT_USE_AUTH: "true"
+  #     QUARKUS_INFINISPAN_CLIENT_AUTH_USERNAME: "genny"
+  #     QUARKUS_INFINISPAN_CLIENT_AUTH_PASSWORD: "password"
+  #     QUARKUS_INFINISPAN_CLIENT_SASL_MECHANISM: DIGEST-MD5
+  #     QUARKUS_INFINISPAN_CLIENT_SERVER_LIST: alyson.genny.life:11222
+  #   ports:
+  #     - "8579:8080"
+  #   networks:
+  #     - mainproxy
+  #   depends_on:
+  #     data-index:
+  #       condition: service_healthy
+  #   healthcheck:
+  #     test: ["CMD", "curl", "-f", "http://localhost:8080/q/health/ready"]
+  #     interval: 10s
+  #     timeout: 10s
+  #     retries: 30
 
 volumes:
   abn_tmp:
