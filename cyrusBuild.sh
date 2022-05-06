@@ -46,6 +46,7 @@ done
 
 # Build Genny Services
 cd $parentdir/gennyq
+./build.sh
 ./build-docker.sh
 
 #cd $parentdir/gennyq/kogitoq/extended/travels
