@@ -23,7 +23,7 @@ then
     cp $KOGITO_GADAQ_PERSISTENCE/*.proto $PERSISTENCE_FOLDER
 else
     echo "$KOGITO_GADAQ_PERSISTENCE does not exist. Have you compiled your GADAQ project?"
-    exit 1
+    # exit 1
 fi
 
 if [ -d "$KOGITO_TRAVEL_AGENCY_PERSISTENCE" ]
@@ -31,7 +31,7 @@ then
     cp $KOGITO_TRAVEL_AGENCY_PERSISTENCE/*.proto $PERSISTENCE_FOLDER
 else
     echo "$KOGITO_TRAVEL_AGENCY_PERSISTENCE does not exist. Have you compiled your Kogito Travel Agency project?"
-    exit 1
+    # exit 1
 fi
 
 if [ -d "$KOGITO_VISAS_PERSISTENCE" ]
@@ -39,7 +39,7 @@ then
     cp $KOGITO_VISAS_PERSISTENCE/*.proto $PERSISTENCE_FOLDER
 else
     echo "$KOGITO_VISAS_PERSISTENCE does not exist. Have you compiled your Kogito Visas project?"
-    exit 1
+    # exit 1
 fi
 
 SVG_FOLDER=./svg
