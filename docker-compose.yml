@@ -3,16 +3,16 @@ version: '2.3'
 services:
 
   infinispan:
-    #image: gennyproject/infinispan:14-7
-    image: gennyproject/dummy 
+    image: gennyproject/infinispan:14-7
+    #image: gennyproject/dummy 
     #image: quay.io/infinispan/server:13.0.5.Final-2
     container_name: infinispan
     hostname: infinispan
     depends_on:
       mysql:
         condition: service_healthy
-    #ports:
-    #  - 11222:11222
+    ports:
+      - 11222:11222
     environment:
         JAVA_OPTS: "-Dinfinispan.bind.address=0.0.0.0 -Dpersistence.db.server.ip=alyson.genny.life -Dpersistence.db.server.port=3310 -Dpersistence.db.name=gennydb  -Dpersistence.db.username=genny -Dpersistence.db.password=password"
         USER: genny
@@ -24,11 +24,11 @@ services:
       - ./databaseScripts/modify_primarykey_baseentity.sh:/opt/infinispan/server/bin/modify_primarykey_baseentity.sh
     networks:
       - mainproxy
-#    healthcheck:
-#      test: [ "CMD", "curl", "-f", "http://localhost:11222/rest/v2/cache-managers/default/health/status" ]
-#      interval: 30s
-#      timeout: 10s
-#      retries: 4
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:11222/rest/v2/cache-managers/default/health/status" ]
+      interval: 30s
+      timeout: 10s
+      retries: 4
 
   zookeeper:
     image: confluentinc/cp-zookeeper:7.0.0
@@ -306,8 +306,8 @@ services:
         condition: service_healthy
       kafka:
         condition: service_healthy
-      #infinispan:
-      #  condition: service_healthy
+      infinispan:
+        condition: service_healthy
     image: gennyproject/bootq:latest
     container_name: bootq 
     volumes:
@@ -440,8 +440,8 @@ services:
     depends_on:
       mysql:
         condition: service_healthy
-      #infinispan:
-      #  condition: service_healthy
+      infinispan:
+        condition: service_healthy
       kafka:
         condition: service_healthy
     env_file:
@@ -462,8 +462,8 @@ services:
     depends_on:
       mysql:
         condition: service_healthy
-      #infinispan:
-      #  condition: service_healthy
+      infinispan:
+        condition: service_healthy
       kafka:
         condition: service_healthy
       fyodor:
@@ -486,8 +486,8 @@ services:
     depends_on:
       mysql:
         condition: service_healthy
-      #infinispan:
-      #  condition: service_healthy
+      infinispan:
+        condition: service_healthy
       kafka:
         condition: service_healthy
       fyodor:
@@ -508,8 +508,8 @@ services:
     depends_on:
       mysql:
         condition: service_healthy
-      #infinispan:
-      #  condition: service_healthy
+      infinispan:
+        condition: service_healthy
       kafka:
         condition: service_healthy
       fyodor:
@@ -530,8 +530,8 @@ services:
     depends_on:
       mysql:
         condition: service_healthy
-      #infinispan:
-      #  condition: service_healthy
+      infinispan:
+        condition: service_healthy
       kafka:
         condition: service_healthy
       fyodor:
@@ -552,8 +552,8 @@ services:
     depends_on:
       mysql:
         condition: service_healthy
-      #infinispan:
-      #  condition: service_healthy
+      infinispan:
+        condition: service_healthy
       kafka:
         condition: service_healthy
       fyodor:
@@ -674,9 +674,9 @@ services:
       - "8582:8080"
     networks:
      - mainproxy
-    #depends_on:
-    #  infinispan:
-    #    condition: service_healthy
+    depends_on:
+      infinispan:
+        condition: service_healthy
     volumes:
       - ./target/protobuf:/home/kogito/data/protobufs/:delegated
       - ./data-index/data-index-service-infinispan-runner.jar:/home/kogito/bin/data-index-service-infinispan-runner.jar
