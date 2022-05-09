@@ -136,7 +136,7 @@
    <server xmlns="urn:infinispan:server:13.0">
       <interfaces>
          <interface name="public">
-            <inet-address value="${infinispan.bind.address:127.0.0.1}"/>
+            <inet-address value="${infinispan.bind.address:0.0.0.0}"/>
          </interface>
       </interfaces>
 
@@ -157,7 +157,7 @@
                   <ssl>
                      <keystore path="application.keystore"
                                password="password" alias="server"
-                               generate-self-signed-certificate-host="localhost"/>
+                               generate-self-signed-certificate-host="alyson.genny.life"/>
                   </ssl>
                </server-identities-->
                <properties-realm groups-attribute="Roles">
