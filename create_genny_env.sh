@@ -120,7 +120,7 @@ MYSQL_USER=genny
 MYSQL_ROOT_PASSWORD=password
 
 MYSQL_ROOT_HOST=${HOSTIP}
-
+PRODUCT_CODES=${PRODUCT_CODES}
 LAYOUT_CACHE_HOST="http://layout-cache.genny.life"
 KIE_SERVER_URL="http://${myip}:8230/kie-server/services/rest/server"
 KIE_USERNAME="kieserver"
@@ -149,6 +149,7 @@ MEDIA_PROXY_URL=http://127.0.0.1:$MEDIA_PROXY_SERVER_PORT/public
 JAVA_OPTS="-Xms256m -Xmx512m -Djava.net.preferIPv4Stack=true"
 
 # Find the host's local lan ip
+echo "PRODUCT_CODES=${PRODUCT_CODES}" > $ENV_FILE
 echo "HOSTIP=${myip}" > $ENV_FILE
 echo "DEVUSER=${DEVUSER}" >> $ENV_FILE
 echo "" >> $ENV_FILE
