@@ -40,8 +40,8 @@
                          username="${persistence.db.username:genny}"
                          password="${persistence.db.password:password}"
                          driver="com.mysql.cj.jdbc.Driver"/>
-               <schema message-name="baseentity_value"
-                         key-message-name="baseentity_key"
+               <schema message-name="baseentity_server"
+                         key-message-name="baseentity_server_key"
                          package="genny"
                          embedded-key="true"/>
             </table-jdbc-store>

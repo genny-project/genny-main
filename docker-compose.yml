@@ -20,7 +20,6 @@ services:
     volumes:
       - ./infinispan/infinispan_persistence.xml:/opt/infinispan/server/conf/infinispan.xml
       - ./infinispan/rebuild_index.sh:/opt/infinispan/server/bin/rebuild_index.sh
-      - ./databaseScripts/modify_primarykey_baseentity.sh:/opt/infinispan/server/bin/modify_primarykey_baseentity.sh
     networks:
       - mainproxy
     healthcheck:
