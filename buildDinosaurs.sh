@@ -16,7 +16,7 @@ do
 done
 
 # build package build docker image
-for value in wildfly-qwanda-service wildfly-rulesservice 
+for value in wildfly-rulesservice 
 do
     echo $value
 #    sudo rm -Rf  $parentdir/$value/target/*
@@ -25,13 +25,9 @@ do
     ./build-docker.sh
 done
 
-# Build Genny Services
-cd $parentdir/gennyq
-./build.sh
-./build-docker.sh
 
 # build package build docker image
-for value in checkrules bootq genny-proxy api2email 
+for value in checkrules bootq genny-proxy 
 do
     echo $value
 #    rm -Rf  $parentdir/$value/target/*
@@ -41,16 +37,20 @@ do
 done
 
 
-for value in checkrules bootq genny-proxy api2email
+for value in checkrules notes genny-proxy
 do
     echo $value
     cd $parentdir/$value
     ./build-docker.sh
 done
 
+# Build Genny Services
+cd $parentdir/gennyq
+./build-docker.sh
+
 #cd $parentdir/gennyq/kogitoq/extended/travels
 #./build.sh;./build-docker.sh
 
 cd $parentdir/genny-main
 echo "Finished Building all"
-./say.sh "Completed Building $clean all"
+./say.sh "Completed Building All. Now building docker"

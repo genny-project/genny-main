@@ -149,7 +149,6 @@ MEDIA_PROXY_URL=http://127.0.0.1:$MEDIA_PROXY_SERVER_PORT/public
 JAVA_OPTS="-Xms256m -Xmx512m -Djava.net.preferIPv4Stack=true"
 
 # Find the host's local lan ip
-echo "PRODUCT_CODES=${PRODUCT_CODES}" > $ENV_FILE
 echo "HOSTIP=${myip}" > $ENV_FILE
 echo "DEVUSER=${DEVUSER}" >> $ENV_FILE
 echo "" >> $ENV_FILE
@@ -178,6 +177,9 @@ echo "REACT_APP_VERTX_CMDS_API=${REACT_APP_VERTX_CMDS_API}" >> $ENV_FILE
 echo "REACT_APP_VERTX_DATA_API=${REACT_APP_VERTX_DATA_API}" >> $ENV_FILE
 echo "MEDIA_PROXY_SERVER_PORT=${MEDIA_PROXY_SERVER_PORT}" >> $ENV_FILE
 echo "MEDIA_PROXY_URL=${MEDIA_PROXY_URL}" >> $ENV_FILE
+echo "PRODUCT_CODES=${PRODUCT_CODES}" >> $ENV_FILE
+echo "PROJECT_REALM=${PROJECT_REALM}" >> $ENV_FILE
+echo "INFINISPAN_URL=${INFINISPAN_URL}" >> $ENV_FILE
 
 #echo "DDT_URL=${DDT_URL}" >> $ENV_FILE
 
@@ -234,7 +236,7 @@ echo "CACHE_SERVER_NAME=${CACHE_SERVER_NAME}" >> $ENV_FILE
 echo "INFINISPAN_USERNAME=${INFINISPAN_USERNAME}" >> $ENV_FILE
 echo "INFINISPAN_PASSWORD=${INFINISPAN_PASSWORD}" >> $ENV_FILE
 echo "COMPOSE_HTTP_TIMEOUT=1000" >> $ENV_FILE
-echo "GENNY_BACKEND_SECRET=${GENNY_CLIENT_SECRET}" >> $ENV_FILE
+echo "GENNY_BACKEND_SECRET=${GENNY_BACKEND_SECRET}" >> $ENV_FILE
 
 
 
@@ -267,6 +269,7 @@ cat $ENV_FILE_APP
 
 
 #find all the projects
+echo "============================= PROJECTS ============================="
 for i in ` find .. -mindepth 1 -maxdepth 1 -type d | grep prj  | awk -F "/" '{ print $2 }'`
 do
    echo $i
