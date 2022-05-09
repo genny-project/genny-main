@@ -8,8 +8,7 @@ services:
     container_name: infinispan
     hostname: infinispan
     depends_on:
-      mysql:
-        condition: service_healthy
+      - schema-updater
     ports:
       - 11222:11222
     environment:
@@ -27,6 +26,16 @@ services:
       interval: 30s
       timeout: 10s
       retries: 4
+
+  schema-updater:
+    image: gennyproject/schema-updater:1.0
+    container_name: schema-updater
+    hostname: schema-updater
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - mainproxy
 
   zookeeper:
     image: confluentinc/cp-zookeeper:7.0.0

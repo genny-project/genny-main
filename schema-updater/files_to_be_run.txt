@@ -1,0 +1,4 @@
+# Add 1 file in a line only, no in-line comments supported
+
+update_sqls/create_executed_scripts_tbl.sql
+update_sqls/update_baseentity_constraints.sql
