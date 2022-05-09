@@ -53,4 +53,4 @@ done
 
 cd $parentdir/genny-main
 echo "Finished Building all"
-./say.sh "Completed Building All. Now building docker"
+./say.sh "Completed Building All."
