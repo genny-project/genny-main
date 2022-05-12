@@ -27,21 +27,21 @@ else
     exit 1
 fi
 
-if [ -d "$KOGITO_TRAVEL_AGENCY_PERSISTENCE" ]
-then
-    cp $KOGITO_TRAVEL_AGENCY_PERSISTENCE/*.proto $PERSISTENCE_FOLDER
-else
-    echo "$KOGITO_TRAVEL_AGENCY_PERSISTENCE does not exist. Have you compiled your Kogito Travel Agency project?"
-    # exit 1
-fi
+#if [ -d "$KOGITO_TRAVEL_AGENCY_PERSISTENCE" ]
+#then
+#    cp $KOGITO_TRAVEL_AGENCY_PERSISTENCE/*.proto $PERSISTENCE_FOLDER
+#else
+#    echo "$KOGITO_TRAVEL_AGENCY_PERSISTENCE does not exist. Have you compiled your Kogito Travel Agency project?"
+#    # exit 1
+#fi
 
-if [ -d "$KOGITO_VISAS_PERSISTENCE" ]
-then
-    cp $KOGITO_VISAS_PERSISTENCE/*.proto $PERSISTENCE_FOLDER
-else
-    echo "$KOGITO_VISAS_PERSISTENCE does not exist. Have you compiled your Kogito Visas project?"
-    # exit 1
-fi
+#if [ -d "$KOGITO_VISAS_PERSISTENCE" ]
+#then
+#    cp $KOGITO_VISAS_PERSISTENCE/*.proto $PERSISTENCE_FOLDER
+#else
+#    echo "$KOGITO_VISAS_PERSISTENCE does not exist. Have you compiled your Kogito Visas project?"
+#    # exit 1
+#fi
 
 SVG_FOLDER=./svg
 
@@ -51,13 +51,13 @@ KOGITO_GADAQ_SVG_FOLDER=../gennyq/kogitoq/gadaq/target/classes/META-INF/processS
 
 mkdir -p $SVG_FOLDER
 
-if [ -d "$KOGITO_TRAVEL_SVG_FOLDER" ]
-then
-    cp $KOGITO_TRAVEL_SVG_FOLDER/*.svg $SVG_FOLDER
-else
-    echo "$KOGITO_TRAVEL_SVG_FOLDER does not exist. Have you compiled Kogito Travel Agency project?"
-    # exit 1
-fi
+#if [ -d "$KOGITO_TRAVEL_SVG_FOLDER" ]
+#then
+#    cp $KOGITO_TRAVEL_SVG_FOLDER/*.svg $SVG_FOLDER
+#else
+#    echo "$KOGITO_TRAVEL_SVG_FOLDER does not exist. Have you compiled Kogito Travel Agency project?"
+#    # exit 1
+#fi
 
 if [ -d "$KOGITO_GADAQ_SVG_FOLDER" ]
 then
@@ -67,13 +67,13 @@ else
     exit 1
 fi
 
-if [ -d "$KOGITO_VISAS_SVG_FOLDER" ]
-then
-    cp $KOGITO_VISAS_SVG_FOLDER/*.svg $SVG_FOLDER
-else
-    echo "$KOGITO_VISAS_SVG_FOLDER does not exist. Have you compiled Kogito Visas project?"
-    # exit 1
-fi
+#if [ -d "$KOGITO_VISAS_SVG_FOLDER" ]
+#then
+#    cp $KOGITO_VISAS_SVG_FOLDER/*.svg $SVG_FOLDER
+#else
+#    echo "$KOGITO_VISAS_SVG_FOLDER does not exist. Have you compiled Kogito Visas project?"
+#    # exit 1
+#fi
 
 
 
