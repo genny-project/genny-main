@@ -63,7 +63,7 @@ then
     cp $KOGITO_GADAQ_SVG_FOLDER/*.svg $SVG_FOLDER
 else
     echo "$KOGITO_GADAQ_SVG_FOLDER does not exist. Have you compiled GADAQ project?"
-    exit 1
+    # exit 1
 fi
 #if [ -d "$KOGITO_VISAS_SVG_FOLDER" ]
 #then
