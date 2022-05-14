@@ -31,7 +31,7 @@ myip=$2
 
 fi
 echo $myip
-CLUSTER_IP=127.0.0.1
+CLUSTER_IP=10.123.123.123
 
 #myip=127.0.0.2
 docker volume create cassandra_data
@@ -44,22 +44,6 @@ KOGITO_TRAVEL_AGENCY_PERSISTENCE=../gennyq/kogitoq/extended/travels/target/class
 KOGITO_VISAS_PERSISTENCE=../gennyq/kogitoq/extended/visas/target/classes/META-INF/resources/persistence/protobuf
 
 mkdir -p $PERSISTENCE_FOLDER
-
-if [ -d "$KOGITO_TRAVEL_AGENCY_PERSISTENCE" ]
-then
-    cp $KOGITO_TRAVEL_AGENCY_PERSISTENCE/*.proto $PERSISTENCE_FOLDER
-else
-    echo "$KOGITO_TRAVEL_AGENCY_PERSISTENCE does not exist. Have you compiled your Kogito Travel Agency project?"
-    exit 1
-fi
-
-if [ -d "$KOGITO_VISAS_PERSISTENCE" ]
-then
-    cp $KOGITO_VISAS_PERSISTENCE/*.proto $PERSISTENCE_FOLDER
-else
-    echo "$KOGITO_VISAS_PERSISTENCE does not exist. Have you compiled your Kogito Visas project?"
-    exit 1
-fi
 
 SVG_FOLDER=./svg
 
