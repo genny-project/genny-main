@@ -504,7 +504,7 @@ services:
     env_file:
       - ${ENV_FILE}
     environment:
-      - INFINISPAN_HOST= alyson.genny.life:11222
+      - INFINISPAN_URL=alyson.genny.life:11222
       - FYODOR_SERVICE_API=http://fyodor:8080
     ports:
       - "6590:8080"
@@ -524,6 +524,8 @@ services:
         condition: service_healthy
     env_file:
       - ${ENV_FILE}
+    environment:
+      - INFINISPAN_URL=alyson.genny.life:11222
     networks:
       - mainproxy
     healthcheck:
@@ -540,6 +542,8 @@ services:
         condition: service_healthy
     env_file:
       - ${ENV_FILE}
+    environment:
+      - INFINISPAN_URL=alyson.genny.life:11222
     networks:
       - mainproxy
     healthcheck:
@@ -556,6 +560,8 @@ services:
         condition: service_healthy
     env_file:
       - ${ENV_FILE}
+    environment:
+      - INFINISPAN_URL=alyson.genny.life:11222
     networks:
       - mainproxy
     healthcheck:
@@ -573,6 +579,7 @@ services:
     env_file:
       - ${ENV_FILE}
     environment:
+      INFINISPAN_URL: alyson.genny.life:11222
       EMAIL_SMTP_AUTH: "true"
       EMAIL_SMTP_HOST: smtp.gmail.com
       EMAIL_SMTP_PORT: 587
