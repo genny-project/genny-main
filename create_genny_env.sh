@@ -37,6 +37,8 @@ CLUSTER_IP=10.123.123.123
 docker volume create cassandra_data
 docker volume create mysql_data
 
+source $GENNY_ENV_FILE
+
 #create env file
 KOGITO_VERSION=1.20.0
 PERSISTENCE_FOLDER=./persistence/protobuf
@@ -222,8 +224,10 @@ echo "INFINISPAN_PASSWORD=${INFINISPAN_PASSWORD}" >> $ENV_FILE
 echo "COMPOSE_HTTP_TIMEOUT=1000" >> $ENV_FILE
 echo "GENNY_BACKEND_SECRET=${GENNY_CLIENT_SECRET}" >> $ENV_FILE
 echo "GENNY_CLIENT_SECRET=${GENNY_CLIENT_SECRET}" >> $ENV_FILE
-
-
+echo "GENNY_CLIENT_ID=${GENNY_CLIENT_ID}" >> $ENV_FILE
+echo "GENNY_KEYCLOAK_URL=${GENNY_KEYCLOAK_URL}" >> $ENV_FILE
+echo "GENNY_SERVICE_USERNAME=${GENNY_SERVICE_USERNAME}" >> $ENV_FILE
+echo "GENNY_SERVICE_PASSWORD=${GENNY_SERVICE_PASSWORD}" >> $ENV_FILE
 
 
 GOOGLE_SVC_ACC_PATH=/root/.genny/sheets.googleapis.com-java-quickstart/token-secret-service-account.json
