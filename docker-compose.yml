@@ -73,7 +73,7 @@ services:
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_NUM_PARTITIONS: 1
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 2
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
       KAFKA_GROUP_MIN_SESSION_TIMEOUT_MS: 6000
       KAFKA_GROUP_MAX_SESSION_TIMEOUT_MS: 60000
       KAFKA_PRODUCER_MAX_REQUEST_SIZE: 15728640
@@ -90,7 +90,8 @@ services:
       retries: 4
 
   kafka-2:
-    image: confluentinc/cp-kafka:7.0.0
+    image: gennyproject/dummy:latest 
+    #image: confluentinc/cp-kafka:7.0.0
     #image: strimzi/kafka:latest-kafka-2.5.0
     depends_on:
       - zookeeper
