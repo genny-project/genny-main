@@ -414,7 +414,7 @@ services:
        - LOAD_DDT_IN_STARTUP=TRUE
        - SEARCH_ALT=TRUE
        - SKIP_GITHUB_IN_STARTUP=TRUE
-       - SKIP_GOOGLE_DOC_IN_STARTUP=FALSE
+       - SKIP_GOOGLE_DOC_IN_STARTUP=TRUE
        - DEBUG=TRUE
        - DEBUG_SUSPEND=n
        - DDTHOST=TRUE
@@ -458,7 +458,7 @@ services:
       - MEDIA_PROXY_URL=https://alyson.genny.life/web/public
       # This is Bad Hard Coding
       # TODO: Fix this to be more dynamic
-      - realm=mentormatch
+      - realm=internmatch
     networks:
       - mainproxy
     ports:
@@ -632,7 +632,7 @@ services:
       - ./rules:/rules:delegated
       - ./google_credentials:/root/.genny/sheets.googleapis.com-java-quickstart/:delegated
     environment:
-      - PROJECT_REALMS=mentormatch:internmatch
+      - PROJECT_REALMS=internmatch
       - ADMIN_USERNAME=GENNY 
       - ADMIN_PASSWORD=GENNY
       - BULKPULL=FALSE
