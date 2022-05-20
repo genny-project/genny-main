@@ -1,0 +1,18 @@
+syntax = "proto2"; 
+package com.example.CreateBaseEntity; 
+import "kogito-index.proto";
+import "kogito-types.proto";
+option kogito_model = "CreateBaseEntity";
+option kogito_id = "CreateBaseEntity";
+
+/* @Indexed */ 
+message CreateBaseEntity { 
+	option java_package = "com.example";
+	/* @Field(index = Index.NO, store = Store.YES) @SortableField
+ @VariableInfo(tags="") */ 
+	optional string defCode = 1; 
+	/* @Field(index = Index.YES, store = Store.YES) @SortableField */ 
+	optional string id = 2; 
+	/* @Field(index = Index.NO, store = Store.YES) @SortableField */ 
+	optional org.kie.kogito.index.model.KogitoMetadata metadata = 3; 
+}

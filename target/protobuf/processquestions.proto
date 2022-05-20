@@ -1,0 +1,39 @@
+syntax = "proto2"; 
+package life.genny.gadaq.processquestions; 
+import "kogito-index.proto";
+import "kogito-types.proto";
+option kogito_model = "Processquestions";
+option kogito_id = "processquestions";
+
+/* @Indexed */ 
+message Processquestions { 
+	option java_package = "life.genny.gadaq";
+	/* @Field(index = Index.NO, store = Store.YES) @SortableField
+ @VariableInfo(tags="") */ 
+	optional string answerJson = 1; 
+	/* @Field(index = Index.NO, store = Store.YES) @SortableField
+ @VariableInfo(tags="") */ 
+	optional string askMessageJson = 2; 
+	/* @Field(index = Index.YES, store = Store.YES) @SortableField */ 
+	optional string id = 3; 
+	/* @Field(index = Index.NO, store = Store.YES) @SortableField
+ @VariableInfo(tags="") */ 
+	optional bool mandatoryFieldsCompleted = 4; 
+	/* @Field(index = Index.NO, store = Store.YES) @SortableField
+ @VariableInfo(tags="input,required") */ 
+	optional string pcmCode = 5; 
+	/* @Field(index = Index.NO, store = Store.YES) @SortableField
+ @VariableInfo(tags="") */ 
+	optional string processBEJson = 6; 
+	/* @Field(index = Index.NO, store = Store.YES) @SortableField
+ @VariableInfo(tags="input,readonly,required") */ 
+	optional string questionCode = 7; 
+	/* @Field(index = Index.NO, store = Store.YES) @SortableField
+ @VariableInfo(tags="input,readonly,required") */ 
+	optional string sourceCode = 8; 
+	/* @Field(index = Index.NO, store = Store.YES) @SortableField
+ @VariableInfo(tags="input,required,readonly") */ 
+	optional string targetCode = 9; 
+	/* @Field(index = Index.NO, store = Store.YES) @SortableField */ 
+	optional org.kie.kogito.index.model.KogitoMetadata metadata = 10; 
+}
