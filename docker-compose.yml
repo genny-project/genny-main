@@ -413,6 +413,8 @@ services:
     depends_on:
       kafka:
         condition: service_healthy
+      infinispan:
+        condition: service_healthy
     container_name: bridge
     volumes:
       - ./realm:/opt/realm:delegated
