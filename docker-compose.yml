@@ -423,6 +423,7 @@ services:
     environment:
       - CORS_URLS=http://10.123.123.123:3000|http://internmatch.genny.life:3000|
       - ENV_KEYCLOAK_REDIRECTURI=https://keycloak.gada.io/auth
+      - INFINISPAN_URL=alyson.genny.life:11222
       - RULESSERVICE_URL=http://wildfly-rulesservice
       - MEDIA_PROXY_URL=https://alyson.genny.life/web/public
       # This is Bad Hard Coding
