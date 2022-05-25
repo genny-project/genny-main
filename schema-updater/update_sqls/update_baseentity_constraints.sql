@@ -16,6 +16,7 @@ CALL drop_constraint('baseentity_attribute', @bea_constraint_name);
 SELECT CONSTRAINT_NAME into @beb_constraint_name FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE WHERE REFERENCED_TABLE_SCHEMA = 'gennydb' AND REFERENCED_TABLE_NAME = 'baseentity' AND TABLE_NAME='baseentity_baseentity';
 CALL drop_constraint('baseentity_baseentity', @beb_constraint_name);
 ALTER TABLE baseentity MODIFY COLUMN id BIGINT AUTO_INCREMENT;
+ALTER TABLE baseentity DROP CONSTRAINT unique_id;
 ALTER TABLE baseentity ADD CONSTRAINT unique_id UNIQUE(id);
 DROP PROCEDURE IF EXISTS add_constraint;
 DELIMITER //

@@ -3,7 +3,7 @@ version: '2.3'
 services:
 
   infinispan:
-    image: gennyproject/infinispan:14-7
+    image: gennyproject/infinispan:14-8
     #image: quay.io/infinispan/server:13.0.5.Final-2
     container_name: infinispan
     hostname: infinispan
@@ -412,6 +412,8 @@ services:
     image: gennyproject/bridge:latest
     depends_on:
       kafka:
+        condition: service_healthy
+      infinispan:
         condition: service_healthy
     container_name: bridge
     volumes:
