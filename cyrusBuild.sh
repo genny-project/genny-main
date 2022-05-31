@@ -27,7 +27,7 @@ done
 
 # Build Genny Services
 cd $parentdir/gennyq
-./build.sh
+./build.sh gadaq
 ./build-docker.sh
 
 # build package build docker image
