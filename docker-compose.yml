@@ -534,6 +534,8 @@ services:
       - ${ENV_FILE}
     environment:
       - INFINISPAN_URL=alyson.genny.life:11222
+    ports:
+      - "6969:8080"
     networks:
       - mainproxy
     healthcheck:
