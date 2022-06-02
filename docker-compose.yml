@@ -343,70 +343,70 @@ services:
     networks:
       - mainproxy
 
-  qwanda-service:
-    depends_on:
-       mysql:
-         condition: service_healthy
-       kafka:
-         condition: service_healthy
-       infinispan:
-         condition: service_healthy
-       #keycloak:
-       #  condition: service_healthy
-    image: gennyproject/wildfly-qwanda-service:latest
-    container_name: qwanda-service
-    volumes:
-       - ./google_credentials:/root/.genny/sheets.googleapis.com-java-quickstart:delegated
-       - abn_tmp:/tmp/:delegated
-    env_file:
-       - ${ENV_FILE}
-    environment:
-       - PROJECT_REALM=internmatch
-       - USE_VERTX_UTILS=true
-       - FORCE_EVENTBUS_USE_API=FALSE
-       - FORCE_CACHE_USE_API=FALSE
-       - VIRTUAL_HOST=qwanda-service.*,api.*
-       - IS_CACHE_SERVER=true
-       - JAVA_OPTS=-server 
-         -Xms64m -Xmx2048m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=2048m 
-         -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -XX:ParallelGCThreads=20 -XX:ConcGCThreads=5 -XX:InitiatingHeapOccupancyPercent=70 -XX:+ExplicitGCInvokesConcurrent 
-         -Dsun.rmi.dgc.client.gcInterval=1800000 -Dsun.rmi.dgc.server.gcInterval=1800000 
-         -Djava.net.preferIPv4Stack=true -Djboss.modules.system.pkgs=org.jboss.byteman -Djava.awt.headless=true
-       - ADMIN_USERNAME=GENNY 
-       - ADMIN_PASSWORD=GENNY
-       - VIRTUAL_PORT=8080
-       - VIRTUAL_PROTO=http
-       - CERT_NAME=genny.life
-       - GENNY_KAFKA_URL=kafka:29092
-       - LOAD_DDT_IN_STARTUP=TRUE
-       - SEARCH_ALT=TRUE
-       - SKIP_GITHUB_IN_STARTUP=TRUE
-       - SKIP_GOOGLE_DOC_IN_STARTUP=TRUE
-       - DEBUG=TRUE
-       - DEBUG_SUSPEND=n
-       - DDTHOST=TRUE
-       - DISABLE_BATCH_LOADING=FALSE
-       - USE_FYODOR="TRUE"
-       - XMX=4096m
-   #    - DEV_MODE=TRUE
-   #    - DDT_URL=http://bridge:8089 
-
-    ports:
-       - "8280:8080"
-       - "8887:8787"
-       - "10003:10003"
-    links:
-       - mysql:mysql
-       - kafka:kafka 
-         #- keycloak:keycloak
-    healthcheck:
-       test: ["CMD", "curl", "-f", "http://localhost:8080/version"]
-       interval: 10s
-       timeout: 10s
-       retries: 100    
-    restart: unless-stopped
-    networks:
-       - mainproxy
+#  qwanda-service:
+#    depends_on:
+#       mysql:
+#         condition: service_healthy
+#       kafka:
+#         condition: service_healthy
+#       infinispan:
+#         condition: service_healthy
+#       #keycloak:
+#       #  condition: service_healthy
+#    image: gennyproject/wildfly-qwanda-service:latest
+##    container_name: qwanda-service
+#    volumes:
+#       - ./google_credentials:/root/.genny/sheets.googleapis.com-java-quickstart:delegated
+#       - abn_tmp:/tmp/:delegated
+#    env_file:
+#       - ${ENV_FILE}
+#    environment:
+#       - PROJECT_REALM=internmatch
+#       - USE_VERTX_UTILS=true
+#       - FORCE_EVENTBUS_USE_API=FALSE
+#       - FORCE_CACHE_USE_API=FALSE
+#       - VIRTUAL_HOST=qwanda-service.*,api.*
+#       - IS_CACHE_SERVER=true
+##       - JAVA_OPTS=-server 
+#         -Xms64m -Xmx2048m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=2048m 
+#         -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -XX:ParallelGCThreads=20 -XX:ConcGCThreads=5 -XX:InitiatingHeapOccupancyPercent=70 -XX:+ExplicitGCInvokesConcurrent 
+#         -Dsun.rmi.dgc.client.gcInterval=1800000 -Dsun.rmi.dgc.server.gcInterval=1800000 
+#         -Djava.net.preferIPv4Stack=true -Djboss.modules.system.pkgs=org.jboss.byteman -Djava.awt.headless=true
+#       - ADMIN_USERNAME=GENNY 
+#       - ADMIN_PASSWORD=GENNY
+#       - VIRTUAL_PORT=8080
+#       - VIRTUAL_PROTO=http
+#       - CERT_NAME=genny.life
+#       - GENNY_KAFKA_URL=kafka:29092
+#       - LOAD_DDT_IN_STARTUP=TRUE
+#       - SEARCH_ALT=TRUE
+#       - SKIP_GITHUB_IN_STARTUP=TRUE
+#       - SKIP_GOOGLE_DOC_IN_STARTUP=TRUE
+#       - DEBUG=TRUE
+#       - DEBUG_SUSPEND=n
+#       - DDTHOST=TRUE
+#       - DISABLE_BATCH_LOADING=FALSE
+#       - USE_FYODOR="TRUE"
+#       - XMX=4096m
+#   #    - DEV_MODE=TRUE
+#   #    - DDT_URL=http://bridge:8089 
+#
+#    ports:
+#       - "8280:8080"
+#       - "8887:8787"
+#       - "10003:10003"
+#    links:
+#       - mysql:mysql
+#       - kafka:kafka 
+#         #- keycloak:keycloak
+#    healthcheck:
+#       test: ["CMD", "curl", "-f", "http://localhost:8080/version"]
+#       interval: 10s
+#       timeout: 10s
+#       retries: 100    
+#    restart: unless-stopped
+#    networks:
+#       - mainproxy
 
   bridge:
     image: gennyproject/bridge:latest
