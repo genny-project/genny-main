@@ -39,7 +39,7 @@ services:
 
   zookeeper:
     image: confluentinc/cp-zookeeper:7.0.0
-    container_name: zookeeper 
+    container_name: zookeeper
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
@@ -251,7 +251,7 @@ services:
 
   genny-proxy:
     image: gennyproject/genny-proxy:latest
-    container_name: genny-proxy 
+    container_name: genny-proxy
     user: root
 #    depends_on:
     volumes:
@@ -279,7 +279,7 @@ services:
     command: java -jar /service.jar
 
   mysql:
-    image:  mysql:8.0.25 
+    image:  mysql:8.0.25
     platform: linux/x86_64
     container_name: mysql
     environment:
@@ -317,7 +317,7 @@ services:
       infinispan:
         condition: service_healthy
     image: gennyproject/bootq:latest
-    container_name: bootq 
+    container_name: bootq
     volumes:
       - ./google_credentials:/root/.genny/sheets.googleapis.com-java-quickstart:delegated
     env_file:
@@ -337,7 +337,7 @@ services:
       test: ["CMD", "curl", "-f", "http://localhost:8080/bootq/version"]
       interval: 10s
       timeout:  5s
-      retries:  5    
+      retries:  5
       start_period: 6s
     restart: unless-stopped
     networks:
@@ -367,12 +367,12 @@ services:
 #       - FORCE_CACHE_USE_API=FALSE
 #       - VIRTUAL_HOST=qwanda-service.*,api.*
 #       - IS_CACHE_SERVER=true
-##       - JAVA_OPTS=-server 
-#         -Xms64m -Xmx2048m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=2048m 
-#         -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -XX:ParallelGCThreads=20 -XX:ConcGCThreads=5 -XX:InitiatingHeapOccupancyPercent=70 -XX:+ExplicitGCInvokesConcurrent 
-#         -Dsun.rmi.dgc.client.gcInterval=1800000 -Dsun.rmi.dgc.server.gcInterval=1800000 
+##       - JAVA_OPTS=-server
+#         -Xms64m -Xmx2048m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=2048m
+#         -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -XX:ParallelGCThreads=20 -XX:ConcGCThreads=5 -XX:InitiatingHeapOccupancyPercent=70 -XX:+ExplicitGCInvokesConcurrent
+#         -Dsun.rmi.dgc.client.gcInterval=1800000 -Dsun.rmi.dgc.server.gcInterval=1800000
 #         -Djava.net.preferIPv4Stack=true -Djboss.modules.system.pkgs=org.jboss.byteman -Djava.awt.headless=true
-#       - ADMIN_USERNAME=GENNY 
+#       - ADMIN_USERNAME=GENNY
 #       - ADMIN_PASSWORD=GENNY
 #       - VIRTUAL_PORT=8080
 #       - VIRTUAL_PROTO=http
@@ -389,7 +389,7 @@ services:
 #       - USE_FYODOR="TRUE"
 #       - XMX=4096m
 #   #    - DEV_MODE=TRUE
-#   #    - DDT_URL=http://bridge:8089 
+#   #    - DDT_URL=http://bridge:8089
 #
 #    ports:
 #       - "8280:8080"
@@ -397,13 +397,13 @@ services:
 #       - "10003:10003"
 #    links:
 #       - mysql:mysql
-#       - kafka:kafka 
+#       - kafka:kafka
 #         #- keycloak:keycloak
 #    healthcheck:
 #       test: ["CMD", "curl", "-f", "http://localhost:8080/version"]
 #       interval: 10s
 #       timeout: 10s
-#       retries: 100    
+#       retries: 100
 #    restart: unless-stopped
 #    networks:
 #       - mainproxy
@@ -447,7 +447,7 @@ services:
 
   fyodor:
     image: gennyproject/fyodor:latest
-    container_name:  fyodor 
+    container_name:  fyodor
     depends_on:
       infinispan:
         condition: service_healthy
@@ -469,7 +469,7 @@ services:
 
   gadaq:
     image: gennyproject/gadaq:latest
-    container_name: gadaq 
+    container_name: gadaq
     depends_on:
       fyodor:
         condition: service_healthy
@@ -490,7 +490,7 @@ services:
 
   dropkick:
     image: gennyproject/dropkick:latest
-    container_name:  dropkick 
+    container_name:  dropkick
     depends_on:
       fyodor:
         condition: service_healthy
@@ -508,7 +508,7 @@ services:
 
   lauchy:
     image: gennyproject/lauchy:latest
-    container_name: lauchy 
+    container_name: lauchy
     depends_on:
       fyodor:
         condition: service_healthy
@@ -526,7 +526,7 @@ services:
 
   shleemy:
     image: gennyproject/shleemy:latest
-    container_name: shleemy 
+    container_name: shleemy
     depends_on:
       fyodor:
         condition: service_healthy
@@ -562,14 +562,14 @@ services:
       MAIL_SMTP_HOST: smtp.gmail.com
       MAIL_SMTP_PORT: 587
       MAIL_SMTP_STARTTLS_ENABLE: "true"
-      JAVA_OPTS: -Dquarkus.log.console.level=DEBUG 
+      JAVA_OPTS: -Dquarkus.log.console.level=DEBUG
     ports:
       - 8791:8787
     command: java  -jar /deployments/service.jar
     networks:
       - mainproxy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080"]
+      test: ["CMD", "curl", "-f", "http://localhost:8080/api/version"]
       interval: 10s
       timeout: 10s
       retries: 30
@@ -605,7 +605,7 @@ services:
       - ./google_credentials:/root/.genny/sheets.googleapis.com-java-quickstart/:delegated
     environment:
       - PROJECT_REALMS=internmatch
-      - ADMIN_USERNAME=GENNY 
+      - ADMIN_USERNAME=GENNY
       - ADMIN_PASSWORD=GENNY
       - BULKPULL=FALSE
       - kafka.bootstrap.servers=kafka:29092
@@ -640,10 +640,10 @@ services:
       - PDF_GEN_SERVICE_API_URL=http://internmatch.genny.life:7331
       - GENNY_KOGITO_DATAINDEX_HTTP_URL=http://alyson.genny.life:8582
       - GENNY_KOGITO_SERVICE_URL=http://alyson2.genny.life:6590
-      - JAVA_OPTS=-server 
-        -Xms64m -Xmx4096m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=2048m 
-        -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -XX:ParallelGCThreads=20 -XX:ConcGCThreads=5 -XX:InitiatingHeapOccupancyPercent=70 -XX:+ExplicitGCInvokesConcurrent 
-        -Dsun.rmi.dgc.client.gcInterval=1800000 -Dsun.rmi.dgc.server.gcInterval=1800000  
+      - JAVA_OPTS=-server
+        -Xms64m -Xmx4096m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=2048m
+        -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -XX:ParallelGCThreads=20 -XX:ConcGCThreads=5 -XX:InitiatingHeapOccupancyPercent=70 -XX:+ExplicitGCInvokesConcurrent
+        -Dsun.rmi.dgc.client.gcInterval=1800000 -Dsun.rmi.dgc.server.gcInterval=1800000
         -Djava.net.preferIPv4Stack=true -Djboss.modules.system.pkgs=org.jboss.byteman -Djava.awt.headless=true
     ports:
       - "8380:8080"
@@ -654,7 +654,7 @@ services:
   #    test: ["CMD", "curl", "-f", "http://localhost:8080/version"]
   #    interval: 10s
   #    timeout: 10s
-  #    retries: 30    
+  #    retries: 30
     restart: unless-stopped
     networks:
       - mainproxy
