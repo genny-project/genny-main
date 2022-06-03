@@ -16,7 +16,8 @@ do
 done
 
 # build package build docker image
-for value in wildfly-qwanda-service wildfly-rulesservice 
+for value in wildfly-rulesservice 
+#for value in wildfly-qwanda-service wildfly-rulesservice 
 do
     echo $value
 #    sudo rm -Rf  $parentdir/$value/target/*
