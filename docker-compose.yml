@@ -637,7 +637,7 @@ services:
       - XMX=4096m
       - PDF_GEN_SERVICE_API_URL=http://internmatch.genny.life:7331
       - GENNY_KOGITO_DATAINDEX_HTTP_URL=http://alyson.genny.life:8582
-      - GENNY_KOGITO_SERVICE_URL=http://alyson2.genny.life:8580
+      - GENNY_KOGITO_SERVICE_URL=http://alyson2.genny.life:6590
       - JAVA_OPTS=-server 
         -Xms64m -Xmx4096m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=2048m 
         -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -XX:ParallelGCThreads=20 -XX:ConcGCThreads=5 -XX:InitiatingHeapOccupancyPercent=70 -XX:+ExplicitGCInvokesConcurrent 
@@ -719,7 +719,7 @@ services:
   #     GENNY_KAFKA_URL: kafka:9092
   #     GENNY_CLIENT_ID: kogito-console-quarkus
   #     GENNY_REALM: internmatch
-  #     GENNY_KOGITO_SERVICE_URL: "http://alyson.genny.life:8580"
+  #     GENNY_KOGITO_SERVICE_URL: "http://alyson.genny.life:6590"
   #     GENNY_KOGITO_DATAINDEX_HTTP_URL: "http://alyson.genny.life:8582"
   #     GENNY_KOGITO_DATAINDEX_WS_URL: "ws://alyson.genny.life:8582"
   #     GENNY_INFINISPAN_URL: "alyson.genny.life:11222"
