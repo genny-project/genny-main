@@ -7,12 +7,15 @@ services:
     #image: quay.io/infinispan/server:13.0.5.Final-2
     container_name: infinispan
     hostname: infinispan
-    depends_on:
-      - schema-updater
+    #depends_on:
+      #schema-updater:
+      #  condition: service_healthy
+      #mysql:
+      #  condition: service_healthy
     ports:
       - 11222:11222
     environment:
-        JAVA_OPTS: "-Dinfinispan.bind.address=0.0.0.0 -Dpersistence.db.server.ip=alyson.genny.life -Dpersistence.db.server.port=3310 -Dpersistence.db.name=gennydb  -Dpersistence.db.username=genny -Dpersistence.db.password=password"
+        JAVA_OPTS: " -Xms64m -Xmx4096m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=2048m -Dinfinispan.bind.address=0.0.0.0 -Dpersistence.db.server.ip=alyson.genny.life -Dpersistence.db.server.port=3310 -Dpersistence.db.name=gennydb  -Dpersistence.db.username=genny -Dpersistence.db.password=password"
         USER: genny
         PASS: password
         ISPN_HOME: /opt/infinispan
@@ -23,9 +26,10 @@ services:
       - mainproxy
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:11222/rest/v2/cache-managers/default/health/status" ]
-      interval: 30s
+      interval: 20s
       timeout: 10s
-      retries: 4
+      retries: 8
+#      start_period: 10s
 
   schema-updater:
     image: gennyproject/schema-updater:1.0
@@ -86,8 +90,8 @@ services:
       test: ["CMD", "nc", "-vz", "localhost", "9092"]
       interval: 30s
       timeout: 10s
-      start_period: 5s
-      retries: 4
+      start_period: 8s
+      retries: 6
 
   schema-registry:
     image: confluentinc/cp-schema-registry:7.0.0
@@ -429,12 +433,14 @@ services:
     depends_on:
       fyodor:
         condition: service_healthy
+      kafka:
+        condition: service_healthy
     env_file:
       - ${ENV_FILE}
     environment:
       - INFINISPAN_URL=alyson.genny.life:11222
       - FYODOR_SERVICE_API=http://alyson.genny.life:4242
-      - JAVA_OPTS=-server -Xms64m -Xmx4096m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=2048m
+      - JAVA_OPTS=-server -Xms64m -Xmx1524m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=1524m
     networks:
       - mainproxy
     healthcheck:
@@ -449,11 +455,13 @@ services:
     depends_on:
       fyodor:
         condition: service_healthy
+      kafka:
+        condition: service_healthy
     env_file:
       - ${ENV_FILE}
     environment:
       - INFINISPAN_URL=alyson.genny.life:11222
-      - JAVA_OPTS=-server -Xms64m -Xmx4096m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=2048m
+      - JAVA_OPTS=-server -Xms64m -Xmx1524m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=1524m
     networks:
       - mainproxy
     healthcheck:
@@ -487,6 +495,8 @@ services:
     container_name:  messages
     depends_on:
       fyodor:
+        condition: service_healthy
+      kafka:
         condition: service_healthy
     env_file:
       - ${ENV_FILE}
@@ -534,6 +544,8 @@ services:
       mysql:
         condition: service_healthy
       fyodor:
+        condition: service_healthy
+      kafka:
         condition: service_healthy
     container_name: wildfly-rulesservice
     env_file:
