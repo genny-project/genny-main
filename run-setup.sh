@@ -474,7 +474,24 @@ while [ "$1" != "" ]; do
 
 		cat $ENV_FILE >> ./.env
 	echo "GOT TO HERE3B"
-            ENV_FILE=$ENV_FILE docker-compose  up -d
+			source $ENV_FILE
+			if [[ -n "$PRODUCT_CODES" ]] 
+			then
+				if [ -d "../products" ];
+				then
+					products=($(echo $PRODUCT_CODES | tr "," "\n"))
+					files="-f docker-compose.yml"
+					for p in "${products[@]}"
+					do
+						files="${files} -f ${HOME}/projects/genny/products/${p}/docker-compose.yml"
+					done
+					ENV_FILE=$ENV_FILE docker-compose ${files} up -d
+				else 
+					ENV_FILE=$ENV_FILE docker-compose  up -d
+				fi
+			else
+				ENV_FILE=$ENV_FILE docker-compose  up -d
+			fi
             ;;
         local )
             echo "local started"
