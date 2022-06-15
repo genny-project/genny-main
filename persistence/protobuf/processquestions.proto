@@ -1,0 +1,30 @@
+syntax = "proto2"; 
+package life.genny.kogito.processquestions; 
+import "kogito-index.proto";
+import "kogito-types.proto";
+option kogito_model = "Processquestions";
+option kogito_id = "processquestions";
+
+/* @Indexed */ 
+message Processquestions { 
+	option java_package = "life.genny.kogito";
+	/* @Field(index = Index.YES, store = Store.YES) @SortableField */ 
+	optional string id = 1; 
+	/* @Field(index = Index.NO, store = Store.YES) @SortableField
+ @VariableInfo(tags="input,required") */ 
+	optional string pcmCode = 2; 
+	/* @Field(index = Index.NO, store = Store.YES) @SortableField
+ @VariableInfo(tags="input,readonly,required") */ 
+	optional string questionCode = 3; 
+	/* @Field(index = Index.NO, store = Store.YES) @SortableField
+ @VariableInfo(tags="input,readonly,required") */ 
+	optional string sourceCode = 4; 
+	/* @Field(index = Index.NO, store = Store.YES) @SortableField
+ @VariableInfo(tags="input,required,readonly") */ 
+	optional string targetCode = 5; 
+	/* @Field(index = Index.NO, store = Store.YES) @SortableField
+ @VariableInfo(tags="input,required") */ 
+	optional string userTokenStr = 6; 
+	/* @Field(index = Index.NO, store = Store.YES) @SortableField */ 
+	optional org.kie.kogito.index.model.KogitoMetadata metadata = 7; 
+}
