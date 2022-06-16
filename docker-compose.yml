@@ -462,6 +462,7 @@ services:
     environment:
       - INFINISPAN_URL=alyson.genny.life:11222
       - JAVA_OPTS=-server -Xms64m -Xmx1524m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=1524m
+      - PROJECT_URL=http://alyson.genny.life
     networks:
       - mainproxy
     healthcheck:
