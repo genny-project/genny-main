@@ -7,11 +7,11 @@ services:
     #image: quay.io/infinispan/server:13.0.5.Final-2
     container_name: infinispan
     hostname: infinispan
-    #depends_on:
-      #schema-updater:
-      #  condition: service_healthy
-      #mysql:
-      #  condition: service_healthy
+    depends_on:
+      schema-updater:
+       condition: service_completed_successfully
+      mysql:
+       condition: service_healthy
     ports:
       - 11222:11222
     environment:
