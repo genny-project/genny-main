@@ -1,5 +1,11 @@
 #!/bin/bash
 #jdk 1.8
+
+if [ ! "$#" -eq 2 ]; then
+	echo "Usage: $0 <customer code> <mode>"
+	echo "E.g $0 dev1 up"
+	exit 1;
+fi
 #find all the projects
 rm -Rf ./rules/prj_*
 #cp -rp ../prj_genny/rules/rulesCurrent ./rules/
@@ -86,4 +92,4 @@ docker network create --gateway 172.18.0.1 --subnet 172.18.0.0/24 mainproxy
 
 
 ./run-setup.sh -p ${customercode} -r ${customercode} -n 10.123.123.123 ${mode} 
-./say.sh "Genny System ${mode} Finished Loading product ${customercode}"
+./say.sh "Genny System ${customercode} Finished Loading"
