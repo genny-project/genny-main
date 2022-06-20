@@ -61,7 +61,7 @@ services:
       ZOOKEEPER_CLIENT_PORT: 2181
 
   kafka:
-    image: confluentinc/cp-kafka:latest
+    image: confluentinc/cp-kafka:7.0.0
     depends_on:
       - zookeeper
     hostname: kafka
