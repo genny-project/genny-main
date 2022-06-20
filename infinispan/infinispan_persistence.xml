@@ -46,7 +46,7 @@
                          embedded-key="true"/>
             </table-jdbc-store>
          </persistence>
-      </distributed-cache>
+      </distributed-cache> 
       <distributed-cache name="jobs" statistics="true">
          <locking concurrency-level="1000" acquire-timeout="15000" striping="false"/>
          <indexing enabled="true" storage="filesystem" path="data-index-jobs">

@@ -61,8 +61,7 @@ services:
       ZOOKEEPER_CLIENT_PORT: 2181
 
   kafka:
-    image: confluentinc/cp-kafka:7.0.0
-    #image: strimzi/kafka:latest-kafka-2.5.0
+    image: confluentinc/cp-kafka:latest
     depends_on:
       - zookeeper
     hostname: kafka
@@ -76,22 +75,21 @@ services:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_NUM_PARTITIONS: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
       KAFKA_GROUP_MIN_SESSION_TIMEOUT_MS: 6000
       KAFKA_GROUP_MAX_SESSION_TIMEOUT_MS: 60000
       KAFKA_PRODUCER_MAX_REQUEST_SIZE: 15728640
       KAFKA_REPLICA_FETCH_MAX_BYTES: 15728640
       KAFKA_CONSUMER_MAX_PARTITION_FETCH_BYTES: 15728640
-      KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
     networks:
       - mainproxy
     healthcheck:
       test: ["CMD", "nc", "-vz", "localhost", "9092"]
       interval: 30s
       timeout: 10s
-      start_period: 8s
-      retries: 6
+      start_period: 5s
+      retries: 4
 
   schema-registry:
     image: confluentinc/cp-schema-registry:7.0.0
@@ -362,6 +360,8 @@ services:
     environment:
       - CORS_URLS=http://10.123.123.123:3000|http://internmatch.genny.life:3000|
       - ENV_KEYCLOAK_REDIRECTURI=https://keycloak.gada.io/auth
+      - GENNY_KAFKA_URL=kafka:29092
+      - kafka.bootstrap.servers=kafka:29092
       - INFINISPAN_URL=alyson.genny.life:11222
       - RULESSERVICE_URL=http://wildfly-rulesservice
       - MEDIA_PROXY_URL=https://alyson.genny.life/web/public
@@ -396,6 +396,8 @@ services:
       - ${ENV_FILE}
     environment:
       - INFINISPAN_URL=alyson.genny.life:11222
+      - GENNY_KAFKA_URL=kafka:29092
+      - kafka.bootstrap.servers=kafka:29092
     ports:
       - "4242:8080"
     networks:
@@ -417,6 +419,8 @@ services:
     environment:
       - INFINISPAN_URL=alyson.genny.life:11222
       - FYODOR_SERVICE_API=http://fyodor:8080
+      - GENNY_KAFKA_URL=kafka:29092
+      - kafka.bootstrap.servers=kafka:29092
     ports:
       - "6590:8080"
     networks:
@@ -439,6 +443,8 @@ services:
       - ${ENV_FILE}
     environment:
       - INFINISPAN_URL=alyson.genny.life:11222
+      - GENNY_KAFKA_URL=kafka:29092
+      - kafka.bootstrap.servers=kafka:29092
       - FYODOR_SERVICE_API=http://alyson.genny.life:4242
       - JAVA_OPTS=-server -Xms64m -Xmx1524m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=1524m
     networks:
@@ -460,6 +466,8 @@ services:
     env_file:
       - ${ENV_FILE}
     environment:
+      - GENNY_KAFKA_URL=kafka:29092
+      - kafka.bootstrap.servers=kafka:29092
       - INFINISPAN_URL=alyson.genny.life:11222
       - JAVA_OPTS=-server -Xms64m -Xmx1524m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=1524m
       - PROJECT_URL=http://alyson.genny.life
@@ -560,7 +568,7 @@ services:
       - ADMIN_USERNAME=GENNY
       - ADMIN_PASSWORD=GENNY
       - BULKPULL=FALSE
-      - kafka.bootstrap.servers=kafka:29092
+      - kafka.bootstrap.servers=alyson.genny.life:9092
       - CERT_NAME=genny.life
       - DDT_URL=http://alyson7.genny.life:8089
       - DEBUG=TRUE
