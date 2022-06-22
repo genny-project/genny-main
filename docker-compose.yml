@@ -422,6 +422,7 @@ services:
       - FYODOR_SERVICE_API=http://fyodor:8080
       - GENNY_KAFKA_URL=kafka:9092
       - kafka.bootstrap.servers=kafka:9092
+      - GENNY_KOGITO_SERVICE_URL=http://alyson2.genny.life:6590
     ports:
       - "6590:8080"
     networks:
