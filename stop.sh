@@ -4,7 +4,7 @@ if [[ -n "$PRODUCT_CODES" ]]
 then
 	if [ -d "../products" ];
 	then
-		products=($(echo $PRODUCT_CODES | tr "," "\n"))
+		products=($(echo $PRODUCT_CODES | tr ":" "\n"))
 		files="-f docker-compose.yml"
 		for p in "${products[@]}"
 		do
