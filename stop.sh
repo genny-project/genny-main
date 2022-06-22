@@ -8,7 +8,7 @@ then
 		files="-f docker-compose.yml"
 		for p in "${products[@]}"
 		do
-			files="${files} -f ${HOME}/projects/genny/products/${p}/docker-compose.yml"
+			files="${files} -f ${HOME}/projects/genny/products/prd_${p}/docker-compose.yml"
 		done
 		ENV_FILE=genny.env docker-compose ${files} stop $@
 		ENV_FILE=genny.env docker-compose ${files} rm -f $@

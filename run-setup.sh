@@ -479,11 +479,11 @@ while [ "$1" != "" ]; do
 			then
 				if [ -d "../products" ];
 				then
-					products=($(echo $PRODUCT_CODES | tr "," "\n"))
+					products=($(echo $PRODUCT_CODES | tr ":" "\n"))
 					files="-f docker-compose.yml"
 					for p in "${products[@]}"
 					do
-						files="${files} -f ${HOME}/projects/genny/products/${p}/docker-compose.yml"
+						files="${files} -f ${HOME}/projects/genny/products/prd_${p}/docker-compose.yml"
 					done
 					ENV_FILE=$ENV_FILE docker-compose ${files} up -d
 				else 
