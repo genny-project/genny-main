@@ -7,8 +7,9 @@
       xmlns:table-jdbc-store="urn:infinispan:config:store:sql:13.0"
       xmlns:string-keyed-jdbc-store="urn:infinispan:config:store:jdbc:13.0">
 
-   <cache-container name="default" statistics="true">
+   <cache-container name="default" statistics="true" default-cache="default_cache">
       <global-state/>
+      <distributed-cache name="default_cache"/>
       <!--<distributed-cache name="baseentity_attribute">
          <encoding>
             <key media-type="application/x-protostream"/>
