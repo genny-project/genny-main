@@ -11,8 +11,6 @@ done
 
 #Copy all the protobufs, and svgs
 PERSISTENCE_FOLDER=./target/protobuf
-KOGITO_TRAVEL_AGENCY_PERSISTENCE=../gennyq/kogitoq/extended/travels/target/classes/META-INF/resources/persistence/protobuf
-KOGITO_VISAS_PERSISTENCE=../gennyq/kogitoq/extended/visas/target/classes/META-INF/resources/persistence/protobuf
 KOGITO_GADAQ_PERSISTENCE=../gennyq/kogitoq/gadaq/target/classes/META-INF/resources/persistence/protobuf
 
 rm -Rf $PERSISTENCE_FOLDER/*
@@ -23,40 +21,14 @@ then
     cp $KOGITO_GADAQ_PERSISTENCE/*.proto $PERSISTENCE_FOLDER
 else
     echo "$KOGITO_GADAQ_PERSISTENCE does not exist. Have you compiled your GADAQ project?"
-    # exit 1
+    exit 1
 fi
-
-#if [ -d "$KOGITO_TRAVEL_AGENCY_PERSISTENCE" ]
-#then
-#    cp $KOGITO_TRAVEL_AGENCY_PERSISTENCE/*.proto $PERSISTENCE_FOLDER
-#else
-#    echo "$KOGITO_TRAVEL_AGENCY_PERSISTENCE does not exist. Have you compiled your Kogito Travel Agency project?"
-#    # exit 1
-#fi
-#
-#if [ -d "$KOGITO_VISAS_PERSISTENCE" ]
-#then
-#    cp $KOGITO_VISAS_PERSISTENCE/*.proto $PERSISTENCE_FOLDER
-#else
-#    echo "$KOGITO_VISAS_PERSISTENCE does not exist. Have you compiled your Kogito Visas project?"
-#    # exit 1
-#fi
 
 SVG_FOLDER=./svg
 
-KOGITO_TRAVEL_SVG_FOLDER=../gennyq/kogitoq/extended/travels/target/classes/META-INF/processSVG
-KOGITO_VISAS_SVG_FOLDER=../gennyq/kogitoq/extended/visas/target/classes/META-INF/processSVG
 KOGITO_GADAQ_SVG_FOLDER=../gennyq/kogitoq/gadaq/target/classes/META-INF/processSVG
 
 mkdir -p $SVG_FOLDER
-
-#if [ -d "$KOGITO_TRAVEL_SVG_FOLDER" ]
-#then
-#    cp $KOGITO_TRAVEL_SVG_FOLDER/*.svg $SVG_FOLDER
-#else
-#    echo "$KOGITO_TRAVEL_SVG_FOLDER does not exist. Have you compiled Kogito Travel Agency project?"
-#    exit 1
-#fi
 
 if [ -d "$KOGITO_GADAQ_SVG_FOLDER" ]
 then
@@ -65,17 +37,49 @@ else
     echo "$KOGITO_GADAQ_SVG_FOLDER does not exist. Have you compiled GADAQ project?"
     # exit 1
 fi
-#if [ -d "$KOGITO_VISAS_SVG_FOLDER" ]
-#then
-#    cp $KOGITO_VISAS_SVG_FOLDER/*.svg $SVG_FOLDER
-#else
-#    echo "$KOGITO_VISAS_SVG_FOLDER does not exist. Have you compiled Kogito Visas project?"
-#    exit 1
-#fi
 
 ENV_FILE=genny.env
-ENV_FILE=$ENV_FILE docker-compose stop $@ 
-ENV_FILE=$ENV_FILE docker-compose rm -f $@ 
-ENV_FILE=$ENV_FILE docker-compose up -d $@ 
-#./cyrusSyncCache.sh
-ENV_FILE=$ENV_FILE docker-compose logs -f $@ 
+                       source $ENV_FILE
+                        if [[ -n "$PRODUCT_CODES" ]]
+                        then
+                                if [ -d "../products" ];
+                                then
+                                        products=($(echo $PRODUCT_CODES | tr ":" "\n"))
+                                        files="-f docker-compose.yml"
+                                        for p in "${products[@]}"
+                                        do
+                                                #copy across SVG and protos
+                                                PERSISTENCE_FOLDER=${HOME}/projects/genny/genny-main/target/protobuf
+                                                SVG_FOLDER=${HOME}/projects/genny/genny-main/svg
+                                                PRODUCT_PERSISTENCE=${HOME}/projects/genny/products/prd_${p}/target/classes/META-INF/resources/persistence/protobuf
+                                                PRODUCT_SVG_FOLDER=${HOME}/projects/genny/products/prd_${p}/target/classes/META-INF/processSVG
+                                                files="${files} -f ${HOME}/projects/genny/products/prd_${p}/docker-compose.yml"
+                                                if [ -d "$PRODUCT_SVG_FOLDER" ]
+                                                then
+                                                   cp $PRODUCT_SVG_FOLDER/*.svg $SVG_FOLDER
+                                                else
+                                                   echo "$PRODUCT_SVG_FOLDER does not exist. Have you saved svgs for ${p} project?"
+                                                exit 1
+                                                fi
+                                                if [ -d "$PRODUCT_PERSISTENCE" ]
+                                                then
+                                                   cp $PRODUCT_PERSISTENCE/* $PERSISTENCE_FOLDER
+                                                else
+                                                   echo "$PRODUCT_PERSISTENCE does not exist. Have you compiled ${p} project?"
+                                                exit 1
+                                                fi
+                                        done
+                                        echo "The docker-compose product files are ${files}"
+                                        ENV_FILE=$ENV_FILE docker-compose ${files} stop $@
+                                        ENV_FILE=$ENV_FILE docker-compose ${files} rm -f $@
+                                        ENV_FILE=$ENV_FILE docker-compose ${files} up -d
+                                else
+                                ENV_FILE=$ENV_FILE docker-compose  stop $@
+                                ENV_FILE=$ENV_FILE docker-compose   rm -f $@
+                                ENV_FILE=$ENV_FILE docker-compose  up -d
+                                fi
+                        else
+                                ENV_FILE=$ENV_FILE docker-compose  stop 
+                                ENV_FILE=$ENV_FILE docker-compose   rm -f 
+                                ENV_FILE=$ENV_FILE docker-compose  up -d
+                        fi
