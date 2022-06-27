@@ -529,7 +529,6 @@ services:
       JAVA_OPTS: -Dquarkus.log.console.level=DEBUG
     ports:
       - 8791:8787
-    command: java  -jar /deployments/service.jar
     networks:
       - mainproxy
     healthcheck:
