@@ -37,7 +37,7 @@ done
 cd $parentdir/gennyq/kogitoq/gadaq
 ./build.sh;./build-docker.sh
 cd $parentdir/genny-main
-                       
+echo "ProductCodes = ${PRODUCT_CODES}"                       
 if [[ -n "$PRODUCT_CODES" ]]
 then
         if [ -d "../products" ];
