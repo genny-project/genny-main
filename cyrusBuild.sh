@@ -39,23 +39,21 @@ cd $parentdir/gennyq/kogitoq/gadaq
 cd $parentdir/genny-main
                        
 if [[ -n "$PRODUCT_CODES" ]]
-                        then
-                                if [ -d "../products" ];
-                                then
-                                        products=($(echo $PRODUCT_CODES | tr ":" "\n"))
-                                        files="-f docker-compose.yml"
-                                        for p in "${products[@]}"
-                                        do
-                                                #copy across SVG and protos
-                                                cd ${HOME}/projects/genny/products/prd_${p}
-						./build.sh;./build-docker.sh
-                                        done
-                                fi
-                        else
-                          echo "No Products available"
-                        fi
-
+then
+        if [ -d "../products" ];
+        then
+            products=($(echo $PRODUCT_CODES | tr ":" "\n"))
+            files="-f docker-compose.yml"
+            for p in "${products[@]}"
+            do  
+                echo "Processing product ${p}"
+                cd ${HOME}/projects/genny/products/prd_${p}
+	        ./build.sh;./build-docker.sh
+            done
+        else
+           echo "No Products available"
+fi
 
 cd $parentdir/genny-main
 echo "Finished Building all"
-./say.sh "Completed Building $clean all"
+./say.sh "Completed Building  all"
