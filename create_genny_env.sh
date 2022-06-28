@@ -279,3 +279,7 @@ for i in ` find .. -mindepth 1 -maxdepth 1 -type d | grep prj  | awk -F "/" '{ p
 do
    echo $i
 done
+
+echo "Generating port config for all services and products..."
+./add_services_products_ports_to_env.sh $ENV_FILE
+echo "Completed generating port config for all services and products."
