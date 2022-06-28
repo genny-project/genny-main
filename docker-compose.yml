@@ -47,6 +47,7 @@ services:
     environment:
       ZOOKEEPER_CLIENT_PORT: ${ZOOKEEPER_PORT}
       ZOOKEEPER_TICK_TIME: 2000
+      LOG_DIR: "/tmp/logs"
     ports:
       - ${ZOOKEEPER_PORT}:${ZOOKEEPER_INTERNAL_PORT}
     networks:
@@ -56,10 +57,7 @@ services:
       interval: 30s
       timeout: 10s
       retries: 4
-    environment:
-      LOG_DIR: "/tmp/logs"
-      ZOOKEEPER_CLIENT_PORT: ${ZOOKEEPER_PORT}
-
+      
   kafka:
     image: confluentinc/cp-kafka:7.0.0
     depends_on:
