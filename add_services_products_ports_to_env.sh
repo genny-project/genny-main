@@ -43,9 +43,9 @@ then
     for p in "${products[@]}"
     do
       #copy the product ports into .env
-      source ${HOME}/projects/genny/products/prd_${p}/product_ports.env
+      source ../products/prd_${p}/product_ports.env
       echo "Adding all ports from product_ports.env of prd_${p}..."
-      add_var_to_env ${HOME}/projects/genny/products/prd_${p}/product_ports.env
+      add_var_to_env ../products/prd_${p}/product_ports.env
       echo "Completed adding all ports from product_ports.env of prd_${p}."
    done
   fi
