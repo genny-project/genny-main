@@ -204,11 +204,11 @@ while [ "$1" != "" ]; do
 					for p in "${products[@]}"
 					do
                                                 #copy across SVG and protos
-						PERSISTENCE_FOLDER=${HOME}/projects/genny/genny-main/target/protobuf
-						SVG_FOLDER=${HOME}/projects/genny/genny-main/svg
-                                                PRODUCT_PERSISTENCE=${HOME}/projects/genny/products/prd_${p}/target/classes/META-INF/resources/persistence/protobuf
-                                                PRODUCT_SVG_FOLDER=${HOME}/projects/genny/products/prd_${p}/target/classes/META-INF/processSVG
-						files="${files} -f ${HOME}/projects/genny/products/prd_${p}/docker-compose.yml"
+						PERSISTENCE_FOLDER=target/protobuf
+						SVG_FOLDER=svg
+                                                PRODUCT_PERSISTENCE=../products/prd_${p}/target/classes/META-INF/resources/persistence/protobuf
+                                                PRODUCT_SVG_FOLDER=../products/prd_${p}/target/classes/META-INF/processSVG
+						files="${files} -f ../products/prd_${p}/docker-compose.yml"
                                                 if [ -d "$PRODUCT_SVG_FOLDER" ]
                                                 then
                                                    cp $PRODUCT_SVG_FOLDER/*.svg $SVG_FOLDER

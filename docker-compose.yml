@@ -13,7 +13,7 @@ services:
       mysql:
        condition: service_healthy
     ports:
-      - 11222:11222
+      - ${INFINISPAN_PORT}:${INFINISPAN_INTERNAL_PORT}
     environment:
         JAVA_OPTS: " -Xms64m -Xmx4096m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=2048m -Dinfinispan.bind.address=0.0.0.0 -Dpersistence.db.server.ip=alyson.genny.life -Dpersistence.db.server.port=3310 -Dpersistence.db.name=gennydb  -Dpersistence.db.username=genny -Dpersistence.db.password=password"
         USER: genny
@@ -25,7 +25,7 @@ services:
     networks:
       - mainproxy
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:11222/rest/v2/cache-managers/default/health/status" ]
+      test: [ "CMD", "curl", "-f", "http://localhost:${INFINISPAN_PORT}/rest/v2/cache-managers/default/health/status" ]
       interval: 20s
       timeout: 10s
       retries: 8
@@ -45,10 +45,10 @@ services:
     image: confluentinc/cp-zookeeper:7.0.0
     container_name: zookeeper
     environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_CLIENT_PORT: ${ZOOKEEPER_PORT}
       ZOOKEEPER_TICK_TIME: 2000
     ports:
-      - 2181:2181
+      - ${ZOOKEEPER_PORT}:${ZOOKEEPER_INTERNAL_PORT}
     networks:
      - mainproxy
     healthcheck:
@@ -58,7 +58,7 @@ services:
       retries: 4
     environment:
       LOG_DIR: "/tmp/logs"
-      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_CLIENT_PORT: ${ZOOKEEPER_PORT}
 
   kafka:
     image: confluentinc/cp-kafka:7.0.0
@@ -67,26 +67,24 @@ services:
     hostname: kafka
     container_name: kafka
     ports:
-      - 9092:9092
+      - ${KAFKA_PORT}:${KAFKA_PORT}
     environment:
       KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://alyson.genny.life:9092
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:${ZOOKEEPER_PORT}
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:${KAFKA_INTERNAL_PORT},PLAINTEXT_HOST://alyson.genny.life:${KAFKA_PORT}
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_NUM_PARTITIONS: 1
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_GROUP_MIN_SESSION_TIMEOUT_MS: 6000
       KAFKA_GROUP_MAX_SESSION_TIMEOUT_MS: 60000
       KAFKA_PRODUCER_MAX_REQUEST_SIZE: 15728640
       KAFKA_REPLICA_FETCH_MAX_BYTES: 15728640
       KAFKA_CONSUMER_MAX_PARTITION_FETCH_BYTES: 15728640
-      transaction.state.log.replication.factor: 1
     networks:
       - mainproxy
     healthcheck:
-      test: ["CMD", "nc", "-vz", "localhost", "9092"]
+      test: ["CMD", "nc", "-vz", "localhost", "${KAFKA_PORT}"]
       interval: 30s
       timeout: 10s
       start_period: 5s
@@ -98,13 +96,13 @@ services:
     container_name: schema-registry
     environment:
       SCHEMA_REGISTRY_HOST_NAME: schema-registry
-      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: kafka:29092
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: kafka:2${KAFKA_PORT}
     networks:
       - mainproxy
     depends_on:
       - kafka
     ports:
-      - '8081:8081'
+      - ${SCHEMA_REGISTRY_PORT}:${SCHEMA_REGISTRY_INTERNAL_PORT}
 
   kafka-connect:
     hostname: kafka-connect
@@ -115,9 +113,9 @@ services:
     networks:
       - mainproxy
     ports:
-      - '8083:8083'
+      - ${KAFKA_CONNECT_PORT}:${KAFKA_CONNECT_INTERNAL_PORT}
     environment:
-      CONNECT_BOOTSTRAP_SERVERS: kafka:29092
+      CONNECT_BOOTSTRAP_SERVERS: kafka:${KAFKA_INTERNAL_PORT}
       CONNECT_PRODUCER_COMPRESSION_TYPE: lz4
       CONNECT_GROUP_ID: connect
       CONNECT_KEY_CONVERTER: io.confluent.connect.avro.AvroConverter
@@ -161,23 +159,23 @@ services:
     networks:
       - mainproxy
     ports:
-      - "8090:8090"
+      - ${KSQLDB_SERVER_PORT}:${KSQLDB_SERVER_INTERNAL_PORT}
     environment:
-      KSQL_LISTENERS: http://ksqldb-server:8090
-      KSQL_BOOTSTRAP_SERVERS: kafka:29092
+      KSQL_LISTENERS: http://ksqldb-server:${KSQLDB_SERVER_INTERNAL_PORT}
+      KSQL_BOOTSTRAP_SERVERS: kafka:${KAFKA_INTERNAL_PORT}
       KSQL_KSQL_LOGGING_PROCESSING_STREAM_AUTO_CREATE: "true"
       KSQL_KSQL_LOGGING_PROCESSING_TOPIC_AUTO_CREATE: "true"
       KSQL_LOG4J_ROOT_LOGLEVEL: "ERROR"
       KSQL_LOG4J_LOGGERS: "org.apache.kafka.connect.runtime.rest=WARN,org.reflections=ERROR"
-      KSQL_LOG4J_PROCESSING_LOG_BROKERLIST: kafka:29092
+      KSQL_LOG4J_PROCESSING_LOG_BROKERLIST: kafka:2${KAFKA_PORT}
       KSQL_LOG4J_PROCESSING_LOG_TOPIC: __ksql-processing-log
       KSQL_KSQL_LOGGING_PROCESSING_TOPIC_NAME: __ksql-processing-log
-      KSQL_KSQL_SCHEMA_REGISTRY_URL: http://schema-registry:8081
+      KSQL_KSQL_SCHEMA_REGISTRY_URL: http://schema-registry:${SCHEMA_REGISTRY_PORT}
       KSQL_KSQL_MAX_REQUEST_SIZE: 15728640
       KSQL_KSQL_AUTO_OFFSET_RESET: "earliest"
     healthcheck:
       test:
-        curl -f http://ksqldb-server:8090/ || exit 1
+        curl -f http://ksqldb-server:${KSQLDB_SERVER_INTERNAL_PORT}/ || exit 1
     command:
       - bash
       - -c
@@ -192,8 +190,8 @@ services:
         condition: service_healthy
     container_name: nginx
     ports:
-      - 80:80
-      - 443:443
+      - ${NGINX_HTTP_PORT}:${NGINX_HTTP_INTERNAL_PORT}
+      - ${NGINX_HTTPS_PORT}:${NGINX_HTTPS_INTERNAL_PORT}
     networks:
       - mainproxy
     environment:
@@ -209,10 +207,10 @@ services:
     image: willnorris/imageproxy:v0.10.0
     container_name: imageproxy
     ports:
-      - "46243:8080"
+      - ${IMAGEPROXY_PORT}:${IMAGEPROXY_INTERNAL_PORT}
     networks:
       - mainproxy
-    command: -cache /tmp/imageproxy -addr 0.0.0.0:8080 -scaleUp true
+    command: -cache /tmp/imageproxy -addr 0.0.0.0:${IMAGEPROXY_INTERNAL_PORT} -scaleUp true
 
   alyson:
     image: gennyproject/alyson:latest
@@ -220,7 +218,7 @@ services:
     depends_on:
       - bridge
     ports:
-      - "7010:8080"
+      - ${ALYSON_PORT}:${ALYSON_INTERNAL_PORT}
     environment:
       - VIRTUAL_HOST=*.genny.life
       - VIRTUAL_PORT=8080
@@ -249,7 +247,7 @@ services:
     networks:
       - mainproxy
     ports:
-      - 9000:9000
+      - ${MINIO_PORT}:${MINIO_INTERNAL_PORT}
     command: server /data
 
   genny-proxy:
@@ -266,7 +264,7 @@ services:
     networks:
       - mainproxy
     ports:
-      - 8483:8080
+      - ${GENNY_PROXY_PORT}:${GENNY_PROXY_INTERNAL_PORT}
 
   media-proxy:
     image: gennyproject/media-proxy:latest
@@ -278,7 +276,7 @@ services:
     networks:
       - mainproxy
     ports:
-      - 9898:9898
+      - ${MEDIA_PROXY_PORT}:${MEDIA_PROXY_INTERNAL_PORT}
     command: java -jar /service.jar
 
   mysql:
@@ -303,7 +301,7 @@ services:
     networks:
       - mainproxy
     ports:
-      - 3310:3306
+      - ${MYSQL_PORT}:${MYSQL_INTERNAL_PORT}
     command: --sql_mode="" --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --default-time-zone="+00:00"
     healthcheck:
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
@@ -332,8 +330,8 @@ services:
       - MYSQL_PASSWORD=password
       - FULL_MYSQL_URL=mysql/gennydb?serverTimezone=UTC
     ports:
-      - "8480:8080"
-      - "8487:5005"
+      - ${BOOTQ_PORT}:${BOOTQ_INTERNAL_PORT}
+      - ${BOOTQ_DEBUG_PORT}:${BOOTQ_INTERNAL_DEBUG_PORT}
     links:
       - mysql:mysql
     healthcheck:
@@ -361,9 +359,9 @@ services:
     environment:
       - CORS_URLS=http://10.123.123.123:3000|http://internmatch.genny.life:3000|
       - ENV_KEYCLOAK_REDIRECTURI=https://keycloak.gada.io/auth
-      - GENNY_KAFKA_URL=alyson.genny.life:9092
-      - kafka.bootstrap.servers=alyson.genny.life:9092
-      - INFINISPAN_URL=alyson.genny.life:11222
+      - GENNY_KAFKA_URL=alyson.genny.life:${KAFKA_PORT}
+      - kafka.bootstrap.servers=alyson.genny.life:${KAFKA_PORT}
+      - INFINISPAN_URL=alyson.genny.life:${INFINISPAN_PORT}
       - RULESSERVICE_URL=http://wildfly-rulesservice
       - MEDIA_PROXY_URL=https://alyson.genny.life/web/public
       # This is Bad Hard Coding
@@ -372,15 +370,15 @@ services:
     networks:
       - mainproxy
     ports:
-      - 8088:8080
-      - 5115:5005
-      - 8089:8089
-      - 5701:5701
-      - 10001:10001
-      - 5154:5154
-      - 5155:5155
+      - ${BRIDGE0_PORT}:${BRIDGE_INTERNAL_PORT}
+      - ${BRIDGE_DEBUG_PORT}:${BRIDGE_INTERNAL_DEBUG_PORT}
+      - ${BRIDGE1_PORT}:${BRIDGE1_PORT}
+      - ${BRIDGE2_PORT}:${BRIDGE2_PORT}
+      - ${BRIDGE3_PORT}:${BRIDGE3_PORT}
+      - ${BRIDGE4_PORT}:${BRIDGE4_PORT}
+      - ${BRIDGE5_PORT}:${BRIDGE5_PORT}
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/api/version"]
+      test: ["CMD", "curl", "-f", "http://localhost:${BRIDGE_INTERNAL_PORT}/api/version"]
       interval: 10s
       timeout: 10s
       retries: 30
@@ -396,16 +394,16 @@ services:
     env_file:
       - ${ENV_FILE}
     environment:
-      - INFINISPAN_URL=alyson.genny.life:11222
+      - INFINISPAN_URL=alyson.genny.life:${INFINISPAN_PORT}
       - INFINISPAN_CLIENT_INTELLIGENCE=BASIC
-      - GENNY_KAFKA_URL=kafka:9092
-      - kafka.bootstrap.servers=kafka:9092
+      - GENNY_KAFKA_URL=kafka:${KAFKA_PORT}
+      - kafka.bootstrap.servers=kafka:${KAFKA_PORT}
     ports:
-      - "4242:8080"
+      - ${FYODOR_PORT}:${FYODOR_INTERNAL_PORT}
     networks:
       - mainproxy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/api/version"]
+      test: ["CMD", "curl", "-f", "http://localhost:${FYODOR_INTERNAL_PORT}/api/version"]
       interval: 10s
       timeout: 10s
       retries: 30
@@ -419,18 +417,18 @@ services:
     env_file:
       - ${ENV_FILE}
     environment:
-      - INFINISPAN_URL=alyson.genny.life:11222
+      - INFINISPAN_URL=alyson.genny.life:${INFINISPAN_PORT}
       - INFINISPAN_CLIENT_INTELLIGENCE=BASIC
-      - FYODOR_SERVICE_API=http://fyodor:8080
-      - GENNY_KAFKA_URL=kafka:9092
-      - kafka.bootstrap.servers=kafka:9092
-      - GENNY_KOGITO_SERVICE_URL=http://alyson2.genny.life:6590
+      - FYODOR_SERVICE_API=http://fyodor:${FYODOR_PORT}
+      - GENNY_KAFKA_URL=kafka:${KAFKA_PORT}
+      - kafka.bootstrap.servers=kafka:${KAFKA_PORT}
+      - GENNY_KOGITO_SERVICE_URL=http://alyson2.genny.life:${GADAQ_PORT}
     ports:
-      - "6590:8080"
+      - ${GADAQ_PORT}:${GADAQ_INTERNAL_PORT}
     networks:
       - mainproxy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/api/version"]
+      test: ["CMD", "curl", "-f", "http://localhost:${GADAQ_INTERNAL_PORT}/api/version"]
       interval: 10s
       timeout: 10s
       retries: 30
@@ -446,11 +444,11 @@ services:
     env_file:
       - ${ENV_FILE}
     environment:
-      - INFINISPAN_URL=alyson.genny.life:11222
+      - INFINISPAN_URL=alyson.genny.life:${INFINISPAN_PORT}
       - INFINISPAN_CLIENT_INTELLIGENCE=BASIC
-      - GENNY_KAFKA_URL=kafka:9092
-      - kafka.bootstrap.servers=kafka:9092
-      - FYODOR_SERVICE_API=http://alyson.genny.life:4242
+      - GENNY_KAFKA_URL=kafka:${KAFKA_PORT}
+      - kafka.bootstrap.servers=kafka:${KAFKA_PORT}
+      - FYODOR_SERVICE_API=http://alyson.genny.life:${FYODOR_PORT}
       - JAVA_OPTS=-server -Xms64m -Xmx1524m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=1524m
     networks:
       - mainproxy
@@ -471,17 +469,17 @@ services:
     env_file:
       - ${ENV_FILE}
     environment:
-      - GENNY_KAFKA_URL=kafka:9092
-      - kafka.bootstrap.servers=kafka:9092
-      - INFINISPAN_URL=alyson.genny.life:11222
+      - GENNY_KAFKA_URL=kafka:${KAFKA_PORT}
+      - kafka.bootstrap.servers=kafka:${KAFKA_PORT}
+      - INFINISPAN_URL=alyson.genny.life:${INFINISPAN_PORT}
       - INFINISPAN_CLIENT_INTELLIGENCE=BASIC
       - JAVA_OPTS=-server -Xms64m -Xmx1524m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=1524m
       - PROJECT_URL=http://alyson.genny.life
-      - FYODOR_SERVICE_API=http://alyson.genny.life:4242
+      - FYODOR_SERVICE_API=http://alyson.genny.life:${FYODOR_PORT}
     networks:
       - mainproxy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/q/health/ready"]
+      test: ["CMD", "curl", "-f", "http://localhost:${LAUCHY_INTERNAL_PORT}/q/health/ready"]
       interval: 10s
       timeout: 10s
       retries: 30
@@ -495,13 +493,13 @@ services:
     env_file:
       - ${ENV_FILE}
     environment:
-      - INFINISPAN_URL=alyson.genny.life:11222
+      - INFINISPAN_URL=alyson.genny.life:${INFINISPAN_PORT}
     ports:
-      - "6969:8080"
+      - ${SHLEEMY_PORT}:${SHLEEMY_INTERNAL_PORT}
     networks:
       - mainproxy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/q/health/ready"]
+      test: ["CMD", "curl", "-f", "http://localhost:${SHLEEMY_INTERNAL_PORT}/q/health/ready"]
       interval: 10s
       timeout: 10s
       retries: 30
@@ -517,7 +515,7 @@ services:
     env_file:
       - ${ENV_FILE}
     environment:
-      INFINISPAN_URL: alyson.genny.life:11222
+      INFINISPAN_URL: alyson.genny.life:${INFINISPAN_PORT}
       EMAIL_SMTP_AUTH: "true"
       EMAIL_SMTP_HOST: smtp.gmail.com
       EMAIL_SMTP_PORT: 587
@@ -528,11 +526,11 @@ services:
       MAIL_SMTP_STARTTLS_ENABLE: "true"
       JAVA_OPTS: -Dquarkus.log.console.level=DEBUG
     ports:
-      - 8791:8787
+      - ${MESSAGES_PORT}:${MESSAGES_INTERNAL_PORT}
     networks:
       - mainproxy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/api/version"]
+      test: ["CMD", "curl", "-f", "http://localhost:${MESSAGES_INTERNAL_PORT}/api/version"]
       interval: 10s
       timeout: 10s
       retries: 30
@@ -544,9 +542,9 @@ services:
     container_name: mysqld-exporter
     environment:
       # add the mysql database here
-      - DATA_SOURCE_NAME=exporter:exporter@(mysql:3306)/
+      - DATA_SOURCE_NAME=exporter:exporter@(mysql:${MYSQL_INTERNAL_PORT})/
     ports:
-      - 9104:9104
+      - ${MYSQLD_EXPORTER_PORT}:${MYSQLD_EXPORTER_INTERNAL_PORT}
     networks:
       - mainproxy
     depends_on:
@@ -629,7 +627,7 @@ services:
     container_name: data-index
     image: quay.io/kiegroup/kogito-data-index-infinispan:${KOGITO_VERSION}
     ports:
-      - "8582:8080"
+      - ${DATAINDEX_PORT}:${DATAINDEX_INTERNAL_PORT}
     networks:
      - mainproxy
     depends_on:
@@ -639,17 +637,17 @@ services:
       - ./target/protobuf:/home/kogito/data/protobufs/:delegated
       - ./data-index/data-index-service-infinispan-runner.jar:/home/kogito/bin/data-index-service-infinispan-runner.jar
     environment:
-      KAFKA_BOOTSTRAP_SERVERS: alyson.genny.life:9092
+      KAFKA_BOOTSTRAP_SERVERS: alyson.genny.life:${KAFKA_PORT}
       KOGITO_DATA_INDEX_PROPS: -Dkogito.protobuf.folder=/home/kogito/data/protobufs/
       PROJECT_REALM: internmatch
       QUARKUS_INFINISPAN_CLIENT_AUTH_PASSWORD: password
       QUARKUS_INFINISPAN_CLIENT_AUTH_REALM: default
       QUARKUS_INFINISPAN_CLIENT_AUTH_USERNAME: genny
       QUARKUS_INFINISPAN_CLIENT_SASL_MECHANISM: DIGEST-MD5
-      QUARKUS_INFINISPAN_CLIENT_SERVER_LIST: alyson.genny.life:11222
+      QUARKUS_INFINISPAN_CLIENT_SERVER_LIST: alyson.genny.life:${INFINISPAN_PORT}
       QUARKUS_INFINISPAN_CLIENT_USE_AUTH: "true"
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:8080/q/health/ready" ]
+      test: [ "CMD", "curl", "-f", "http://localhost:${DATAINDEX_INTERNAL_PORT}/q/health/ready" ]
       interval: 30s
       timeout: 10s
       retries: 50
@@ -658,7 +656,7 @@ services:
     container_name: management-console
     image: quay.io/kiegroup/kogito-management-console:${KOGITO_VERSION}
     ports:
-      - 8584:8080
+      - ${MANAGEMENT_CONSOLE_PORT}:${MANAGEMENT_CONSOLE_INTERNAL_PORT}
     depends_on:
       data-index:
         condition: service_healthy
@@ -671,9 +669,9 @@ services:
       QUARKUS_INFINISPAN_CLIENT_AUTH_REALM: default
       QUARKUS_INFINISPAN_CLIENT_AUTH_USERNAME: genny
       QUARKUS_INFINISPAN_CLIENT_SASL_MECHANISM: DIGEST-MD5
-      QUARKUS_INFINISPAN_CLIENT_SERVER_LIST: alyson.genny.life:11222
+      QUARKUS_INFINISPAN_CLIENT_SERVER_LIST: alyson.genny.life:${INFINISPAN_PORT}
       QUARKUS_INFINISPAN_CLIENT_USE_AUTH: "true"
-      KOGITO_DATAINDEX_HTTP_URL: http://alyson.genny.life:8582/graphql
+      KOGITO_DATAINDEX_HTTP_URL: http://alyson.genny.life:${DATAINDEX_PORT}/graphql
       KOGITO_MANAGEMENT_CONSOLE_PROPS:  -Dkogito.consoles.keycloak.config.client-id=kogito-console-quarkus  -Dkogito.consoles.keycloak.config.realm=internmatch -Dkogito.consoles.keycloak.config.url=https://keycloak.gada.io/auth -Dkogito.consoles.keycloak.config.health-check-url=https://keycloak.gada.io/auth/realms/internmatch/.well-known/openid-configuration -Dkogito.svg.folder.path=/home/kogito/data/svg -Dkogito.consoles.keycloak.config.disable-health-check=false -Dkogito.consoles.keycloak.config.update-token-validity=30
 
 volumes:
