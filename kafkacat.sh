@@ -10,7 +10,7 @@ os_type=""
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
     os_type="ubuntu"
 if hash kafkacat 2>/dev/null; then 
-    kakfacat -b alyson.genny.life:9092 -C -o beginning -q -t $1
+    kafkacat -b alyson.genny.life:9092 -C -o beginning -q -t $1
 else
     echo "kafkacat not installed"
     echo "Ubuntu: sudo apt-get install kafkacat"
