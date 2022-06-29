@@ -148,38 +148,38 @@ services:
         sleep infinity &
         /etc/confluent/docker/run
 
-  ksqldb-server:
-    image: confluentinc/ksqldb-server:0.22.0
-    hostname: ksqldb-server
-    container_name: ksqldb-server
-    depends_on:
-      - schema-registry
-    networks:
-      - mainproxy
-    ports:
-      - "8090:8090"
-    environment:
-      KSQL_LISTENERS: http://ksqldb-server:8090
-      KSQL_BOOTSTRAP_SERVERS: kafka:29092
-      KSQL_KSQL_LOGGING_PROCESSING_STREAM_AUTO_CREATE: "true"
-      KSQL_KSQL_LOGGING_PROCESSING_TOPIC_AUTO_CREATE: "true"
-      KSQL_LOG4J_ROOT_LOGLEVEL: "ERROR"
-      KSQL_LOG4J_LOGGERS: "org.apache.kafka.connect.runtime.rest=WARN,org.reflections=ERROR"
-      KSQL_LOG4J_PROCESSING_LOG_BROKERLIST: kafka:29092
-      KSQL_LOG4J_PROCESSING_LOG_TOPIC: __ksql-processing-log
-      KSQL_KSQL_LOGGING_PROCESSING_TOPIC_NAME: __ksql-processing-log
-      KSQL_KSQL_SCHEMA_REGISTRY_URL: http://schema-registry:8081
-      KSQL_KSQL_MAX_REQUEST_SIZE: 15728640
-      KSQL_KSQL_AUTO_OFFSET_RESET: "earliest"
-    healthcheck:
-      test:
-        curl -f http://ksqldb-server:8090/ || exit 1
-    command:
-      - bash
-      - -c
-      - |
-        /usr/bin/docker/run
-
+#  ksqldb-server:
+#    image: confluentinc/ksqldb-server:0.22.0
+#    hostname: ksqldb-server
+#    container_name: ksqldb-server
+#    depends_on:
+#      - schema-registry
+#    networks:
+#      - mainproxy
+#    ports:
+#      - "8090:8090"
+#    environment:
+#      KSQL_LISTENERS: http://ksqldb-server:8090
+#      KSQL_BOOTSTRAP_SERVERS: kafka:29092
+#      KSQL_KSQL_LOGGING_PROCESSING_STREAM_AUTO_CREATE: "true"
+#      KSQL_KSQL_LOGGING_PROCESSING_TOPIC_AUTO_CREATE: "true"
+#      KSQL_LOG4J_ROOT_LOGLEVEL: "ERROR"
+#      KSQL_LOG4J_LOGGERS: "org.apache.kafka.connect.runtime.rest=WARN,org.reflections=ERROR"
+#      KSQL_LOG4J_PROCESSING_LOG_BROKERLIST: kafka:29092
+#      KSQL_LOG4J_PROCESSING_LOG_TOPIC: __ksql-processing-log
+#      KSQL_KSQL_LOGGING_PROCESSING_TOPIC_NAME: __ksql-processing-log
+#      KSQL_KSQL_SCHEMA_REGISTRY_URL: http://schema-registry:8081
+#      KSQL_KSQL_MAX_REQUEST_SIZE: 15728640
+#      KSQL_KSQL_AUTO_OFFSET_RESET: "earliest"
+#    healthcheck:
+#      test:
+#        curl -f http://ksqldb-server:8090/ || exit 1
+#    command:
+#      - bash
+#      - -c
+#      - |
+#        /usr/bin/docker/run
+#
   nginx:
     image: jwilder/nginx-proxy:alpine
     hostname: nginx
