@@ -175,6 +175,14 @@ while [ "$1" != "" ]; do
                 cd - &> /dev/null
             fi
             ./create_genny_env.sh ${ENV_FILE} $ip >& /dev/null
+
+		#Start up zookeeper and kafka to force a single partition
+		ENV_FILE=genny.env docker-compose up -d zookeeper
+                ENV_FILE=genny.env docker-compose up -d kafka
+                sleep 5
+                ./force_kafka_to_1.sh
+
+
 	echo "GOT TO HERE"
             if [ -n $project_realm ]; then
                 echo  "PROJECT_REALM=$project_realm" >> $ENV_FILE
