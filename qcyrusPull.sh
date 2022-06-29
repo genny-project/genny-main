@@ -46,7 +46,7 @@ if [[ -n "$PRODUCT_CODES" ]]
                                         for p in "${products[@]}"
                                         do
                                                 echo "Pulling prd_${p}"
-                                                cd ${HOME}/projects/genny/products/prd_${p}
+                                                cd ../products/prd_${p}
                                                 git stash
 						git pull 
                                         done
