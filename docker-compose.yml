@@ -1,4 +1,4 @@
-version: '2.3'
+version: '3.8'
 
 services:
 
@@ -15,7 +15,7 @@ services:
     ports:
       - ${INFINISPAN_PORT}:${INFINISPAN_INTERNAL_PORT}
     environment:
-        JAVA_OPTS: " -Xms64m -Xmx4096m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=2048m -Dinfinispan.bind.address=0.0.0.0 -Dpersistence.db.server.ip=alyson.genny.life -Dpersistence.db.server.port=3310 -Dpersistence.db.name=gennydb  -Dpersistence.db.username=genny -Dpersistence.db.password=password"
+        JAVA_OPTS: " -Xms64m -Xmx4096m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=2048m -Dinfinispan.bind.address=0.0.0.0 -Dpersistence.db.server.ip=alyson.genny.life -Dpersistence.db.server.port=${MYSQL_PORT} -Dpersistence.db.name=gennydb  -Dpersistence.db.username=genny -Dpersistence.db.password=password"
         USER: genny
         PASS: password
         ISPN_HOME: /opt/infinispan
@@ -47,6 +47,7 @@ services:
     environment:
       ZOOKEEPER_CLIENT_PORT: ${ZOOKEEPER_PORT}
       ZOOKEEPER_TICK_TIME: 2000
+      LOG_DIR: "/tmp/logs"
     ports:
       - ${ZOOKEEPER_PORT}:${ZOOKEEPER_INTERNAL_PORT}
     networks:
@@ -75,12 +76,28 @@ services:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_NUM_PARTITIONS: 1
+      KAFKA_OVERRIDE_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
       KAFKA_GROUP_MIN_SESSION_TIMEOUT_MS: 6000
       KAFKA_GROUP_MAX_SESSION_TIMEOUT_MS: 60000
       KAFKA_PRODUCER_MAX_REQUEST_SIZE: 15728640
       KAFKA_REPLICA_FETCH_MAX_BYTES: 15728640
       KAFKA_CONSUMER_MAX_PARTITION_FETCH_BYTES: 15728640
+      CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR: 1
+      CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR: 1
+      CONNECT_OFFSETS_STORAGE_REPLICATION_FACTOR: 1
+      CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: 1
+      CONNECT_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      CONNECT_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR: 1
+      KAFKA_CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR: 1
+      KAFKA_CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: 1
+      KAFKA_CONFIG_STORAGE_REPLICATION_FACTOR: 1
+      KAFKA_OFFSET_STORAGE_REPLICATION_FACTOR: 1
+      KAFKA_OFFSETS_STORAGE_REPLICATION_FACTOR: 1
+      KAFKA_STATUS_STORAGE_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
     networks:
       - mainproxy
     healthcheck:
@@ -439,8 +456,6 @@ services:
     depends_on:
       fyodor:
         condition: service_healthy
-      kafka:
-        condition: service_healthy
     env_file:
       - ${ENV_FILE}
     environment:
@@ -464,8 +479,6 @@ services:
     depends_on:
       fyodor:
         condition: service_healthy
-      kafka:
-        condition: service_healthy
     env_file:
       - ${ENV_FILE}
     environment:
@@ -475,7 +488,7 @@ services:
       - INFINISPAN_CLIENT_INTELLIGENCE=BASIC
       - JAVA_OPTS=-server -Xms64m -Xmx1524m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=1524m
       - PROJECT_URL=http://alyson.genny.life
-      - FYODOR_SERVICE_API=http://alyson.genny.life:${FYODOR_PORT}
+      - FYODOR_SERVICE_API=http://alyson.genny.life:4242
     networks:
       - mainproxy
     healthcheck:
@@ -499,7 +512,7 @@ services:
     networks:
       - mainproxy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:${SHLEEMY_INTERNAL_PORT}/q/health/ready"]
+      test: ["CMD", "curl", "-f", "http://localhost:${SHLEEMY_INTERNAL_PORT}//q/health/ready"]
       interval: 10s
       timeout: 10s
       retries: 30
@@ -553,6 +566,7 @@ services:
 
   wildfly-rulesservice:
     image: gennyproject/dummy:latest
+    #image: gennyproject/wildfly-rulesservice:latest
     depends_on:
       mysql:
         condition: service_healthy
@@ -637,7 +651,7 @@ services:
       - ./target/protobuf:/home/kogito/data/protobufs/:delegated
       - ./data-index/data-index-service-infinispan-runner.jar:/home/kogito/bin/data-index-service-infinispan-runner.jar
     environment:
-      KAFKA_BOOTSTRAP_SERVERS: alyson.genny.life:${KAFKA_PORT}
+      KAFKA_BOOTSTRAP_SERVERS: alyson.genny.life:9092
       KOGITO_DATA_INDEX_PROPS: -Dkogito.protobuf.folder=/home/kogito/data/protobufs/
       PROJECT_REALM: internmatch
       QUARKUS_INFINISPAN_CLIENT_AUTH_PASSWORD: password
