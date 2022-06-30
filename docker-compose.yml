@@ -3,7 +3,7 @@ version: '2.3'
 services:
 
   infinispan:
-    image: gennyproject/infinispan:14-8
+    image: gennyproject/infinispan:${INFINISPAN_VERSION}
     #image: quay.io/infinispan/server:13.0.5.Final-2
     container_name: infinispan
     hostname: infinispan
@@ -32,7 +32,7 @@ services:
 #      start_period: 10s
 
   schema-updater:
-    image: gennyproject/schema-updater:1.0
+    image: gennyproject/schema-updater:${SCHEMA_UPDATER_VERSION}
     container_name: schema-updater
     hostname: schema-updater
     depends_on:
@@ -42,7 +42,7 @@ services:
       - mainproxy
 
   zookeeper:
-    image: confluentinc/cp-zookeeper:7.0.0
+    image: confluentinc/cp-zookeeper:${KAFKA_ECOSYSTEM_VERSION}
     container_name: zookeeper
     environment:
       ZOOKEEPER_CLIENT_PORT: ${ZOOKEEPER_PORT}
@@ -53,15 +53,15 @@ services:
      - mainproxy
     healthcheck:
       test: [ "CMD", "nc", "-vz", "localhost", "${ZOOKEEPER_PORT}" ]
-      interval: 30s
+      interval: 10s
       timeout: 10s
-      retries: 4
+      retries: 5
     environment:
       LOG_DIR: "/tmp/logs"
       ZOOKEEPER_CLIENT_PORT: ${ZOOKEEPER_PORT}
 
   kafka:
-    image: confluentinc/cp-kafka:7.0.0
+    image: confluentinc/cp-kafka:${KAFKA_ECOSYSTEM_VERSION}
     depends_on:
       - zookeeper
     hostname: kafka
@@ -70,7 +70,7 @@ services:
       - ${KAFKA_PORT}:${KAFKA_PORT}
     environment:
       KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:${ZOOKEEPER_PORT}
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:${ZOOKEEPER_INTERNAL_PORT}
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:${KAFKA_INTERNAL_PORT},PLAINTEXT_HOST://alyson.genny.life:${KAFKA_PORT}
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
@@ -84,103 +84,103 @@ services:
     networks:
       - mainproxy
     healthcheck:
-      test: ["CMD", "nc", "-vz", "localhost", "${KAFKA_PORT}"]
-      interval: 30s
-      timeout: 10s
-      start_period: 5s
-      retries: 4
+      test: ["CMD", "nc", "-vz", "localhost", "${KAFKA_INTERNAL_PORT}"]
+      interval: 2s
+      timeout: 5s
+      start_period: 3s
+      retries: 60
 
-  schema-registry:
-    image: confluentinc/cp-schema-registry:7.0.0
-    hostname: schema-registry
-    container_name: schema-registry
-    environment:
-      SCHEMA_REGISTRY_HOST_NAME: schema-registry
-      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: kafka:2${KAFKA_PORT}
-    networks:
-      - mainproxy
-    depends_on:
-      - kafka
-    ports:
-      - ${SCHEMA_REGISTRY_PORT}:${SCHEMA_REGISTRY_INTERNAL_PORT}
+#  schema-registry:
+#    image: confluentinc/cp-schema-registry:${KAFKA_ECOSYSTEM_VERSION}
+#    hostname: schema-registry
+#    container_name: schema-registry
+#    environment:
+#      SCHEMA_REGISTRY_HOST_NAME: schema-registry
+#      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: kafka:2${KAFKA_PORT}
+#    networks:
+#      - mainproxy
+#    depends_on:
+#      - kafka
+#    ports:
+#      - ${SCHEMA_REGISTRY_PORT}:${SCHEMA_REGISTRY_INTERNAL_PORT}
 
-  kafka-connect:
-    hostname: kafka-connect
-    container_name: kafka-connect
-    image: confluentinc/cp-kafka-connect:7.0.0
-    depends_on:
-      - schema-registry
-    networks:
-      - mainproxy
-    ports:
-      - ${KAFKA_CONNECT_PORT}:${KAFKA_CONNECT_INTERNAL_PORT}
-    environment:
-      CONNECT_BOOTSTRAP_SERVERS: kafka:${KAFKA_INTERNAL_PORT}
-      CONNECT_PRODUCER_COMPRESSION_TYPE: lz4
-      CONNECT_GROUP_ID: connect
-      CONNECT_KEY_CONVERTER: io.confluent.connect.avro.AvroConverter
-      CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL: http://schema-registry:8081
-      CONNECT_VALUE_CONVERTER: io.confluent.connect.avro.AvroConverter
-      CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: http://schema-registry:8081
-      CONNECT_CONFIG_STORAGE_TOPIC: connect_config
-      CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR: 1
-      CONNECT_OFFSET_STORAGE_TOPIC: connect_offset
-      CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR: 1
-      CONNECT_STATUS_STORAGE_TOPIC: connect_status
-      CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: 1
-      CONNECT_INTERNAL_KEY_CONVERTER: org.apache.kafka.connect.json.JsonConverter
-      CONNECT_INTERNAL_VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
-      CONNECT_INTERNAL_KEY_CONVERTER_SCHEMAS_ENABLE: 'false'
-      CONNECT_INTERNAL_VALUE_CONVERTER_SCHEMAS_ENABLE: 'false'
-      CONNECT_LOG4J_LOGGERS: 'org.reflections=ERROR'
-      CONNECT_REST_ADVERTISED_HOST_NAME: "kafka-connect"
-      CONNECT_PRODUCER_MAX_REQUEST_SIZE: 15728640
-      CONNECT_CONSUMER_MAX_PARTITION_FETCH_BYTES: 15728640
-      CONNECT_PLUGIN_PATH: '/usr/share/java'
-    volumes:
-      - './books.xsd:/books.xsd:ro'
-    command:
-      - bash
-      - -c
-      - |
-        cd /etc/kafka-connect/jars/
-        wget https://packages.confluent.io/maven/io/confluent/kafka-connect-jdbc/10.2.5/kafka-connect-jdbc-10.2.5.jar
-        wget https://repo1.maven.org/maven2/mysql/mysql-connector-java/8.0.27/mysql-connector-java-8.0.27.jar
-        wget https://packages.confluent.io/maven/io/confluent/kafka-connect-avro-converter/7.0.0/kafka-connect-avro-converter-7.0.0.jar
-        sleep infinity &
-        /etc/confluent/docker/run
+#  kafka-connect:
+#    hostname: kafka-connect
+#    container_name: kafka-connect
+#    image: confluentinc/cp-kafka-connect:${KAFKA_ECOSYSTEM_VERSION}
+#    depends_on:
+#      schema-registry
+#    networks:
+#      - mainproxy
+#    ports:
+#      - ${KAFKA_CONNECT_PORT}:${KAFKA_CONNECT_INTERNAL_PORT}
+#    environment:
+#      CONNECT_BOOTSTRAP_SERVERS: kafka:${KAFKA_INTERNAL_PORT}
+#      CONNECT_PRODUCER_COMPRESSION_TYPE: lz4
+#      CONNECT_GROUP_ID: connect
+#      CONNECT_KEY_CONVERTER: io.confluent.connect.avro.AvroConverter
+#      CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL: http://schema-registry:8081
+#      CONNECT_VALUE_CONVERTER: io.confluent.connect.avro.AvroConverter
+#      CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: http://schema-registry:8081
+#      CONNECT_CONFIG_STORAGE_TOPIC: connect_config
+#      CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR: 1
+#      CONNECT_OFFSET_STORAGE_TOPIC: connect_offset
+#      CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR: 1
+#      CONNECT_STATUS_STORAGE_TOPIC: connect_status
+#      CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: 1
+#      CONNECT_INTERNAL_KEY_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+#      CONNECT_INTERNAL_VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+#      CONNECT_INTERNAL_KEY_CONVERTER_SCHEMAS_ENABLE: 'false'
+#      CONNECT_INTERNAL_VALUE_CONVERTER_SCHEMAS_ENABLE: 'false'
+#      CONNECT_LOG4J_LOGGERS: 'org.reflections=ERROR'
+#      CONNECT_REST_ADVERTISED_HOST_NAME: "kafka-connect"
+#      CONNECT_PRODUCER_MAX_REQUEST_SIZE: 15728640
+#      CONNECT_CONSUMER_MAX_PARTITION_FETCH_BYTES: 15728640
+#      CONNECT_PLUGIN_PATH: '/usr/share/java'
+#    volumes:
+#      - './books.xsd:/books.xsd:ro'
+#    command:
+#      - bash
+#      - -c
+#      - |
+#        cd /etc/kafka-connect/jars/
+#        wget https://packages.confluent.io/maven/io/confluent/kafka-connect-jdbc/10.2.5/kafka-connect-jdbc-10.2.5.jar
+#        wget https://repo1.maven.org/maven2/mysql/mysql-connector-java/${MYSQL_VERSION}/mysql-connector-java-${MYSQL_VERSION}.jar
+#        wget https://packages.confluent.io/maven/io/confluent/kafka-connect-avro-converter/${KAFKA_ECOSYSTEM_VERSION}/kafka-connect-avro-converter-${KAFKA_ECOSYSTEM_VERSION}.jar
+#        sleep infinity &
+#        /etc/confluent/docker/run
 
-  ksqldb-server:
-    image: confluentinc/ksqldb-server:0.22.0
-    hostname: ksqldb-server
-    container_name: ksqldb-server
-    depends_on:
-      - schema-registry
-    networks:
-      - mainproxy
-    ports:
-      - ${KSQLDB_SERVER_PORT}:${KSQLDB_SERVER_INTERNAL_PORT}
-    environment:
-      KSQL_LISTENERS: http://ksqldb-server:${KSQLDB_SERVER_INTERNAL_PORT}
-      KSQL_BOOTSTRAP_SERVERS: kafka:${KAFKA_INTERNAL_PORT}
-      KSQL_KSQL_LOGGING_PROCESSING_STREAM_AUTO_CREATE: "true"
-      KSQL_KSQL_LOGGING_PROCESSING_TOPIC_AUTO_CREATE: "true"
-      KSQL_LOG4J_ROOT_LOGLEVEL: "ERROR"
-      KSQL_LOG4J_LOGGERS: "org.apache.kafka.connect.runtime.rest=WARN,org.reflections=ERROR"
-      KSQL_LOG4J_PROCESSING_LOG_BROKERLIST: kafka:2${KAFKA_PORT}
-      KSQL_LOG4J_PROCESSING_LOG_TOPIC: __ksql-processing-log
-      KSQL_KSQL_LOGGING_PROCESSING_TOPIC_NAME: __ksql-processing-log
-      KSQL_KSQL_SCHEMA_REGISTRY_URL: http://schema-registry:${SCHEMA_REGISTRY_PORT}
-      KSQL_KSQL_MAX_REQUEST_SIZE: 15728640
-      KSQL_KSQL_AUTO_OFFSET_RESET: "earliest"
-    healthcheck:
-      test:
-        curl -f http://ksqldb-server:${KSQLDB_SERVER_INTERNAL_PORT}/ || exit 1
-    command:
-      - bash
-      - -c
-      - |
-        /usr/bin/docker/run
+#  ksqldb-server:
+#    image: confluentinc/ksqldb-server:0.22.0
+#    hostname: ksqldb-server
+#    container_name: ksqldb-server
+#    depends_on:
+#      - schema-registry
+#    networks:
+#      - mainproxy
+#    ports:
+#      - ${KSQLDB_SERVER_PORT}:${KSQLDB_SERVER_INTERNAL_PORT}
+#    environment:
+#      KSQL_LISTENERS: http://ksqldb-server:${KSQLDB_SERVER_INTERNAL_PORT}
+#      KSQL_BOOTSTRAP_SERVERS: kafka:${KAFKA_INTERNAL_PORT}
+#      KSQL_KSQL_LOGGING_PROCESSING_STREAM_AUTO_CREATE: "true"
+#      KSQL_KSQL_LOGGING_PROCESSING_TOPIC_AUTO_CREATE: "true"
+#      KSQL_LOG4J_ROOT_LOGLEVEL: "ERROR"
+#      KSQL_LOG4J_LOGGERS: "org.apache.kafka.connect.runtime.rest=WARN,org.reflections=ERROR"
+#      KSQL_LOG4J_PROCESSING_LOG_BROKERLIST: kafka:2${KAFKA_PORT}
+#      KSQL_LOG4J_PROCESSING_LOG_TOPIC: __ksql-processing-log
+#      KSQL_KSQL_LOGGING_PROCESSING_TOPIC_NAME: __ksql-processing-log
+#      KSQL_KSQL_SCHEMA_REGISTRY_URL: http://schema-registry:${SCHEMA_REGISTRY_PORT}
+#      KSQL_KSQL_MAX_REQUEST_SIZE: 15728640
+#      KSQL_KSQL_AUTO_OFFSET_RESET: "earliest"
+#    healthcheck:
+#      test:
+#        curl -f http://ksqldb-server:${KSQLDB_SERVER_INTERNAL_PORT}/ || exit 1
+#    command:
+#      - bash
+#      - -c
+#      - |
+#        /usr/bin/docker/run
 
   nginx:
     image: jwilder/nginx-proxy:alpine
@@ -204,7 +204,7 @@ services:
       - /var/run/docker.sock:/tmp/docker.sock:ro
 
   imageproxy:
-    image: willnorris/imageproxy:v0.10.0
+    image: willnorris/imageproxy:${IMAGE_PROXY}
     container_name: imageproxy
     ports:
       - ${IMAGEPROXY_PORT}:${IMAGEPROXY_INTERNAL_PORT}
@@ -221,7 +221,7 @@ services:
       - ${ALYSON_PORT}:${ALYSON_INTERNAL_PORT}
     environment:
       - VIRTUAL_HOST=*.genny.life
-      - VIRTUAL_PORT=8080
+      - VIRTUAL_PORT=${INTERNAL_PORT}
       - REACT_BRIDGE_HOST=http://bridge.genny.life
       - NODE_ENV=production
       - CORS_URLS=http://10.123.123.123:3000|http://internmatch.genny.life:3000|
@@ -280,7 +280,7 @@ services:
     command: java -jar /service.jar
 
   mysql:
-    image:  mysql:8.0.25
+    image:  mysql:${MYSQL_VERSION}
     platform: linux/x86_64
     container_name: mysql
     environment:
@@ -335,7 +335,7 @@ services:
     links:
       - mysql:mysql
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/bootq/version"]
+      test: ["CMD", "curl", "-f", "http://localhost:${BOOTQ_INTERNAL_PORT}/bootq/version"]
       interval: 10s
       timeout:  5s
       retries:  5
@@ -394,10 +394,10 @@ services:
     env_file:
       - ${ENV_FILE}
     environment:
-      - INFINISPAN_URL=alyson.genny.life:${INFINISPAN_PORT}
+      - INFINISPAN_URL=infinispan:${INFINISPAN_INTERNAL_PORT}
       - INFINISPAN_CLIENT_INTELLIGENCE=BASIC
-      - GENNY_KAFKA_URL=kafka:${KAFKA_PORT}
-      - kafka.bootstrap.servers=kafka:${KAFKA_PORT}
+      - GENNY_KAFKA_URL=kafka:${KAFKA_INTERNAL_PORT}
+      - kafka.bootstrap.servers=kafka:${KAFKA_INTERNAL_PORT}
     ports:
       - ${FYODOR_PORT}:${FYODOR_INTERNAL_PORT}
     networks:
@@ -417,11 +417,11 @@ services:
     env_file:
       - ${ENV_FILE}
     environment:
-      - INFINISPAN_URL=alyson.genny.life:${INFINISPAN_PORT}
+      - INFINISPAN_URL=infinispan:${INFINISPAN_INTERNAL_PORT}
       - INFINISPAN_CLIENT_INTELLIGENCE=BASIC
-      - FYODOR_SERVICE_API=http://fyodor:${FYODOR_PORT}
+      - FYODOR_SERVICE_API=http://fyodor:${FYODOR_INTERNAL_PORT}
       - GENNY_KAFKA_URL=kafka:${KAFKA_PORT}
-      - kafka.bootstrap.servers=kafka:${KAFKA_PORT}
+      - kafka.bootstrap.servers=kafka:${KAFKA_INTERNAL_PORT}
       - GENNY_KOGITO_SERVICE_URL=http://alyson2.genny.life:${GADAQ_PORT}
     ports:
       - ${GADAQ_PORT}:${GADAQ_INTERNAL_PORT}
@@ -453,7 +453,7 @@ services:
     networks:
       - mainproxy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/q/health/ready"]
+      test: ["CMD", "curl", "-f", "http://localhost:${DROPKICK_INTERNAL_PORT}/q/health/ready"]
       interval: 10s
       timeout: 10s
       retries: 30
@@ -552,7 +552,7 @@ services:
         condition: service_healthy
 
   wildfly-rulesservice:
-    image: gennyproject/wildfly-rulesservice:latest
+    image: gennyproject/dummy:latest
     depends_on:
       mysql:
         condition: service_healthy
@@ -625,7 +625,7 @@ services:
 
   data-index:
     container_name: data-index
-    image: quay.io/kiegroup/kogito-data-index-infinispan:${KOGITO_VERSION}
+    image: quay.io/kiegroup/kogito-data-index-infinispan:${KOGITO_ECOSYSTEM_VERSION}
     ports:
       - ${DATAINDEX_PORT}:${DATAINDEX_INTERNAL_PORT}
     networks:
@@ -654,7 +654,7 @@ services:
 
   management-console:
     container_name: management-console
-    image: quay.io/kiegroup/kogito-management-console:${KOGITO_VERSION}
+    image: quay.io/kiegroup/kogito-management-console:${KOGITO_ECOSYSTEM_VERSION}
     ports:
       - ${MANAGEMENT_CONSOLE_PORT}:${MANAGEMENT_CONSOLE_INTERNAL_PORT}
     depends_on:

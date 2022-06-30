@@ -40,7 +40,7 @@ docker volume create mysql_data
 source $GENNY_ENV_FILE
 
 #create env file
-KOGITO_VERSION=1.22.1
+KOGITO_VERSION=1.23.0
 PERSISTENCE_FOLDER=./persistence/protobuf
 KOGITO_TRAVEL_AGENCY_PERSISTENCE=../gennyq/kogitoq/extended/travels/target/classes/META-INF/resources/persistence/protobuf
 KOGITO_GADAQ_PERSISTENCE=../gennyq/kogitoq/gadaq/target/classes/META-INF/resources/persistence/protobuf
@@ -283,3 +283,7 @@ done
 echo "Generating port config for all services and products..."
 ./add_services_products_ports_to_env.sh $ENV_FILE
 echo "Completed generating port config for all services and products."
+
+echo "Generating docker tags for docker-compose..."
+./add_docker_tags_to_env.sh $ENV_FILE
+echo "Completed generating docker tags for docker-compose."
