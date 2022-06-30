@@ -52,7 +52,7 @@ services:
     networks:
      - mainproxy
     healthcheck:
-      test: [ "CMD", "nc", "-vz", "localhost", "2181" ]
+      test: [ "CMD", "nc", "-vz", "localhost", "${ZOOKEEPER_PORT}" ]
       interval: 30s
       timeout: 10s
       retries: 4
