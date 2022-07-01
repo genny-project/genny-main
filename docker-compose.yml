@@ -8,17 +8,18 @@ services:
     container_name: infinispan
     hostname: infinispan
     depends_on:
-#      schema-updater:
-#       condition: service_completed_successfully
+      schema-updater:
+       condition: service_completed_successfully
       mysql:
        condition: service_healthy
     ports:
       - ${INFINISPAN_PORT}:${INFINISPAN_INTERNAL_PORT}
     environment:
-        JAVA_OPTS: " -Xms64m -Xmx4096m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=2048m -Dinfinispan.bind.address=0.0.0.0 -Dpersistence.db.server.ip=alyson.genny.life -Dpersistence.db.server.port=${MYSQL_PORT} -Dpersistence.db.name=gennydb  -Dpersistence.db.username=genny -Dpersistence.db.password=password"
+        JAVA_OPTS: " -Xms64m -Xmx4096m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=2048m -Dinfinispan.bind.address=0.0.0.0 -Dpersistence.db.server.ip=alyson.genny.life -Dpersistence.db.server.port=${MYSQL_EXTERNAL_PORT} -Dpersistence.db.name=gennydb  -Dpersistence.db.username=genny -Dpersistence.db.password=password"
         USER: genny
         PASS: password
         ISPN_HOME: /opt/infinispan
+        MYSQL_EXTERNAL_PORT: ${MYSQL_EXTERNAL_PORT}
     volumes:
       - ./infinispan/infinispan_persistence.xml:/opt/infinispan/server/conf/infinispan.xml
       - ./infinispan/rebuild_index.sh:/opt/infinispan/server/bin/rebuild_index.sh
@@ -318,7 +319,7 @@ services:
     networks:
       - mainproxy
     ports:
-      - ${MYSQL_PORT}:${MYSQL_INTERNAL_PORT}
+      - ${MYSQL_EXTERNAL_PORT}:${MYSQL_PORT}
     command: --sql_mode="" --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --default-time-zone="+00:00"
     healthcheck:
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
@@ -555,7 +556,7 @@ services:
     container_name: mysqld-exporter
     environment:
       # add the mysql database here
-      - DATA_SOURCE_NAME=exporter:exporter@(mysql:${MYSQL_INTERNAL_PORT})/
+      - DATA_SOURCE_NAME=exporter:exporter@(mysql:${MYSQL_PORT})/
     ports:
       - ${MYSQLD_EXPORTER_PORT}:${MYSQLD_EXPORTER_INTERNAL_PORT}
     networks:
