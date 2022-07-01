@@ -70,7 +70,7 @@ if [ ! -d "$CREDENTIALS_DIR" ]; then
     mkdir -p $CREDENTIALS_DIR
 fi
 
-echo "PROJECT_REALM=${2}" > ./.env
+echo "PROJECT_REALM=${2}" >> ./.env
 
 while [ "$1" != "" ]; do
     case $1 in
@@ -175,6 +175,7 @@ while [ "$1" != "" ]; do
                 cd - &> /dev/null
             fi
             ./create_genny_env.sh ${ENV_FILE} $ip >& /dev/null
+	    ./create_genny_env.sh .env $ip >& /dev/null
 
 		#Start up zookeeper and kafka to force a single partition
 		ENV_FILE=genny.env docker-compose up -d zookeeper
@@ -269,6 +270,7 @@ while [ "$1" != "" ]; do
                 cd - &> /dev/null
             fi
             ./create_genny_env.sh ${ENV_FILE} $ip >& /dev/null
+	    ./create_genny_env.sh .env $ip >& /dev/null
 
             if [ -n $project_realm ]; then
                 echo  "PROJECT_REALM=$project_realm" >> $ENV_FILE

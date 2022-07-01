@@ -431,7 +431,7 @@ services:
       - INFINISPAN_URL=infinispan:${INFINISPAN_INTERNAL_PORT}
       - INFINISPAN_CLIENT_INTELLIGENCE=BASIC
       - FYODOR_SERVICE_API=http://fyodor:${FYODOR_INTERNAL_PORT}
-      - GENNY_KAFKA_URL=kafka:${KAFKA_PORT}
+      - GENNY_KAFKA_URL=kafka:${KAFKA_INTERNAL_PORT}
       - kafka.bootstrap.servers=kafka:${KAFKA_INTERNAL_PORT}
       - GENNY_KOGITO_SERVICE_URL=http://alyson2.genny.life:${GADAQ_PORT}
     ports:
@@ -455,8 +455,8 @@ services:
     environment:
       - INFINISPAN_URL=alyson.genny.life:${INFINISPAN_PORT}
       - INFINISPAN_CLIENT_INTELLIGENCE=BASIC
-      - GENNY_KAFKA_URL=kafka:${KAFKA_PORT}
-      - kafka.bootstrap.servers=kafka:${KAFKA_PORT}
+      - GENNY_KAFKA_URL=kafka:${KAFKA_INTERNAL_PORT}
+      - kafka.bootstrap.servers=kafka:${KAFKA_INTERNAL_PORT}
       - FYODOR_SERVICE_API=http://alyson.genny.life:${FYODOR_PORT}
       - JAVA_OPTS=-server -Xms64m -Xmx1524m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=1524m
     networks:
@@ -476,8 +476,8 @@ services:
     env_file:
       - ${ENV_FILE}
     environment:
-      - GENNY_KAFKA_URL=kafka:${KAFKA_PORT}
-      - kafka.bootstrap.servers=kafka:${KAFKA_PORT}
+      - GENNY_KAFKA_URL=kafka:${KAFKA_INTERNAL_PORT}
+      - kafka.bootstrap.servers=kafka:${KAFKA_INTERNAL_PORT}
       - INFINISPAN_URL=alyson.genny.life:${INFINISPAN_PORT}
       - INFINISPAN_CLIENT_INTELLIGENCE=BASIC
       - JAVA_OPTS=-server -Xms64m -Xmx1524m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=1524m
