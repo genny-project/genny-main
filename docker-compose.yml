@@ -560,6 +560,8 @@ services:
 
   wildfly-rulesservice:
     image: gennyproject/dummy:latest
+    deploy:
+      replicas: 0
     #image: gennyproject/wildfly-rulesservice:latest
     depends_on:
       mysql:
