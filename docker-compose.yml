@@ -327,6 +327,8 @@ services:
     restart: unless-stopped
 
   bootq:
+    deploy:
+      replicas: 0
     depends_on:
       mysql:
         condition: service_healthy
@@ -492,6 +494,8 @@ services:
       retries: 30
 
   shleemy:
+    deploy:
+      replicas: 0
     image: gennyproject/shleemy:latest
     container_name: shleemy
     depends_on:
@@ -512,6 +516,8 @@ services:
       retries: 30
 
   messages:
+    deploy:
+      replicas: 0
     image: gennyproject/messages:latest
     container_name:  messages
     depends_on:
@@ -559,10 +565,9 @@ services:
         condition: service_healthy
 
   wildfly-rulesservice:
-    image: gennyproject/dummy:latest
+    image: gennyproject/wildfly-rulesservice:latest
     deploy:
       replicas: 0
-    #image: gennyproject/wildfly-rulesservice:latest
     depends_on:
       mysql:
         condition: service_healthy
