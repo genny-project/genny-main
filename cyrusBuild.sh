@@ -37,23 +37,10 @@ done
 cd $parentdir/gennyq/kogitoq/gadaq
 ./build.sh && ./build-docker.sh
 cd $parentdir/genny-main
-echo "ProductCodes = ${PRODUCT_CODES}"                       
-if [[ -n "$PRODUCT_CODES" ]]
-then
-        if [ -d "../products" ];
-        then
-            products=($(echo $PRODUCT_CODES | tr ":" "\n"))
-            files="-f docker-compose.yml"
-            for p in "${products[@]}"
-            do  
-                echo "Processing product ${p}"
-                cd ${HOME}/projects/genny/products/prd_${p}
-	        ./build.sh && ./build-docker.sh
-            done
-        else
-           echo "No Products available"
-fi
+
+./cyrusBuildProducts.sh
 
 cd $parentdir/genny-main
 echo "Finished Building all"
 ./say.sh "Completed Building  all"
+
