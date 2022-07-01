@@ -15,14 +15,14 @@ services:
     ports:
       - ${INFINISPAN_PORT}:${INFINISPAN_INTERNAL_PORT}
     environment:
-        JAVA_OPTS: " -Xms64m -Xmx4096m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=2048m -Dinfinispan.bind.address=0.0.0.0 -Dpersistence.db.server.ip=alyson.genny.life -Dpersistence.db.server.port=${MYSQL_EXTERNAL_PORT} -Dpersistence.db.name=gennydb  -Dpersistence.db.username=genny -Dpersistence.db.password=password"
+        JAVA_OPTS: " -Xms64m -Xmx4096m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=2048m -Dinfinispan.bind.address=0.0.0.0 -Dpersistence.db.server.ip=mysql -Dpersistence.db.server.port=${MYSQL_PORT} -Dpersistence.db.name=gennydb  -Dpersistence.db.username=genny -Dpersistence.db.password=password"
         USER: genny
         PASS: password
         ISPN_HOME: /opt/infinispan
-        MYSQL_EXTERNAL_PORT: ${MYSQL_EXTERNAL_PORT}
     volumes:
       - ./infinispan/infinispan_persistence.xml:/opt/infinispan/server/conf/infinispan.xml
       - ./infinispan/rebuild_index.sh:/opt/infinispan/server/bin/rebuild_index.sh
+      - ./infinispan/log4j2.xml:/opt/infinispan/server/conf/log4j2.xml
     networks:
       - mainproxy
     healthcheck:
@@ -103,7 +103,7 @@ services:
       - mainproxy
     healthcheck:
       #test: ["CMD", "nc", "-vz", "localhost", "${KAFKA_INTERNAL_PORT}"]
-      test: ["CMD","/bin/kafka-topics","--bootstrap-server=localhost:9092","--list"]
+      test: ["CMD","/bin/kafka-topics","--bootstrap-server=localhost:29092","--list"]
       #test: ["CMD", "kafka-topics.sh", "--list", "--bootstrap-server", "host.docker.internal:9092"]
       #test: ["CMD", "/bin/kafka-topics.sh", "--list", "--zookeeper", "zookeeper:2181"]
       interval: 2s
@@ -307,7 +307,7 @@ services:
     environment:
       - MYSQL_URL=mysql
       - MYSQL_DB=gennydb
-      - MYSQL_PORT=3306
+      - MYSQL_PORT=${MYSQL_PORT}
       - MYSQL_ALLOW_EMPTY=
       - MYSQL_DATABASE=gennydb
       - MYSQL_USER=genny
@@ -315,8 +315,8 @@ services:
       - MYSQL_ROOT_PASSWORD=password
       - ADMIN_USERNAME=admin
       - ADMIN_PASSWORD=password
-    env_file:
-      - ${ENV_FILE}
+    # env_file:
+    #   - ${ENV_FILE}
     volumes:
       - mysql_data:/var/lib/mysql:delegated
     networks:
