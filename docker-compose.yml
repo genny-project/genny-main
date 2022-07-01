@@ -330,10 +330,6 @@ services:
     depends_on:
       mysql:
         condition: service_healthy
-      kafka:
-        condition: service_healthy
-      infinispan:
-        condition: service_healthy
     image: gennyproject/bootq:latest
     container_name: bootq
     volumes:
@@ -341,11 +337,9 @@ services:
     env_file:
       - ${ENV_FILE}
     environment:
-      - GOOGLE_SVC_ACC_PATH=/root/.genny/sheets.googleapis.com-java-quickstart/token-secret-service-account.json
-      - CLEANUP_TASK_AND_BEATTRFORM=false
-      - MYSQL_USER=genny
-      - MYSQL_PASSWORD=password
+      - CLEANUP_TASK_AND_BEATTRFORM=FALSE
       - FULL_MYSQL_URL=mysql/gennydb?serverTimezone=UTC
+      - KEYCLOAK_AUTH_URL=https://keycloak.gada.io/auth/realms/internmatch
     ports:
       - ${BOOTQ_PORT}:${BOOTQ_INTERNAL_PORT}
       - ${BOOTQ_DEBUG_PORT}:${BOOTQ_INTERNAL_DEBUG_PORT}
