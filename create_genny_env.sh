@@ -283,3 +283,7 @@ done
 echo "Generating port config for all services and products..."
 ./add_services_products_ports_to_env.sh $ENV_FILE
 echo "Completed generating port config for all services and products."
+
+echo "Generating docker tags for docker-compose..."
+./add_docker_tags_to_env.sh $ENV_FILE
+echo "Completed generating docker tags for docker-compose."

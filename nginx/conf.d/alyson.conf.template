@@ -1,13 +1,13 @@
 # alyson.genny.life
 
 upstream alyson7 {
-	server alyson.genny.life:10000;
+	server alyson.genny.life:${ALYSON_PORT};
 }
 upstream bridge {
-	server alyson.genny.life:10020;
+	server alyson.genny.life:${BRIDGE0_PORT};
 }
 upstream bridge8089 {
-	server bridge:10021;
+	server bridge:${BRIDGE1_PORT};
 }
 upstream api {
 	server alyson.genny.life:8280;
@@ -16,16 +16,16 @@ upstream rules {
 	server alyson.genny.life:8380;
 }
 upstream media-proxy {
-	server media-proxy:9898;
+	server media-proxy:${MEDIA_PROXY_PORT};
 }
 upstream gennyproxy {
-	server genny-proxy:8080;
+	server genny-proxy:${GENNY_PROXY_INTERNAL_PORT};
 }
 upstream imageproxy {
-	server alyson.genny.life:46243;
+	server alyson.genny.life:${IMAGEPROXY_PORT};
 }
 upstream bootq {
-	server alyson.genny.life:10010;
+	server alyson.genny.life:${BOOTQ_PORT};
 }
 
 server {

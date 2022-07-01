@@ -203,6 +203,13 @@ while [ "$1" != "" ]; do
 		cat $ENV_FILE >> ./.env
 	echo "GOT TO HERE3B"
 			source $ENV_FILE
+
+			# Create alyson.conf for nginx
+			echo "********************************"
+			export $(grep --regexp ^[A-Z] $ENV_FILE | cut -d= -f1)
+			envsubst "$(printf '${%s} ' $(env | cut -d'=' -f1))" < nginx/conf.d/alyson.conf.template > nginx/conf.d/alyson.conf
+			echo "********************************"
+
 			if [[ -n "$PRODUCT_CODES" ]] 
 			then
 				if [ -d "../products" ];
