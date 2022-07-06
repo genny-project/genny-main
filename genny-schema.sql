@@ -1666,7 +1666,7 @@ CREATE TABLE `attribute` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `UKete7vddcnryn6csasljummesn` (`code`,`realm`),
   KEY `code_idx` (`code`,`realm`)
-) ENGINE=InnoDB AUTO_INCREMENT=3169 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1688,7 +1688,7 @@ CREATE TABLE `baseentity` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `UKb4u1syrco33nx6qj3a96xyihb` (`code`,`realm`),
   KEY `code_idx` (`code`,`realm`)
-) ENGINE=InnoDB AUTO_INCREMENT=6035 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2091,7 +2091,7 @@ CREATE TABLE `question` (
   KEY `code_idx` (`code`,`realm`),
   KEY `FKc8891u9mg0doemnwfxov4e1w1` (`attribute_id`),
   CONSTRAINT `FKc8891u9mg0doemnwfxov4e1w1` FOREIGN KEY (`attribute_id`) REFERENCES `attribute` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1872 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2252,7 +2252,7 @@ CREATE TABLE `template` (
   `toast` varchar(1024) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UK7q65l1bgnolmh8b5df8e393vj` (`code`,`realm`)
-) ENGINE=InnoDB AUTO_INCREMENT=96 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2280,7 +2280,7 @@ CREATE TABLE `validation` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `UK7wip0jvj11abgit25o6m7l83j` (`code`,`realm`),
   KEY `code_idx` (`code`,`realm`)
-) ENGINE=InnoDB AUTO_INCREMENT=245 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
