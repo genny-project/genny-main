@@ -43,10 +43,15 @@
                          driver="com.mysql.cj.jdbc.Driver"/>
                <schema message-name="BaseEntity"
                          key-message-name="BaseEntityKey"
-                         package="life.genny.qwandaq.serialization.baseentity"
+                         package="life.genny.qwandaq.baseentity"
                          embedded-key="true"/>
             </table-jdbc-store>
          </persistence>
+         <indexing enabled="true" storage="filesystem" path="baseentitys">
+            <indexed-entities>
+               <indexed-entity>life.genny.qwandaq.baseentity.BaseEntity</indexed-entity>
+            </indexed-entities>
+         </indexing>
       </distributed-cache> 
       <distributed-cache name="jobs" statistics="true">
          <locking concurrency-level="1000" acquire-timeout="15000" striping="false"/>

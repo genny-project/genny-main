@@ -304,6 +304,7 @@ services:
     image:  mysql:${MYSQL_VERSION}
     platform: linux/x86_64
     container_name: mysql
+    hostname: mysql
     environment:
       - MYSQL_URL=mysql
       - MYSQL_DB=gennydb
