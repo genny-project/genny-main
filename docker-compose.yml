@@ -45,6 +45,7 @@ services:
   zookeeper:
     image: confluentinc/cp-zookeeper:${KAFKA_ECOSYSTEM_VERSION}
     container_name: zookeeper
+    hostname: zookeeper
     environment:
       ZOOKEEPER_CLIENT_PORT: ${ZOOKEEPER_PORT}
       ZOOKEEPER_TICK_TIME: 2000
