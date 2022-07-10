@@ -472,6 +472,7 @@ services:
       - kafka.bootstrap.servers=kafka:${KAFKA_PORT}
       - FYODOR_SERVICE_API=http://alyson.genny.life:${FYODOR_PORT}
       - GENNY_KOGITO_DATAINDEX_HTTP_URL=http://alyson.genny.life:${DATAINDEX_PORT}
+      - PROJECT_URL=http://alyson.genny.life:${DROPKICK_PORT}
       - JAVA_OPTS=-server -Xms64m -Xmx1524m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=1524m
     networks:
       - mainproxy
