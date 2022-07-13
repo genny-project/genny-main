@@ -664,7 +664,7 @@ services:
       QUARKUS_INFINISPAN_CLIENT_AUTH_REALM: default
       QUARKUS_INFINISPAN_CLIENT_AUTH_USERNAME: genny
       QUARKUS_INFINISPAN_CLIENT_SASL_MECHANISM: DIGEST-MD5
-      QUARKUS_INFINISPAN_CLIENT_SERVER_LIST: alyson.genny.life:${INFINISPAN_PORT}
+      QUARKUS_INFINISPAN_CLIENT_SERVER_LIST: infinispan:${INFINISPAN_PORT}
       QUARKUS_INFINISPAN_CLIENT_USE_AUTH: "true"
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:${DATAINDEX_INTERNAL_PORT}/q/health/ready" ]
@@ -691,7 +691,7 @@ services:
       QUARKUS_INFINISPAN_CLIENT_AUTH_REALM: default
       QUARKUS_INFINISPAN_CLIENT_AUTH_USERNAME: genny
       QUARKUS_INFINISPAN_CLIENT_SASL_MECHANISM: DIGEST-MD5
-      QUARKUS_INFINISPAN_CLIENT_SERVER_LIST: alyson.genny.life:${INFINISPAN_PORT}
+      QUARKUS_INFINISPAN_CLIENT_SERVER_LIST: infinispan:${INFINISPAN_PORT}
       QUARKUS_INFINISPAN_CLIENT_USE_AUTH: "true"
       KOGITO_DATAINDEX_HTTP_URL: http://alyson.genny.life:${DATAINDEX_PORT}/graphql
       KOGITO_MANAGEMENT_CONSOLE_PROPS:  -Dkogito.consoles.keycloak.config.client-id=kogito-console-quarkus  -Dkogito.consoles.keycloak.config.realm=internmatch -Dkogito.consoles.keycloak.config.url=https://keycloak.gada.io/auth -Dkogito.consoles.keycloak.config.health-check-url=https://keycloak.gada.io/auth/realms/internmatch/.well-known/openid-configuration -Dkogito.svg.folder.path=/home/kogito/data/svg -Dkogito.consoles.keycloak.config.disable-health-check=false -Dkogito.consoles.keycloak.config.update-token-validity=30
