@@ -431,6 +431,7 @@ services:
       - kafka.bootstrap.servers=kafka:${KAFKA_PORT}
       - GENNY_KOGITO_SERVICE_URL=http://alyson2.genny.life:${GADAQ_PORT}
       - GENNY_KOGITO_DATAINDEX_HTTP_URL=http://alyson.genny.life:${DATAINDEX_PORT}
+      - GENNY_GADAQ_SERVICE_URL=http://alyson2.genny.life:${GADAQ_PORT}
     ports:
       - ${GADAQ_PORT}:${GADAQ_INTERNAL_PORT}
     networks:
