@@ -72,7 +72,7 @@ ENV_FILE=genny.env
                                         echo "The docker-compose product files are ${files}"
                                         ENV_FILE=$ENV_FILE docker-compose ${files} stop $@
                                         ENV_FILE=$ENV_FILE docker-compose ${files} rm -f $@
-                                        ENV_FILE=$ENV_FILE docker-compose ${files} up -d
+                                        ENV_FILE=$ENV_FILE docker-compose ${files} up -d $@
                                 else
                                 ENV_FILE=$ENV_FILE docker-compose  stop $@
                                 ENV_FILE=$ENV_FILE docker-compose   rm -f $@
