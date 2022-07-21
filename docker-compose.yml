@@ -386,7 +386,7 @@ services:
       test: ["CMD", "curl", "-f", "http://localhost:${BRIDGE_INTERNAL_PORT}/api/version"]
       interval: 2s
       timeout: 10s
-      retries: 50
+      retries: 120
 
   fyodor:
     image: gennyproject/fyodor:latest
@@ -411,7 +411,7 @@ services:
       test: ["CMD", "curl", "-f", "http://localhost:${FYODOR_INTERNAL_PORT}/api/version"]
       interval: 2s
       timeout: 10s
-      retries: 60
+      retries: 120
 
   gadaq:
     image: gennyproject/gadaq:latest
@@ -440,7 +440,7 @@ services:
       test: ["CMD", "curl", "-f", "http://localhost:${GADAQ_INTERNAL_PORT}/api/version"]
       interval: 2s
       timeout: 10s
-      retries: 60
+      retries: 120
 
   dropkick:
     image: gennyproject/dropkick:latest
@@ -487,13 +487,15 @@ services:
       - JAVA_OPTS=-server -Xms64m -Xmx1524m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=1524m
       - PROJECT_URL=http://alyson.genny.life
       - FYODOR_SERVICE_API=http://alyson.genny.life:${FYODOR_PORT}
+      - GENNY_KOGITO_SERVICE_URL=http://alyson2.genny.life:${LAUCHY_PORT}
+      - GENNY_KOGITO_DATAINDEX_HTTP_URL=http://alyson.genny.life:${DATAINDEX_PORT}
     networks:
       - mainproxy
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:${LAUCHY_INTERNAL_PORT}/q/health/ready"]
       interval: 2s
       timeout: 10s
-      retries: 60
+      retries: 120
 
   shleemy:
     deploy:
