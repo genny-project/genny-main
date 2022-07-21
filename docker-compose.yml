@@ -9,7 +9,7 @@ services:
     hostname: infinispan
     depends_on:
       schema-updater:
-       condition: service_completed_successfully
+       condition: service_healthy
       mysql:
        condition: service_healthy
     ports:
