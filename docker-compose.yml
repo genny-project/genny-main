@@ -634,9 +634,9 @@ services:
         -Djava.net.preferIPv4Stack=true -Djboss.modules.system.pkgs=org.jboss.byteman -Djava.awt.headless=true
     ports:
       - "8380:8080"
-      - "8987:8787"
-      - "10002:10002"
-      - "8849:8849"
+#      - "8987:8787"
+#      - "10002:10002"
+#      - "8849:8849"
   #  healthcheck:
   #    test: ["CMD", "curl", "-f", "http://localhost:8080/version"]
   #    interval: 10s
