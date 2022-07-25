@@ -1,0 +1,197 @@
+<infinispan
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="urn:infinispan:config:13.0 https://infinispan.org/schemas/infinispan-config-13.0.xsd
+                            urn:infinispan:server:13.0 https://infinispan.org/schemas/infinispan-server-13.0.xsd"
+      xmlns="urn:infinispan:config:13.0"
+      xmlns:server="urn:infinispan:server:13.0"
+      xmlns:table-jdbc-store="urn:infinispan:config:store:sql:13.0"
+      xmlns:string-keyed-jdbc-store="urn:infinispan:config:store:jdbc:13.0">
+
+   <cache-container name="default" statistics="true" default-cache="default_cache">
+      <global-state/>
+      <distributed-cache name="default_cache"/>
+      <!--<distributed-cache name="baseentity_attribute">
+         <encoding>
+            <key media-type="application/x-protostream"/>
+            <value media-type="application/x-protostream"/>
+         </encoding>
+         <persistence passivation="false">
+            <table-jdbc-store xmlns="urn:infinispan:config:store:sql:13.0" table-name="baseentity_attribute" dialect="MYSQL" db-major-version="8" db-minor-version="0">
+               <write-behind modification-queue-size="1024" fail-silently="false"/>
+               <connection-pool connection-url="jdbc:mysql://${persistence.db.server.ip:erstwhile-wolf-genny-mysql-svc}:${persistence.db.server.port:3310}/${persistence.db.name:gennydb}"
+                         username="${persistence.db.username:genny}"
+                         password="${persistence.db.password:password}"
+                         driver="com.mysql.cj.jdbc.Driver"/>
+               <schema message-name="baseentity_attribute_value"
+                         key-message-name="baseentity_attribute_key"
+                         package="genny"
+                         embedded-key="true"/>
+            </table-jdbc-store>
+         </persistence>
+      </distributed-cache>-->
+      <distributed-cache name="baseentity">
+         <encoding>
+            <key media-type="application/x-protostream"/>
+            <value media-type="application/x-protostream"/>
+         </encoding>
+         <persistence passivation="false">
+            <table-jdbc-store xmlns="urn:infinispan:config:store:sql:13.0" table-name="baseentity" dialect="MYSQL" db-major-version="8" db-minor-version="0">
+               <write-behind modification-queue-size="1024" fail-silently="false"/>
+               <connection-pool connection-url="jdbc:mysql://${persistence.db.server.ip:erstwhile-wolf-genny-mysql-svc}:${persistence.db.server.port:3310}/${persistence.db.name:gennydb}"
+                         username="${persistence.db.username:genny}"
+                         password="${persistence.db.password:password}"
+                         driver="com.mysql.cj.jdbc.Driver"/>
+               <schema message-name="BaseEntity"
+                         key-message-name="BaseEntityKey"
+                         package="life.genny.qwandaq.baseentity"
+                         embedded-key="true"/>
+            </table-jdbc-store>
+         </persistence>
+         <indexing enabled="true" storage="filesystem" path="baseentitys">
+            <indexed-entities>
+               <indexed-entity>life.genny.qwandaq.baseentity.BaseEntity</indexed-entity>
+            </indexed-entities>
+         </indexing>
+      </distributed-cache> 
+      <distributed-cache name="jobs" statistics="true">
+         <locking concurrency-level="1000" acquire-timeout="15000" striping="false"/>
+         <indexing enabled="true" storage="filesystem" path="data-index-jobs">
+            <indexed-entities>
+               <indexed-entity name="job">org.kie.kogito.index.model.Job</indexed-entity>
+            </indexed-entities>
+         </indexing>
+         <encoding>
+            <key media-type="application/x-protostream"/>
+            <value media-type="application/x-protostream"/>
+         </encoding>
+         <persistence>
+            <string-keyed-jdbc-store xmlns="urn:infinispan:config:store:jdbc:13.0" dialect="MYSQL" db-major-version="8" db-minor-version="0">
+               <connection-pool connection-url="jdbc:mysql://${persistence.db.server.ip:erstwhile-wolf-genny-mysql-svc}:${persistence.db.server.port:3310}/${persistence.db.name:gennydb}"
+                         username="${persistence.db.username:genny}"
+                         password="${persistence.db.password:password}"
+                         driver="com.mysql.cj.jdbc.Driver"/>
+               <string-keyed-table create-on-start="true" prefix="ispn_cache">
+                  <id-column name="id" type="VARCHAR(255)" />
+                  <data-column name="data" type="LONGBLOB" />
+                  <timestamp-column name="updated" type="BIGINT" />
+                  <segment-column name="segment" type="INT"/>
+               </string-keyed-table>
+            </string-keyed-jdbc-store>
+         </persistence>
+      </distributed-cache>
+      <distributed-cache name="processinstances" statistics="true">
+         <locking concurrency-level="1000" acquire-timeout="15000" striping="false"/>
+         <indexing enabled="true" storage="filesystem" path="data-index-processinstances">
+            <indexed-entities>
+               <indexed-entity name="processInstance">org.kie.kogito.index.model.ProcessInstance</indexed-entity>
+               <indexed-entity name="milestone">org.kie.kogito.index.model.Milestone</indexed-entity>
+               <indexed-entity name="processInstanceError">org.kie.kogito.index.model.ProcessInstanceError</indexed-entity>
+               <indexed-entity name="nodeInstance">org.kie.kogito.index.model.NodeInstance</indexed-entity>
+            </indexed-entities>
+         </indexing>
+         <encoding>
+            <key media-type="application/x-protostream"/>
+            <value media-type="application/x-protostream"/>
+         </encoding>
+         <persistence>
+            <string-keyed-jdbc-store xmlns="urn:infinispan:config:store:jdbc:13.0" dialect="MYSQL" db-major-version="8" db-minor-version="0">
+               <connection-pool connection-url="jdbc:mysql://${persistence.db.server.ip:erstwhile-wolf-genny-mysql-svc}:${persistence.db.server.port:3310}/${persistence.db.name:gennydb}"
+                         username="${persistence.db.username:genny}"
+                         password="${persistence.db.password:password}"
+                         driver="com.mysql.cj.jdbc.Driver"/>
+               <string-keyed-table create-on-start="true" prefix="ispn_cache">
+                  <id-column name="id" type="VARCHAR(255)" />
+                  <data-column name="data" type="LONGBLOB" />
+                  <timestamp-column name="updated" type="BIGINT" />
+                  <segment-column name="segment" type="INT"/>
+               </string-keyed-table>
+            </string-keyed-jdbc-store>
+         </persistence>
+      </distributed-cache>
+      <distributed-cache name="usertaskinstances" statistics="true">
+         <locking concurrency-level="1000" acquire-timeout="15000" striping="false"/>
+         <indexing enabled="true" storage="filesystem" path="data-index-usertaskinstances">
+            <indexed-entities>
+               <indexed-entity name="userTaskInstance">org.kie.kogito.index.model.UserTaskInstance</indexed-entity>
+               <indexed-entity name="attachment">org.kie.kogito.index.model.Attachment</indexed-entity>
+               <indexed-entity name="comment">org.kie.kogito.index.model.Comment</indexed-entity>
+            </indexed-entities>
+         </indexing>
+         <encoding>
+            <key media-type="application/x-protostream"/>
+            <value media-type="application/x-protostream"/>
+         </encoding>
+         <persistence>
+            <string-keyed-jdbc-store xmlns="urn:infinispan:config:store:jdbc:13.0" dialect="MYSQL" db-major-version="8" db-minor-version="0">
+               <connection-pool connection-url="jdbc:mysql://${persistence.db.server.ip:erstwhile-wolf-genny-mysql-svc}:${persistence.db.server.port:3310}/${persistence.db.name:gennydb}"
+                         username="${persistence.db.username:genny}"
+                         password="${persistence.db.password:password}"
+                         driver="com.mysql.cj.jdbc.Driver"/>
+               <string-keyed-table create-on-start="true" prefix="ispn_cache">
+                  <id-column name="id" type="VARCHAR(255)" />
+                  <data-column name="data" type="LONGBLOB" />
+                  <timestamp-column name="updated" type="BIGINT" />
+                  <segment-column name="segment" type="INT"/>
+               </string-keyed-table>
+            </string-keyed-jdbc-store>
+         </persistence>
+      </distributed-cache> 
+      <transport cluster="${infinispan.cluster.name:cluster}" stack="${infinispan.cluster.stack:tcp}" node-name="${infinispan.node.name:}"/>
+   </cache-container>
+
+   <server xmlns="urn:infinispan:server:13.0">
+      <interfaces>
+         <interface name="public">
+            <inet-address value="${infinispan.bind.address:0.0.0.0}"/>
+         </interface>
+      </interfaces>
+
+      <socket-bindings default-interface="public" port-offset="${infinispan.socket.binding.port-offset:0}">
+         <socket-binding name="default" port="${infinispan.bind.port:11222}"/>
+         <socket-binding name="memcached" port="11221"/>
+      </socket-bindings>
+      <security>
+         <credential-stores>
+            <credential-store name="credentials" path="credentials.pfx">
+               <clear-text-credential clear-text="secret"/>
+            </credential-store>
+         </credential-stores>
+         <security-realms>
+            <security-realm name="default">
+               <!-- Uncomment to enable TLS on the realm -->
+               <!-- server-identities>
+                  <ssl>
+                     <keystore path="application.keystore"
+                               password="password" alias="server"
+                               generate-self-signed-certificate-host="alyson.genny.life"/>
+                  </ssl>
+               </server-identities-->
+               <properties-realm groups-attribute="Roles">
+                  <user-properties path="users.properties"/>
+                  <group-properties path="groups.properties"/>
+               </properties-realm>
+            </security-realm>
+         </security-realms>
+         <!--<authorization>
+            <roles>
+               <role name="genny" permissions="ALL"/>
+            </roles>
+         </authorization>-->
+      </security>
+
+      <endpoints socket-binding="default" security-realm="default">
+        <endpoint>
+          <hotrod-connector>
+            <authentication>
+              <sasl mechanisms="SCRAM-SHA-512 SCRAM-SHA-384 SCRAM-SHA-256 SCRAM-SHA-1 DIGEST-SHA-512 DIGEST-SHA-384 DIGEST-SHA-256 DIGEST-SHA DIGEST-MD5 PLAIN"
+                 server-name="infinispan"
+                 qop="auth"/>
+            </authentication>
+          </hotrod-connector>
+          <rest-connector>
+            <authentication mechanisms="DIGEST"/>
+          </rest-connector>
+        </endpoint>
+      </endpoints>
+   </server>
+</infinispan>
