@@ -648,6 +648,7 @@ services:
 
   data-index:
     container_name: data-index
+    #image: quay.io/kiegroup/kogito-data-index-infinispan:1.23.0
     image: quay.io/kiegroup/kogito-data-index-infinispan:${KOGITO_ECOSYSTEM_VERSION}
     ports:
       - ${DATAINDEX_PORT}:${DATAINDEX_INTERNAL_PORT}
