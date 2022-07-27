@@ -69,7 +69,7 @@ done
 
 cd $parentdir/genny-main
 
-#./cyrusBuildProducts.sh
+./cyrusBuildProducts.sh
 
 cd $parentdir/genny-main
 echo "Finished building all."
