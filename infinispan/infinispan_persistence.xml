@@ -10,7 +10,7 @@
    <cache-container name="default" statistics="true" default-cache="default_cache">
       <global-state/>
       <distributed-cache name="default_cache"/>
-      <!--<distributed-cache name="baseentity_attribute">
+      <distributed-cache name="baseentity_attribute">
          <encoding>
             <key media-type="application/x-protostream"/>
             <value media-type="application/x-protostream"/>
@@ -22,13 +22,13 @@
                          username="${persistence.db.username:genny}"
                          password="${persistence.db.password:password}"
                          driver="com.mysql.cj.jdbc.Driver"/>
-               <schema message-name="baseentity_attribute_value"
-                         key-message-name="baseentity_attribute_key"
-                         package="genny"
+               <schema message-name="BaseEntityAttribute"
+                         key-message-name="BaseEntityAttributeKey"
+                         package="life.genny.qwandaq.baseentityattribute"
                          embedded-key="true"/>
             </table-jdbc-store>
          </persistence>
-      </distributed-cache>-->
+      </distributed-cache>
       <distributed-cache name="baseentity">
          <encoding>
             <key media-type="application/x-protostream"/>
