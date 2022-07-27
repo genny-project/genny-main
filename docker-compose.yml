@@ -98,7 +98,7 @@ services:
       interval: 2s
       timeout: 5s
       start_period: 3s
-      retries: 80
+      retries: 120
 
 #  schema-registry:
 #    image: confluentinc/cp-schema-registry:${KAFKA_ECOSYSTEM_VERSION}

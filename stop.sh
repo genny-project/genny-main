@@ -12,13 +12,20 @@ then
 		done
 		ENV_FILE=genny.env docker-compose ${files} stop $@
 		#ENV_FILE=genny.env docker-compose ${files} rm -f $@
+                docker stop kafka
+                docker rm -f kafka
 	else 
 		ENV_FILE=genny.env docker-compose stop $@
+                docker stop kafka
+                docker rm -f kafka
+                
 		#ENV_FILE=genny.env docker-compose rm -f $@
 	fi
 else
 	ENV_FILE=genny.env docker-compose stop $@
 	# ENV_FILE=genny.env docker-compose rm -f $@
+                docker stop kafka
+                docker rm -f kafka
 fi
 
 
