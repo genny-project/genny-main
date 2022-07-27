@@ -24,10 +24,15 @@
                          driver="com.mysql.cj.jdbc.Driver"/>
                <schema message-name="BaseEntityAttribute"
                          key-message-name="BaseEntityAttributeKey"
-                         package="life.genny.qwandaq.baseentityattribute"
+                         package="life.genny.qwandaq.persistence.baseentityattribute"
                          embedded-key="true"/>
             </table-jdbc-store>
          </persistence>
+         <indexing enabled="true" storage="filesystem" path="baseentityattributes">
+            <indexed-entities>
+               <indexed-entity>life.genny.qwandaq.persistence.baseentityattribute.BaseEntityAttribute</indexed-entity>
+            </indexed-entities>
+         </indexing>
       </distributed-cache>
       <distributed-cache name="baseentity">
          <encoding>
@@ -43,13 +48,13 @@
                          driver="com.mysql.cj.jdbc.Driver"/>
                <schema message-name="BaseEntity"
                          key-message-name="BaseEntityKey"
-                         package="life.genny.qwandaq.baseentity"
+                         package="life.genny.qwandaq.persistence.baseentity"
                          embedded-key="true"/>
             </table-jdbc-store>
          </persistence>
          <indexing enabled="true" storage="filesystem" path="baseentitys">
             <indexed-entities>
-               <indexed-entity>life.genny.qwandaq.baseentity.BaseEntity</indexed-entity>
+               <indexed-entity>life.genny.qwandaq.persistence.baseentity.BaseEntity</indexed-entity>
             </indexed-entities>
          </indexing>
       </distributed-cache> 
