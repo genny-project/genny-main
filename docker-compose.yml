@@ -428,7 +428,7 @@ services:
     environment:
       - INFINISPAN_URL=infinispan:${INFINISPAN_PORT}
       - INFINISPAN_CLIENT_INTELLIGENCE=BASIC
-      - FYODOR_SERVICE_API=http://fyodor:${FYODOR_INTERNAL_PORT}
+      - FYODOR_SERVICE_API=http://alyson.genny.life:${FYODOR_PORT}
       - GENNY_KAFKA_URL=kafka:${KAFKA_PORT}
       - kafka.bootstrap.servers=kafka:${KAFKA_PORT}
       - GENNY_KOGITO_SERVICE_URL=http://alyson2.genny.life:${GADAQ_PORT}
