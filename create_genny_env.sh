@@ -40,7 +40,7 @@ docker volume create mysql_data
 source $GENNY_ENV_FILE
 
 #create env file
-KOGITO_VERSION=1.24.0
+KOGITO_VERSION=1.25.0
 PERSISTENCE_FOLDER=./persistence/protobuf
 KOGITO_TRAVEL_AGENCY_PERSISTENCE=../gennyq/kogitoq/extended/travels/target/classes/META-INF/resources/persistence/protobuf
 KOGITO_GADAQ_PERSISTENCE=../gennyq/kogitoq/gadaq/target/classes/META-INF/resources/persistence/protobuf
