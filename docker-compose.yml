@@ -413,7 +413,7 @@ services:
       - mainproxy
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:${FYODOR_INTERNAL_PORT}/api/version"]
-      interval: 5s
+      interval: 10s
       timeout: 20s
       retries: 120
 

@@ -1,5 +1,5 @@
 syntax = "proto2"; 
-package life.genny.internmatch.application.application; 
+package life.genny.internmatch.application; 
 import "kogito-index.proto";
 import "kogito-types.proto";
 option kogito_model = "Application";
@@ -7,7 +7,7 @@ option kogito_id = "application";
 
 /* @Indexed */ 
 message Application { 
-	option java_package = "life.genny.internmatch.application";
+	option java_package = "life.genny.internmatch";
 	/* @Field(index = Index.NO, store = Store.YES) @SortableField
  @VariableInfo(tags="input,required") */ 
 	optional QEventMessage eventMessage = 1; 
