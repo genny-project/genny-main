@@ -214,7 +214,7 @@ services:
       - /var/run/docker.sock:/tmp/docker.sock:ro
 
   imageproxy:
-    image: willnorris/imageproxy:${IMAGE_PROXY}
+    image: willnorris/imageproxy:${IMAGE_PROXY_VERSION}
     container_name: imageproxy
     ports:
       - ${IMAGEPROXY_PORT}:${IMAGEPROXY_INTERNAL_PORT}
