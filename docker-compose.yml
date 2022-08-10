@@ -214,7 +214,7 @@ services:
       - /var/run/docker.sock:/tmp/docker.sock:ro
 
   imageproxy:
-    image: willnorris/imageproxy:${IMAGE_PROXY}
+    image: willnorris/imageproxy:${IMAGE_PROXY_VERSION}
     container_name: imageproxy
     ports:
       - ${IMAGEPROXY_PORT}:${IMAGEPROXY_INTERNAL_PORT}
@@ -384,6 +384,8 @@ services:
       - ${BRIDGE3_PORT}:${BRIDGE3_PORT}
       - ${BRIDGE4_PORT}:${BRIDGE4_PORT}
       - ${BRIDGE5_PORT}:${BRIDGE5_PORT}
+      - ${BRIDGE_GRPC_MAIN_PORT}:${BRIDGE_GRPC_MAIN_PORT}
+      - ${BRIDGE_GRPC_DEBUG_PORT}:${BRIDGE_GRPC_DEBUG_PORT}
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:${BRIDGE_INTERNAL_PORT}/api/version"]
       interval: 2s
@@ -411,7 +413,7 @@ services:
       - mainproxy
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:${FYODOR_INTERNAL_PORT}/api/version"]
-      interval: 5s
+      interval: 10s
       timeout: 20s
       retries: 120
 

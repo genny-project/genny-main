@@ -178,8 +178,8 @@ while [ "$1" != "" ]; do
 	    ./create_genny_env.sh .env $ip >& /dev/null
 
 		#Start up zookeeper and kafka to force a single partition
-		ENV_FILE=genny.env docker-compose up -d zookeeper
-                ENV_FILE=genny.env docker-compose up -d kafka
+		ENV_FILE=genny.env docker-compose   up -d  --remove-orphans zookeeper  
+                ENV_FILE=genny.env docker-compose   up -d  --remove-orphans  kafka
                 sleep 5
                 ./force_kafka_to_1.sh
 
@@ -241,12 +241,12 @@ while [ "$1" != "" ]; do
                                                 fi
 					done
 					echo "The docker-compose product files are ${files}"
-					ENV_FILE=$ENV_FILE docker-compose ${files} up -d
+					ENV_FILE=$ENV_FILE docker-compose ${files}  up  --remove-orphans -d
 				else 
-					ENV_FILE=$ENV_FILE docker-compose  up -d
+					ENV_FILE=$ENV_FILE docker-compose   up  --remove-orphans -d
 				fi
 			else
-				ENV_FILE=$ENV_FILE docker-compose  up -d
+				ENV_FILE=$ENV_FILE docker-compose    up  --remove-orphans -d
 			fi
             ;;
         mysql )
