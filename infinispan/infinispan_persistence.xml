@@ -33,6 +33,7 @@
                <indexed-entity>life.genny.qwandaq.persistence.baseentityattribute.BaseEntityAttribute</indexed-entity>
             </indexed-entities>
          </indexing>
+         <memory storage="OFF_HEAP" max-size="1GB" when-full="REMOVE"/>
       </distributed-cache>
       <distributed-cache name="baseentity">
          <encoding>
@@ -57,6 +58,7 @@
                <indexed-entity>life.genny.qwandaq.persistence.baseentity.BaseEntity</indexed-entity>
             </indexed-entities>
          </indexing>
+         <memory storage="OFF_HEAP" max-size="512MB" when-full="REMOVE"/>
       </distributed-cache> 
       <distributed-cache name="jobs" statistics="true">
          <locking concurrency-level="1000" acquire-timeout="15000" striping="false"/>
