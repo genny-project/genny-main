@@ -406,6 +406,7 @@ services:
       - INFINISPAN_URL=infinispan:${INFINISPAN_PORT}
       - INFINISPAN_CLIENT_INTELLIGENCE=BASIC
       - GENNY_KAFKA_URL=kafka:${KAFKA_PORT}
+      - GENNY_MYSQL_FULL_URL=mysql:${MYSQL_PORT}/gennydb
       - kafka.bootstrap.servers=kafka:${KAFKA_PORT}
     ports:
       - ${FYODOR_PORT}:${FYODOR_INTERNAL_PORT}
@@ -429,6 +430,7 @@ services:
       - ${ENV_FILE}
     environment:
       - INFINISPAN_URL=infinispan:${INFINISPAN_PORT}
+      - QUARKUS_INFINISPAN_CLIENT_USE_SCHEMA_REGISTRATION=false
       - INFINISPAN_CLIENT_INTELLIGENCE=BASIC
       - FYODOR_SERVICE_API=http://alyson.genny.life:${FYODOR_PORT}
       - GENNY_KAFKA_URL=kafka:${KAFKA_PORT}
@@ -436,6 +438,7 @@ services:
       - GENNY_KOGITO_SERVICE_URL=http://alyson2.genny.life:${GADAQ_PORT}
       - GENNY_KOGITO_DATAINDEX_HTTP_URL=http://alyson.genny.life:${DATAINDEX_PORT}
       - GENNY_GADAQ_SERVICE_URL=http://alyson2.genny.life:${GADAQ_PORT}
+      - GENNY_MYSQL_FULL_URL=mysql:${MYSQL_PORT}/gennydb
     ports:
       - ${GADAQ_PORT}:${GADAQ_INTERNAL_PORT}
     networks:
