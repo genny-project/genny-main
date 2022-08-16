@@ -1,4 +1,7 @@
 #!/bin/bash
+
+./network-setup.sh
+
 #find all the projects
 rm -Rf ./rules/prj_*
 #cp -rp ../prj_genny/rules/rulesCurrent ./rules/
