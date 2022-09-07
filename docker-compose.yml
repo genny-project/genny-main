@@ -15,7 +15,7 @@ services:
     ports:
       - ${INFINISPAN_PORT}:${INFINISPAN_INTERNAL_PORT}
     environment:
-        JAVA_OPTS: " -Xms64m -Xmx4096m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=2048m -Dinfinispan.bind.address=0.0.0.0 -Dpersistence.db.server.ip=mysql -Dpersistence.db.server.port=${MYSQL_PORT} -Dpersistence.db.name=gennydb  -Dpersistence.db.username=genny -Dpersistence.db.password=password"
+        JAVA_OPTS: " -Xms64m -Xmx8192m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=2048m -Dinfinispan.bind.address=0.0.0.0 -Dpersistence.db.server.ip=mysql -Dpersistence.db.server.port=${MYSQL_PORT} -Dpersistence.db.name=gennydb  -Dpersistence.db.username=genny -Dpersistence.db.password=password -Drx3.buffer-size=256"
         USER: genny
         PASS: password
         ISPN_HOME: /opt/infinispan
