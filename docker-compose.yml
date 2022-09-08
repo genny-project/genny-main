@@ -530,7 +530,7 @@ services:
 
   messages:
     deploy:
-      replicas: 0
+      replicas: 1
     image: gennyproject/messages:latest
     container_name:  messages
     depends_on:
