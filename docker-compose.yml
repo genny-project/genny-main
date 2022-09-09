@@ -424,7 +424,7 @@ services:
     depends_on:
       fyodor:
         condition: service_healthy
-      kafka:
+      data-index:
         condition: service_healthy
     env_file:
       - ${ENV_FILE}
