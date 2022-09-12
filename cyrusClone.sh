@@ -24,10 +24,17 @@ done
 
 echo "Cloning from OutcomeLife"
 
-for value in prj_internmatch prj_mentormatch prj_stt prj_lojing gennyteer api2email
+for value in gennyteer api2email
 do
     echo $value
     git clone -b ${ver} git@github.com:OutcomeLife/$value
+done
+
+echo "Cloning from gada-io"
+for value in prj_internmatch prj_mentormatch prj_stt prj_lojing 
+do
+    echo $value
+    git clone -b ${ver} git@github.com:gada-io/$value
 done
 
 
