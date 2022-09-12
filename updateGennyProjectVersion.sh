@@ -12,6 +12,7 @@ NEW_VERSION=${2}
 GITHUB_TOKEN=${3}
 AUTH=genny-project
 PRIVATE_AUTH=OutcomeLife
+GADA_AUTH=gada-io
 
 # Concatenating
 NEW_BRANCH="${NEW_VERSION}"
@@ -46,6 +47,9 @@ repos3=("prj_stt" "prj_internmatch" "prj_mentormatch" "prj_lojing" "api2email")
 
 # repos4 in public org , only need branch update
 repos4=("kogitoq2")
+
+gadarepos=("prj_stt" "prj_internmatch" "prj_mentormatch" "prj_lojing")
+
 
 #repos5 in private org , only need branch update
 repos5=("genny-charts" "gennyteer")
@@ -135,6 +139,19 @@ for REPO in "${repos5[@]}"; do
 
 done
 
+for REPO in "${gadarepos[@]}"; do
+    # Create new branch
+    SHA=$(curl -H "Authorization: token $GITHUB_TOKEN" https://api.github.com/repos/${GADA_AUTH}/${REPO}/git/refs/heads/${PREVIOUS_BRANCH} | jq -r '.object.sha')
+    curl -X POST -H "Authorization: token $GITHUB_TOKEN"  -d  "{\"ref\": \"refs/heads/${NEW_BRANCH}\",\"sha\": \"$SHA\"}"  https://api.github.com/repos/${GADA_AUTH}/${REPO}/git/refs
+
+    # set default branch
+    curl -X PATCH -H "Authorization: token $GITHUB_TOKEN"  -d  "{\"name\": \"${REPO}\",\"default_branch\": \"$NEW_BRANCH\"}"  https://api.github.com/repos/${GADA_AUTH}/${REPO}
+
+    # set branch protection rule
+    curl  -X PUT -H "Authorization: token $GITHUB_TOKEN"  -H "Accept: application/vnd.github.luke-cage-preview+json"  https://api.github.com/repos/${GADA_AUTH}/${REPO}/branches/${NEW_BRANCH}/protection -d '{"required_status_checks":{"strict":true, "contexts":["continuous-integration/jenkins"]},"enforce_admins":false,"required_pull_request_reviews":{"required_approving_review_count":1}, "restrictions": null}'
+
+done
+
 echo "### Maven Update ###"
 
 if [ -z "$NEW_VERSION" ]
@@ -174,7 +191,16 @@ for REPO in "${repos3[@]}"; do
    git add .; git commit -m "Upgrade to ${NEW_BRANCH}"; git push --set-upstream origin ${NEW_BRANCH}
 done
 
-echo "### Alysom Version Update ###"
+for REPO in "${gadarepos[@]}"; do
+   echo $REPO
+   cd $parentdir/$REPO
+   git stash;git pull;git checkout ${NEW_BRANCH}
+   mvn versions:set -DnewVersion=${NEW_VERSION}
+   mvn versions:commit; mvn clean install
+   git add .; git commit -m "Upgrade to ${NEW_BRANCH}"; git push --set-upstream origin ${NEW_BRANCH}
+done
+
+echo "### Alyson Version Update ###"
 
 cd $parentdir/alyson
 
