@@ -19,7 +19,7 @@ done
 for value in prj_internmatch prj_stt   
 do
     echo $value
-    cd ../$value;git checkout -b ${ver} https://github.com/OutcomeLife/$value
+    cd ../$value;git checkout -b ${ver} https://github.com/gada-io/$value
     cd genny-main
 done
 
