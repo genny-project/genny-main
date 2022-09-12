@@ -31,7 +31,7 @@ then
     git pull;
 else
     cd ~/projects/genny;
-    git clone https://github.com/OutcomeLife/prj_internmatch.git;
+    git clone https://github.com/gada-io/prj_internmatch.git;
     cd ~/projects/genny/prj_internmatch;
 fi
 
