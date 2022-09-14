@@ -322,7 +322,7 @@ services:
 
   bootq:
     deploy:
-      replicas: 1
+      replicas: 0
     depends_on:
       mysql:
         condition: service_healthy
