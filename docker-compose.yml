@@ -352,7 +352,7 @@ services:
       - mainproxy
 
   bridge:
-    image: gennyproject/bridge:latest
+    image: gennyproject/bridge:${PROJECT_VERSION}
     depends_on:
       kafka:
         condition: service_healthy
@@ -393,7 +393,7 @@ services:
       retries: 120
 
   fyodor:
-    image: gennyproject/fyodor:latest
+    image: gennyproject/fyodor:${PROJECT_VERSION}
     container_name:  fyodor
     depends_on:
       infinispan:
@@ -418,7 +418,7 @@ services:
       retries: 120
 
   gadaq:
-    image: gennyproject/gadaq:latest
+    image: gennyproject/gadaq:${PROJECT_VERSION}
     container_name: gadaq
     depends_on:
       fyodor:
@@ -447,7 +447,7 @@ services:
       retries: 120
 
   dropkick:
-    image: gennyproject/dropkick:latest
+    image: gennyproject/dropkick:${PROJECT_VERSION}
     container_name:  dropkick
     depends_on:
       fyodor:
@@ -474,7 +474,7 @@ services:
       retries: 60
 
   lauchy:
-    image: gennyproject/lauchy:latest
+    image: gennyproject/lauchy:${PROJECT_VERSION}
     container_name: lauchy
     depends_on:
       fyodor:
@@ -504,7 +504,7 @@ services:
   shleemy:
     deploy:
       replicas: 0
-    image: gennyproject/shleemy:latest
+    image: gennyproject/shleemy:${PROJECT_VERSION}
     container_name: shleemy
     depends_on:
       fyodor:
@@ -528,7 +528,7 @@ services:
   messages:
     deploy:
       replicas: 1
-    image: gennyproject/messages:latest
+    image: gennyproject/messages:${PROJECT_VERSION}
     container_name:  messages
     depends_on:
       fyodor:
