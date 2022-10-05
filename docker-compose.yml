@@ -235,8 +235,9 @@ services:
       - REACT_BRIDGE_HOST=http://bridge.genny.life
       - NODE_ENV=production
       - CORS_URLS=http://10.123.123.123:${ALYSON_DEV_PORT}|http://internmatch.genny.life:${ALYSON_DEV_PORT}|
-      - realm=internmatch
+      - realm=${GENNY_KEYCLOAK_REALM}
       - ENV_KEYCLOAK_REDIRECTURI=https://keycloak-office.gada.io/auth
+      - GENNY_KEYCLOAK_REALM=gadatron
     env_file:
       - ${ENV_FILE}
     networks:
@@ -352,7 +353,7 @@ services:
       - mainproxy
 
   bridge:
-    image: gennyproject/bridge:${PROJECT_VERSION}
+    image: gennyproject/bridge:latest
     depends_on:
       kafka:
         condition: service_healthy
@@ -373,7 +374,7 @@ services:
       - MEDIA_PROXY_URL=https://alyson.genny.life/web/public
       # This is Bad Hard Coding
       # TODO: Fix this to be more dynamic
-      - realm=internmatch
+      - realm=${GENNY_KEYCLOAK_REALM}
     networks:
       - mainproxy
     ports:
@@ -393,7 +394,7 @@ services:
       retries: 120
 
   fyodor:
-    image: gennyproject/fyodor:${PROJECT_VERSION}
+    image: gennyproject/fyodor:latest
     container_name:  fyodor
     depends_on:
       infinispan:
@@ -418,7 +419,7 @@ services:
       retries: 120
 
   gadaq:
-    image: gennyproject/gadaq:${PROJECT_VERSION}
+    image: gennyproject/gadaq:latest
     container_name: gadaq
     depends_on:
       fyodor:
@@ -447,7 +448,7 @@ services:
       retries: 120
 
   dropkick:
-    image: gennyproject/dropkick:${PROJECT_VERSION}
+    image: gennyproject/dropkick:latest
     container_name:  dropkick
     depends_on:
       fyodor:
@@ -474,7 +475,7 @@ services:
       retries: 60
 
   lauchy:
-    image: gennyproject/lauchy:${PROJECT_VERSION}
+    image: gennyproject/lauchy:latest
     container_name: lauchy
     depends_on:
       fyodor:
@@ -504,7 +505,7 @@ services:
   shleemy:
     deploy:
       replicas: 0
-    image: gennyproject/shleemy:${PROJECT_VERSION}
+    image: gennyproject/shleemy:latest
     container_name: shleemy
     depends_on:
       fyodor:
@@ -528,7 +529,7 @@ services:
   messages:
     deploy:
       replicas: 1
-    image: gennyproject/messages:${PROJECT_VERSION}
+    image: gennyproject/messages:latest
     container_name:  messages
     depends_on:
       fyodor:
