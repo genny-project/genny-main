@@ -352,7 +352,7 @@ services:
       - mainproxy
 
   bridge:
-    image: gennyproject/bridge:10.2.0-obo
+    image: gennyproject/bridge:latest
     depends_on:
       kafka:
         condition: service_healthy
