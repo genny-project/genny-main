@@ -234,10 +234,9 @@ services:
       - VIRTUAL_PORT=${INTERNAL_PORT}
       - REACT_BRIDGE_HOST=http://bridge.genny.life
       - NODE_ENV=production
-      - CORS_URLS=http://10.123.123.123:${ALYSON_DEV_PORT}|http://internmatch.genny.life:${ALYSON_DEV_PORT}|http://gadatron.genny.life:${ALYSON_DEV_PORT}|
-      - realm=${GENNY_KEYCLOAK_REALM}
+      - CORS_URLS=http://10.123.123.123:${ALYSON_DEV_PORT}|http://internmatch.genny.life:${ALYSON_DEV_PORT}|
+      - realm=internmatch
       - ENV_KEYCLOAK_REDIRECTURI=https://keycloak-office.gada.io/auth
-      - GENNY_KEYCLOAK_REALM=${GENNY_KEYCLOAK_REALM}
     env_file:
       - ${ENV_FILE}
     networks:
@@ -365,7 +364,7 @@ services:
     env_file:
       - ${ENV_FILE}
     environment:
-      - CORS_URLS=http://10.123.123.123:${ALYSON_DEV_PORT}|http://internmatch.genny.life:${ALYSON_DEV_PORT}|http://gadatron.genny.life:${ALYSON_DEV_PORT}|
+      - CORS_URLS=http://10.123.123.123:${ALYSON_DEV_PORT}|http://internmatch.genny.life:${ALYSON_DEV_PORT}|
       - ENV_KEYCLOAK_REDIRECTURI=https://keycloak-office.gada.io/auth
       - GENNY_KAFKA_URL=kafka:${KAFKA_INTERNAL_PORT}
       - KAFKA_BOOTSTRAP_SERVERS=kafka:${KAFKA_INTERNAL_PORT}
@@ -374,7 +373,7 @@ services:
       - MEDIA_PROXY_URL=https://alyson.genny.life/web/public
       # This is Bad Hard Coding
       # TODO: Fix this to be more dynamic
-      - realm=${GENNY_KEYCLOAK_REALM}
+      - realm=internmatch
     networks:
       - mainproxy
     ports:
