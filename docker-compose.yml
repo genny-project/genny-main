@@ -223,7 +223,7 @@ services:
     command: -cache /tmp/imageproxy -addr 0.0.0.0:${IMAGEPROXY_INTERNAL_PORT} -scaleUp true
 
   alyson:
-    image: gennyproject/alyson:10.2.0-obo
+    image: gennyproject/alyson:latest
     container_name: alyson
     depends_on:
       - bridge
