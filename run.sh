@@ -7,6 +7,7 @@ if [ ! "$#" -eq 2 ]; then
 	exit 1;
 fi
 #find all the projects
+rm -Rf ./target/protobuf/*
 rm -Rf ./rules/prj_*
 #cp -rp ../prj_genny/rules/rulesCurrent ./rules/
 #mkdir rules
