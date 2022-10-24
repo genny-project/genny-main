@@ -10,6 +10,7 @@
    <cache-container name="default" statistics="true" default-cache="default_cache">
       <global-state/>
       <distributed-cache name="default_cache"/>
+
       <distributed-cache name="baseentity_attribute">
          <encoding>
             <key media-type="application/x-protostream"/>
@@ -28,7 +29,7 @@
                          embedded-key="true"/>
             </table-jdbc-store>
          </persistence>
-         <indexing enabled="true" storage="filesystem" path="baseentityattributes">
+         <indexing enabled="true" storage="filesystem" path="baseentityattributes" startup-mode="reindex">
             <indexed-entities>
                <indexed-entity>life.genny.qwandaq.persistence.baseentityattribute.BaseEntityAttribute</indexed-entity>
             </indexed-entities>
@@ -53,13 +54,14 @@
                          embedded-key="true"/>
             </table-jdbc-store>
          </persistence>
-	 <indexing enabled="true" storage="filesystem" path="baseentitys">
+         <indexing enabled="true" storage="filesystem" path="baseentitys" startup-mode="reindex">
             <indexed-entities>
                <indexed-entity>life.genny.qwandaq.persistence.baseentity.BaseEntity</indexed-entity>
             </indexed-entities>
          </indexing>
          <memory storage="OFF_HEAP" max-size="512MB" when-full="REMOVE"/>
-      </distributed-cache> 
+      </distributed-cache>
+
       <distributed-cache name="jobs" statistics="true">
          <locking concurrency-level="1000" acquire-timeout="15000" striping="false"/>
          <indexing enabled="true" storage="filesystem" path="data-index-jobs">
