@@ -29,7 +29,7 @@
             </table-jdbc-store>
          </persistence>
       </distributed-cache>-->
-      <distributed-cache name="baseentity">
+      <!-- <distributed-cache name="baseentity">
          <encoding>
             <key media-type="application/x-protostream"/>
             <value media-type="application/x-protostream"/>
@@ -51,8 +51,8 @@
             <indexed-entities>
                <indexed-entity>life.genny.qwandaq.baseentity.BaseEntity</indexed-entity>
             </indexed-entities>
-         </indexing>
-      </distributed-cache> 
+        </indexing>
+      </distributed-cache> -->
       <distributed-cache name="jobs" statistics="true">
          <locking concurrency-level="1000" acquire-timeout="15000" striping="false"/>
          <indexing enabled="true" storage="filesystem" path="data-index-jobs">
