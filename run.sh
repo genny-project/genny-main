@@ -7,6 +7,7 @@ if [ ! "$#" -eq 2 ]; then
 	exit 1;
 fi
 #find all the projects
+rm -Rf ./target/protobuf/*
 rm -Rf ./rules/prj_*
 #cp -rp ../prj_genny/rules/rulesCurrent ./rules/
 #mkdir rules
@@ -17,8 +18,11 @@ for i in ` find .. -mindepth 1 -maxdepth 1 -type d | grep prj  | awk -F "/" '{ p
 done
 
 #Copy all the protobufs, and svgs
+#PERSISTENCE_FOLDER=./target/protobuf2
 PERSISTENCE_FOLDER=./target/protobuf
 KOGITO_GADAQ_PERSISTENCE=../gennyq/kogitoq/gadaq/target/classes/META-INF/resources/persistence/protobuf
+KOGITO_GADAQ_PROTO=../gennyq/kogitoq/gadaq/target/classes/META-INF
+KOGITO_GADAQ_CLASSES=../gennyq/kogitoq/gadaq/target/classes
 
 mkdir -p $PERSISTENCE_FOLDER
 rm -Rf $PERSISTENCE_FOLDER/*
@@ -30,6 +34,21 @@ else
     echo "$KOGITO_GADAQ_PERSISTENCE does not exist. Have you compiled your GADAQ project?"
     exit 1
 fi
+
+#if [ -d "$KOGITO_GADAQ_PROTO" ]
+#   then
+#      cp $KOGITO_GADAQ_PROTO/*.proto $PERSISTENCE_FOLDER
+#   else
+#      echo "$KOGITO_GADAQ_PROTO does not exist. Have you compiled GADAQ project?"
+#   exit 1
+#fi
+#if [ -d "$KOGITO_GADAQ_CLASSES" ]
+#   then
+#      cp $KOGITO_GADAQ_CLASSES/*.proto $PERSISTENCE_FOLDER
+#   else
+#      echo "$KOGITO_GADAQ_CLASSES does not exist. Have you compiled GADAQ project?"
+#   exit 1
+#fi
 
 SVG_FOLDER=./svg
 
