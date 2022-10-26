@@ -25,11 +25,11 @@
                          driver="com.mysql.cj.jdbc.Driver"/>
                <schema message-name="BaseEntityAttribute"
                          key-message-name="BaseEntityAttributeKey"
-                         package="life.genny.qwandaq.serialization.baseentityattribute"
+                         package="life.genny.qwandaq.persistence.baseentityattribute"
                          embedded-key="true"/>
             </table-jdbc-store>
          </persistence>
-         <indexing enabled="true" storage="filesystem" path="baseentityattributes" startup-mode="reindex">
+	 <indexing enabled="true" storage="filesystem" path="indexes/baseentityattributes" startup-mode="reindex">
             <indexed-entities>
                <indexed-entity>life.genny.qwandaq.persistence.baseentityattribute.BaseEntityAttribute</indexed-entity>
             </indexed-entities>
@@ -50,11 +50,11 @@
                          driver="com.mysql.cj.jdbc.Driver"/>
                <schema message-name="BaseEntity"
                          key-message-name="BaseEntityKey"
-                         package="life.genny.qwandaq.serialization.baseentity"
+                         package="life.genny.qwandaq.persistence.baseentity"
                          embedded-key="true"/>
             </table-jdbc-store>
          </persistence>
-         <indexing enabled="true" storage="filesystem" path="baseentitys" startup-mode="reindex">
+	 <indexing enabled="true" storage="filesystem" path="indexes/baseentitys" startup-mode="reindex">
             <indexed-entities>
                <indexed-entity>life.genny.qwandaq.persistence.baseentity.BaseEntity</indexed-entity>
             </indexed-entities>
