@@ -61,9 +61,9 @@ services:
       interval: 2s
       timeout: 10s
       retries: 50
-    environment:
-      LOG_DIR: "/tmp/logs"
-      ZOOKEEPER_CLIENT_PORT: ${ZOOKEEPER_PORT}
+#    environment:
+#      LOG_DIR: "/tmp/logs"
+#      ZOOKEEPER_CLIENT_PORT: ${ZOOKEEPER_PORT}
 
   kafka:
     image: confluentinc/cp-kafka:${KAFKA_ECOSYSTEM_VERSION}
@@ -282,7 +282,7 @@ services:
     env_file:
       - ${ENV_FILE}
     environment:
-      - KEYCLOAKURL=${GENNY_KEYCLOAK_URL}/auth/realms
+      - KEYCLOAKURL=${GENNY_KEYCLOAK_URL}/realms
     networks:
       - mainproxy
     ports:
@@ -335,7 +335,7 @@ services:
     environment:
       - CLEANUP_TASK_AND_BEATTRFORM=FALSE
       - FULL_MYSQL_URL=mysql/gennydb?serverTimezone=UTC
-      - KEYCLOAK_AUTH_URL=${GENNY_KEYCLOAK_URL}/auth/realms/internmatch
+      - KEYCLOAK_AUTH_URL=${GENNY_KEYCLOAK_URL}/realms/${GENNY_REALM:internmatch}
     ports:
       - ${BOOTQ_PORT}:${BOOTQ_INTERNAL_PORT}
       - ${BOOTQ_DEBUG_PORT}:${BOOTQ_INTERNAL_DEBUG_PORT}
@@ -365,7 +365,7 @@ services:
       - ${ENV_FILE}
     environment:
       #- CORS_URLS=http://10.123.123.123:${ALYSON_DEV_PORT}|http://internmatch.genny.life:${ALYSON_DEV_PORT}|http://gadatron.genny.life:${ALYSON_DEV_PORT}|
-      - ENV_KEYCLOAK_REDIRECTURI=${GENNY_KEYCLOAK_URL}/auth
+      - ENV_KEYCLOAK_REDIRECTURI=${GENNY_KEYCLOAK_URL}
       - GENNY_KAFKA_URL=kafka:${KAFKA_INTERNAL_PORT}
       - KAFKA_BOOTSTRAP_SERVERS=kafka:${KAFKA_INTERNAL_PORT}
       - INFINISPAN_URL=alyson.genny.life:${INFINISPAN_PORT}
@@ -701,7 +701,7 @@ services:
       QUARKUS_INFINISPAN_CLIENT_SERVER_LIST: infinispan:${INFINISPAN_PORT}
       QUARKUS_INFINISPAN_CLIENT_USE_AUTH: "true"
       KOGITO_DATAINDEX_HTTP_URL: http://alyson.genny.life:${DATAINDEX_PORT}/graphql
-      KOGITO_MANAGEMENT_CONSOLE_PROPS:  -Dkogito.consoles.keycloak.config.client-id=kogito-console-quarkus  -Dkogito.consoles.keycloak.config.realm=internmatch -Dkogito.consoles.keycloak.config.url=https://keycloak-office.gada.io/auth -Dkogito.consoles.keycloak.config.health-check-url=https://keycloak-office.gada.io/auth/realms/internmatch/.well-known/openid-configuration -Dkogito.svg.folder.path=/home/kogito/data/svg -Dkogito.consoles.keycloak.config.disable-health-check=false -Dkogito.consoles.keycloak.config.update-token-validity=30
+      KOGITO_MANAGEMENT_CONSOLE_PROPS:  -Dkogito.consoles.keycloak.config.client-id=kogito-console-quarkus  -Dkogito.consoles.keycloak.config.realm=${GENNY_REALM} -Dkogito.consoles.keycloak.config.url=${GENNY_KEYCLOAK_URL} -Dkogito.consoles.keycloak.config.health-check-url=${GENNY_KEYCLOAK_URL}/realms/${GENNY_REALM}/.well-known/openid-configuration -Dkogito.svg.folder.path=/home/kogito/data/svg -Dkogito.consoles.keycloak.config.disable-health-check=false -Dkogito.consoles.keycloak.config.update-token-validity=30
 
   jobs-service:
     container_name: jobs-service
@@ -718,7 +718,7 @@ services:
       data-index:
         condition: service_started
     environment:
-      QUARKUS_INFINISPAN_CLIENT_USE_AUTH: "false"
+#      QUARKUS_INFINISPAN_CLIENT_USE_AUTH: "false"
       ENABLE_EVENTS: "true"
       QUARKUS_INFINISPAN_CLIENT_SERVER_LIST: infinispan:11222
       QUARKUS_INFINISPAN_CLIENT_USE_AUTH: "true"
@@ -741,7 +741,7 @@ services:
         condition: service_started
     environment:
       KOGITO_DATAINDEX_HTTP_URL: http://alyson.genny.life:${DATAINDEX_PORT}/graphql
-      KOGITO_TASK_CONSOLE_PROPS: -Dkogito.consoles.keycloak.config.client-id=kogito-console-quarkus -Dkogito.consoles.keycloak.config.realm=internmatch -Dkogito.consoles.keycloak.config.url=https://keycloak-office.gada.io/auth -Dkogito.consoles.keycloak.config.health-check-url=https://keycloak-office.gada.io/auth/realms/internmatch/.well-known/openid-configuration -Dkogito.consoles.keycloak.config.disable-health-check=false -Dkogito.consoles.keycloak.config.update-token-validity=30 
+      KOGITO_TASK_CONSOLE_PROPS: -Dkogito.consoles.keycloak.config.client-id=kogito-console-quarkus -Dkogito.consoles.keycloak.config.realm=${GENNY_REALM} -Dkogito.consoles.keycloak.config.url=${GENNY_KEYCLOAK_REALM} -Dkogito.consoles.keycloak.config.health-check-url=${GENNY_KEYCLOAK_URL}/realms/${GENNY_REALM}/.well-known/openid-configuration -Dkogito.consoles.keycloak.config.disable-health-check=false -Dkogito.consoles.keycloak.config.update-token-validity=30
     networks:
      - mainproxy
 
