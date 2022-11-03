@@ -1,31 +1,33 @@
-version: '2.3'
+version: '3.8'
 
 services:
 
+
   mysql:
-    image: mysql:8.0 
+    image:  mysql:${MYSQL_VERSION}
+    platform: linux/x86_64
     container_name: mysql
+    hostname: mysql
     environment:
       - MYSQL_URL=mysql
       - MYSQL_DB=gennydb
-      - MYSQL_PORT=3306
+      - MYSQL_PORT=${MYSQL_PORT}
       - MYSQL_ALLOW_EMPTY=
-      - MYSQL_RANDOM_ROOT_PASSWORD=no
       - MYSQL_DATABASE=gennydb
       - MYSQL_USER=genny
       - MYSQL_PASSWORD=password
       - MYSQL_ROOT_PASSWORD=password
       - ADMIN_USERNAME=admin
       - ADMIN_PASSWORD=password
-#    env_file:
-#      - ${ENV_FILE}
+    # env_file:
+    #   - ${ENV_FILE}
     volumes:
-      - mysql_data:/var/lib/mysql
+      - mysql_data:/var/lib/mysql:delegated
     networks:
       - mainproxy
     ports:
-      - 3310:3306
-    command: --sql_mode=""
+      - ${MYSQL_EXTERNAL_PORT}:${MYSQL_PORT}
+    command: --sql_mode="" --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --default-time-zone="+00:00"
     healthcheck:
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
       timeout: 20s
@@ -34,8 +36,16 @@ services:
 
 
 volumes:
+  abn_tmp:
   mysql_data:
+  minio_conf:
+  minio_data:
+  maildata:
+    driver: local
+  mailstate:
+    driver: local
 networks:
   mainproxy:
+    name: mp
     driver: bridge
 

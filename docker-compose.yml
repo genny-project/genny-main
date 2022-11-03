@@ -651,7 +651,6 @@ services:
 
   data-index:
     container_name: data-index
-    #image: quay.io/kiegroup/kogito-data-index-infinispan:1.23.0
     image: quay.io/kiegroup/kogito-data-index-infinispan:${KOGITO_ECOSYSTEM_VERSION}
     ports:
       - ${DATAINDEX_PORT}:${DATAINDEX_INTERNAL_PORT}
@@ -672,14 +671,14 @@ services:
       QUARKUS_INFINISPAN_CLIENT_AUTH_PASSWORD: password
       QUARKUS_INFINISPAN_CLIENT_AUTH_REALM: default
       QUARKUS_INFINISPAN_CLIENT_AUTH_USERNAME: genny
-      QUARKUS_INFINISPAN_CLIENT_SASL_MECHANISM: DIGEST-MD5
+  #    QUARKUS_INFINISPAN_CLIENT_SASL_MECHANISM: DIGEST-MD5
       QUARKUS_INFINISPAN_CLIENT_SERVER_LIST: infinispan:${INFINISPAN_PORT}
       QUARKUS_INFINISPAN_CLIENT_USE_AUTH: "true"
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:${DATAINDEX_INTERNAL_PORT}/q/health/ready" ]
       interval: 2s
       timeout: 10s
-      retries: 80
+      retries: 100
 
   management-console:
     container_name: management-console

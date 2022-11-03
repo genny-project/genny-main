@@ -220,9 +220,12 @@ while [ "$1" != "" ]; do
 					for p in "${products[@]}"
 					do
                                                 #copy across SVG and protos
+						#PERSISTENCE_FOLDER=target/protobuf2
 						PERSISTENCE_FOLDER=target/protobuf
 						SVG_FOLDER=svg
                                                 PRODUCT_PERSISTENCE=../products/prd_${p}/target/classes/META-INF/resources/persistence/protobuf
+                                                PRODUCT_PROTO=../products/prd_${p}/target/classes/META-INF
+                                                PRODUCT_CLASSES=../products/prd_${p}/target/classes
                                                 PRODUCT_SVG_FOLDER=../products/prd_${p}/target/classes/META-INF/processSVG
 						files="${files} -f ../products/prd_${p}/docker-compose.yml"
                                                 if [ -d "$PRODUCT_SVG_FOLDER" ]
@@ -230,15 +233,29 @@ while [ "$1" != "" ]; do
                                                    cp $PRODUCT_SVG_FOLDER/*.svg $SVG_FOLDER
                                                 else
                                                    echo "$PRODUCT_SVG_FOLDER does not exist. Have you compiled ${p} project?"
-                                                exit 1
+                                                #exit 1
                                                 fi
                                                 if [ -d "$PRODUCT_PERSISTENCE" ]
                                                 then
                                                    cp $PRODUCT_PERSISTENCE/* $PERSISTENCE_FOLDER
                                                 else
                                                    echo "$PRODUCT_PERSISTENCE does not exist. Have you compiled ${p} project?"
-                                                exit 1
+                                                #exit 1
                                                 fi
+                                                #if [ -d "$PRODUCT_PROTO" ]
+                                                #then
+                                                #   cp $PRODUCT_PROTO/*.proto $PERSISTENCE_FOLDER
+                                                #else
+                                                #   echo "$PRODUCT_PROTO does not exist. Have you compiled ${p} project?"
+                                                #exit 1
+                                                #fi
+                                                #if [ -d "$PRODUCT_CLASSES" ]
+                                                #then
+                                                #   cp $PRODUCT_CLASSES/*.proto $PERSISTENCE_FOLDER
+                                                #else
+                                                #   echo "$PRODUCT_CLASSES does not exist. Have you compiled ${p} project?"
+                                                #exit 1
+                                                #fi
 					done
 					echo "The docker-compose product files are ${files}"
 					ENV_FILE=$ENV_FILE docker-compose ${files}  up  --remove-orphans -d
