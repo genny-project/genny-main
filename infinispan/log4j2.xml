@@ -70,7 +70,7 @@
 
   <Loggers>
     <Root level="INFO">
-      <AppenderRef ref="STDOUT" level="DEBUG"/>
+      <AppenderRef ref="STDOUT" level="INFO"/>
 
       <!-- Uncomment just one of the two lines bellow to use alternatively JSON logging or plain-text logging to file-->
       <AppenderRef ref="FILE"/>
