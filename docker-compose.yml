@@ -443,7 +443,7 @@ services:
       - mainproxy
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:${GADAQ_INTERNAL_PORT}/api/version"]
-      interval: 2s
+      interval: 3s
       timeout: 10s
       retries: 120
 
@@ -676,7 +676,7 @@ services:
       QUARKUS_INFINISPAN_CLIENT_USE_AUTH: "true"
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:${DATAINDEX_INTERNAL_PORT}/q/health/ready" ]
-      interval: 2s
+      interval: 3s
       timeout: 10s
       retries: 100
 
