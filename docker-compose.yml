@@ -366,8 +366,8 @@ services:
     environment:
       #- CORS_URLS=http://10.123.123.123:${ALYSON_DEV_PORT}|http://internmatch.genny.life:${ALYSON_DEV_PORT}|http://gadatron.genny.life:${ALYSON_DEV_PORT}|
       - ENV_KEYCLOAK_REDIRECTURI=${GENNY_KEYCLOAK_URL}
-      - GENNY_KAFKA_URL=kafka:${KAFKA_INTERNAL_PORT}
-      - KAFKA_BOOTSTRAP_SERVERS=kafka:${KAFKA_INTERNAL_PORT}
+      #- GENNY_KAFKA_URL=kafka:${KAFKA_INTERNAL_PORT}
+      #- KAFKA_BOOTSTRAP_SERVERS=kafka:${KAFKA_INTERNAL_PORT}
       - INFINISPAN_URL=alyson.genny.life:${INFINISPAN_PORT}
       - RULESSERVICE_URL=http://wildfly-rulesservice
       - MEDIA_PROXY_URL=https://alyson.genny.life/web/public
@@ -405,8 +405,8 @@ services:
     environment:
       - INFINISPAN_URL=infinispan:${INFINISPAN_PORT}
       - INFINISPAN_CLIENT_INTELLIGENCE=BASIC
-      - GENNY_KAFKA_URL=kafka:${KAFKA_PORT}
-      - kafka.bootstrap.servers=kafka:${KAFKA_PORT}
+      #- GENNY_KAFKA_URL=kafka:${KAFKA_PORT}
+      #- kafka.bootstrap.servers=kafka:${KAFKA_PORT}
     ports:
       - ${FYODOR_PORT}:${FYODOR_INTERNAL_PORT}
     networks:
@@ -431,8 +431,8 @@ services:
       - INFINISPAN_URL=infinispan:${INFINISPAN_PORT}
       - INFINISPAN_CLIENT_INTELLIGENCE=BASIC
       - FYODOR_SERVICE_API=http://alyson.genny.life:${FYODOR_PORT}
-      - GENNY_KAFKA_URL=kafka:${KAFKA_PORT}
-      - kafka.bootstrap.servers=kafka:${KAFKA_PORT}
+      #- GENNY_KAFKA_URL=kafka:${KAFKA_PORT}
+      #- kafka.bootstrap.servers=kafka:${KAFKA_PORT}
       - GENNY_KOGITO_SERVICE_URL=http://alyson2.genny.life:${GADAQ_PORT}
       - GENNY_KOGITO_DATAINDEX_HTTP_URL=http://alyson.genny.life:${DATAINDEX_PORT}
       - GENNY_GADAQ_SERVICE_URL=http://alyson2.genny.life:${GADAQ_PORT}
@@ -459,8 +459,8 @@ services:
     environment:
       - INFINISPAN_URL=alyson.genny.life:${INFINISPAN_PORT}
       - INFINISPAN_CLIENT_INTELLIGENCE=BASIC
-      - GENNY_KAFKA_URL=kafka:${KAFKA_PORT}
-      - kafka.bootstrap.servers=kafka:${KAFKA_PORT}
+      #- GENNY_KAFKA_URL=kafka:${KAFKA_PORT}
+      #- kafka.bootstrap.servers=kafka:${KAFKA_PORT}
       - FYODOR_SERVICE_API=http://alyson.genny.life:${FYODOR_PORT}
       - GENNY_KOGITO_DATAINDEX_HTTP_URL=http://alyson.genny.life:${DATAINDEX_PORT}
       - PROJECT_URL=http://alyson.genny.life:${DROPKICK_PORT}
@@ -484,8 +484,8 @@ services:
     env_file:
       - ${ENV_FILE}
     environment:
-      - GENNY_KAFKA_URL=kafka:${KAFKA_PORT}
-      - kafka.bootstrap.servers=kafka:${KAFKA_PORT}
+      #- GENNY_KAFKA_URL=kafka:${KAFKA_PORT}
+      #- kafka.bootstrap.servers=kafka:${KAFKA_PORT}
       - INFINISPAN_URL=alyson.genny.life:${INFINISPAN_PORT}
       - INFINISPAN_CLIENT_INTELLIGENCE=BASIC
       - JAVA_OPTS=-server -Xms64m -Xmx1524m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=1524m
@@ -724,7 +724,7 @@ services:
       QUARKUS_INFINISPAN_CLIENT_USE_AUTH: "true"
       QUARKUS_INFINISPAN_CLIENT_AUTH_USERNAME: "genny"
       QUARKUS_INFINISPAN_CLIENT_AUTH_PASSWORD: "password"
-      KOGITO_JOBS_PROPS: -Dquarkus-profile=events-support -Dquarkus.http.port=8080 -D%events-support.quarkus.http.port=8080 -D%events-support.kafka.bootstrap.servers=kafka:9092 -D%events-support.mp.messaging.outgoing.kogito-job-service-job-status-events.bootstrap.servers=kafka:9092 -Dkogito.jobs-service.persistence=infinispan -Dkogito.service.url=http://alyson.genny.life:${JOBS_CONSOLE_PORT} 
+      KOGITO_JOBS_PROPS: -Dquarkus-profile=events-support -Dquarkus.http.port=8080 -D%events-support.quarkus.http.port=8080 -D%events-support.kafka.bootstrap.servers=${GENNY_KAFKA_URL} -D%events-support.mp.messaging.outgoing.kogito-job-service-job-status-events.bootstrap.servers=kafka:9092 -Dkogito.jobs-service.persistence=infinispan -Dkogito.service.url=http://alyson.genny.life:${JOBS_CONSOLE_PORT}
     networks:
       - mainproxy
 
