@@ -70,5 +70,8 @@ mode=${2}
 #create the ip controlled network
 docker network create --gateway 172.18.0.1 --subnet 172.18.0.0/24 mainproxy
 
+echo "PROPAGATING CAPABILITIES SCHEMA"
+./databaseScripts/mysql.sh < ./databaseScripts/schmas/capabilities.sql
+
 ./run-setup.sh -p ${customercode} -r ${customercode} -n 10.123.123.123 ${mode} 
 ./say.sh "Genny System ${customercode} Finished Loading"
