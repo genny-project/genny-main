@@ -26,5 +26,4 @@ minio/
 tmp/
 **/*.zip
 **/*.svg
-**/*.sql
 
