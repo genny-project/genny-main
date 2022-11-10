@@ -335,7 +335,7 @@ services:
     environment:
       - CLEANUP_TASK_AND_BEATTRFORM=FALSE
       - FULL_MYSQL_URL=mysql/gennydb?serverTimezone=UTC
-      - KEYCLOAK_AUTH_URL=https://keycloak-bali.gada.io/realms/gada
+      - KEYCLOAK_AUTH_URL=${GENNY_KEYCLOAK_REALM:https\://keycloak-bali.gada.io}/realms/gada
     ports:
       - ${BOOTQ_PORT}:${BOOTQ_INTERNAL_PORT}
       - ${BOOTQ_DEBUG_PORT}:${BOOTQ_INTERNAL_DEBUG_PORT}
