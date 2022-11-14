@@ -27,3 +27,4 @@ tmp/
 **/*.zip
 **/*.svg
 **/*.sql
+.idea/
