@@ -3,6 +3,7 @@ version: '3.8'
 services:
 
   infinispan:
+    #image: quay.io/infinispan/server:14.0
     image: gennyproject/infinispan:${INFINISPAN_VERSION}
     #image: quay.io/infinispan/server:13.0.5.Final-2
     container_name: infinispan
@@ -19,10 +20,12 @@ services:
         USER: genny
         PASS: password
         ISPN_HOME: /opt/infinispan
+        MAKE_DATADIR_WRITABLE: true
     volumes:
       - ./infinispan/infinispan_persistence.xml:/opt/infinispan/server/conf/infinispan.xml
       - ./infinispan/rebuild_index.sh:/opt/infinispan/server/bin/rebuild_index.sh
       - ./infinispan/log4j2.xml:/opt/infinispan/server/conf/log4j2.xml
+      - ./infinispan/mysql-connector-java-8.0.28.jar:/opt/infinispan/lib/mysql-connector-java-8.0.28.jar
     networks:
       - mainproxy
     healthcheck:
