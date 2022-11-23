@@ -10,7 +10,8 @@
    <cache-container name="default" statistics="true" default-cache="default_cache">
       <global-state/>
       <distributed-cache name="default_cache"/>
-      <!--<distributed-cache name="baseentity_attribute">
+
+      <distributed-cache name="baseentity_attribute">
          <encoding>
             <key media-type="application/x-protostream"/>
             <value media-type="application/x-protostream"/>
@@ -22,13 +23,19 @@
                          username="${persistence.db.username:genny}"
                          password="${persistence.db.password:password}"
                          driver="com.mysql.cj.jdbc.Driver"/>
-               <schema message-name="baseentity_attribute_value"
-                         key-message-name="baseentity_attribute_key"
-                         package="genny"
+               <schema message-name="BaseEntityAttribute"
+                         key-message-name="BaseEntityAttributeKey"
+                         package="life.genny.qwandaq.persistence.baseentityattribute"
                          embedded-key="true"/>
             </table-jdbc-store>
          </persistence>
-      </distributed-cache>-->
+	 <indexing enabled="true" storage="filesystem" path="indexes/baseentityattributes" startup-mode="reindex">
+            <indexed-entities>
+               <indexed-entity>life.genny.qwandaq.persistence.baseentityattribute.BaseEntityAttribute</indexed-entity>
+            </indexed-entities>
+         </indexing>
+         <memory storage="OFF_HEAP" max-size="2GB" when-full="REMOVE"/>
+      </distributed-cache>
       <distributed-cache name="baseentity">
          <encoding>
             <key media-type="application/x-protostream"/>
@@ -43,16 +50,18 @@
                          driver="com.mysql.cj.jdbc.Driver"/>
                <schema message-name="BaseEntity"
                          key-message-name="BaseEntityKey"
-                         package="life.genny.qwandaq.baseentity"
+                         package="life.genny.qwandaq.persistence.baseentity"
                          embedded-key="true"/>
             </table-jdbc-store>
          </persistence>
-         <indexing enabled="true" storage="filesystem" path="baseentitys">
+	 <indexing enabled="true" storage="filesystem" path="indexes/baseentitys" startup-mode="reindex">
             <indexed-entities>
-               <indexed-entity>life.genny.qwandaq.baseentity.BaseEntity</indexed-entity>
+               <indexed-entity>life.genny.qwandaq.persistence.baseentity.BaseEntity</indexed-entity>
             </indexed-entities>
          </indexing>
-      </distributed-cache> 
+         <memory storage="OFF_HEAP" max-size="512MB" when-full="REMOVE"/>
+      </distributed-cache>
+
       <distributed-cache name="jobs" statistics="true">
          <locking concurrency-level="1000" acquire-timeout="15000" striping="false"/>
          <indexing enabled="true" storage="filesystem" path="data-index-jobs">

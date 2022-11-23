@@ -15,7 +15,7 @@ if [[ -n "$PRODUCT_CODES" ]]
                                         do
 						echo "Building prd_${p}"
                                                 #copy across SVG and protos
-                                                cd ${HOME}/projects/genny/products/prd_${p}
+                                                cd ../products/prd_${p}
 						./build.sh $clean;./build-docker.sh
                                         done
                                 fi

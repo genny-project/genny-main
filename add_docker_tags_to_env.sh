@@ -31,20 +31,3 @@ echo "Adding all tags from docker_tags.env..."
 add_tag_to_env docker_tags.env
 echo "Completed adding all tags from docker_tags.env."
 
-if [[ -n "$PRODUCT_CODES" ]]
-then
-  if [ -d "../products" ];
-  then
-    products=($(echo $PRODUCT_CODES | tr ":" "\n"))
-    for p in "${products[@]}"
-    do
-      #copy the product ports into .env
-      source ../products/prd_${p}/docker_tags.env
-      echo "Adding all ports from docker_tags.env of prd_${p}..."
-      add_tag_to_env ../products/prd_${p}/docker_tags.env
-      echo "Completed adding all ports from docker_tags.env of prd_${p}."
-   done
-  fi
-fi
-
-
