@@ -33,7 +33,6 @@
                <indexed-entity>life.genny.qwandaq.persistence.attribute.Attribute</indexed-entity>
             </indexed-entities>
          </indexing>
-         <memory storage="OFF_HEAP" max-size="2GB" when-full="REMOVE"/>
       </distributed-cache>
       <distributed-cache name="baseentity_attribute">
          <encoding>
