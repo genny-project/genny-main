@@ -371,6 +371,7 @@ services:
       - INFINISPAN_URL=alyson.genny.life:${INFINISPAN_PORT}
       - RULESSERVICE_URL=http://wildfly-rulesservice
       - MEDIA_PROXY_URL=https://alyson.genny.life/web/public
+      - GENNY_KEYCLOAK_URL=https://keycloak.gada.io/auth
       # This is Bad Hard Coding
       # TODO: Fix this to be more dynamic
       - realm=internmatch
@@ -406,6 +407,7 @@ services:
       - INFINISPAN_URL=infinispan:${INFINISPAN_PORT}
       - INFINISPAN_CLIENT_INTELLIGENCE=BASIC
       - GENNY_KAFKA_URL=kafka:${KAFKA_PORT}
+      - GENNY_KEYCLOAK_URL=https://keycloak.gada.io/auth
       - kafka.bootstrap.servers=kafka:${KAFKA_PORT}
     ports:
       - ${FYODOR_PORT}:${FYODOR_INTERNAL_PORT}
@@ -436,6 +438,7 @@ services:
       - GENNY_KOGITO_SERVICE_URL=http://alyson2.genny.life:${GADAQ_PORT}
       - GENNY_KOGITO_DATAINDEX_HTTP_URL=http://alyson.genny.life:${DATAINDEX_PORT}
       - GENNY_GADAQ_SERVICE_URL=http://alyson2.genny.life:${GADAQ_PORT}
+      - GENNY_KEYCLOAK_URL=https://keycloak.gada.io/auth
     ports:
       - ${GADAQ_PORT}:${GADAQ_INTERNAL_PORT}
     networks:
