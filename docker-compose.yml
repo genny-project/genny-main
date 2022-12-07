@@ -365,7 +365,7 @@ services:
       - ${ENV_FILE}
     environment:
       - CORS_URLS=http://10.123.123.123:${ALYSON_DEV_PORT}|http://internmatch.genny.life:${ALYSON_DEV_PORT}|
-      - ENV_KEYCLOAK_REDIRECTURI=https://keycloak.gada.io/auth
+      - ENV_KEYCLOAK_REDIRECTURI=https://keycloak-testing.gada.io/auth
       - GENNY_KAFKA_URL=kafka:${KAFKA_INTERNAL_PORT}
       - KAFKA_BOOTSTRAP_SERVERS=kafka:${KAFKA_INTERNAL_PORT}
       - INFINISPAN_URL=alyson.genny.life:${INFINISPAN_PORT}
