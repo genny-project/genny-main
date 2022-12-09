@@ -64,7 +64,6 @@ PDF_GEN_SERVICE_API_URL=http://camelot-pdfgenerator:7331
 ENV_SECURITY_KEY=WubbaLubbaDubDub
 ENV_SERVICE_PASSWORD=vRO+tCumKcZ9XbPWDcAXpU7tcSltpNpktHcgzRkxj8o=
 INFINISPAN_CLIENT_INTELLIGENCE=BASIC
-FYODOR_SERVICE_API=http://fyodor:8080
 GENNY_KAFKA_URL=kafka:9092
 kafka.bootstrap.servers=kafka:9092
 
