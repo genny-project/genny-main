@@ -284,7 +284,7 @@ services:
       - ${ENV_FILE}
     environment:
       # - KEYCLOAKURL=https://keycloak-office.gada.io/auth/realms
-      - KEYCLOAKURL=https://keycloak.gada.io/auth:${GENNY_KEYCLOAK_URL}/realms
+      - KEYCLOAKURL=https://keycloak-bali.gada.io/realms
     networks:
       - mainproxy
     ports:
@@ -338,7 +338,7 @@ services:
       - CLEANUP_TASK_AND_BEATTRFORM=FALSE
       - FULL_MYSQL_URL=mysql/gennydb?serverTimezone=UTC
       # - KEYCLOAK_AUTH_URL=https://keycloak-office.gada.io/auth/realms/internmatch
-      - KEYCLOAK_AUTH_URL=https://keycloak.gada.io/auth:${GENNY_KEYCLOAK_URL}/realms/${GENNY_KEYCLOAK_REALM}
+      - KEYCLOAK_AUTH_URL=https://keycloak-bali.gada.io/realms/${GENNY_KEYCLOAK_REALM}
     ports:
       - ${BOOTQ_PORT}:${BOOTQ_INTERNAL_PORT}
       - ${BOOTQ_DEBUG_PORT}:${BOOTQ_INTERNAL_DEBUG_PORT}
@@ -374,7 +374,7 @@ services:
       - INFINISPAN_URL=alyson.genny.life:${INFINISPAN_PORT}
       - RULESSERVICE_URL=http://wildfly-rulesservice
       - MEDIA_PROXY_URL=https://alyson.genny.life/web/public
-      - GENNY_KEYCLOAK_URL=https://keycloak.gada.io/auth
+      - GENNY_KEYCLOAK_URL=https://keycloak-bali.gada.io
       # This is Bad Hard Coding
       # TODO: Fix this to be more dynamic
       - realm=${GENNY_KEYCLOAK_REALM}
@@ -410,7 +410,7 @@ services:
       - INFINISPAN_URL=infinispan:${INFINISPAN_PORT}
       - INFINISPAN_CLIENT_INTELLIGENCE=BASIC
       - GENNY_KAFKA_URL=kafka:${KAFKA_PORT}
-      - GENNY_KEYCLOAK_URL=https://keycloak.gada.io/auth
+      - GENNY_KEYCLOAK_URL=https://keycloak-bali.gada.io
       - kafka.bootstrap.servers=kafka:${KAFKA_PORT}
     ports:
       - ${FYODOR_PORT}:${FYODOR_INTERNAL_PORT}
@@ -441,7 +441,7 @@ services:
       - GENNY_KOGITO_SERVICE_URL=http://alyson2.genny.life:${GADAQ_PORT}
       - GENNY_KOGITO_DATAINDEX_HTTP_URL=http://alyson.genny.life:${DATAINDEX_PORT}
       - GENNY_GADAQ_SERVICE_URL=http://alyson2.genny.life:${GADAQ_PORT}
-      - GENNY_KEYCLOAK_URL=https://keycloak.gada.io/auth
+      - GENNY_KEYCLOAK_URL=https://keycloak-bali.gada.io
     ports:
       - ${GADAQ_PORT}:${GADAQ_INTERNAL_PORT}
     networks:
