@@ -689,7 +689,6 @@ services:
   management-console:
     container_name: management-console
     image: quay.io/kiegroup/kogito-management-console:${KOGITO_ECOSYSTEM_VERSION}
-    platform: linux/amd64
     ports:
       - ${MANAGEMENT_CONSOLE_PORT}:${MANAGEMENT_CONSOLE_INTERNAL_PORT}
     depends_on:
@@ -716,7 +715,6 @@ services:
     deploy:
       replicas: 1
     image: quay.io/kiegroup/kogito-jobs-service-infinispan:${KOGITO_ECOSYSTEM_VERSION}
-    platform: linux/amd64
     ports:
       - ${JOBS_CONSOLE_PORT}:${JOBS_CONSOLE_INTERNAL_PORT}
     depends_on:
