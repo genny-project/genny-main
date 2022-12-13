@@ -368,7 +368,7 @@ services:
     env_file:
       - ${ENV_FILE}
     environment:
-      - CORS_URLS=http://10.123.123.123:${ALYSON_DEV_PORT}|http://internmatch.genny.life:${ALYSON_DEV_PORT}|http://gadatron.genny.life:${ALYSON_DEV_PORT}|
+      - CORS_URLS=http://10.123.123.123:${ALYSON_DEV_PORT}|http://internmatch.genny.life:${ALYSON_DEV_PORT}|http://gadatron.genny.life:${ALYSON_DEV_PORT}|http://obotron.genny.life:${ALYSON_DEV_PORT}|
       - ENV_KEYCLOAK_REDIRECTURI=${GENNY_KEYCLOAK_URL}
       - GENNY_KAFKA_URL=kafka:${KAFKA_INTERNAL_PORT}
       - KAFKA_BOOTSTRAP_SERVERS=kafka:${KAFKA_INTERNAL_PORT}
