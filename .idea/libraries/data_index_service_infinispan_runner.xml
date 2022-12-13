@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="data-index-service-infinispan-runner">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/data-index/data-index-service-infinispan-runner.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>
