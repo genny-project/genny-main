@@ -278,6 +278,7 @@ services:
 
   media-proxy:
     image: gennyproject/media-proxy:latest
+    platform: linux/amd64
     container_name: media-proxy
     env_file:
       - ${ENV_FILE}
@@ -411,6 +412,7 @@ services:
       - kafka.bootstrap.servers=kafka:${KAFKA_PORT}
     ports:
       - ${FYODOR_PORT}:${FYODOR_INTERNAL_PORT}
+      - 4242:${FYODOR_INTERNAL_PORT}
     networks:
       - mainproxy
     healthcheck:
@@ -609,7 +611,7 @@ services:
       - DETECT_RULE_CHANGES=TRUE
       - DISABLE_LAYOUT_LOADING=TRUE
       - DROOLS_LOGLEVEL=ERROR
-      - FYODOR_SERVICE_API=http://alyson.genny.life:4242
+      - FYODOR_SERVICE_API=http://alyson.genny.life:10070
       - FORCE_EVENTBUS_USE_API=FALSE
       - FORCE_CACHE_USE_API=FALSE
       - CACHE_SERVER_NAME=infinispan
@@ -688,6 +690,7 @@ services:
   management-console:
     container_name: management-console
     image: quay.io/kiegroup/kogito-management-console:${KOGITO_ECOSYSTEM_VERSION}
+    platform: linux/amd64
     ports:
       - ${MANAGEMENT_CONSOLE_PORT}:${MANAGEMENT_CONSOLE_INTERNAL_PORT}
     depends_on:
