@@ -367,14 +367,14 @@ services:
     env_file:
       - ${ENV_FILE}
     environment:
-      - CORS_URLS=http://10.123.123.123:${ALYSON_DEV_PORT}|http://internmatch.genny.life:${ALYSON_DEV_PORT}|http://gadatron.genny.life:${ALYSON_DEV_PORT}|
+      - CORS_URLS=http://10.123.123.123:${ALYSON_DEV_PORT}|http://internmatch.genny.life:${ALYSON_DEV_PORT}|http://gadatron.genny.life:${ALYSON_DEV_PORT}|http://obotron.genny.life:${ALYSON_DEV_PORT}|
       - ENV_KEYCLOAK_REDIRECTURI=${GENNY_KEYCLOAK_URL}
       - GENNY_KAFKA_URL=kafka:${KAFKA_INTERNAL_PORT}
       - KAFKA_BOOTSTRAP_SERVERS=kafka:${KAFKA_INTERNAL_PORT}
       - INFINISPAN_URL=alyson.genny.life:${INFINISPAN_PORT}
       - RULESSERVICE_URL=http://wildfly-rulesservice
       - MEDIA_PROXY_URL=https://alyson.genny.life/web/public
-      - GENNY_KEYCLOAK_URL=https://keycloak.gada.io/auth
+      - GENNY_KEYCLOAK_URL=https://keycloak-bali.gada.io
       # This is Bad Hard Coding
       # TODO: Fix this to be more dynamic
       - realm=${GENNY_KEYCLOAK_REALM}
