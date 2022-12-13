@@ -279,7 +279,6 @@ services:
 
   media-proxy:
     image: gennyproject/media-proxy:latest
-    platform: linux/amd64
     container_name: media-proxy
     env_file:
       - ${ENV_FILE}
