@@ -337,7 +337,6 @@ services:
     environment:
       - CLEANUP_TASK_AND_BEATTRFORM=FALSE
       - FULL_MYSQL_URL=mysql/gennydb?serverTimezone=UTC
-      # - KEYCLOAK_AUTH_URL=https://keycloak-office.gada.io/auth/realms/internmatch
       - KEYCLOAK_AUTH_URL=${GENNY_KEYCLOAK_URL}/realms/${GENNY_KEYCLOAK_REALM}
     ports:
       - ${BOOTQ_PORT}:${BOOTQ_INTERNAL_PORT}
@@ -413,6 +412,7 @@ services:
       - kafka.bootstrap.servers=kafka:${KAFKA_PORT}
     ports:
       - ${FYODOR_PORT}:${FYODOR_INTERNAL_PORT}
+      - 4242:${FYODOR_INTERNAL_PORT}
     networks:
       - mainproxy
     healthcheck:
@@ -423,6 +423,7 @@ services:
 
   gadaq:
     image: gennyproject/gadaq:latest
+    platform: linux/amd64
     container_name: gadaq
     depends_on:
       fyodor:
@@ -611,7 +612,7 @@ services:
       - DETECT_RULE_CHANGES=TRUE
       - DISABLE_LAYOUT_LOADING=TRUE
       - DROOLS_LOGLEVEL=ERROR
-      - FYODOR_SERVICE_API=http://alyson.genny.life:4242
+      - FYODOR_SERVICE_API=http://alyson.genny.life:10070
       - FORCE_EVENTBUS_USE_API=FALSE
       - FORCE_CACHE_USE_API=FALSE
       - CACHE_SERVER_NAME=infinispan
