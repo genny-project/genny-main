@@ -37,7 +37,7 @@ services:
 
   schema-updater:
     deploy:
-      replicas: 0
+      replicas: 1
     image: gennyproject/schema-updater:${SCHEMA_UPDATER_VERSION}
     container_name: schema-updater
     hostname: schema-updater
