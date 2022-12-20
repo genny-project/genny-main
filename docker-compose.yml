@@ -20,7 +20,7 @@ services:
         USER: genny
         PASS: password
         ISPN_HOME: /opt/infinispan
-        MAKE_DATADIR_WRITABLE: true
+        MAKE_DATADIR_WRITABLE: "true"
     volumes:
       - ./infinispan/infinispan_persistence.xml:/opt/infinispan/server/conf/infinispan.xml
       - ./infinispan/rebuild_index.sh:/opt/infinispan/server/bin/rebuild_index.sh

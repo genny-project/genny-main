@@ -2,3 +2,4 @@
 
 update_sqls/create_executed_scripts_tbl.sql
 update_sqls/update_baseentity_constraints.sql
+update_sqls/create_questions.sql
