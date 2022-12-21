@@ -59,14 +59,14 @@ ENV_FILE=genny.env
                                                    cp $PRODUCT_SVG_FOLDER/*.svg $SVG_FOLDER
                                                 else
                                                    echo "$PRODUCT_SVG_FOLDER does not exist. Have you saved svgs for ${p} project?"
-                                                exit 1
+                                                # exit 1
                                                 fi
                                                 if [ -d "$PRODUCT_PERSISTENCE" ]
                                                 then
                                                    cp $PRODUCT_PERSISTENCE/* $PERSISTENCE_FOLDER
                                                 else
                                                    echo "$PRODUCT_PERSISTENCE does not exist. Have you compiled ${p} project?"
-                                                exit 1
+                                                # exit 1
                                                 fi
                                         done
                                         echo "The docker-compose product files are ${files}"
