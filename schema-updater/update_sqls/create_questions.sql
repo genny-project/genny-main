@@ -1,14 +1,17 @@
-INSERT INTO attribute (dType, realm, code) VALUES ("Attribute", "lojing", "attributeCode");
-INSERT INTO attribute (dType, realm, code) VALUES ("Attribute", "lojing", "directions");
-INSERT INTO attribute (dType, realm, code) VALUES ("Attribute", "lojing", "helper");
-INSERT INTO attribute (dType, realm, code) VALUES ("Attribute", "lojing", "html");
-INSERT INTO attribute (dType, realm, code) VALUES ("Attribute", "lojing", "icon");
-INSERT INTO attribute (dType, realm, code) VALUES ("Attribute", "lojing", "mandatory");
-INSERT INTO attribute (dType, realm, code) VALUES ("Attribute", "lojing", "oneshot");
-INSERT INTO attribute (dType, realm, code) VALUES ("Attribute", "lojing", "placeholder");
-INSERT INTO attribute (dType, realm, code) VALUES ("Attribute", "lojing", "readonly");
-INSERT INTO attribute (dType, realm, code) VALUES ("Attribute", "lojing", "attribute_id");
+INSERT INTO attribute (dType, realm, code, className) VALUES ("Attribute", "lojing", "attributeCode", "java.lang.String");
+INSERT INTO attribute (dType, realm, code, className) VALUES ("Attribute", "lojing", "directions", "java.lang.String");
+INSERT INTO attribute (dType, realm, code, className) VALUES ("Attribute", "lojing", "helper", "java.lang.String");
+INSERT INTO attribute (dType, realm, code, className) VALUES ("Attribute", "lojing", "html", "java.lang.String");
+INSERT INTO attribute (dType, realm, code, className) VALUES ("Attribute", "lojing", "icon", "java.lang.String");
+INSERT INTO attribute (dType, realm, code, className) VALUES ("Attribute", "lojing", "mandatory", "java.lang.Boolean");
+INSERT INTO attribute (dType, realm, code, className) VALUES ("Attribute", "lojing", "oneshot", "java.lang.Boolean");
+INSERT INTO attribute (dType, realm, code, className) VALUES ("Attribute", "lojing", "placeholder", "java.lang.String");
+INSERT INTO attribute (dType, realm, code, className) VALUES ("Attribute", "lojing", "readonly", "java.lang.Boolean");
+INSERT INTO attribute (dType, realm, code, className) VALUES ("Attribute", "lojing", "attribute_id", "java.lang.Integer");
 
+-- "directions", "helper", "html", "icon", "mandatory", "oneshot", "placeholder", "readonly", "attribute_id"
+
+-- "parentCode", "childCode", "createOnTrigger", "dependency", "disabled", "formTrigger", "hidden", "version", "weight" 
 
 INSERT INTO baseentity (dtype, realm, code, name, created, updated, status, capreqs) 
 SELECT dtype, realm, code, name, created, updated, status, capreqs from question;
@@ -34,15 +37,15 @@ SELECT 'readonly',q.code,q.created,q.realm,q.updated,readonly,null,null,null,nul
 INSERT INTO baseentity_attribute (attributeCode, baseEntityCode, created, realm, updated, valueBoolean, valueDate, valueDateTime, valueDouble, valueInteger, valueLong, money, valueString, valueTime, weight,ATTRIBUTE_ID,BASEENTITY_ID,capreqs)
 SELECT 'attribute_id',q.code,q.created,q.realm,q.updated,null,null,null,null,null,attribute_id,null,null,null,null,a.id,b.id,q.capreqs from question q, baseentity b, attribute a where q.realm = b.realm and q.code = b.code and a.realm = q.realm and a.code = "attribute_id";  
 
-INSERT INTO attribute (dType, realm, code) VALUES ("Attribute", "lojing", "parentCode");
-INSERT INTO attribute (dType, realm, code) VALUES ("Attribute", "lojing", "childCode");
-INSERT INTO attribute (dType, realm, code) VALUES ("Attribute", "lojing", "createOnTrigger");
-INSERT INTO attribute (dType, realm, code) VALUES ("Attribute", "lojing", "dependency");
-INSERT INTO attribute (dType, realm, code) VALUES ("Attribute", "lojing", "disabled");
-INSERT INTO attribute (dType, realm, code) VALUES ("Attribute", "lojing", "formTrigger");
-INSERT INTO attribute (dType, realm, code) VALUES ("Attribute", "lojing", "hidden");
-INSERT INTO attribute (dType, realm, code) VALUES ("Attribute", "lojing", "version");
-INSERT INTO attribute (dType, realm, code) VALUES ("Attribute", "lojing", "weight");
+INSERT INTO attribute (dType, realm, code, className) VALUES ("Attribute", "lojing", "parentCode", "java.lang.String");
+INSERT INTO attribute (dType, realm, code, className) VALUES ("Attribute", "lojing", "childCode", "java.lang.String");
+INSERT INTO attribute (dType, realm, code, className) VALUES ("Attribute", "lojing", "createOnTrigger", "java.lang.String");
+INSERT INTO attribute (dType, realm, code, className) VALUES ("Attribute", "lojing", "dependency", "java.lang.String");
+INSERT INTO attribute (dType, realm, code, className) VALUES ("Attribute", "lojing", "disabled", "java.lang.Boolean");
+INSERT INTO attribute (dType, realm, code, className) VALUES ("Attribute", "lojing", "formTrigger", "java.lang.Boolean");
+INSERT INTO attribute (dType, realm, code, className) VALUES ("Attribute", "lojing", "hidden", "java.lang.Boolean");
+INSERT INTO attribute (dType, realm, code, className) VALUES ("Attribute", "lojing", "version", "java.lang.Double");
+INSERT INTO attribute (dType, realm, code, className) VALUES ("Attribute", "lojing", "weight", "java.lang.Double");
 
 INSERT INTO baseentity (dtype, realm, code, name, created, updated, status, capreqs)
 SELECT 'QuestionQuestion', realm, concat(sourceCode,'|',targetCode), concat(sourceCode,'|',targetCode), created, updated, 0, capreqs from question_question;
