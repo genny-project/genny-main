@@ -237,7 +237,6 @@ services:
       - CORS_URLS=http://10.123.123.123:${ALYSON_DEV_PORT}|http://internmatch.genny.life:${ALYSON_DEV_PORT}|http://gadatron.genny.life:${ALYSON_DEV_PORT}|
       - realm=${GENNY_KEYCLOAK_REALM}
       - ENV_KEYCLOAK_REDIRECTURI=${GENNY_KEYCLOAK_URL}
-      - GENNY_KEYCLOAK_REALM=${GENNY_KEYCLOAK_REALM}
     env_file:
       - ${ENV_FILE}
     networks:
@@ -408,7 +407,6 @@ services:
       - INFINISPAN_URL=infinispan:${INFINISPAN_PORT}
       - INFINISPAN_CLIENT_INTELLIGENCE=BASIC
       - GENNY_KAFKA_URL=kafka:${KAFKA_PORT}
-      - GENNY_KEYCLOAK_URL=${GENNY_KEYCLOAK_URL}
       - kafka.bootstrap.servers=kafka:${KAFKA_PORT}
     ports:
       - ${FYODOR_PORT}:${FYODOR_INTERNAL_PORT}
@@ -441,7 +439,6 @@ services:
       - GENNY_KOGITO_SERVICE_URL=http://alyson2.genny.life:${GADAQ_PORT}
       - GENNY_KOGITO_DATAINDEX_HTTP_URL=http://alyson.genny.life:${DATAINDEX_PORT}
       - GENNY_GADAQ_SERVICE_URL=http://alyson2.genny.life:${GADAQ_PORT}
-      - GENNY_KEYCLOAK_URL=${GENNY_KEYCLOAK_URL}
     ports:
       - ${GADAQ_PORT}:${GADAQ_INTERNAL_PORT}
     networks:
