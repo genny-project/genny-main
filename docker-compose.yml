@@ -278,11 +278,11 @@ services:
 
   media-proxy:
     image: gennyproject/media-proxy:latest
+    platform: linux/amd64
     container_name: media-proxy
     env_file:
       - ${ENV_FILE}
     environment:
-      # - KEYCLOAKURL=https://keycloak-office.gada.io/auth/realms
       - KEYCLOAKURL=${GENNY_KEYCLOAK_URL}/realms
     networks:
       - mainproxy
@@ -688,6 +688,7 @@ services:
   management-console:
     container_name: management-console
     image: quay.io/kiegroup/kogito-management-console:${KOGITO_ECOSYSTEM_VERSION}
+    platform: linux/amd64
     ports:
       - ${MANAGEMENT_CONSOLE_PORT}:${MANAGEMENT_CONSOLE_INTERNAL_PORT}
     depends_on:
