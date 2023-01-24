@@ -136,6 +136,33 @@
             </string-keyed-jdbc-store>
          </persistence>
       </distributed-cache>
+
+      <distributed-cache name="userstore">
+         <encoding>
+            <key media-type="application/x-protostream"/>
+            <value media-type="application/x-protostream"/>
+         </encoding>
+         <persistence passivation="false">
+            <table-jdbc-store xmlns="urn:infinispan:config:store:sql:13.0" table-name="userstore" dialect="MYSQL" db-major-version="8" db-minor-version="0">
+               <write-behind modification-queue-size="1024" fail-silently="false"/>
+               <connection-pool connection-url="jdbc:mysql://${persistence.db.server.ip:alyson.genny.life}:${persistence.db.server.port:3310}/${persistence.db.name:gennydb}"
+                         username="${persistence.db.username:genny}"
+                         password="${persistence.db.password:password}"
+                         driver="com.mysql.jdbc.Driver"/>
+               <schema message-name="UserStore"
+                         key-message-name="UserStoreKey"
+                         package="life.genny.qwandaq.persistence.userstore"
+                         embedded-key="true"/>
+            </table-jdbc-store>
+         </persistence>
+         <indexing enabled="true" storage="filesystem" path="userstores" startup-mode="reindex">
+            <indexed-entities>
+               <indexed-entity>life.genny.qwandaq.persistence.userstore.UserStore</indexed-entity>
+            </indexed-entities>
+         </indexing>
+         <memory storage="OFF_HEAP" max-size="512MB" when-full="REMOVE"/>
+      </distributed-cache>
+
       <transport cluster="${infinispan.cluster.name:cluster}" stack="${infinispan.cluster.stack:tcp}" node-name="${infinispan.node.name:}"/>
    </cache-container>
 
