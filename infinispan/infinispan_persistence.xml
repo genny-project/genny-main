@@ -46,15 +46,15 @@
                          username="${persistence.db.username:genny}"
                          password="${persistence.db.password:password}"
                          driver="com.mysql.cj.jdbc.Driver"/>
-               <schema message-name="BaseEntityAttribute"
-                         key-message-name="BaseEntityAttributeKey"
-                         package="life.genny.qwandaq.persistence.baseentityattribute"
+               <schema message-name="EntityAttribute"
+                         key-message-name="EntityAttributeKey"
+                         package="life.genny.qwandaq.persistence.entityattribute"
                          embedded-key="true"/>
             </table-jdbc-store>
          </persistence>
          <indexing enabled="true" path="baseentityattributes" startup-mode="reindex">
             <indexed-entities>
-               <indexed-entity>life.genny.qwandaq.persistence.baseentityattribute.BaseEntityAttribute</indexed-entity>
+               <indexed-entity>life.genny.qwandaq.persistence.entityattribute.EntityAttribute</indexed-entity>
             </indexed-entities>
          </indexing>
          <memory storage="OFF_HEAP" max-size="2GB" when-full="REMOVE"/>
