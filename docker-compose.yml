@@ -294,8 +294,8 @@ services:
     command: java -jar /service.jar
 
   mysql:
-    image:  mysql:${MYSQL_VERSION}
-    platform: linux/x86_64
+    image:  arm64v8/mysql:${MYSQL_VERSION}
+    #platform: linux/x86_64
     container_name: mysql
     hostname: mysql
     environment:
@@ -625,8 +625,6 @@ services:
     depends_on:
       data-index:
         condition: service_healthy
-      kafka:
-        condition: service_healthy
     volumes:
       - ./svg/:/home/kogito/data/svg/
     networks:
@@ -649,10 +647,6 @@ services:
     ports:
       - ${JOBS_CONSOLE_PORT}:${JOBS_CONSOLE_INTERNAL_PORT}
     depends_on:
-      kafka:
-        condition: service_started
-      infinispan:
-        condition: service_healthy
       data-index:
         condition: service_started
     environment:
