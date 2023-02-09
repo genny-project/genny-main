@@ -83,6 +83,54 @@
             </indexed-entities>
         </indexing>
       </distributed-cache>
+      <distributed-cache name="question">
+         <encoding>
+            <key media-type="application/x-protostream"/>
+            <value media-type="application/x-protostream"/>
+         </encoding>
+         <persistence passivation="false">
+            <table-jdbc-store xmlns="urn:infinispan:config:store:sql:14.0" table-name="question" dialect="MYSQL" db-major-version="8" db-minor-version="0">
+               <write-behind modification-queue-size="1024" fail-silently="false"/>
+               <connection-pool connection-url="jdbc:mysql://${persistence.db.server.ip:alyson.genny.life}:${persistence.db.server.port:3310}/${persistence.db.name:gennydb}"
+                         username="${persistence.db.username:genny}"
+                         password="${persistence.db.password:password}"
+                         driver="com.mysql.cj.jdbc.Driver"/>
+               <schema message-name="Question"
+                         key-message-name="QuestionKey"
+                         package="life.genny.qwandaq.persistence.question"
+                         embedded-key="true"/>
+            </table-jdbc-store>
+         </persistence>
+         <indexing enabled="true" path="questions" startup-mode="reindex">
+            <indexed-entities>
+               <indexed-entity>life.genny.qwandaq.persistence.question.Question</indexed-entity>
+            </indexed-entities>
+        </indexing>
+      </distributed-cache>
+      <distributed-cache name="questionquestion">
+         <encoding>
+            <key media-type="application/x-protostream"/>
+            <value media-type="application/x-protostream"/>
+         </encoding>
+         <persistence passivation="false">
+            <table-jdbc-store xmlns="urn:infinispan:config:store:sql:14.0" table-name="question_question" dialect="MYSQL" db-major-version="8" db-minor-version="0">
+               <write-behind modification-queue-size="1024" fail-silently="false"/>
+               <connection-pool connection-url="jdbc:mysql://${persistence.db.server.ip:alyson.genny.life}:${persistence.db.server.port:3310}/${persistence.db.name:gennydb}"
+                         username="${persistence.db.username:genny}"
+                         password="${persistence.db.password:password}"
+                         driver="com.mysql.cj.jdbc.Driver"/>
+               <schema message-name="QuestionQuestion"
+                         key-message-name="QuestionQuestionKey"
+                         package="life.genny.qwandaq.persistence.questionquestion"
+                         embedded-key="true"/>
+            </table-jdbc-store>
+         </persistence>
+         <indexing enabled="true" path="questionquestions" startup-mode="reindex">
+            <indexed-entities>
+               <indexed-entity>life.genny.qwandaq.persistence.questionquestion.QuestionQuestion</indexed-entity>
+            </indexed-entities>
+        </indexing>
+      </distributed-cache>
       <distributed-cache name="jobs" statistics="true">
          <locking concurrency-level="1000" acquire-timeout="15000" striping="false"/>
          <indexing enabled="true" storage="filesystem" path="data-index-jobs">
