@@ -3,14 +3,13 @@ version: '3.8'
 services:
 
   infinispan:
-    #image: quay.io/infinispan/server:14.0
     image: gennyproject/infinispan:${INFINISPAN_VERSION}
     #image: quay.io/infinispan/server:13.0.5.Final-2
     container_name: infinispan
     hostname: infinispan
     depends_on:
-      # schema-updater:
-      #   condition: service_healthy
+      #schema-updater:
+      # condition: service_healthy
       mysql:
        condition: service_healthy
     ports:
@@ -37,7 +36,7 @@ services:
 
   schema-updater:
     deploy:
-      replicas: 1
+      replicas: 0
     image: gennyproject/schema-updater:${SCHEMA_UPDATER_VERSION}
     container_name: schema-updater
     hostname: schema-updater
@@ -240,6 +239,7 @@ services:
       - NODE_ENV=production
       - CORS_URLS=http://10.123.123.123:${ALYSON_DEV_PORT}|http://internmatch.genny.life:${ALYSON_DEV_PORT}|
       - realm=internmatch
+      - ENV_KEYCLOAK_REDIRECTURI=${GENNY_KEYCLOAK_URL}
     env_file:
       - ${ENV_FILE}
     networks:
@@ -294,8 +294,8 @@ services:
     command: java -jar /service.jar
 
   mysql:
-    image:  arm64v8/mysql:${MYSQL_VERSION}
-    #platform: linux/x86_64
+    image:  mysql:${MYSQL_VERSION}
+    platform: linux/x86_64
     container_name: mysql
     hostname: mysql
     environment:
@@ -339,7 +339,7 @@ services:
     environment:
       - CLEANUP_TASK_AND_BEATTRFORM=FALSE
       - FULL_MYSQL_URL=mysql/gennydb?serverTimezone=UTC
-      - KEYCLOAK_AUTH_URL=https://keycloak-bai.gada.io/realms/internmatch
+      - KEYCLOAK_AUTH_URL=${GENNY_KEYCLOAK_URL}/realms/internmatch
     ports:
       - ${BOOTQ_PORT}:${BOOTQ_INTERNAL_PORT}
       - ${BOOTQ_DEBUG_PORT}:${BOOTQ_INTERNAL_DEBUG_PORT}
@@ -414,7 +414,6 @@ services:
       - QUARKUS_INFINISPAN_CLIENT_USE_SCHEMA_REGISTRATION:false
     ports:
       - ${FYODOR_PORT}:${FYODOR_INTERNAL_PORT}
-      - 4242:${FYODOR_INTERNAL_PORT}
     networks:
       - mainproxy
     healthcheck:
@@ -587,7 +586,6 @@ services:
   data-index:
     container_name: data-index
     image: quay.io/kiegroup/kogito-data-index-infinispan:${KOGITO_ECOSYSTEM_VERSION}
-    platform: linux/amd64
     ports:
       - ${DATAINDEX_PORT}:${DATAINDEX_INTERNAL_PORT}
     networks:
@@ -619,7 +617,6 @@ services:
   management-console:
     container_name: management-console
     image: quay.io/kiegroup/kogito-management-console:${KOGITO_ECOSYSTEM_VERSION}
-    platform: linux/amd64
     ports:
       - ${MANAGEMENT_CONSOLE_PORT}:${MANAGEMENT_CONSOLE_INTERNAL_PORT}
     depends_on:
