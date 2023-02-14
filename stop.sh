@@ -1,5 +1,5 @@
 #!/bin/bash
-source $ENV_FILE
+#source $ENV_FILE
 if [[ -n "$PRODUCT_CODES" ]] 
 then
 	if [ -d "../products" ];

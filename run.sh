@@ -74,5 +74,10 @@ docker network create --gateway 172.18.0.1 --subnet 172.18.0.0/24 mainproxy
 
 echo "PROPAGATING CAPABILITIES SCHEMA"
 ./databaseScripts/mysql.sh < ./databaseScripts/schemas/capabilities.sql
+./databaseScripts/mysql.sh < ./schema-updater/update_sqls/update_attribute_constraints.sql
+./databaseScripts/mysql.sh < ./schema-updater/update_sqls/update_baseentity_constraints.sql
+./databaseScripts/mysql.sh < ./schema-updater/update_sqls/update_baseentity_attribute_constraints.sql
+./databaseScripts/mysql.sh < ./schema-updater/update_sqls/update_question_constraints.sql
+./databaseScripts/mysql.sh < ./schema-updater/update_sqls/update_questionquestion_constraints.sql
 ./databaseScripts/mysql.sh < ./databaseScripts/schemas/userstore.sql
 ./say.sh "Genny System ${customercode} Finished Loading"
