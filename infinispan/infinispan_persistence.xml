@@ -107,6 +107,54 @@
             </indexed-entities>
         </indexing>
       </distributed-cache>
+      <distributed-cache name="datatype">
+         <encoding>
+            <key media-type="application/x-protostream"/>
+            <value media-type="application/x-protostream"/>
+         </encoding>
+         <persistence passivation="false">
+            <table-jdbc-store xmlns="urn:infinispan:config:store:sql:14.0" table-name="datatype" dialect="MYSQL" db-major-version="8" db-minor-version="0">
+               <write-behind modification-queue-size="1024" fail-silently="false"/>
+               <connection-pool connection-url="jdbc:mysql://${persistence.db.server.ip:alyson.genny.life}:${persistence.db.server.port:3310}/${persistence.db.name:gennydb}"
+                         username="${persistence.db.username:genny}"
+                         password="${persistence.db.password:password}"
+                         driver="com.mysql.cj.jdbc.Driver"/>
+               <schema message-name="DataType"
+                         key-message-name="DataTypeKey"
+                         package="life.genny.qwandaq.persistence.datatype"
+                         embedded-key="true"/>
+            </table-jdbc-store>
+         </persistence>
+         <indexing enabled="true" path="datatypes" startup-mode="reindex">
+            <indexed-entities>
+               <indexed-entity>life.genny.qwandaq.persistence.datatype.DataType</indexed-entity>
+            </indexed-entities>
+        </indexing>
+      </distributed-cache>
+      <distributed-cache name="validation">
+         <encoding>
+            <key media-type="application/x-protostream"/>
+            <value media-type="application/x-protostream"/>
+         </encoding>
+         <persistence passivation="false">
+            <table-jdbc-store xmlns="urn:infinispan:config:store:sql:14.0" table-name="validation" dialect="MYSQL" db-major-version="8" db-minor-version="0">
+               <write-behind modification-queue-size="1024" fail-silently="false"/>
+               <connection-pool connection-url="jdbc:mysql://${persistence.db.server.ip:alyson.genny.life}:${persistence.db.server.port:3310}/${persistence.db.name:gennydb}"
+                         username="${persistence.db.username:genny}"
+                         password="${persistence.db.password:password}"
+                         driver="com.mysql.cj.jdbc.Driver"/>
+               <schema message-name="Validation"
+                         key-message-name="ValidationKey"
+                         package="life.genny.qwandaq.persistence.validation"
+                         embedded-key="true"/>
+            </table-jdbc-store>
+         </persistence>
+         <indexing enabled="true" path="validations" startup-mode="reindex">
+            <indexed-entities>
+               <indexed-entity>life.genny.qwandaq.persistence.validation.Validation</indexed-entity>
+            </indexed-entities>
+        </indexing>
+      </distributed-cache>
       <distributed-cache name="questionquestion">
          <encoding>
             <key media-type="application/x-protostream"/>
