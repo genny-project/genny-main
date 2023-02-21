@@ -79,5 +79,7 @@ echo "PROPAGATING CAPABILITIES SCHEMA"
 ./databaseScripts/mysql.sh < ./schema-updater/update_sqls/update_baseentity_attribute_constraints.sql
 ./databaseScripts/mysql.sh < ./schema-updater/update_sqls/update_question_constraints.sql
 ./databaseScripts/mysql.sh < ./schema-updater/update_sqls/update_questionquestion_constraints.sql
+./databaseScripts/mysql.sh < ./schema-updater/update_sqls/update_validation_constraints.sql
+./databaseScripts/mysql.sh < ./schema-updater/update_sqls/create_datatype.sql
 ./databaseScripts/mysql.sh < ./databaseScripts/schemas/userstore.sql
 ./say.sh "Genny System ${customercode} Finished Loading"
