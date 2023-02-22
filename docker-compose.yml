@@ -19,10 +19,12 @@ services:
         USER: genny
         PASS: password
         ISPN_HOME: /opt/infinispan
+        MAKE_DATADIR_WRITABLE: "true"
     volumes:
       - ./infinispan/infinispan_persistence.xml:/opt/infinispan/server/conf/infinispan.xml
       - ./infinispan/rebuild_index.sh:/opt/infinispan/server/bin/rebuild_index.sh
       - ./infinispan/log4j2.xml:/opt/infinispan/server/conf/log4j2.xml
+      - ./infinispan/mysql-connector-java-8.0.28.jar:/opt/infinispan/lib/mysql-connector-java-8.0.28.jar
     networks:
       - mainproxy
     healthcheck:
@@ -88,6 +90,7 @@ services:
       KAFKA_PRODUCER_MAX_REQUEST_SIZE: 15728640
       KAFKA_REPLICA_FETCH_MAX_BYTES: 15728640
       KAFKA_CONSUMER_MAX_PARTITION_FETCH_BYTES: 15728640
+      KAFKA_MESSAGE_MAX_BYTES: 15728640
     networks:
       - mainproxy
     healthcheck:
@@ -408,6 +411,7 @@ services:
       - INFINISPAN_CLIENT_INTELLIGENCE=BASIC
       - GENNY_KAFKA_URL=kafka:${KAFKA_PORT}
       - kafka.bootstrap.servers=kafka:${KAFKA_PORT}
+      - QUARKUS_INFINISPAN_CLIENT_USE_SCHEMA_REGISTRATION:false
     ports:
       - ${FYODOR_PORT}:${FYODOR_INTERNAL_PORT}
       - 4242:${FYODOR_INTERNAL_PORT}
@@ -424,9 +428,7 @@ services:
     platform: linux/amd64
     container_name: gadaq
     depends_on:
-      fyodor:
-        condition: service_healthy
-      kafka:
+      data-index:
         condition: service_healthy
     env_file:
       - ${ENV_FILE}
@@ -439,6 +441,7 @@ services:
       - GENNY_KOGITO_SERVICE_URL=http://alyson2.genny.life:${GADAQ_PORT}
       - GENNY_KOGITO_DATAINDEX_HTTP_URL=http://alyson.genny.life:${DATAINDEX_PORT}
       - GENNY_GADAQ_SERVICE_URL=http://alyson2.genny.life:${GADAQ_PORT}
+      - QUARKUS_INFINISPAN_CLIENT_USE_SCHEMA_REGISTRATION:false
     ports:
       - ${GADAQ_PORT}:${GADAQ_INTERNAL_PORT}
     networks:
@@ -468,6 +471,7 @@ services:
       - GENNY_KOGITO_DATAINDEX_HTTP_URL=http://alyson.genny.life:${DATAINDEX_PORT}
       - PROJECT_URL=http://alyson.genny.life:${DROPKICK_PORT}
       - JAVA_OPTS=-server -Xms64m -Xmx1524m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=1524m
+      - QUARKUS_INFINISPAN_CLIENT_USE_SCHEMA_REGISTRATION:false
     networks:
       - mainproxy
     healthcheck:
@@ -498,6 +502,7 @@ services:
       - FYODOR_SERVICE_API=http://alyson.genny.life:${FYODOR_PORT}
       - GENNY_KOGITO_SERVICE_URL=http://alyson2.genny.life:${LAUCHY_PORT}
       - GENNY_KOGITO_DATAINDEX_HTTP_URL=http://alyson.genny.life:${DATAINDEX_PORT}
+      - QUARKUS_INFINISPAN_CLIENT_USE_SCHEMA_REGISTRATION:false
     networks:
       - mainproxy
     healthcheck:
@@ -579,80 +584,6 @@ services:
       mysql:
         condition: service_healthy
 
-  wildfly-rulesservice:
-    image: gennyproject/wildfly-rulesservice:latest
-    deploy:
-      replicas: 0
-    depends_on:
-      mysql:
-        condition: service_healthy
-      fyodor:
-        condition: service_healthy
-      kafka:
-        condition: service_healthy
-    container_name: wildfly-rulesservice
-    env_file:
-      - ${ENV_FILE}
-    volumes:
-      - ./rules:/rules:delegated
-      - ./google_credentials:/root/.genny/sheets.googleapis.com-java-quickstart/:delegated
-    environment:
-      - PROJECT_REALMS=${PROJECT_REALM}
-      - ADMIN_USERNAME=GENNY
-      - ADMIN_PASSWORD=GENNY
-      - BULKPULL=FALSE
-      - kafka.bootstrap.servers=alyson.genny.life:9092
-      - CERT_NAME=genny.life
-      - DDT_URL=http://alyson7.genny.life:8089
-      - DEBUG=TRUE
-      - DEBUG_SUSPEND=n
-      - DETECT_RULE_CHANGES=TRUE
-      - DISABLE_LAYOUT_LOADING=TRUE
-      - DROOLS_LOGLEVEL=ERROR
-      - FYODOR_SERVICE_API=http://alyson.genny.life:10070
-      - FORCE_EVENTBUS_USE_API=FALSE
-      - FORCE_CACHE_USE_API=FALSE
-      - CACHE_SERVER_NAME=infinispan
-      - FRAMES_ON_DEMAND=FALSE
-      - HAZELCAST_LOGLEVEL=ERROR
-      - HIDE_RULE_STATES=TRUE
-      - KEYCLOAK_LOGLEVEL=ERROR
-      - PERSIST_RULES=TRUE
-      - LOG_WORKFLOWS=FALSE
-      - RULES_DIR=/rules
-      - SEARCH_ALT=TRUE
-      - USE_CONCURRENCY_MSGS=FALSE
-      - USE_EVENT_QUEUE=TRUE
-      - USE_JMS=TRUE
-      - USE_EXECUTOR=TRUE
-      - USE_FYODOR=TRUE
-      - USE_SINGLETON=FALSE
-      - VIRTUAL_HOST=rulesservice.*
-      - VIRTUAL_PORT=8080
-      - VIRTUAL_PROTO=http
-      - XMX=4096m
-      - PDF_GEN_SERVICE_API_URL=http://internmatch.genny.life:7331
-      - GENNY_KOGITO_DATAINDEX_HTTP_URL=http://alyson.genny.life:8582
-      - GENNY_KOGITO_SERVICE_URL=http://alyson2.genny.life:6590
-      - JAVA_OPTS=-server
-        -Xms64m -Xmx4096m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=2048m
-        -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -XX:ParallelGCThreads=20 -XX:ConcGCThreads=5 -XX:InitiatingHeapOccupancyPercent=70 -XX:+ExplicitGCInvokesConcurrent
-        -Dsun.rmi.dgc.client.gcInterval=1800000 -Dsun.rmi.dgc.server.gcInterval=1800000
-        -Djava.net.preferIPv4Stack=true -Djboss.modules.system.pkgs=org.jboss.byteman -Djava.awt.headless=true
-    ports:
-      - "8380:8080"
-#      - "8987:8787"
-#      - "10002:10002"
-#      - "8849:8849"
-  #  healthcheck:
-  #    test: ["CMD", "curl", "-f", "http://localhost:8080/version"]
-  #    interval: 10s
-  #    timeout: 10s
-  #    retries: 30
-    restart: unless-stopped
-    networks:
-      - mainproxy
-
   data-index:
     container_name: data-index
     image: quay.io/kiegroup/kogito-data-index-infinispan:${KOGITO_ECOSYSTEM_VERSION}
@@ -694,8 +625,6 @@ services:
     depends_on:
       data-index:
         condition: service_healthy
-      kafka:
-        condition: service_healthy
     volumes:
       - ./svg/:/home/kogito/data/svg/
     networks:
@@ -718,14 +647,9 @@ services:
     ports:
       - ${JOBS_CONSOLE_PORT}:${JOBS_CONSOLE_INTERNAL_PORT}
     depends_on:
-      kafka:
-        condition: service_started
-      infinispan:
-        condition: service_healthy
       data-index:
         condition: service_started
     environment:
-      QUARKUS_INFINISPAN_CLIENT_USE_AUTH: "false"
       ENABLE_EVENTS: "true"
       QUARKUS_INFINISPAN_CLIENT_SERVER_LIST: infinispan:11222
       QUARKUS_INFINISPAN_CLIENT_USE_AUTH: "true"

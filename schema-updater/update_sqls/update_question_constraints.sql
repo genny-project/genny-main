@@ -1,0 +1,3 @@
+ALTER TABLE question ADD CONSTRAINT unique_key UNIQUE KEY(id);
+ALTER TABLE question DROP PRIMARY KEY;
+ALTER TABLE question ADD CONSTRAINT pri_key PRIMARY KEY (realm,code);

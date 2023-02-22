@@ -2,3 +2,9 @@
 
 update_sqls/create_executed_scripts_tbl.sql
 update_sqls/update_baseentity_constraints.sql
+update_sqls/update_attribute_constraints.sql
+update_sqls/update_baseentity_attribute_constraints.sql
+update_sqls/update_question_constraints.sql
+update_sqls/update_questionquestion_constraints.sql
+update_sqls/create_datatype.sql
+update_sqls/update_validation_constraints.sql
