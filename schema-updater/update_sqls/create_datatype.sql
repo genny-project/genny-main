@@ -10,13 +10,12 @@ CREATE TABLE IF NOT EXISTS datatype (
   PRIMARY KEY (realm,dttcode)
 ) ENGINE=InnoDB AUTO_INCREMENT=7092 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-INSERT INTO datatype (realm, dttcode, classname, component, inputmask, validation_codes)
-SELECT distinct realm, dttcode, classname, component, inputmask, SUBSTR(validation_list, 2, POSITION('"' IN SUBSTR(validation_list, 2, CHAR_LENGTH(validation_list)))-1) AS validation_codes  
-FROM `attribute` WHERE dttcode IS NOT NULL AND component IS NOT NULL AND 
-SUBSTR(validation_list, 2, POSITION('"' IN SUBSTR(validation_list, 2, CHAR_LENGTH(validation_list)))-1) IS NOT NULL;
+-- Delete old attributes
+DELETE FROM attribute WHERE code = 'ATT_PRI_DEFAULT_REDIRECT';
+DELETE FROM baseentity_attribute WHERE ATTRIBUTE_ID IN (SELECT id FROM attribute WHERE dttCode = "DTT_LEASE_TERM" AND component = 'text');
+DELETE FROM attribute WHERE dttCode = "DTT_LEASE_TERM" AND component = 'text';
 
 INSERT INTO datatype (realm, dttcode, classname, component, inputmask, validation_codes)
-SELECT distinct realm, dttcode, classname, 'text', inputmask, SUBSTR(validation_list, 2, POSITION('"' IN SUBSTR(validation_list, 2, CHAR_LENGTH(validation_list)))-1) AS validation_codes 
-FROM `attribute` WHERE dttcode IS NOT NULL AND component IS NULL AND 
+SELECT distinct realm, dttcode, classname, component, inputmask, SUBSTR(validation_list, 2, POSITION('"' IN SUBSTR(validation_list, 2, CHAR_LENGTH(validation_list)))-1) AS validation_codes
+FROM `attribute` WHERE dttcode IS NOT NULL AND component IS NOT NULL AND
 SUBSTR(validation_list, 2, POSITION('"' IN SUBSTR(validation_list, 2, CHAR_LENGTH(validation_list)))-1) IS NOT NULL;
-
