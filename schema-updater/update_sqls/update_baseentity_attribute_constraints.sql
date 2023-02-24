@@ -27,6 +27,6 @@ CREATE TABLE `baseentity_attribute` (
   PRIMARY KEY (`realm`,`baseEntityCode`,`attributeCode`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 
-INSERT INTO baseentity_attribute ATTRIBUTE_ID,attributeCode,BASEENTITY_ID,baseEntityCode,capreqs,confirmationFlag,created,icon,inferred,money,privacyFlag,readonly,realm,updated,valueBoolean,valueDate,valueDateTime,valueDouble,valueInteger,valueLong,valueString,valueTime,weight
+INSERT INTO baseentity_attribute (ATTRIBUTE_ID,attributeCode,BASEENTITY_ID,baseEntityCode,capreqs,confirmationFlag,created,icon,inferred,money,privacyFlag,readonly,realm,updated,valueBoolean,valueDate,valueDateTime,valueDouble,valueInteger,valueLong,valueString,valueTime,weight)
 SELECT ATTRIBUTE_ID,attributeCode,BASEENTITY_ID,baseEntityCode,capreqs,confirmationFlag,created,icon,inferred,money,privacyFlag,readonly,realm,updated,valueBoolean,valueDate,valueDateTime,valueDouble,valueInteger,valueLong,valueString,valueTime,weight FROM baseentity_attribute_bkp;
 
