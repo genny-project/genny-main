@@ -21,6 +21,7 @@ services:
         ISPN_HOME: /opt/infinispan
         MAKE_DATADIR_WRITABLE: "true"
     volumes:
+      - ./infinispan/data:/opt/infinispan/server/data
       - ./infinispan/infinispan_persistence.xml:/opt/infinispan/server/conf/infinispan.xml
       - ./infinispan/rebuild_index.sh:/opt/infinispan/server/bin/rebuild_index.sh
       - ./infinispan/log4j2.xml:/opt/infinispan/server/conf/log4j2.xml
