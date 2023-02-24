@@ -28,36 +28,11 @@
                          embedded-key="true"/>
             </table-jdbc-store>
          </persistence>
-         <indexing enabled="true" path="attributes" startup-mode="reindex">
+         <indexing enabled="true" path="attributes">
             <indexed-entities>
                <indexed-entity>life.genny.qwandaq.persistence.attribute.Attribute</indexed-entity>
             </indexed-entities>
          </indexing>
-      </distributed-cache>
-      <distributed-cache name="baseentity_attribute">
-         <encoding>
-            <key media-type="application/x-protostream"/>
-            <value media-type="application/x-protostream"/>
-         </encoding>
-         <persistence passivation="false">
-            <table-jdbc-store xmlns="urn:infinispan:config:store:sql:14.0" table-name="baseentity_attribute" dialect="MYSQL" db-major-version="8" db-minor-version="0">
-               <write-behind modification-queue-size="1024" fail-silently="false"/>
-               <connection-pool connection-url="jdbc:mysql://${persistence.db.server.ip:alyson.genny.life}:${persistence.db.server.port:3310}/${persistence.db.name:gennydb}"
-                         username="${persistence.db.username:genny}"
-                         password="${persistence.db.password:password}"
-                         driver="com.mysql.cj.jdbc.Driver"/>
-               <schema message-name="EntityAttribute"
-                         key-message-name="EntityAttributeKey"
-                         package="life.genny.qwandaq.persistence.entityattribute"
-                         embedded-key="true"/>
-            </table-jdbc-store>
-         </persistence>
-         <indexing enabled="true" path="baseentityattributes" startup-mode="reindex">
-            <indexed-entities>
-               <indexed-entity>life.genny.qwandaq.persistence.entityattribute.EntityAttribute</indexed-entity>
-            </indexed-entities>
-         </indexing>
-         <memory storage="OFF_HEAP" max-size="2GB" when-full="REMOVE"/>
       </distributed-cache>
       <distributed-cache name="baseentity">
          <encoding>
@@ -77,7 +52,7 @@
                          embedded-key="true"/>
             </table-jdbc-store>
          </persistence>
-	 <indexing enabled="true" path="baseentitys" startup-mode="reindex">
+	 <indexing enabled="true" path="baseentitys">
             <indexed-entities>
                <indexed-entity>life.genny.qwandaq.persistence.baseentity.BaseEntity</indexed-entity>
             </indexed-entities>
@@ -101,7 +76,7 @@
                          embedded-key="true"/>
             </table-jdbc-store>
          </persistence>
-         <indexing enabled="true" path="questions" startup-mode="reindex">
+         <indexing enabled="true" path="questions">
             <indexed-entities>
                <indexed-entity>life.genny.qwandaq.persistence.question.Question</indexed-entity>
             </indexed-entities>
@@ -125,7 +100,7 @@
                          embedded-key="true"/>
             </table-jdbc-store>
          </persistence>
-         <indexing enabled="true" path="datatypes" startup-mode="reindex">
+         <indexing enabled="true" path="datatypes">
             <indexed-entities>
                <indexed-entity>life.genny.qwandaq.persistence.datatype.DataType</indexed-entity>
             </indexed-entities>
@@ -149,7 +124,7 @@
                          embedded-key="true"/>
             </table-jdbc-store>
          </persistence>
-         <indexing enabled="true" path="validations" startup-mode="reindex">
+         <indexing enabled="true" path="validations">
             <indexed-entities>
                <indexed-entity>life.genny.qwandaq.persistence.validation.Validation</indexed-entity>
             </indexed-entities>
@@ -173,7 +148,7 @@
                          embedded-key="true"/>
             </table-jdbc-store>
          </persistence>
-         <indexing enabled="true" path="questionquestions" startup-mode="reindex">
+         <indexing enabled="true" path="questionquestions">
             <indexed-entities>
                <indexed-entity>life.genny.qwandaq.persistence.questionquestion.QuestionQuestion</indexed-entity>
             </indexed-entities>
@@ -262,7 +237,6 @@
             </string-keyed-jdbc-store>
          </persistence>
       </distributed-cache>
-
       <distributed-cache name="userstore">
          <encoding>
             <key media-type="application/x-protostream"/>
@@ -281,14 +255,38 @@
                          embedded-key="true"/>
             </table-jdbc-store>
          </persistence>
-         <indexing enabled="true" storage="filesystem" path="userstores" startup-mode="reindex">
+         <indexing enabled="true" storage="filesystem" path="userstores">
             <indexed-entities>
                <indexed-entity>life.genny.qwandaq.persistence.userstore.UserStore</indexed-entity>
             </indexed-entities>
          </indexing>
          <memory storage="OFF_HEAP" max-size="512MB" when-full="REMOVE"/>
       </distributed-cache>
-
+      <distributed-cache name="baseentity_attribute">
+         <encoding>
+            <key media-type="application/x-protostream"/>
+            <value media-type="application/x-protostream"/>
+         </encoding>
+         <persistence passivation="false">
+            <table-jdbc-store xmlns="urn:infinispan:config:store:sql:14.0" table-name="baseentity_attribute" dialect="MYSQL" db-major-version="8" db-minor-version="0">
+               <write-behind modification-queue-size="1024" fail-silently="false"/>
+               <connection-pool connection-url="jdbc:mysql://${persistence.db.server.ip:alyson.genny.life}:${persistence.db.server.port:3310}/${persistence.db.name:gennydb}"
+                         username="${persistence.db.username:genny}"
+                         password="${persistence.db.password:password}"
+                         driver="com.mysql.cj.jdbc.Driver"/>
+               <schema message-name="EntityAttribute"
+                         key-message-name="EntityAttributeKey"
+                         package="life.genny.qwandaq.persistence.entityattribute"
+                         embedded-key="true"/>
+            </table-jdbc-store>
+         </persistence>
+         <indexing enabled="true" path="baseentityattributes">
+            <indexed-entities>
+               <indexed-entity>life.genny.qwandaq.persistence.entityattribute.EntityAttribute</indexed-entity>
+            </indexed-entities>
+         </indexing>
+         <memory storage="OFF_HEAP" max-size="2GB" when-full="REMOVE"/>
+      </distributed-cache>
       <transport cluster="${infinispan.cluster.name:cluster}" stack="${infinispan.cluster.stack:tcp}" node-name="${infinispan.node.name:}"/>
    </cache-container>
 
