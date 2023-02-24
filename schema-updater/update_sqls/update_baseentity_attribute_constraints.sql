@@ -24,7 +24,7 @@ CREATE TABLE `baseentity_attribute` (
   `ATTRIBUTE_ID` bigint NOT NULL,
   `BASEENTITY_ID` bigint NOT NULL,
   `capreqs` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`realm`,`baseEntityCode`,`attributeCode`),
+  PRIMARY KEY (`realm`,`baseEntityCode`,`attributeCode`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 
 INSERT INTO baseentity_attribute SELECT * FROM baseentity_attribute_bkp;
