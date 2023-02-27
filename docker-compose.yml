@@ -21,6 +21,7 @@ services:
         ISPN_HOME: /opt/infinispan
         MAKE_DATADIR_WRITABLE: "true"
     volumes:
+      - ./infinispan/data/indexes:/opt/infinispan/server/data/indexes
       - ./infinispan/infinispan_persistence.xml:/opt/infinispan/server/conf/infinispan.xml
       - ./infinispan/rebuild_index.sh:/opt/infinispan/server/bin/rebuild_index.sh
       - ./infinispan/log4j2.xml:/opt/infinispan/server/conf/log4j2.xml
@@ -63,9 +64,6 @@ services:
       interval: 2s
       timeout: 10s
       retries: 50
-    environment:
-      LOG_DIR: "/tmp/logs"
-      ZOOKEEPER_CLIENT_PORT: ${ZOOKEEPER_PORT}
 
   kafka:
     image: confluentinc/cp-kafka:${KAFKA_ECOSYSTEM_VERSION}
