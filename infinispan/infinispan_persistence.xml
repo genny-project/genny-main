@@ -255,7 +255,7 @@
                          embedded-key="true"/>
             </table-jdbc-store>
          </persistence>
-         <indexing enabled="true" storage="filesystem" path="userstores">
+         <indexing enabled="true" storage="filesystem" path="indexes/userstores">
             <indexed-entities>
                <indexed-entity>life.genny.qwandaq.persistence.userstore.UserStore</indexed-entity>
             </indexed-entities>
@@ -280,7 +280,7 @@
                          embedded-key="true"/>
             </table-jdbc-store>
          </persistence>
-         <indexing enabled="true" storage="filesystem" path="baseentityattributes">
+         <indexing enabled="true" storage="filesystem" path="indexes/baseentityattributes">
             <indexed-entities>
                <indexed-entity>life.genny.qwandaq.persistence.entityattribute.EntityAttribute</indexed-entity>
             </indexed-entities>
