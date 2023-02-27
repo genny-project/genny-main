@@ -28,7 +28,7 @@
                          embedded-key="true"/>
             </table-jdbc-store>
          </persistence>
-         <indexing enabled="true" storage="filesystem" path="attributes">
+         <indexing enabled="true" storage="filesystem" path="indexes/attributes">
             <indexed-entities>
                <indexed-entity>life.genny.qwandaq.persistence.attribute.Attribute</indexed-entity>
             </indexed-entities>
@@ -52,7 +52,7 @@
                          embedded-key="true"/>
             </table-jdbc-store>
          </persistence>
-	 <indexing enabled="true" storage="filesystem" path="baseentitys">
+	 <indexing enabled="true" storage="filesystem" path="indexes/baseentitys">
             <indexed-entities>
                <indexed-entity>life.genny.qwandaq.persistence.baseentity.BaseEntity</indexed-entity>
             </indexed-entities>
@@ -76,7 +76,7 @@
                          embedded-key="true"/>
             </table-jdbc-store>
          </persistence>
-         <indexing enabled="true" storage="filesystem" path="questions">
+         <indexing enabled="true" storage="filesystem" path="indexes/questions">
             <indexed-entities>
                <indexed-entity>life.genny.qwandaq.persistence.question.Question</indexed-entity>
             </indexed-entities>
@@ -100,7 +100,7 @@
                          embedded-key="true"/>
             </table-jdbc-store>
          </persistence>
-         <indexing enabled="true" storage="filesystem" path="datatypes">
+         <indexing enabled="true" storage="filesystem" path="indexes/datatypes">
             <indexed-entities>
                <indexed-entity>life.genny.qwandaq.persistence.datatype.DataType</indexed-entity>
             </indexed-entities>
@@ -124,7 +124,7 @@
                          embedded-key="true"/>
             </table-jdbc-store>
          </persistence>
-         <indexing enabled="true" storage="filesystem" path="validations">
+         <indexing enabled="true" storage="filesystem" path="indexes/validations">
             <indexed-entities>
                <indexed-entity>life.genny.qwandaq.persistence.validation.Validation</indexed-entity>
             </indexed-entities>
@@ -148,7 +148,7 @@
                          embedded-key="true"/>
             </table-jdbc-store>
          </persistence>
-         <indexing enabled="true" storage="filesystem" path="questionquestions">
+         <indexing enabled="true" storage="filesystem" path="indexes/questionquestions">
             <indexed-entities>
                <indexed-entity>life.genny.qwandaq.persistence.questionquestion.QuestionQuestion</indexed-entity>
             </indexed-entities>
@@ -323,11 +323,6 @@
                </properties-realm>
             </security-realm>
          </security-realms>
-         <!--<authorization>
-            <roles>
-               <role name="genny" permissions="ALL"/>
-            </roles>
-         </authorization>-->
       </security>
 
       <endpoints socket-binding="default" security-realm="default">
