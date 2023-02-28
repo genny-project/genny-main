@@ -1,5 +1,7 @@
 -- gennydb.`datatype` definition
 
+DROP TABLE IF EXISTS datatype;
+
 CREATE TABLE IF NOT EXISTS datatype (
   realm varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   dttcode varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
