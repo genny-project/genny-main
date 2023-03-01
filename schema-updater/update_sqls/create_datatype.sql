@@ -22,3 +22,9 @@ INSERT INTO datatype (realm, dttcode, classname, typename, component, inputmask,
 SELECT distinct realm, dttcode, classname, typename, component, inputmask, SUBSTR(validation_list, 2, POSITION('"' IN SUBSTR(validation_list, 2, CHAR_LENGTH(validation_list)))-1) AS validation_codes
 FROM `attribute` WHERE dttcode IS NOT NULL AND component IS NOT NULL AND
 SUBSTR(validation_list, 2, POSITION('"' IN SUBSTR(validation_list, 2, CHAR_LENGTH(validation_list)))-1) IS NOT NULL;
+
+INSERT INTO datatype (realm, dttcode, classname, typename, component, inputmask, validation_codes)
+SELECT DISTINCT realm, dttcode, classname, typename, 'text', inputmask, SUBSTR(validation_list, 2, POSITION('"' IN SUBSTR(validation_list, 2, CHAR_LENGTH(validation_list)))-1) AS validation_codes 
+FROM `attribute` WHERE dttcode IS NOT NULL AND component IS NULL AND 
+SUBSTR(validation_list, 2, POSITION('"' IN SUBSTR(validation_list, 2, CHAR_LENGTH(validation_list)))-1) IS NOT NULL;
+
