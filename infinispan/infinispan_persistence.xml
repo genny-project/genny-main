@@ -11,13 +11,13 @@
       <global-state/>
       <distributed-cache name="default_cache"/>
       <distributed-cache name="attribute">
+         <locking concurrency-level="1000" acquire-timeout="15000" striping="false"/>
          <encoding>
             <key media-type="application/x-protostream"/>
             <value media-type="application/x-protostream"/>
          </encoding>
          <persistence passivation="false">
             <table-jdbc-store xmlns="urn:infinispan:config:store:sql:14.0" table-name="attribute" dialect="MYSQL" db-major-version="8" db-minor-version="0">
-               <write-behind modification-queue-size="1024" fail-silently="false"/>
                <connection-pool connection-url="jdbc:mysql://${persistence.db.server.ip:alyson.genny.life}:${persistence.db.server.port:3310}/${persistence.db.name:gennydb}"
                          username="${persistence.db.username:genny}"
                          password="${persistence.db.password:password}"
@@ -35,13 +35,13 @@
          </indexing>
       </distributed-cache>
       <distributed-cache name="baseentity">
+         <locking concurrency-level="1000" acquire-timeout="15000" striping="false"/>
          <encoding>
             <key media-type="application/x-protostream"/>
             <value media-type="application/x-protostream"/>
          </encoding>
          <persistence passivation="false">
             <table-jdbc-store xmlns="urn:infinispan:config:store:sql:14.0" table-name="baseentity" dialect="MYSQL" db-major-version="8" db-minor-version="0">
-               <write-behind modification-queue-size="1024" fail-silently="false"/>
                <connection-pool connection-url="jdbc:mysql://${persistence.db.server.ip:alyson.genny.life}:${persistence.db.server.port:3310}/${persistence.db.name:gennydb}"
                          username="${persistence.db.username:genny}"
                          password="${persistence.db.password:password}"
@@ -59,13 +59,13 @@
         </indexing>
       </distributed-cache>
       <distributed-cache name="question">
+         <locking concurrency-level="1000" acquire-timeout="15000" striping="false"/>
          <encoding>
             <key media-type="application/x-protostream"/>
             <value media-type="application/x-protostream"/>
          </encoding>
          <persistence passivation="false">
             <table-jdbc-store xmlns="urn:infinispan:config:store:sql:14.0" table-name="question" dialect="MYSQL" db-major-version="8" db-minor-version="0">
-               <write-behind modification-queue-size="1024" fail-silently="false"/>
                <connection-pool connection-url="jdbc:mysql://${persistence.db.server.ip:alyson.genny.life}:${persistence.db.server.port:3310}/${persistence.db.name:gennydb}"
                          username="${persistence.db.username:genny}"
                          password="${persistence.db.password:password}"
@@ -83,13 +83,13 @@
         </indexing>
       </distributed-cache>
       <distributed-cache name="datatype">
+         <locking concurrency-level="1000" acquire-timeout="15000" striping="false"/>
          <encoding>
             <key media-type="application/x-protostream"/>
             <value media-type="application/x-protostream"/>
          </encoding>
          <persistence passivation="false">
             <table-jdbc-store xmlns="urn:infinispan:config:store:sql:14.0" table-name="datatype" dialect="MYSQL" db-major-version="8" db-minor-version="0">
-               <write-behind modification-queue-size="1024" fail-silently="false"/>
                <connection-pool connection-url="jdbc:mysql://${persistence.db.server.ip:alyson.genny.life}:${persistence.db.server.port:3310}/${persistence.db.name:gennydb}"
                          username="${persistence.db.username:genny}"
                          password="${persistence.db.password:password}"
@@ -107,13 +107,13 @@
         </indexing>
       </distributed-cache>
       <distributed-cache name="validation">
+         <locking concurrency-level="1000" acquire-timeout="15000" striping="false"/>
          <encoding>
             <key media-type="application/x-protostream"/>
             <value media-type="application/x-protostream"/>
          </encoding>
          <persistence passivation="false">
             <table-jdbc-store xmlns="urn:infinispan:config:store:sql:14.0" table-name="validation" dialect="MYSQL" db-major-version="8" db-minor-version="0">
-               <write-behind modification-queue-size="1024" fail-silently="false"/>
                <connection-pool connection-url="jdbc:mysql://${persistence.db.server.ip:alyson.genny.life}:${persistence.db.server.port:3310}/${persistence.db.name:gennydb}"
                          username="${persistence.db.username:genny}"
                          password="${persistence.db.password:password}"
@@ -131,13 +131,13 @@
         </indexing>
       </distributed-cache>
       <distributed-cache name="questionquestion">
+         <locking concurrency-level="1000" acquire-timeout="15000" striping="false"/>
          <encoding>
             <key media-type="application/x-protostream"/>
             <value media-type="application/x-protostream"/>
          </encoding>
          <persistence passivation="false">
             <table-jdbc-store xmlns="urn:infinispan:config:store:sql:14.0" table-name="question_question" dialect="MYSQL" db-major-version="8" db-minor-version="0">
-               <write-behind modification-queue-size="1024" fail-silently="false"/>
                <connection-pool connection-url="jdbc:mysql://${persistence.db.server.ip:alyson.genny.life}:${persistence.db.server.port:3310}/${persistence.db.name:gennydb}"
                          username="${persistence.db.username:genny}"
                          password="${persistence.db.password:password}"
@@ -238,13 +238,13 @@
          </persistence>
       </distributed-cache>
       <distributed-cache name="userstore">
+         <locking concurrency-level="1000" acquire-timeout="15000" striping="false"/>
          <encoding>
             <key media-type="application/x-protostream"/>
             <value media-type="application/x-protostream"/>
          </encoding>
          <persistence passivation="false">
             <table-jdbc-store xmlns="urn:infinispan:config:store:sql:13.0" table-name="userstore" dialect="MYSQL" db-major-version="8" db-minor-version="0">
-               <write-behind modification-queue-size="1024" fail-silently="false"/>
                <connection-pool connection-url="jdbc:mysql://${persistence.db.server.ip:alyson.genny.life}:${persistence.db.server.port:3310}/${persistence.db.name:gennydb}"
                          username="${persistence.db.username:genny}"
                          password="${persistence.db.password:password}"
@@ -263,13 +263,13 @@
          <memory storage="OFF_HEAP" max-size="512MB" when-full="REMOVE"/>
       </distributed-cache>
       <distributed-cache name="baseentity_attribute">
+         <locking concurrency-level="1000" acquire-timeout="15000" striping="false"/>
          <encoding>
             <key media-type="application/x-protostream"/>
             <value media-type="application/x-protostream"/>
          </encoding>
          <persistence passivation="false">
             <table-jdbc-store xmlns="urn:infinispan:config:store:sql:14.0" table-name="baseentity_attribute" dialect="MYSQL" db-major-version="8" db-minor-version="0">
-               <write-behind modification-queue-size="1024" fail-silently="false"/>
                <connection-pool connection-url="jdbc:mysql://${persistence.db.server.ip:alyson.genny.life}:${persistence.db.server.port:3310}/${persistence.db.name:gennydb}"
                          username="${persistence.db.username:genny}"
                          password="${persistence.db.password:password}"
