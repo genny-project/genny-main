@@ -1,3 +1,7 @@
+ALTER TABLE baseentity_attribute DROP CONSTRAINT FKaedpn6csuwk6uwm5kqh73tiwd;
+ALTER TABLE baseentity_attribute DROP CONSTRAINT FKmqrqcxsqu49b0cliy2tymjoae;
+ALTER TABLE baseentity_attribute DROP CONSTRAINT UKfhe6ytcnf3pqww35brvtadvta;
+ALTER TABLE baseentity_attribute DROP CONSTRAINT unique_key;
 ALTER TABLE baseentity_attribute DROP COLUMN ATTRIBUTE_ID;
 ALTER TABLE baseentity_attribute DROP COLUMN BASEENTITY_ID;
 ALTER TABLE baseentity_attribute DROP PRIMARY KEY;

@@ -1,5 +1,8 @@
+DROP TABLE IF EXISTS context;
+DROP TABLE IF EXISTS ask;
+DROP TABLE IF EXISTS answer;
+DROP TABLE IF EXISTS baseentity_baseentity;
 ALTER TABLE attribute DROP PRIMARY KEY;
-ALTER TABLE attribute ADD CONSTRAINT pri_key PRIMARY KEY (realm,code);
 ALTER TABLE attribute DROP COLUMN dtype;
 ALTER TABLE attribute DROP COLUMN id;
 ALTER TABLE attribute DROP COLUMN className;
@@ -7,5 +10,4 @@ ALTER TABLE attribute DROP COLUMN component;
 ALTER TABLE attribute DROP COLUMN inputmask;
 ALTER TABLE attribute DROP COLUMN typeName;
 ALTER TABLE attribute DROP COLUMN validation_list;
-DROP TABLE IF EXISTS answer;
-DROP TABLE IF EXISTS baseentity_baseentity;
+ALTER TABLE attribute ADD CONSTRAINT pri_key PRIMARY KEY (realm,code);
