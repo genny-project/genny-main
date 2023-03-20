@@ -336,6 +336,11 @@ services:
       - ${ENV_FILE}
     environment:
       - CLEANUP_TASK_AND_BEATTRFORM=FALSE
+      - INFINISPAN_URL=alyson.genny.life:${INFINISPAN_PORT}
+      - QUARKUS_INFINISPAN_CLIENT_PASSWORD=password
+      - QUARKUS_INFINISPAN_CLIENT_REALM=default
+      - QUARKUS_INFINISPAN_CLIENT_USERNAME=genny
+      - QUARKUS_INFINISPAN_CLIENT_SASL_MECHANISM=DIGEST-MD5
       - FULL_MYSQL_URL=mysql/gennydb?serverTimezone=UTC
       - KEYCLOAK_AUTH_URL=${GENNY_KEYCLOAK_URL}/realms/${GENNY_KEYCLOAK_REALM}
     ports:
@@ -371,6 +376,10 @@ services:
       - GENNY_KAFKA_URL=kafka:${KAFKA_INTERNAL_PORT}
       - KAFKA_BOOTSTRAP_SERVERS=kafka:${KAFKA_INTERNAL_PORT}
       - INFINISPAN_URL=alyson.genny.life:${INFINISPAN_PORT}
+      - QUARKUS_INFINISPAN_CLIENT_PASSWORD=password
+      - QUARKUS_INFINISPAN_CLIENT_REALM=default
+      - QUARKUS_INFINISPAN_CLIENT_USERNAME=genny
+      - QUARKUS_INFINISPAN_CLIENT_SASL_MECHANISM=DIGEST-MD5
       - RULESSERVICE_URL=http://wildfly-rulesservice
       - MEDIA_PROXY_URL=https://alyson.genny.life/web/public
       # This is Bad Hard Coding
@@ -405,8 +414,11 @@ services:
     env_file:
       - ${ENV_FILE}
     environment:
-      - INFINISPAN_URL=infinispan:${INFINISPAN_PORT}
-      - INFINISPAN_CLIENT_INTELLIGENCE=BASIC
+      - INFINISPAN_URL=alyson.genny.life:${INFINISPAN_PORT}
+      - QUARKUS_INFINISPAN_CLIENT_PASSWORD=password
+      - QUARKUS_INFINISPAN_CLIENT_REALM=default
+      - QUARKUS_INFINISPAN_CLIENT_USERNAME=genny
+      - QUARKUS_INFINISPAN_CLIENT_SASL_MECHANISM=DIGEST-MD5
       - GENNY_KAFKA_URL=kafka:${KAFKA_PORT}
       - kafka.bootstrap.servers=kafka:${KAFKA_PORT}
       - QUARKUS_INFINISPAN_CLIENT_USE_SCHEMA_REGISTRATION:false
@@ -430,8 +442,11 @@ services:
     env_file:
       - ${ENV_FILE}
     environment:
-      - INFINISPAN_URL=infinispan:${INFINISPAN_PORT}
-      - INFINISPAN_CLIENT_INTELLIGENCE=BASIC
+      - INFINISPAN_URL=alyson.genny.life:${INFINISPAN_PORT}
+      - QUARKUS_INFINISPAN_CLIENT_PASSWORD=password
+      - QUARKUS_INFINISPAN_CLIENT_REALM=default
+      - QUARKUS_INFINISPAN_CLIENT_USERNAME=genny
+      - QUARKUS_INFINISPAN_CLIENT_SASL_MECHANISM=DIGEST-MD5
       - FYODOR_SERVICE_API=http://alyson.genny.life:${FYODOR_PORT}
       - GENNY_KAFKA_URL=kafka:${KAFKA_PORT}
       - kafka.bootstrap.servers=kafka:${KAFKA_PORT}
@@ -461,7 +476,10 @@ services:
       - ${ENV_FILE}
     environment:
       - INFINISPAN_URL=alyson.genny.life:${INFINISPAN_PORT}
-      - INFINISPAN_CLIENT_INTELLIGENCE=BASIC
+      - QUARKUS_INFINISPAN_CLIENT_PASSWORD=password
+      - QUARKUS_INFINISPAN_CLIENT_REALM=default
+      - QUARKUS_INFINISPAN_CLIENT_USERNAME=genny
+      - QUARKUS_INFINISPAN_CLIENT_SASL_MECHANISM=DIGEST-MD5
       - GENNY_KAFKA_URL=kafka:${KAFKA_PORT}
       - kafka.bootstrap.servers=kafka:${KAFKA_PORT}
       - FYODOR_SERVICE_API=http://alyson.genny.life:${FYODOR_PORT}
@@ -493,7 +511,10 @@ services:
       - GENNY_KAFKA_URL=kafka:${KAFKA_PORT}
       - kafka.bootstrap.servers=kafka:${KAFKA_PORT}
       - INFINISPAN_URL=alyson.genny.life:${INFINISPAN_PORT}
-      - INFINISPAN_CLIENT_INTELLIGENCE=BASIC
+      - QUARKUS_INFINISPAN_CLIENT_PASSWORD=password
+      - QUARKUS_INFINISPAN_CLIENT_REALM=default
+      - QUARKUS_INFINISPAN_CLIENT_USERNAME=genny
+      - QUARKUS_INFINISPAN_CLIENT_SASL_MECHANISM=DIGEST-MD5
       - JAVA_OPTS=-server -Xms64m -Xmx1524m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=1524m
       - PROJECT_URL=http://alyson.genny.life
       - FYODOR_SERVICE_API=http://alyson.genny.life:${FYODOR_PORT}
@@ -507,30 +528,6 @@ services:
       interval: 2s
       timeout: 10s
       retries: 120
-
-  shleemy:
-    deploy:
-      replicas: 0
-    image: gennyproject/shleemy:latest
-    container_name: shleemy
-    depends_on:
-      fyodor:
-        condition: service_healthy
-      kafka:
-        condition: service_healthy
-    env_file:
-      - ${ENV_FILE}
-    environment:
-      - INFINISPAN_URL=alyson.genny.life:${INFINISPAN_PORT}
-    ports:
-      - ${SHLEEMY_PORT}:${SHLEEMY_INTERNAL_PORT}
-    networks:
-      - mainproxy
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:${SHLEEMY_INTERNAL_PORT}//q/health/ready"]
-      interval: 2s
-      timeout: 10s
-      retries: 60
 
   messages:
     deploy:
@@ -604,7 +601,7 @@ services:
       QUARKUS_INFINISPAN_CLIENT_PASSWORD: password
       QUARKUS_INFINISPAN_CLIENT_REALM: default
       QUARKUS_INFINISPAN_CLIENT_USERNAME: genny
-  #    QUARKUS_INFINISPAN_CLIENT_SASL_MECHANISM: DIGEST-MD5
+      QUARKUS_INFINISPAN_CLIENT_SASL_MECHANISM: DIGEST-MD5
       QUARKUS_INFINISPAN_CLIENT_HOSTS: infinispan:${INFINISPAN_PORT}
       QUARKUS_INFINISPAN_CLIENT_USE_AUTH: "true"
     healthcheck:
