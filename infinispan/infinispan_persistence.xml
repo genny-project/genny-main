@@ -16,7 +16,7 @@
             <key media-type="application/x-protostream"/>
             <value media-type="application/x-protostream"/>
          </encoding>
-         <persistence passivation="false">
+         <persistence passivation="false" availability-interval="-1">
             <table-jdbc-store xmlns="urn:infinispan:config:store:sql:14.0" table-name="attribute" dialect="MYSQL" db-major-version="8" db-minor-version="0">
                <connection-pool connection-url="jdbc:mysql://${persistence.db.server.ip:alyson.genny.life}:${persistence.db.server.port:3310}/${persistence.db.name:gennydb}"
                          username="${persistence.db.username:genny}"
@@ -40,7 +40,7 @@
             <key media-type="application/x-protostream"/>
             <value media-type="application/x-protostream"/>
          </encoding>
-         <persistence passivation="false">
+         <persistence passivation="false" availability-interval="-1">
             <table-jdbc-store xmlns="urn:infinispan:config:store:sql:14.0" table-name="baseentity" dialect="MYSQL" db-major-version="8" db-minor-version="0">
                <connection-pool connection-url="jdbc:mysql://${persistence.db.server.ip:alyson.genny.life}:${persistence.db.server.port:3310}/${persistence.db.name:gennydb}"
                          username="${persistence.db.username:genny}"
@@ -64,7 +64,7 @@
             <key media-type="application/x-protostream"/>
             <value media-type="application/x-protostream"/>
          </encoding>
-         <persistence passivation="false">
+         <persistence passivation="false" availability-interval="-1">
             <table-jdbc-store xmlns="urn:infinispan:config:store:sql:14.0" table-name="question" dialect="MYSQL" db-major-version="8" db-minor-version="0">
                <connection-pool connection-url="jdbc:mysql://${persistence.db.server.ip:alyson.genny.life}:${persistence.db.server.port:3310}/${persistence.db.name:gennydb}"
                          username="${persistence.db.username:genny}"
@@ -88,7 +88,7 @@
             <key media-type="application/x-protostream"/>
             <value media-type="application/x-protostream"/>
          </encoding>
-         <persistence passivation="false">
+         <persistence passivation="false" availability-interval="-1">
             <table-jdbc-store xmlns="urn:infinispan:config:store:sql:14.0" table-name="datatype" dialect="MYSQL" db-major-version="8" db-minor-version="0">
                <connection-pool connection-url="jdbc:mysql://${persistence.db.server.ip:alyson.genny.life}:${persistence.db.server.port:3310}/${persistence.db.name:gennydb}"
                          username="${persistence.db.username:genny}"
@@ -112,7 +112,7 @@
             <key media-type="application/x-protostream"/>
             <value media-type="application/x-protostream"/>
          </encoding>
-         <persistence passivation="false">
+         <persistence passivation="false" availability-interval="-1">
             <table-jdbc-store xmlns="urn:infinispan:config:store:sql:14.0" table-name="validation" dialect="MYSQL" db-major-version="8" db-minor-version="0">
                <connection-pool connection-url="jdbc:mysql://${persistence.db.server.ip:alyson.genny.life}:${persistence.db.server.port:3310}/${persistence.db.name:gennydb}"
                          username="${persistence.db.username:genny}"
@@ -136,7 +136,7 @@
             <key media-type="application/x-protostream"/>
             <value media-type="application/x-protostream"/>
          </encoding>
-         <persistence passivation="false">
+         <persistence passivation="false" availability-interval="-1">
             <table-jdbc-store xmlns="urn:infinispan:config:store:sql:14.0" table-name="question_question" dialect="MYSQL" db-major-version="8" db-minor-version="0">
                <connection-pool connection-url="jdbc:mysql://${persistence.db.server.ip:alyson.genny.life}:${persistence.db.server.port:3310}/${persistence.db.name:gennydb}"
                          username="${persistence.db.username:genny}"
@@ -243,7 +243,7 @@
             <key media-type="application/x-protostream"/>
             <value media-type="application/x-protostream"/>
          </encoding>
-         <persistence passivation="false">
+         <persistence passivation="false" availability-interval="-1">
             <table-jdbc-store xmlns="urn:infinispan:config:store:sql:13.0" table-name="userstore" dialect="MYSQL" db-major-version="8" db-minor-version="0">
                <connection-pool connection-url="jdbc:mysql://${persistence.db.server.ip:alyson.genny.life}:${persistence.db.server.port:3310}/${persistence.db.name:gennydb}"
                          username="${persistence.db.username:genny}"
@@ -268,7 +268,7 @@
             <key media-type="application/x-protostream"/>
             <value media-type="application/x-protostream"/>
          </encoding>
-         <persistence passivation="false">
+         <persistence passivation="false" availability-interval="-1">
             <table-jdbc-store xmlns="urn:infinispan:config:store:sql:14.0" table-name="baseentity_attribute" dialect="MYSQL" db-major-version="8" db-minor-version="0">
                <connection-pool connection-url="jdbc:mysql://${persistence.db.server.ip:alyson.genny.life}:${persistence.db.server.port:3310}/${persistence.db.name:gennydb}"
                          username="${persistence.db.username:genny}"
