@@ -332,6 +332,7 @@ services:
     container_name: bootq
     volumes:
       - ./google_credentials:/root/.genny/sheets.googleapis.com-java-quickstart:delegated
+      - ./sqlite/:/root/sqlite
     env_file:
       - ${ENV_FILE}
     environment:
@@ -667,6 +668,21 @@ services:
       KOGITO_TASK_CONSOLE_PROPS:  -Dkogito.consoles.keycloak.config.client-id=kogito-console-quarkus  -Dkogito.consoles.keycloak.config.realm=${GENNY_KEYCLOAK_REALM}  -Dkogito.consoles.keycloak.config.url=${GENNY_KEYCLOAK_URL}  -Dkogito.consoles.keycloak.config.health-check-url=${GENNY_KEYCLOAK_URL}/realms/${GENNY_KEYCLOAK_REALM}/.well-known/openid-configuration  -Dkogito.consoles.keycloak.config.disable-health-check=false  -Dkogito.consoles.keycloak.config.update-token-validity=30 
     networks:
      - mainproxy
+
+  sqlite:
+    image: lscr.io/linuxserver/sqlitebrowser:latest
+    container_name: sqlite
+    security_opt:
+      - seccomp:unconfined
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - ./sqlite/volume_mount/db:/db
+    ports:
+      - ${SQLITE_PORT}:${SQLITE_INTERNAL_PORT}
+    restart: unless-stopped
 
 volumes:
   abn_tmp:
